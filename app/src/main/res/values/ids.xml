@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <item name="appbar" type="id" />
+    <item name="toolbar" type="id" />
+    <item name="collapsing_toolbar" type="id" />
+
+
+    <item name="tab" type="id" />
+    <item name="viewpager" type="id" />
+    <item name="viewpagertab" type="id" />
+
+    <item name="tv_title" type="id" />
+    <item name="tv_back" type="id" />
+
+    <item name="recycler_view" type="id" />
+
+    <!--网络异常显示容器 -->
+    <item name="view_loading_container" type="id" />
+    <!--网络加载中 -->
+    <item name="view_network_loading" type="id" />
+    <!--网络错误 -->
+    <item name="view_network_error" type="id" />
+    <!--空数据 -->
+    <item name="view_empty_data" type="id" />
+    <!--网络错误提示信息-->
+    <item name="tv_network_error" type="id" />
+    <!--内容为空提示信息-->
+    <item name="tv_empty_data" type="id" />
+
+
+</resources>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@id/toolbar"
+        layout="@layout/toolbar_layout" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/radioGroup_main"
+        android:layout_below="@id/toolbar" />
+
+    <RadioGroup
+        android:id="@+id/radioGroup_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/white"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/rbtn_main_home"
+            style="@style/RButtonMain"
+            android:checked="true"
+            android:drawableTop="@drawable/selector_main_home"
+            android:text="首页" />
+
+
+        <RadioButton
+            android:id="@+id/rbtn_main_book"
+            style="@style/RButtonMain"
+            android:drawableTop="@drawable/selector_main_movie"
+            android:text="电影" />
+
+
+        <RadioButton
+            android:id="@+id/rbtn_main_setting"
+            style="@style/RButtonMain"
+            android:drawableTop="@drawable/selector_main_setting"
+            android:text="设置" />
+
+    </RadioGroup>
+
+</RelativeLayout>

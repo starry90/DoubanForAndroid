@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="colorPrimary">#1E8AE8</color>
+    <color name="colorPrimaryDark">#0E8AE8</color>
+    <color name="colorAccent">#FF4081</color>
+    <!-- 标题文字颜色 -->
+    <color name="title_text_color">#FFF</color>
+
+    <!-- 页面的背景颜色 -->
+    <color name="activity_bg">#F5F5F5</color>
+
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000</color>
+    <!-- 透明色 -->
+    <color name="transparent">#00000000</color>
+
+    <color name="yellow">#FECA29</color>
+
+    <color name="grey">#EBECE7</color>
+
+
+</resources>

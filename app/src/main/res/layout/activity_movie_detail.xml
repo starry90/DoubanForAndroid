@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/activity_bg"
+    android:orientation="vertical">
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/activity_bg"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/rl_movie_detail_header"
+                android:layout_width="match_parent"
+                android:layout_height="255dp">
+
+                <ImageView
+                    android:id="@+id/iv_movie_detail_bg"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_vertical"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/image_bg_blur" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="90dp"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:id="@+id/ll_movie_detail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="10dp"
+                        android:background="@color/white"
+                        android:padding="1dp">
+
+                        <ImageView
+                            android:id="@+id/iv_movie_detail"
+                            android:layout_width="100dp"
+                            android:layout_height="145dp"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/image_bg_default" />
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="10dp"
+                        android:layout_toRightOf="@id/ll_movie_detail"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_movie_detail_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:singleLine="true"
+                            android:text="长城"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_size_16" />
+
+                        <TextView
+                            android:id="@+id/tv_movie_detail_original_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:singleLine="true"
+                            android:text="The Great Wall"
+                            android:textColor="@color/white" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:singleLine="true"
+                            android:text="观众评分"
+                            android:textColor="@color/grey" />
+
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/tv_movie_detail_rating"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:singleLine="true"
+                                android:text="8.8"
+                                android:textColor="@color/yellow"
+                                android:textSize="@dimen/text_size_16" />
+
+                            <TextView
+                                android:id="@+id/tv_movie_detail_rating_count"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:singleLine="true"
+                                android:text="（1015人评）"
+                                android:textColor="@color/grey"
+                                android:textSize="@dimen/text_size_10" />
+
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/tv_movie_detail_genres"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:singleLine="true"
+                            android:text="动画 冒险 奇幻"
+                            android:textColor="@color/grey" />
+
+                        <TextView
+                            android:id="@+id/tv_movie_detail_countries"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:singleLine="true"
+                            android:text="美国 中国大陆/120分钟"
+                            android:textColor="@color/grey" />
+
+                    </LinearLayout>
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tv_movie_detail_summary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/rl_movie_detail_header"
+                android:background="@color/white"
+                android:padding="10dp"
+                android:text="@string/moview_summary" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_movie_detail_summary"
+                android:layout_marginTop="15dp"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@id/recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+
+        </RelativeLayout>
+    </ScrollView>
+
+    <include
+        android:id="@id/toolbar"
+        layout="@layout/toolbar_layout" />
+
+    <com.starry.douban.widget.LoadingDataLayout
+        android:id="@id/view_loading_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+
+</RelativeLayout>

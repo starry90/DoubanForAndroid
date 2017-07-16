@@ -1,0 +1,16 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.jcodecraeer.xrecyclerview.XRecyclerView
+        android:id="@+id/XRecyclerView_home"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <com.starry.douban.widget.LoadingDataLayout
+        android:id="@id/view_loading_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+
+</FrameLayout>

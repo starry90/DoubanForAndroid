@@ -1,0 +1,87 @@
+apply plugin: 'com.android.application'
+//butterknife
+apply plugin: 'android-apt'
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        //butterknife
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+    }
+}
+
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion '23.0.1'
+
+    defaultConfig {
+        applicationId "com.starry.douban"
+        minSdkVersion 15
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+
+        //NDK integration is deprecated in the current plugin.  Consider trying the new experimental plugin.
+        // For details, see http://tools.android.com/tech-docs/new-build-system/gradle-experimental.
+        // Set "android.useDeprecatedNdk=true" in gradle.properties to continue using the current NDK integration.
+        ndk {
+            moduleName "Sample"
+            stl "stlport_static"
+            ldLibs = ["log"]
+//            abiFilters "armeabi", "armeabi-v7a", "x86"
+        }
+
+    }
+
+    // keysore文件
+    signingConfigs {
+        douban {
+            storeFile file("../data/starry_douban.jks")
+            storePassword "starry123456"
+            keyAlias "douban"
+            keyPassword "douban123456"
+        }
+    }
+
+    buildTypes {
+        release {
+            debuggable true
+            minifyEnabled true
+            signingConfig signingConfigs.douban
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            resValue "string", "debug", "false"
+        }
+    }
+    sourceSets { debug { jni.srcDirs = ['src/debug/jni', 'src/debug/jni/'] } }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile project(':XRecyclerView')
+    compile project(':SmartTabLayout')
+    compile 'com.squareup.okhttp3:okhttp:3.2.0'
+    //butterknife
+    apt 'com.jakewharton:butterknife-compiler:8.1.0'
+    compile 'com.jakewharton:butterknife:8.1.0'
+    //glide
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'com.android.support:support-v4:23.4.0'
+    //LeakCanary
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4-beta2'
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
+    testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
+    //support
+    compile 'com.android.support:appcompat-v7:23.4.0'
+    compile 'com.android.support:support-v13:23.4.0'
+    compile 'com.android.support:recyclerview-v7:23.4.0'
+    compile 'com.android.support:design:23.4.0'
+    compile 'com.android.support:cardview-v7:23.4.0'
+
+
+}
+
+
