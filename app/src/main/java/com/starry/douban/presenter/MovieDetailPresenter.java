@@ -3,6 +3,7 @@ package com.starry.douban.presenter;
 import com.starry.douban.http.CommonCallback;
 import com.starry.douban.http.HttpManager;
 import com.starry.douban.model.MovieDetail;
+import com.starry.douban.ui.ILoadingView;
 import com.starry.douban.ui.view.MovieDetailView;
 
 /**
@@ -23,8 +24,7 @@ public class MovieDetailPresenter {
      * @param url
      */
     public void getData(String url) {
-        HttpManager
-                .getInstance(mView)
+        HttpManager.getInstance()
                 .get()
                 .tag(mView)
                 .url(url)
@@ -41,6 +41,10 @@ public class MovieDetailPresenter {
                         mView.onFailure(message, code, obj);
                     }
 
+                    @Override
+                    public void setLoadingView(ILoadingView view) {
+                        super.setLoadingView(mView);
+                    }
                 });
     }
 }

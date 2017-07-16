@@ -4,6 +4,7 @@ import com.starry.douban.constant.Apis;
 import com.starry.douban.http.CommonCallback;
 import com.starry.douban.http.HttpManager;
 import com.starry.douban.model.Books;
+import com.starry.douban.ui.ILoadingView;
 import com.starry.douban.ui.view.MainView;
 
 import java.util.LinkedHashMap;
@@ -20,7 +21,8 @@ public class MainPresenter {
         this.mView = mView;
     }
 
-    /**1
+    /**
+     * 1
      * 获取图书列表
      *
      * @param tag
@@ -32,8 +34,7 @@ public class MainPresenter {
         params.put("tag", tag);
         params.put("start", start + "");
         params.put("count", count + "");
-        HttpManager
-                .getInstance(mView)
+        HttpManager.getInstance()
                 .get()
                 .tag(mView)
                 .url(Apis.BookSearch)
@@ -52,6 +53,10 @@ public class MainPresenter {
                         mView.onFailure(message, code, obj);
                     }
 
+                    @Override
+                    public void setLoadingView(ILoadingView view) {
+                        super.setLoadingView(mView);
+                    }
                 });
     }
 }

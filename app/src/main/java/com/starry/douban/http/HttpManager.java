@@ -4,13 +4,13 @@ import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
 
-import com.google.gson.Gson;
 import com.starry.douban.http.request.GetRequest;
 import com.starry.douban.http.request.PostFormRequest;
 import com.starry.douban.http.request.PostStringRequest;
 import com.starry.douban.log.Logger;
 import com.starry.douban.model.BaseModel;
-import com.starry.douban.ui.ILoadingView;
+import com.starry.douban.util.JsonUtil;
+import com.starry.douban.util.Preconditions;
 import com.starry.douban.widget.LoadingDataLayout;
 
 import java.io.IOException;
@@ -34,8 +34,6 @@ public class HttpManager {
      */
     private static final int TIME_OUT = 30;
 
-    private static ILoadingView mView;
-
     /**
      * Handler 给主线程发消息
      */
@@ -47,9 +45,18 @@ public class HttpManager {
     private OkHttpClient.Builder okHttpBuilder;
 
     /**
-     * HttpManager 只有一个实例
+     * @return HttpManager
      */
-    private static HttpManager mInstance = new HttpManager();
+    public static HttpManager getInstance() {
+        return SingletonHolder.INSTANCE;
+    }
+
+    private static class SingletonHolder {
+        /**
+         * HttpManager 只有一个实例
+         */
+        private final static HttpManager INSTANCE = new HttpManager();
+    }
 
     private HttpManager() {
         mDelivery = new Handler(Looper.getMainLooper());
@@ -59,49 +66,12 @@ public class HttpManager {
                 .writeTimeout(TIME_OUT, TimeUnit.SECONDS);//从主机写数据超时
     }
 
-    /**
-     * 使用频率，高的用饿汉式，低的用懒汉式（懒汉式注意线程安全）。
-     *
-     * @return
-     */
-    public static HttpManager getInstance() {
-        return mInstance;
-    }
-
-    /**
-     * 该方法是显示Loading的方法
-     *
-     * @param view
-     * @return
-     */
-    public static HttpManager getInstance(ILoadingView view) {
-        showLoading(view);
-        return mInstance;
-    }
-
-
     public OkHttpClient getOkHttpClient() {
         return okHttpBuilder.build();
     }
 
     public Handler getDelivery() {
         return mDelivery;
-    }
-
-    public static void showLoading(ILoadingView view) {
-        mView = view;
-        mView.showLoading();
-    }
-
-    /**
-     * @param type 1正常 2加载失败 3数据为空
-     */
-    public void hideLoading(int type) {
-        if (mView != null) {
-            mView.hideLoading(type);
-            mView.onLoadingComplete();
-            mView = null;
-        }
     }
 
     /**
@@ -141,7 +111,7 @@ public class HttpManager {
                  * {@linkplain okhttp3.RealCall#isCanceled()}
                  */
                 if (call.isCanceled()) {
-                    callback.onAfter();
+                    callback.onAfter(LoadingDataLayout.STATUS_ERROR);
                 } else {
                     sendFailCallback("连接失败，请检查你的网络设置", -1, callback);
                 }
@@ -149,15 +119,15 @@ public class HttpManager {
 
             @Override
             public void onResponse(final Call call, final Response response) {
-                String json;
                 int code = -1;
 
-                json = getJsonString(response);
+                String json = getJsonString(response);
                 Logger.i(json);// log json
-                if (!TextUtils.isEmpty(json) && response.code() == 200) {
+                if (response.code() == 200) {
                     try {
                         // T extends BaseModel
-                        T t = new Gson().fromJson(json, callback.getType());
+                        T t = JsonUtil.toObject(json, callback.getType());
+                        Preconditions.checkNotNull(t);
                         if (t.getResult() == 0) { // Success
                             sendSuccessCallback(t, callback);
                             return;
@@ -172,7 +142,6 @@ public class HttpManager {
 
                 if (TextUtils.isEmpty(json)) json = "连接失败，请检查你的网络设置";
                 sendFailCallback(json, code, callback);
-
             }
         });
     }
@@ -190,8 +159,8 @@ public class HttpManager {
         mDelivery.post(new Runnable() {
             @Override
             public void run() {
-                callback.onAfter();
-                hideLoading(LoadingDataLayout.STATUS_ERROR);
+                callback.setLoadingView(null);
+                callback.onAfter(LoadingDataLayout.STATUS_ERROR);
                 callback.onFailure(message, code);
             }
         });
@@ -201,8 +170,8 @@ public class HttpManager {
         mDelivery.post(new Runnable() {
             @Override
             public void run() {
-                callback.onAfter();
-                hideLoading(LoadingDataLayout.STATUS_SUCCESS);
+                callback.setLoadingView(null);
+                callback.onAfter(LoadingDataLayout.STATUS_SUCCESS);
                 callback.onSuccess(object);
             }
         });

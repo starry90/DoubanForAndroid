@@ -3,6 +3,7 @@ package com.starry.douban.presenter;
 import com.starry.douban.http.CommonCallback;
 import com.starry.douban.http.HttpManager;
 import com.starry.douban.model.Movies;
+import com.starry.douban.ui.ILoadingView;
 import com.starry.douban.ui.view.MovieView;
 
 import java.util.LinkedHashMap;
@@ -30,8 +31,7 @@ public class MoviePresenter {
         LinkedHashMap<String, String> params = new LinkedHashMap<>();
         params.put("start", start + "");
         params.put("count", count + "");
-        HttpManager
-                .getInstance(mView)
+        HttpManager.getInstance()
                 .get()
                 .tag(mView)
                 .url(url)
@@ -50,6 +50,10 @@ public class MoviePresenter {
                         mView.onFailure(message, code, obj);
                     }
 
+                    @Override
+                    public void setLoadingView(ILoadingView view) {
+                        super.setLoadingView(mView);
+                    }
                 });
     }
 }
