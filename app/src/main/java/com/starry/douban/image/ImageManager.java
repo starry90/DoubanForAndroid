@@ -11,7 +11,7 @@ import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.target.Target;
 import com.starry.douban.R;
-import com.starry.douban.base.BaseApplication;
+import com.starry.douban.DBApplication;
 
 /**
  * 图片管理器
@@ -38,7 +38,7 @@ public class ImageManager {
      * @param bgView
      */
     public static void getBitmap(final ImageView imageView, String url, final ImageView bgView) {
-        Glide.with(BaseApplication.getInstance()).load(url).asBitmap().into(new SimpleTarget<Bitmap>(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL) {
+        Glide.with(DBApplication.getInstance()).load(url).asBitmap().into(new SimpleTarget<Bitmap>(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL) {
             @Override
             public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
                 imageView.setImageBitmap(resource);
@@ -56,7 +56,7 @@ public class ImageManager {
      * @param url       图片URL
      */
     public static void loadImage(ImageView imageView, String url) {
-        Glide.with(BaseApplication.getInstance())
+        Glide.with(DBApplication.getInstance())
                 .load(url)
                 .error(R.drawable.image_bg_default)
                 .placeholder(R.drawable.image_bg_default)
@@ -106,7 +106,7 @@ public class ImageManager {
                 strategy = DiskCacheStrategy.RESULT;
                 break;
         }
-        Glide.with(BaseApplication.getInstance())
+        Glide.with(DBApplication.getInstance())
                 .load(url)
                 .error(R.drawable.image_bg_default)
                 .placeholder(R.drawable.image_bg_default)

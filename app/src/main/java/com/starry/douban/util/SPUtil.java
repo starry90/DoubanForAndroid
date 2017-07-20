@@ -6,7 +6,7 @@ import android.content.SharedPreferences.Editor;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import com.starry.douban.base.BaseApplication;
+import com.starry.douban.DBApplication;
 
 /**
  * SharedPreferences 本地文件存储（形式：键值对）工具类
@@ -82,7 +82,7 @@ public class SPUtil {
     /********************************************************************************/
     
     private static SharedPreferences getSharedPreferences(String fileName){
-        return BaseApplication.getInstance().getSharedPreferences(fileName, Context.MODE_PRIVATE);
+        return DBApplication.getInstance().getSharedPreferences(fileName, Context.MODE_PRIVATE);
     }
 
     /**

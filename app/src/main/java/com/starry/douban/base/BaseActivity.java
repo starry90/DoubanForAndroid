@@ -13,30 +13,21 @@ import com.starry.douban.http.HttpManager;
 import com.starry.douban.ui.ILoadingView;
 import com.starry.douban.widget.LoadingDataLayout;
 
-import java.lang.ref.WeakReference;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
 /**
  * Activity基类
- * <p/>
+ * <p>
  * 方法执行顺序
  * {@link #initData()} —> {@link #getLayoutResID()} —> {@link #setListener()}
- * <p/>
+ * <p>
  */
 
 public abstract class BaseActivity extends AppCompatActivity implements IBaseActivity, ILoadingView {
 
     protected final String TAG = getClass().getSimpleName();
-
-    private BaseApplication mApplication;
-
-    /**
-     * 当前Activity的弱引用，防止内存泄露
-     */
-    private WeakReference<Activity> mActivity;
 
     /**
      * 网络请求各种状态显示容器
@@ -49,11 +40,6 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseAct
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // 将当前Activity压入栈
-        mApplication = BaseApplication.getInstance();
-        mActivity = new WeakReference<Activity>(this);
-        mApplication.pushTask(mActivity);
 
         setContentView(getLayoutResID());
         ButterKnife.bind(this);//必须在setContentView()之后调用
@@ -110,7 +96,6 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseAct
     protected void onDestroy() {
         //如果关闭页面，取消请求
         HttpManager.getInstance().cancelTag(this);
-        mApplication.removeTask(mActivity);
 
         super.onDestroy();
     }
@@ -121,10 +106,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseAct
      * @return 当前Activity
      */
     protected Activity getActivity() {
-        if (null != mActivity)
-            return mActivity.get();
-        else
-            return null;
+        return this;
     }
 
 
