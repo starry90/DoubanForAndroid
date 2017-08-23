@@ -76,7 +76,7 @@ public class MovieFragment extends BaseLazyFragment implements MovieView {
     }
 
     private void initRecyclerView() {
-        mAdapter = new MovieAdapter(getActivity(), null);
+        mAdapter = new MovieAdapter(getActivity(), books);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
@@ -119,15 +119,11 @@ public class MovieFragment extends BaseLazyFragment implements MovieView {
         //2、拿到数据
         books.addAll(response.getSubjects());
         //3、刷新RecyclerView
-        mAdapter.setData(books);
+        mAdapter.notifyDataSetChanged();
         //4、页码自增
         start += count;
         //5、如果没有数据了，禁用加载更多功能
-        if (start > response.getTotal()) {
-            mRecyclerView.setLoadingMoreEnabled(false);
-        } else {
-            mRecyclerView.setLoadingMoreEnabled(true);
-        }
+        mRecyclerView.setLoadingMoreEnabled(start < response.getTotal());
     }
 
     @Override
