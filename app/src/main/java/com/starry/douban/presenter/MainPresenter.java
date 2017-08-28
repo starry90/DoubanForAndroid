@@ -4,7 +4,6 @@ import com.starry.douban.constant.Apis;
 import com.starry.douban.http.CommonCallback;
 import com.starry.douban.http.HttpManager;
 import com.starry.douban.model.Books;
-import com.starry.douban.ui.ILoadingView;
 import com.starry.douban.ui.view.MainView;
 
 import java.util.LinkedHashMap;
@@ -40,7 +39,7 @@ public class MainPresenter {
                 .url(Apis.BookSearch)
                 .params(params)
                 .build()
-                .execute(new CommonCallback<Books>() {
+                .execute(new CommonCallback<Books>(mView) {
 
 
                     @Override
@@ -53,10 +52,6 @@ public class MainPresenter {
                         mView.onFailure(message, code, obj);
                     }
 
-                    @Override
-                    public void setLoadingView(ILoadingView view) {
-                        super.setLoadingView(mView);
-                    }
                 });
     }
 }

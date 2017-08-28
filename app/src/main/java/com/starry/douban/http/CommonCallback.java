@@ -20,6 +20,21 @@ public abstract class CommonCallback<T> {
     private ILoadingView mLoadingView;
 
     /**
+     * 无Loading View的网络请求
+     */
+    public CommonCallback() {
+    }
+
+    /**
+     * 有Loading View的网络请求
+     *
+     * @param mLoadingView ILoadingView
+     */
+    public CommonCallback(ILoadingView mLoadingView) {
+        this.mLoadingView = mLoadingView;
+    }
+
+    /**
      * @param response 返回的对象
      * @param obj      可扩展参数
      */
@@ -56,14 +71,6 @@ public abstract class CommonCallback<T> {
      */
     public void inProgress(float progress) {
         Logger.d("progress=" + progress);
-    }
-
-    /**
-     * 设置LoadingView
-     * @param view
-     */
-    public void setLoadingView(ILoadingView view) {
-        mLoadingView = view;
     }
 
     /**

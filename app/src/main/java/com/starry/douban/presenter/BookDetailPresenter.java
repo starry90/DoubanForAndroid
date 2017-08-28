@@ -3,7 +3,6 @@ package com.starry.douban.presenter;
 import com.starry.douban.http.CommonCallback;
 import com.starry.douban.http.HttpManager;
 import com.starry.douban.model.BookDetail;
-import com.starry.douban.ui.ILoadingView;
 import com.starry.douban.ui.view.BookDetailView;
 
 /**
@@ -29,7 +28,7 @@ public class BookDetailPresenter {
                 .tag(mView)
                 .url(url)
                 .build()
-                .execute(new CommonCallback<BookDetail>() {
+                .execute(new CommonCallback<BookDetail>(mView) {
 
                     @Override
                     public void onSuccess(BookDetail response, Object... obj) {
@@ -39,11 +38,6 @@ public class BookDetailPresenter {
                     @Override
                     public void onFailure(String message, int code, Object... obj) {
                         mView.onFailure(message, code, obj);
-                    }
-
-                    @Override
-                    public void setLoadingView(ILoadingView view) {
-                        super.setLoadingView(mView);
                     }
                 });
     }

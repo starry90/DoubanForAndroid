@@ -159,7 +159,6 @@ public class HttpManager {
         mDelivery.post(new Runnable() {
             @Override
             public void run() {
-                callback.setLoadingView(null);
                 callback.onAfter(LoadingDataLayout.STATUS_ERROR);
                 callback.onFailure(message, code);
             }
@@ -170,7 +169,6 @@ public class HttpManager {
         mDelivery.post(new Runnable() {
             @Override
             public void run() {
-                callback.setLoadingView(null);
                 callback.onAfter(LoadingDataLayout.STATUS_SUCCESS);
                 callback.onSuccess(object);
             }
