@@ -19,5 +19,6 @@
 
     <color name="grey">#EBECE7</color>
 
+    <color name="darker_gray">#AAAAAA</color>
 
 </resources>
