@@ -2,8 +2,7 @@ package com.starry.douban.http;
 
 
 import com.starry.douban.http.request.OKHttpRequest;
-import com.starry.douban.http.request.RequestCall;
-import com.starry.douban.log.Logger;
+import com.starry.douban.http.request.RealRequest;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -19,23 +18,23 @@ import okhttp3.MediaType;
  * @author Starry Jerry
  * @since 2016/6/19.
  */
-public class CommonHttpClient {
+public class CommonParams {
 
     // JSON --> application/json;charset=utf-8
     private static final MediaType MEDIA_TYPE_JSON = MediaType.parse("application/json;charset=utf-8");
 
-    protected String url;
-    protected Object tag;
+    private String url;
+    private Object tag;
 
-    protected Map<String, String> params;
-    protected Map<String, String> headers;
+    private Map<String, String> params;
+    private Map<String, String> headers;
 
-    protected List<FileInput> files = new ArrayList<>();
+    private List<FileInput> files = new ArrayList<>();
 
-    protected String content;
-    protected MediaType mediaType;
+    private String content;
+    private MediaType mediaType;
 
-    private CommonHttpClient(Builder builder) {
+    private CommonParams(Builder builder) {
         this.url = builder.url;
         this.tag = builder.tag;
         this.params = builder.params;
@@ -44,10 +43,7 @@ public class CommonHttpClient {
         this.files = builder.files;
         this.content = builder.content;
         this.mediaType = builder.mediaType;
-
-        Logger.i(url);
     }
-
 
     public String url() {
         return url;
@@ -77,19 +73,15 @@ public class CommonHttpClient {
         return mediaType;
     }
 
-
     public static final class Builder {
-        protected String url;
-        protected Object tag;
-        protected Map<String, String> headers;
-        protected Map<String, String> params;
+        private String url;
+        private Object tag;
+        private Map<String, String> headers;
+        private Map<String, String> params;
         private List<FileInput> files = new ArrayList<>();
         private String content;
         private MediaType mediaType;
-
-
-        protected OKHttpRequest builder;
-
+        private OKHttpRequest builder;
 
         public Builder(OKHttpRequest builder) {
             this.builder = builder;
@@ -147,11 +139,11 @@ public class CommonHttpClient {
             return this;
         }
 
-        public RequestCall build() {
+        public RealRequest build() {
             if (this.params == null) {
                 params = new LinkedHashMap<>();
             }
-            return builder.build(new CommonHttpClient(this));
+            return builder.build(new CommonParams(this));
         }
 
     }

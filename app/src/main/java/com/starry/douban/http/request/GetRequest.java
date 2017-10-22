@@ -12,16 +12,11 @@ import okhttp3.RequestBody;
 public class GetRequest extends OKHttpRequest {
 
     @Override
-    protected String getMethod() {
-        return "GET";
-    }
-
-    @Override
     protected String buildUrl() {
-        String url = client.url();
-        Map<String, String> params = client.params();
+        String url = commonParams.url();
+        Map<String, String> params = commonParams.params();
         StringBuilder sb = new StringBuilder();
-        sb.append(url + "?");
+        sb.append(url).append("?");
         if (params != null && !params.isEmpty()) {
             for (String key : params.keySet()) {
                 sb.append(key).append("=").append(params.get(key)).append("&");
@@ -40,8 +35,7 @@ public class GetRequest extends OKHttpRequest {
 
     @Override
     protected Request buildRequest(RequestBody requestBody) {
-        return builder.get().build();
+        return requestBuilder.get().build();
     }
-
 
 }

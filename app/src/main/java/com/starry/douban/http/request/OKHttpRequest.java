@@ -1,8 +1,7 @@
 package com.starry.douban.http.request;
 
 import com.starry.douban.http.CommonCallback;
-import com.starry.douban.http.CommonHttpClient;
-import com.starry.douban.log.Logger;
+import com.starry.douban.http.CommonParams;
 
 import java.util.Map;
 
@@ -16,14 +15,12 @@ import okhttp3.RequestBody;
  */
 public abstract class OKHttpRequest {
 
-    protected CommonHttpClient client;
+    protected CommonParams commonParams;
 
-    protected Request.Builder builder = new Request.Builder();
-
-    protected abstract String getMethod();
+    protected Request.Builder requestBuilder = new Request.Builder();
 
     protected String buildUrl() {
-        return client.url();
+        return commonParams.url();
     }
 
     protected abstract RequestBody buildRequestBody();
@@ -34,47 +31,27 @@ public abstract class OKHttpRequest {
         return requestBody;
     }
 
-
     public Request generateRequest(CommonCallback callback) {
-        prepareBuilder();
-        appendHeaders();
+        requestBuilder.tag(commonParams.tag())
+                .url(buildUrl())
+                .headers(buildHeaders());
         RequestBody requestBody = wrapRequestBody(buildRequestBody(), callback);
-        logHttpMethod(getMethod(), client.params());
         return buildRequest(requestBody);
     }
 
-
-    private void prepareBuilder() {
-        builder.url(buildUrl()).tag(client.tag());
-    }
-
-
-    protected void appendHeaders() {
-        Map<String, String> headers = client.headers();
-        if (headers == null || headers.isEmpty()) return;
-
+    private Headers buildHeaders() {
+        Map<String, String> headers = commonParams.headers();
         Headers.Builder headerBuilder = new Headers.Builder();
-        for (String key : headers.keySet()) {
-            headerBuilder.add(key, headers.get(key));
+        if (headers != null && !headers.isEmpty()) {
+            for (String key : headers.keySet()) {
+                headerBuilder.add(key, headers.get(key));
+            }
         }
-        builder.headers(headerBuilder.build());
+        return headerBuilder.build();
     }
 
-    /**
-     * 打印请求方法及参数
-     *
-     * @param method 方法
-     * @param params 参数
-     */
-    private void logHttpMethod(String method, Map<String, String> params) {
-        String paramsStr = params == null ? "" : params.toString();
-        Logger.i(client.url());
-        Logger.i("HttpMethod == [" + method + "]  Params == " + paramsStr);
-    }
-
-
-    public RequestCall build(CommonHttpClient okHttp) {
-        this.client = okHttp;
-        return new RequestCall(this);
+    public RealRequest build(CommonParams commonParams) {
+        this.commonParams = commonParams;
+        return new RealRequest(this, commonParams);
     }
 }

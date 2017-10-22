@@ -9,21 +9,14 @@ import okhttp3.RequestBody;
  */
 public class PostStringRequest extends OKHttpRequest {
 
-
-    @Override
-    protected String getMethod() {
-        return "POST_JSON";
-    }
-
     @Override
     protected RequestBody buildRequestBody() {
-        return RequestBody.create(client.mediaType(), client.content());
+        return RequestBody.create(commonParams.mediaType(), commonParams.content());
     }
 
     @Override
     protected Request buildRequest(RequestBody requestBody) {
-        return builder.post(requestBody).build();
+        return requestBuilder.post(requestBody).build();
     }
-
 
 }
