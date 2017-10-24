@@ -3,6 +3,7 @@ package com.starry.douban.http;
 
 import com.google.gson.reflect.TypeToken;
 import com.starry.douban.log.Logger;
+import com.starry.douban.model.BaseModel;
 import com.starry.douban.ui.ILoadingView;
 
 import java.lang.reflect.ParameterizedType;
@@ -18,6 +19,18 @@ import java.lang.reflect.Type;
 public abstract class CommonCallback<T> {
 
     private ILoadingView mLoadingView;
+
+    public final static CommonCallback<BaseModel> NO_CALLBACK = new CommonCallback<BaseModel>() {
+        @Override
+        public void onSuccess(BaseModel response, Object... obj) {
+
+        }
+
+        @Override
+        public void onFailure(String message, int code, Object... obj) {
+
+        }
+    };
 
     /**
      * 无Loading View的网络请求

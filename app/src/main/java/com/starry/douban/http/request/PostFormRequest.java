@@ -74,22 +74,20 @@ public class PostFormRequest extends OKHttpRequest {
         return contentTypeFor;
     }
 
-    protected RequestBody wrapRequestBody(RequestBody requestBody, final CommonCallback callback) {
-        if (callback == null) return requestBody;
-        CountingRequestBody countingRequestBody = new CountingRequestBody(requestBody, new CountingRequestBody.Listener() {
+    protected RequestBody wrapRequestBody(RequestBody requestBody) {
+        return new CountingRequestBody(requestBody, new CountingRequestBody.Listener() {
             @Override
             public void onRequestProgress(final long bytesWritten, final long contentLength) {
 
                 HandlerMain.getHandler().post(new Runnable() {
                     @Override
                     public void run() {
-                        callback.inProgress(bytesWritten * 1.0f / contentLength);
+                        CommonCallback.NO_CALLBACK.inProgress(bytesWritten * 1.0f / contentLength);
                     }
                 });
 
             }
         });
-        return countingRequestBody;
     }
 
     @Override

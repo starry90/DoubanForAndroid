@@ -27,12 +27,12 @@ import okhttp3.Response;
  */
 public class RealRequest {
 
-    private OKHttpRequest okHttpRequest;
+    private Request request;
 
     private CommonParams commonParams;
 
-    public RealRequest(OKHttpRequest request, CommonParams commonParams) {
-        this.okHttpRequest = request;
+    public RealRequest(Request request, CommonParams commonParams) {
+        this.request = request;
         this.commonParams = commonParams;
     }
 
@@ -40,13 +40,11 @@ public class RealRequest {
      * 执行请求
      *
      * @param callback 回调对象
-     * @param <T>      对象的泛型
      */
-    public <T extends BaseModel> void execute(CommonCallback<T> callback) {
-        if (callback != null) {
-            callback.onBefore();
+    public void execute(CommonCallback callback) {
+        if (callback == null) {
+            callback = CommonCallback.NO_CALLBACK;
         }
-        Request request = okHttpRequest.generateRequest(callback);
         logRequest(request.method(), request.url().toString(), commonParams.params());
         Call call = HttpManager.getOkHttpClient().newCall(request);
         execute(call, callback);
@@ -74,7 +72,8 @@ public class RealRequest {
      * @param callback 回调对象
      * @param <T>      对象的泛型
      */
-    public <T extends BaseModel> void execute(Call call, final CommonCallback<T> callback) {
+    private  <T extends BaseModel> void execute(Call call, final CommonCallback<T> callback) {
+        callback.onBefore();
         call.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, final IOException e) {

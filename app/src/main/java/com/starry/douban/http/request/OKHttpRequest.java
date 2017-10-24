@@ -1,6 +1,5 @@
 package com.starry.douban.http.request;
 
-import com.starry.douban.http.CommonCallback;
 import com.starry.douban.http.CommonParams;
 
 import java.util.Map;
@@ -27,15 +26,15 @@ public abstract class OKHttpRequest {
 
     protected abstract Request buildRequest(RequestBody requestBody);
 
-    protected RequestBody wrapRequestBody(RequestBody requestBody, final CommonCallback callback) {
+    protected RequestBody wrapRequestBody(RequestBody requestBody) {
         return requestBody;
     }
 
-    public Request generateRequest(CommonCallback callback) {
+    public Request generateRequest() {
         requestBuilder.tag(commonParams.tag())
                 .url(buildUrl())
                 .headers(buildHeaders());
-        RequestBody requestBody = wrapRequestBody(buildRequestBody(), callback);
+        RequestBody requestBody = wrapRequestBody(buildRequestBody());
         return buildRequest(requestBody);
     }
 
@@ -52,6 +51,6 @@ public abstract class OKHttpRequest {
 
     public RealRequest build(CommonParams commonParams) {
         this.commonParams = commonParams;
-        return new RealRequest(this, commonParams);
+        return new RealRequest(generateRequest(), commonParams);
     }
 }

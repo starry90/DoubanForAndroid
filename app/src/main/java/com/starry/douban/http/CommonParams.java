@@ -29,7 +29,7 @@ public class CommonParams {
     private Map<String, String> params;
     private Map<String, String> headers;
 
-    private List<FileInput> files = new ArrayList<>();
+    private List<FileInput> files;
 
     private String content;
     private MediaType mediaType;
