@@ -57,21 +57,21 @@ public class HttpManager {
     /**
      * Get 请求
      */
-    public CommonParams.Builder get() {
+    public static CommonParams.Builder get() {
         return new CommonParams.Builder(new GetRequest());
     }
 
     /**
      * Post 请求
      */
-    public CommonParams.Builder post() {
+    public static CommonParams.Builder post() {
         return new CommonParams.Builder(new PostFormRequest());
     }
 
     /**
      * Post JSON
      */
-    public CommonParams.Builder postJson() {
+    public static CommonParams.Builder postJson() {
         return new CommonParams.Builder(new PostStringRequest());
     }
 

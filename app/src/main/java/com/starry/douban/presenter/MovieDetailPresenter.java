@@ -23,8 +23,7 @@ public class MovieDetailPresenter {
      * @param url
      */
     public void getData(String url) {
-        HttpManager.getInstance()
-                .get()
+        HttpManager.get()
                 .tag(mView)
                 .url(url)
                 .build()

@@ -33,8 +33,7 @@ public class MainPresenter {
         params.put("tag", tag);
         params.put("start", start + "");
         params.put("count", count + "");
-        HttpManager.getInstance()
-                .get()
+        HttpManager.get()
                 .tag(mView)
                 .url(Apis.BookSearch)
                 .params(params)

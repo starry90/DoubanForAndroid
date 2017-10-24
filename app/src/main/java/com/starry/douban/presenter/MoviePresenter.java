@@ -30,8 +30,7 @@ public class MoviePresenter {
         LinkedHashMap<String, String> params = new LinkedHashMap<>();
         params.put("start", start + "");
         params.put("count", count + "");
-        HttpManager.getInstance()
-                .get()
+        HttpManager.get()
                 .tag(mView)
                 .url(url)
                 .params(params)
