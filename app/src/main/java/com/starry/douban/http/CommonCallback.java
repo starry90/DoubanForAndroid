@@ -71,12 +71,18 @@ public abstract class CommonCallback<T> {
      *
      * @param status 1正常 2加载失败 3数据为空
      */
-    public void onAfter(int status) {
-        if (mLoadingView != null) {
-            mLoadingView.hideLoading(status);
-            mLoadingView.onLoadingComplete();
-            mLoadingView = null;
-        }
+    public void onAfter(final int status) {
+        //保证是在UI线程操作UI
+        HandlerMain.getHandler().post(new Runnable() {
+            @Override
+            public void run() {
+                if (mLoadingView != null) {
+                    mLoadingView.hideLoading(status);
+                    mLoadingView.onLoadingComplete();
+                    mLoadingView = null;
+                }
+            }
+        });
     }
 
     /**
