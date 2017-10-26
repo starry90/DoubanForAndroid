@@ -124,6 +124,7 @@ public class MainActivity extends BaseActivity {
                         setTabSelect(position);
                     }
                 }, DELAY_TIME);
+                tabViews.get(position).setChecked(true);
             }
 
             @Override
