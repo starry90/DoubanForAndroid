@@ -1,1 +1,1 @@
-include ':app', ':XRecyclerView', ':SmartTabLayout'
+include ':app', ':XRecyclerView', ':SmartTabLayout', ':ProgressIndicator'

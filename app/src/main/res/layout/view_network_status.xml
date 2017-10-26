@@ -12,13 +12,14 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <com.starry.douban.widget.ProgressWheel
+        <com.starry.progress.AVLoadingIndicatorView
             android:id="@+id/loading_view"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_centerInParent="true"
-            app:matProg_progressIndeterminate="true"
-            app:matProg_barColor="@color/colorPrimary" />
+            android:layout_marginBottom="10dp"
+            app:indicator="LineSpinFadeLoader"
+            app:indicator_color="@color/colorPrimary" />
 
         <TextView
             android:layout_width="wrap_content"
