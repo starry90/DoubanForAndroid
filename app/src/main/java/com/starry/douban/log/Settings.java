@@ -5,7 +5,7 @@ import com.starry.douban.BuildConfig;
 
 public final class Settings {
 
-    private int methodCount = 3;
+    private int methodCount = 1;
     private boolean showThreadInfo = false;
     private int methodOffset = 0;
 

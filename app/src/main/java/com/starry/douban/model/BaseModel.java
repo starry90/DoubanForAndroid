@@ -9,7 +9,7 @@ public class BaseModel implements Serializable {
 
     private static final long serialVersionUID = 5268625605268545266L;
 
-    private int result;
+    private int code;
 
     private String msg;
 
@@ -35,12 +35,13 @@ public class BaseModel implements Serializable {
         this.msg = msg;
     }
 
-    public int getResult() {
-        return result;
+    public int getCode() {
+        return code;
     }
 
-    public void setResult(int result) {
-        this.result = result;
+    public BaseModel setCode(int code) {
+        this.code = code;
+        return this;
     }
 
     public int getCount() {

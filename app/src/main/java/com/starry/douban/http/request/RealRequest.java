@@ -1,12 +1,12 @@
 package com.starry.douban.http.request;
 
 
-import android.text.TextUtils;
-
 import com.starry.douban.http.CommonCallback;
 import com.starry.douban.http.CommonParams;
+import com.starry.douban.http.Errors;
 import com.starry.douban.http.HandlerMain;
 import com.starry.douban.http.HttpManager;
+import com.starry.douban.http.NetworkException;
 import com.starry.douban.log.Logger;
 import com.starry.douban.model.BaseModel;
 import com.starry.douban.util.JsonUtil;
@@ -45,25 +45,41 @@ public class RealRequest {
         if (callback == null) {
             callback = CommonCallback.NO_CALLBACK;
         }
-        logRequest(request.method(), request.url().toString(), commonParams.params());
+        logRequest(request.url().toString(), request.method(), commonParams.params());
         Call call = HttpManager.getOkHttpClient().newCall(request);
         execute(call, callback);
     }
 
     /**
-     * 打印请求方法及参数
+     * 打印报文
      *
-     * @param method 方法
      * @param url    URL
+     * @param method 方法
      * @param params 参数
      */
-    private void logRequest(String method, String url, Map<String, String> params) {
+    private void logRequest(String url, String method, Map<String, String> params) {
         String paramsStr = params == null ? "" : params.toString();
         // 日志格式
-        // Method：GET
-        // Url：https://api.douban.com/v2/movie/in_theaters
-        // Params：{start=0, count=20}
-        String result = String.format("Method：%s\nUrl：%s\nParams：%s", method, url, paramsStr);
+        // Request
+        // --> https://api.douban.com/v2/book/search?tag=热门&start=0&count=20
+        // --> GET
+        // --> {tag=热门, start=0, count=20}
+        String result = String.format("Request\n --> %s\n --> %s\n --> %s", url, method, paramsStr);
+        Logger.i(result);
+    }
+
+    /**
+     * 打印返回报文
+     *
+     * @param url  URL
+     * @param json 返回报文
+     */
+    private void logResponse(String url, String json) {
+        // 日志格式
+        // Response
+        // --> https://api.douban.com/v2/book/search?tag=热门&start=0&count=20
+        // --> {"count":20,"start":0,"total":122,"books":[{"rating":{"max":10,"numRaters":487,……
+        String result = String.format("Response\n --> %s\n --> %s", url, json);
         Logger.i(result);
     }
 
@@ -72,59 +88,45 @@ public class RealRequest {
      * @param callback 回调对象
      * @param <T>      对象的泛型
      */
-    private  <T extends BaseModel> void execute(Call call, final CommonCallback<T> callback) {
+    private <T extends BaseModel> void execute(Call call, final CommonCallback<T> callback) {
         callback.onBefore();
         call.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, final IOException e) {
                 e.printStackTrace();
-                /**
-                 * {@linkplain okhttp3.RealCall#cancel()}
-                 * {@linkplain okhttp3.RealCall#isCanceled()}
-                 */
+                //{@linkplain okhttp3.RealCall#isCanceled()}
                 if (call.isCanceled()) {
                     callback.onAfter(LoadingDataLayout.STATUS_ERROR);
                 } else {
-                    sendFailCallback("连接失败，请检查你的网络设置", -1, callback);
+                    sendFailCallback(Errors.Message.NETWORK_UNAVAILABLE, Errors.Code.NETWORK_UNAVAILABLE, callback);
                 }
             }
 
             @Override
             public void onResponse(final Call call, final Response response) {
-                int code = -1;
+                try {
+                    if (response.isSuccessful()) {// 请求成功
+                        String json = response.body().string();
+                        logResponse(response.request().url().toString(), json);
 
-                String json = getJsonString(response);
-                Logger.i(json);// log json
-                if (response.code() == 200) {
-                    try {
                         // T extends BaseModel
                         T t = JsonUtil.toObject(json, callback.getType());
                         Preconditions.checkNotNull(t);
-                        if (t.getResult() == 0) { // Success
+                        if (t.getCode() == 0) { // Success
                             sendSuccessCallback(t, callback);
-                            return;
-                        } else { // Failure
-                            json = t.getMsg();
-                            code = t.getResult();
+                        } else {
+                            throw NetworkException.newException(t.getCode(), t.getMsg());
                         }
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                    } else {
+                        throw NetworkException.newException(Errors.Code.SERVER_ERROR, Errors.Message.SERVER_ERROR);
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    NetworkException netE = NetworkException.newException(e);
+                    sendFailCallback(netE.getErrorMessage(), netE.getErrorCode(), callback);
                 }
-
-                if (TextUtils.isEmpty(json)) json = "连接失败，请检查你的网络设置";
-                sendFailCallback(json, code, callback);
             }
         });
-    }
-
-    private String getJsonString(Response response) {
-        try {
-            return response.body().string();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 
     private void sendFailCallback(final String message, final int code, final CommonCallback callback) {
