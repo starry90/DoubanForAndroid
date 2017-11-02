@@ -21,18 +21,9 @@ public class MainPresenter {
     }
 
     /**
-     * 1
      * 获取图书列表
-     *
-     * @param tag
-     * @param start
-     * @param count
      */
-    public void getBookList(String tag, int start, int count) {
-        LinkedHashMap<String, String> params = new LinkedHashMap<>();
-        params.put("tag", tag);
-        params.put("start", start + "");
-        params.put("count", count + "");
+    public void getBookList(LinkedHashMap<String, String> params) {
         HttpManager.get()
                 .tag(mView)
                 .url(Apis.BookSearch)

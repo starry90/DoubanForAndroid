@@ -19,8 +19,6 @@ public class BookDetailPresenter {
 
     /**
      * 获取图书详情
-     *
-     * @param url
      */
     public void getData(String url) {
         HttpManager.get()

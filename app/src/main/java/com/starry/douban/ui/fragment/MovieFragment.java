@@ -61,12 +61,12 @@ public class MovieFragment extends BaseLazyFragment implements MovieView {
                 url = Apis.MovieTop250;
                 break;
             case 3:
-                params.put("tag", "科幻");
                 url = Apis.MovieSearch;
+                params.put("tag", "科幻");
                 break;
             case 4:
-                params.put("tag", "喜剧");
                 url = Apis.MovieSearch;
+                params.put("tag", "喜剧");
                 break;
         }
 
@@ -106,7 +106,9 @@ public class MovieFragment extends BaseLazyFragment implements MovieView {
 
     @Override
     public void loadData() {
-        mPresenter.getMovieList(url, start, count);
+        params.put("start", start + "");
+        params.put("count", count + "");
+        mPresenter.getMovieList(url, params);
     }
 
     @Override

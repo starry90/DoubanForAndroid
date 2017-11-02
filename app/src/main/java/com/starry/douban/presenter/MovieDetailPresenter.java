@@ -19,8 +19,6 @@ public class MovieDetailPresenter {
 
     /**
      * 获取图书列表
-     *
-     * @param url
      */
     public void getData(String url) {
         HttpManager.get()

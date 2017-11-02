@@ -13,6 +13,7 @@ import com.starry.douban.ui.view.MainView;
 import com.starry.douban.widget.LoadingDataLayout;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -74,7 +75,11 @@ public class HomeFragment extends BaseLazyFragment implements MainView {
 
     @Override
     public void loadData() {
-        mPresenter.getBookList(tag, start, count);
+        LinkedHashMap<String, String> params = new LinkedHashMap<>();
+        params.put("tag", tag);
+        params.put("start", start + "");
+        params.put("count", count + "");
+        mPresenter.getBookList(params);
     }
 
     @Override

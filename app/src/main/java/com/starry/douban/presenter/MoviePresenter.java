@@ -20,16 +20,9 @@ public class MoviePresenter {
     }
 
     /**
-     * 获取图书列表
-     *
-     * @param url
-     * @param start
-     * @param count
+     * 获取电影列表
      */
-    public void getMovieList(String url, int start, int count) {
-        LinkedHashMap<String, String> params = new LinkedHashMap<>();
-        params.put("start", start + "");
-        params.put("count", count + "");
+    public void getMovieList(String url, LinkedHashMap<String, String> params) {
         HttpManager.get()
                 .tag(mView)
                 .url(url)
