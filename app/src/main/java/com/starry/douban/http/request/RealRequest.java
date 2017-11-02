@@ -98,38 +98,65 @@ public class RealRequest {
                 if (call.isCanceled()) {
                     callback.onAfter(LoadingDataLayout.STATUS_ERROR);
                 } else {
-                    sendFailCallback(Errors.Message.NETWORK_UNAVAILABLE, Errors.Code.NETWORK_UNAVAILABLE, callback);
+                    sendFailCallback(Errors.Code.NETWORK_UNAVAILABLE, Errors.Message.NETWORK_UNAVAILABLE, callback);
                 }
             }
 
             @Override
             public void onResponse(final Call call, final Response response) {
                 try {
-                    if (response.isSuccessful()) {// 请求成功
-                        String json = response.body().string();
-                        logResponse(response.request().url().toString(), json);
+                    // 1. check http code
+                    checkHttpCode(response.code());
 
-                        // T extends BaseModel
-                        T t = JsonUtil.toObject(json, callback.getType());
-                        Preconditions.checkNotNull(t);
-                        if (t.getCode() == 0) { // Success
-                            sendSuccessCallback(t, callback);
-                        } else {
-                            throw NetworkException.newException(t.getCode(), t.getMsg());
-                        }
-                    } else {
-                        throw NetworkException.newException(Errors.Code.SERVER_ERROR, Errors.Message.SERVER_ERROR);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    NetworkException netE = NetworkException.newException(e);
-                    sendFailCallback(netE.getErrorMessage(), netE.getErrorCode(), callback);
+                    // 2. print json log
+                    String json = response.body().string();
+                    logResponse(response.request().url().toString(), json);
+
+                    // 3. parse json to object
+                    // T extends BaseModel
+                    T result = JsonUtil.toObject(json, callback.getType());
+                    Preconditions.checkNotNull(result);
+
+                    // 4. check result code
+                    checkResultCode(result.getCode(), result.getMsg());
+
+                    // 5. call success method
+                    sendSuccessCallback(result, callback);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    NetworkException netE = NetworkException.newException(ex);
+                    sendFailCallback(netE.getErrorCode(), netE.getErrorMessage(), callback);
                 }
             }
         });
     }
 
-    private void sendFailCallback(final String message, final int code, final CommonCallback callback) {
+    /**
+     * 检查http code
+     *
+     * @param code 错误码
+     * @throws NetworkException 自定义网络异常
+     */
+    private void checkHttpCode(int code) throws NetworkException {
+        if (code < 200 || code >= 300) {// 不是2开头code统一以服务错误处理
+            throw NetworkException.newException(Errors.Code.SERVER_ERROR, Errors.Message.SERVER_ERROR);
+        }
+    }
+
+    /**
+     * 检查返回结果code
+     *
+     * @param code    错误码
+     * @param message 错误信息
+     * @throws NetworkException 自定义网络异常
+     */
+    private void checkResultCode(int code, String message) throws NetworkException {
+        if (code != 0) {// 服务返回结果code不等于0，请求得到的数据有问题
+            throw NetworkException.newException(code, message);
+        }
+    }
+
+    private void sendFailCallback(final int code, final String message, final CommonCallback callback) {
         HandlerMain.getHandler().post(new Runnable() {
             @Override
             public void run() {
