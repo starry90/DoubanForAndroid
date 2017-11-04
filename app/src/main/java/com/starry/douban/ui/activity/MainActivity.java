@@ -66,8 +66,12 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
+    protected boolean displayHomeAsUpEnabled() {
+        return false;
+    }
+
+    @Override
     public void initData() {
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         setTitle(titles[0]);
 
         FragmentPagerItems pages = new FragmentPagerItems(this);

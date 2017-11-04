@@ -73,43 +73,60 @@
             android:orientation="vertical">
 
             <RelativeLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
                 android:padding="10dp">
+
+                <LinearLayout
+                    android:id="@+id/ll_book_detail_rating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:background="@color/activity_bg"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
+                    android:padding="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="评分"
+                        android:textSize="@dimen/text_size_12" />
+
+                    <TextView
+                        android:id="@+id/tv_book_detail_rating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="8.8"
+                        android:textColor="@color/yellow"
+                        android:textSize="@dimen/text_size_20" />
+
+                    <TextView
+                        android:id="@+id/tv_book_detail_rating_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="(100人评)"
+                        android:textSize="@dimen/text_size_12" />
+
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/tv_book_detail_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_toLeftOf="@id/ll_book_detail_rating"
                     android:text="追风筝的人"
                     android:textSize="@dimen/text_size_20" />
-
-                <TextView
-                    android:id="@+id/tv_book_detail_rating_count"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBaseline="@id/tv_book_detail_title"
-                    android:layout_alignParentRight="true"
-                    android:text="(100人评)"
-                    android:textSize="@dimen/text_size_12" />
-
-                <TextView
-                    android:id="@+id/tv_book_detail_rating"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="3dp"
-                    android:layout_toLeftOf="@id/tv_book_detail_rating_count"
-                    android:text="8.8"
-                    android:textColor="@color/yellow"
-                    android:textSize="@dimen/text_size_20" />
-
 
                 <TextView
                     android:id="@+id/tv_book_detail_other_info"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
                     android:layout_below="@id/tv_book_detail_title"
+                    android:layout_toLeftOf="@id/ll_book_detail_rating"
                     android:text="追风筝的人"
                     android:textSize="@dimen/text_size_12" />
             </RelativeLayout>

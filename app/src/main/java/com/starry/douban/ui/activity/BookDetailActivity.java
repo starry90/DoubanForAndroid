@@ -71,7 +71,7 @@ public class BookDetailActivity extends BaseActivity implements BookDetailView {
 
     @Override
     public void loadData() {
-       mPresenter.getData(url);
+        mPresenter.getData(url);
     }
 
 
@@ -83,7 +83,8 @@ public class BookDetailActivity extends BaseActivity implements BookDetailView {
         tv_book_detail_rating.setText(response.getRating().getAverage());
         tv_book_detail_rating_count.setText("(" + response.getRating().getNumRaters() + "人评)");
         List<String> author = response.getAuthor();
-        tv_book_detail_other_info.setText(author.size() == 0 ? "" : author.get(0) + " / " + response.getPublisher() + " / " + response.getPubdate());
+        String info = "作者：%s\n出版社：%s\n出版时间：%s";
+        tv_book_detail_other_info.setText(String.format(info, author.size() == 0 ? "" : author.get(0), response.getPublisher(), response.getPubdate()));
         tv_book_detail_summary.setText(response.getSummary());
         tv_book_detail_author_summary.setText(response.getAuthor_intro());
         tv_book_detail_catalog.setText(response.getCatalog());
