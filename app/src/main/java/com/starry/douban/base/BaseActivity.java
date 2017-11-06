@@ -37,6 +37,10 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseAct
     @BindView(R.id.view_loading_container)
     protected LoadingDataLayout mLoadingDataLayout;
 
+    @Nullable
+    @BindView(R.id.toolbar)
+    protected Toolbar toolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,13 +78,21 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseAct
     }
 
     private void initToolBar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setTitle("");//标题内容
         ActionBar ab = getSupportActionBar();
         if (ab != null) {
-            ab.setDisplayHomeAsUpEnabled(true);//显示返回键
+            ab.setDisplayHomeAsUpEnabled(displayHomeAsUpEnabled());//显示返回键
         }
+    }
+
+    /**
+     * 显示返回键
+     *
+     * @return true为显示左上角返回键，反之为false
+     */
+    protected boolean displayHomeAsUpEnabled() {
+        return true;
     }
 
     @Override
