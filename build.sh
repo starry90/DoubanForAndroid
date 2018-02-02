@@ -19,7 +19,7 @@ buildApk()
         mkdir $out_path
     else
         cd $out_path
-        rm -rf *.apk
+        rm -rf *
     fi
 
     cd $project_path
