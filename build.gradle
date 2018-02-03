@@ -1,5 +1,8 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
+//如果没有该语句，子build.gradle无法获取到root.gradle定义的内容
+apply from: 'root.gradle'
+
 buildscript {
     repositories {
         jcenter()
