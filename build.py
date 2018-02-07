@@ -11,8 +11,8 @@ out_path = project_path % 'outputs'
 gradlew_clean = 'gradlew clean'
 gradlew_build = 'gradlew assembleRelease'
 if platform.system() == 'Windows':
-    delete = r'del %s\*' % out_path
-    copy_format = r'xcopy %s\build\outputs\* %s'
+    delete = r'rd /S /Q %s' % out_path
+    copy_format = r'xcopy /E %s\build\outputs\* %s'
 else:
     delete = r'rm -rf %s/*' % out_path
     copy_format = r'cp -r %s/build/outputs/* %s'
@@ -23,7 +23,7 @@ print out_path
 
 
 def build_apk():
-    print '--> build apk start'
+    print '>>> build apk start'
 
     if not os.path.exists(out_path):  # outputs目录不存在
         os.makedirs(out_path)
@@ -33,12 +33,12 @@ def build_apk():
     os.system(gradlew_clean)
     build_code = os.system(gradlew_build)
     if build_code == 0:
-        print '--> 打包成功'
+        print '>>> build successful'
         os.system(copy_format % ('app', out_path))
     else:
-        '--> 打包失败'
+        '>>> build failure'
 
-    print '--> build apk end'
+    print '>>> build apk end'
 
 
 def main():
