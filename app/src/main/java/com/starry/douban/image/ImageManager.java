@@ -11,7 +11,7 @@ import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.target.Target;
 import com.starry.douban.R;
-import com.starry.douban.DBApplication;
+import com.starry.douban.base.BaseApp;
 
 /**
  * 图片管理器
@@ -31,14 +31,17 @@ public class ImageManager {
     //Glide.with(context).resumeRequests()和 Glide.with(context).pauseRequests()
     // 当列表在滑动的时候，调用pauseRequests()取消请求，滑动停止时，调用resumeRequests()恢复请求。这样是不是会好些呢？
 
+    public static Context getContext() {
+        return BaseApp.getContext();
+    }
+
     /**
-     *
      * @param imageView
      * @param url
      * @param bgView
      */
     public static void getBitmap(final ImageView imageView, String url, final ImageView bgView) {
-        Glide.with(DBApplication.getInstance()).load(url).asBitmap().into(new SimpleTarget<Bitmap>(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL) {
+        Glide.with(getContext()).load(url).asBitmap().into(new SimpleTarget<Bitmap>(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL) {
             @Override
             public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
                 imageView.setImageBitmap(resource);
@@ -56,7 +59,7 @@ public class ImageManager {
      * @param url       图片URL
      */
     public static void loadImage(ImageView imageView, String url) {
-        Glide.with(DBApplication.getInstance())
+        Glide.with(getContext())
                 .load(url)
                 .error(R.drawable.image_bg_default)
                 .placeholder(R.drawable.image_bg_default)
@@ -106,7 +109,7 @@ public class ImageManager {
                 strategy = DiskCacheStrategy.RESULT;
                 break;
         }
-        Glide.with(DBApplication.getInstance())
+        Glide.with(getContext())
                 .load(url)
                 .error(R.drawable.image_bg_default)
                 .placeholder(R.drawable.image_bg_default)
