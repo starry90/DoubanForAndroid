@@ -37,10 +37,6 @@ public class BaseApp {
         application.registerActivityLifecycleCallbacks(lifeCallback);
     }
 
-    public void onTerminate(Application application) {
-        application.unregisterActivityLifecycleCallbacks(lifeCallback);
-    }
-
     /**
      * 退出应用
      */

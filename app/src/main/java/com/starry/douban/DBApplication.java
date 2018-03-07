@@ -22,9 +22,17 @@ public class DBApplication extends Application {
         BaseApp.getInstance().onCreate(this);
     }
 
+    /**
+     * This method is for use in emulated process environments.  It will
+     * never be called on a production Android device, where processes are
+     * removed by simply killing them; no user code (including this callback)
+     * is executed when doing so.
+     * <p>
+     * 该方法不会被回调
+     * </p>
+     */
     @Override
     public void onTerminate() {
         super.onTerminate();
-        BaseApp.getInstance().onTerminate(this);
     }
 }
