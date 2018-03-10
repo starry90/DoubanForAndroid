@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 
 
 /**
- * 懒加载的Framgent
+ * 懒加载的Fragment
  * Fragment基类
  */
 public abstract class BaseLazyFragment extends BaseFragment implements IBaseActivity {

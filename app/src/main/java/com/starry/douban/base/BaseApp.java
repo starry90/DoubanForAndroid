@@ -16,6 +16,9 @@ public class BaseApp {
 
     private ActivityCallback lifeCallback;
 
+    private BaseApp() {
+    }
+
     public static BaseApp getInstance() {
         return Holder.INSTANCE;
     }

@@ -1,5 +1,7 @@
 package com.starry.douban.base;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -27,12 +29,24 @@ public abstract class BaseFragment extends Fragment implements IBaseActivity, IL
     private boolean isSuccess;
 
     /**
+     * 使用mActivity代替getActivity()，保证Fragment即使在onDetach后，仍持有Activity的引用<p>
+     * 有引起内存泄露的风险，但相比空指针应用闪退，这种做法更“安全”
+     */
+    protected Activity mActivity;
+
+    /**
      * 网络请求各种状态显示容器
      * <p>Required view 'view_loading_container' with ID 2131427348 for field 'mLoadingDataLayout' was not found. If this view is optional add '@Nullable' (fields) or '@Optional' (methods) annotation.
      */
     @Nullable
     @BindView(R.id.view_loading_container)
     protected LoadingDataLayout mLoadingDataLayout;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mActivity = (Activity) context;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -110,15 +124,5 @@ public abstract class BaseFragment extends Fragment implements IBaseActivity, IL
     public void onLoadingComplete() {
 
     }
-
-    /**
-     * 退出Activity
-     */
-    public void finish() {
-        if (getActivity() != null) {
-            getActivity().finish();
-        }
-    }
-
 
 }
