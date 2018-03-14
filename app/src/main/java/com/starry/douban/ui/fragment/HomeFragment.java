@@ -8,6 +8,7 @@ import com.starry.douban.adapter.BookAdapter;
 import com.starry.douban.base.BaseLazyFragment;
 import com.starry.douban.model.BookBean;
 import com.starry.douban.model.Books;
+import com.starry.douban.model.ErrorModel;
 import com.starry.douban.presenter.MainPresenter;
 import com.starry.douban.ui.view.MainView;
 import com.starry.douban.widget.LoadingDataLayout;
@@ -100,7 +101,7 @@ public class HomeFragment extends BaseLazyFragment implements MainView {
     }
 
     @Override
-    public void onFailure(String message, int code, Object... obj) {
+    public void onFailure(ErrorModel errorModel) {
     }
 
     @Override

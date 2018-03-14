@@ -13,6 +13,7 @@ import com.starry.douban.adapter.MoviePhotoAdapter;
 import com.starry.douban.base.BaseActivity;
 import com.starry.douban.constant.Apis;
 import com.starry.douban.image.ImageManager;
+import com.starry.douban.model.ErrorModel;
 import com.starry.douban.model.MovieDetail;
 import com.starry.douban.presenter.MovieDetailPresenter;
 import com.starry.douban.ui.view.MovieDetailView;
@@ -120,7 +121,7 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
     }
 
     @Override
-    public void onFailure(String message, int code, Object... obj) {
+    public void onFailure(ErrorModel errorModel) {
 
     }
 

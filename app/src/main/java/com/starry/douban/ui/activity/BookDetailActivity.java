@@ -10,6 +10,7 @@ import com.starry.douban.base.BaseActivity;
 import com.starry.douban.constant.Apis;
 import com.starry.douban.image.ImageManager;
 import com.starry.douban.model.BookDetail;
+import com.starry.douban.model.ErrorModel;
 import com.starry.douban.presenter.BookDetailPresenter;
 import com.starry.douban.ui.view.BookDetailView;
 
@@ -91,7 +92,7 @@ public class BookDetailActivity extends BaseActivity implements BookDetailView {
     }
 
     @Override
-    public void onFailure(String message, int code, Object... obj) {
+    public void onFailure(ErrorModel errorModel) {
 
     }
 

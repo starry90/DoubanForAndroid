@@ -1,7 +1,9 @@
 package com.starry.douban.presenter;
 
+import com.starry.douban.constant.RequestFlag;
 import com.starry.douban.http.CommonCallback;
 import com.starry.douban.http.HttpManager;
+import com.starry.douban.model.ErrorModel;
 import com.starry.douban.model.Movies;
 import com.starry.douban.ui.view.MovieView;
 
@@ -36,8 +38,9 @@ public class MoviePresenter {
                     }
 
                     @Override
-                    public void onFailure(String message, int code, Object... obj) {
-                        mView.onFailure(message, code, obj);
+                    public void onFailure(ErrorModel errorModel) {
+                        errorModel.setRequestCode(RequestFlag.MAIN_MOVIE_LIST);
+                        mView.onFailure(errorModel);
                     }
                 });
     }

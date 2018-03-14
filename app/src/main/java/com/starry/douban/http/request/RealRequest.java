@@ -9,6 +9,7 @@ import com.starry.douban.http.HttpManager;
 import com.starry.douban.http.NetworkException;
 import com.starry.douban.log.Logger;
 import com.starry.douban.model.BaseModel;
+import com.starry.douban.model.ErrorModel;
 import com.starry.douban.util.JsonUtil;
 import com.starry.douban.util.Preconditions;
 import com.starry.douban.widget.LoadingDataLayout;
@@ -161,7 +162,7 @@ public class RealRequest {
             @Override
             public void run() {
                 callback.onAfter(LoadingDataLayout.STATUS_ERROR);
-                callback.onFailure(message, code);
+                callback.onFailure(new ErrorModel(code, message));
             }
         });
     }

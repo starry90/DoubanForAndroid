@@ -4,6 +4,7 @@ package com.starry.douban.http;
 import com.google.gson.reflect.TypeToken;
 import com.starry.douban.log.Logger;
 import com.starry.douban.model.BaseModel;
+import com.starry.douban.model.ErrorModel;
 import com.starry.douban.ui.ILoadingView;
 
 import java.lang.reflect.ParameterizedType;
@@ -27,7 +28,7 @@ public abstract class CommonCallback<T> {
         }
 
         @Override
-        public void onFailure(String message, int code, Object... obj) {
+        public void onFailure(ErrorModel errorModel) {
 
         }
     };
@@ -54,11 +55,9 @@ public abstract class CommonCallback<T> {
     public abstract void onSuccess(T response, Object... obj);
 
     /**
-     * @param message 失败提示
-     * @param code    失败code
-     * @param obj     可扩展参数
+     * @param errorModel ErrorModel
      */
-    public abstract void onFailure(String message, int code, Object... obj);
+    public abstract void onFailure(ErrorModel errorModel);
 
     /**
      * 开始执行网络请求

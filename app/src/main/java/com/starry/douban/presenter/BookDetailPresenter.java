@@ -1,8 +1,10 @@
 package com.starry.douban.presenter;
 
+import com.starry.douban.constant.RequestFlag;
 import com.starry.douban.http.CommonCallback;
 import com.starry.douban.http.HttpManager;
 import com.starry.douban.model.BookDetail;
+import com.starry.douban.model.ErrorModel;
 import com.starry.douban.ui.view.BookDetailView;
 
 /**
@@ -33,8 +35,9 @@ public class BookDetailPresenter {
                     }
 
                     @Override
-                    public void onFailure(String message, int code, Object... obj) {
-                        mView.onFailure(message, code, obj);
+                    public void onFailure(ErrorModel errorModel) {
+                        errorModel.setRequestCode(RequestFlag.BOOK_DETAIL);
+                        mView.onFailure(errorModel);
                     }
                 });
     }

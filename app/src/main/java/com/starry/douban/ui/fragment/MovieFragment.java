@@ -7,6 +7,7 @@ import com.starry.douban.R;
 import com.starry.douban.adapter.MovieAdapter;
 import com.starry.douban.base.BaseLazyFragment;
 import com.starry.douban.constant.Apis;
+import com.starry.douban.model.ErrorModel;
 import com.starry.douban.model.MovieBean;
 import com.starry.douban.model.Movies;
 import com.starry.douban.presenter.MoviePresenter;
@@ -129,7 +130,7 @@ public class MovieFragment extends BaseLazyFragment implements MovieView {
     }
 
     @Override
-    public void onFailure(String message, int code, Object... obj) {
+    public void onFailure(ErrorModel errorModel) {
     }
 
     @Override

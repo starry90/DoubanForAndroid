@@ -1,9 +1,11 @@
 package com.starry.douban.presenter;
 
 import com.starry.douban.constant.Apis;
+import com.starry.douban.constant.RequestFlag;
 import com.starry.douban.http.CommonCallback;
 import com.starry.douban.http.HttpManager;
 import com.starry.douban.model.Books;
+import com.starry.douban.model.ErrorModel;
 import com.starry.douban.ui.view.MainView;
 
 import java.util.LinkedHashMap;
@@ -38,8 +40,9 @@ public class MainPresenter {
                     }
 
                     @Override
-                    public void onFailure(String message, int code, Object... obj) {
-                        mView.onFailure(message, code, obj);
+                    public void onFailure(ErrorModel errorModel) {
+                        errorModel.setRequestCode(RequestFlag.MAIN_BOOK_LIST);
+                        mView.onFailure(errorModel);
                     }
 
                 });

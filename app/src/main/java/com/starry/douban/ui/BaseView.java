@@ -1,5 +1,7 @@
 package com.starry.douban.ui;
 
+import com.starry.douban.model.ErrorModel;
+
 /**
  * @author Starry Jerry
  * @since 2017/3/12.
@@ -10,11 +12,9 @@ public interface BaseView extends ILoadingView {
     /**
      * 请求失败
      *
-     * @param message 失败提示消息
-     * @param code    确认是哪一个请求
-     * @param obj     扩展参数
+     * @param errorModel ErrorModel
      */
-    void onFailure(String message, int code, Object... obj);
+    void onFailure(ErrorModel errorModel);
 
 
 }
