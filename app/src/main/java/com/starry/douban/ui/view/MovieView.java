@@ -13,8 +13,8 @@ public interface MovieView extends BaseView {
     /**
      * 刷新电影列表
      *
-     * @param response
+     * @param response Movies
      */
-    void onRefreshList(Movies response);
+    void refreshMovieList(Movies response);
 
 }

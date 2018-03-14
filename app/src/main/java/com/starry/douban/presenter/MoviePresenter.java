@@ -32,7 +32,7 @@ public class MoviePresenter {
 
                     @Override
                     public void onSuccess(Movies response, Object... obj) {
-                        mView.onRefreshList(response);
+                        mView.refreshMovieList(response);
                     }
 
                     @Override

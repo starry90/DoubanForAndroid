@@ -103,7 +103,7 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
     }
 
     @Override
-    public void onRefresh(MovieDetail response) {
+    public void showMovieDetail(MovieDetail response) {
         showLoadingStatus(LoadingDataLayout.STATUS_SUCCESS);
         ImageManager.getBitmap(ivMovieDetail, response.getImages().getLarge(), iv_movie_detail_bg);
         tvMovieDetailTitle.setText(response.getTitle());

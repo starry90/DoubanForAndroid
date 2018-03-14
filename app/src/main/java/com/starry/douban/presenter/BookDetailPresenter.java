@@ -29,7 +29,7 @@ public class BookDetailPresenter {
 
                     @Override
                     public void onSuccess(BookDetail response, Object... obj) {
-                        mView.onRefresh(response);
+                        mView.showBookDetail(response);
                     }
 
                     @Override

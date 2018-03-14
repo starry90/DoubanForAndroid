@@ -29,7 +29,7 @@ public class MovieDetailPresenter {
 
                     @Override
                     public void onSuccess(MovieDetail response, Object... obj) {
-                        mView.onRefresh(response);
+                        mView.showMovieDetail(response);
                     }
 
                     @Override

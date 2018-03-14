@@ -83,7 +83,7 @@ public class HomeFragment extends BaseLazyFragment implements MainView {
     }
 
     @Override
-    public void onRefreshList(Books response) {
+    public void refreshBookList(Books response) {
         showLoadingStatus(LoadingDataLayout.STATUS_SUCCESS);
         //1、如果是第一页先清空数据 books不用做非空判断，不可能为空
         if (start == 0) {

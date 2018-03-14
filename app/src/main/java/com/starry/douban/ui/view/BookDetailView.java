@@ -11,10 +11,10 @@ public interface BookDetailView extends BaseView {
 
 
     /**
-     * 刷新图书详情
+     * 显示图书详情
      *
-     * @param response
+     * @param response BookDetail
      */
-    void onRefresh(BookDetail response);
+    void showBookDetail(BookDetail response);
 
 }

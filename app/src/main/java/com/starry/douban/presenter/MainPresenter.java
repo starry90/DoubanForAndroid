@@ -34,7 +34,7 @@ public class MainPresenter {
 
                     @Override
                     public void onSuccess(Books response, Object... obj) {
-                        mView.onRefreshList(response);
+                        mView.refreshBookList(response);
                     }
 
                     @Override

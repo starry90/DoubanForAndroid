@@ -76,7 +76,7 @@ public class BookDetailActivity extends BaseActivity implements BookDetailView {
 
 
     @Override
-    public void onRefresh(BookDetail response) {
+    public void showBookDetail(BookDetail response) {
         ImageManager.getBitmap(ivBookDetail, response.getImages().getLarge(), ivBookDetailBg);
         collapsing_toolbar.setTitle(response.getTitle());
         tv_book_detail_title.setText(response.getTitle());

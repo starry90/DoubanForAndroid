@@ -11,10 +11,10 @@ public interface MovieDetailView extends BaseView {
 
 
     /**
-     * 刷新电影列表
+     * 显示电影详情
      *
-     * @param response
+     * @param response MovieDetail
      */
-    void onRefresh(MovieDetail response);
+    void showMovieDetail(MovieDetail response);
 
 }

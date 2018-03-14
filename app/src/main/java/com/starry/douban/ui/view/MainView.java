@@ -13,10 +13,8 @@ public interface MainView extends BaseView {
     /**
      * 刷新图书列表
      *
-     * @param response
+     * @param response Books
      */
-    void onRefreshList(Books response);
-
-
+    void refreshBookList(Books response);
 
 }
