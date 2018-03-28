@@ -7,15 +7,18 @@ import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.ViewPager;
+import android.view.KeyEvent;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.starry.douban.R;
 import com.starry.douban.base.BaseActivity;
+import com.starry.douban.base.BaseApp;
 import com.starry.douban.ui.fragment.BlankFragment;
 import com.starry.douban.ui.fragment.HomeFragment;
 import com.starry.douban.ui.fragment.MovieFragment;
 import com.starry.douban.ui.fragment.MovieParentFragment;
+import com.starry.douban.util.ToastUtil;
 import com.starry.douban.util.viewpager.v4.FragmentPagerItem;
 import com.starry.douban.util.viewpager.v4.FragmentPagerItemAdapter;
 import com.starry.douban.util.viewpager.v4.FragmentPagerItems;
@@ -225,5 +228,24 @@ public class MainActivity extends BaseActivity {
     @Override
     public void loadData() {
 
+    }
+
+    /**
+     * 退出时间
+     */
+    private long exitTime = 0;
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
+            if (System.currentTimeMillis() - exitTime > 2000) {
+                ToastUtil.showToast("再按一次退出应用");
+                exitTime = System.currentTimeMillis();
+            } else {
+                BaseApp.getInstance().exitApp();
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

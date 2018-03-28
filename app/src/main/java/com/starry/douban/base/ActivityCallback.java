@@ -21,14 +21,13 @@ public class ActivityCallback implements Application.ActivityLifecycleCallbacks 
     /**
      * finish所有的Activity（用于整个应用退出）
      */
-    public void removeAll() {
-        for (Activity activity : activityList) {
-            if (!activity.isFinishing()) {
+    public void finishAll() {
+        synchronized (activityList) {
+            for (Activity activity : activityList) {
                 activity.finish();
-                activityList.remove(activity);
             }
+            activityList.clear();
         }
-        activityList.clear();
     }
 
     @Override
