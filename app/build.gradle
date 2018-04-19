@@ -21,9 +21,9 @@ android {
     buildToolsVersion androidCode.buildToolsVersion
 
     defaultConfig {
-        applicationId androidCode.applicationId
         minSdkVersion androidCode.minSdkVersion
         targetSdkVersion androidCode.targetSdkVersion
+        applicationId androidCode.applicationId
         versionCode androidCode.versionCode
         versionName androidCode.versionName
     }
@@ -49,33 +49,23 @@ android {
     }
 }
 
-def supportVersion = "23.4.0"
-def supports = [
-        "appcompat"   : "com.android.support:appcompat-v7:${supportVersion}",
-        "support"     : "com.android.support:support-v4:${supportVersion}",
-        "recyclerview": "com.android.support:recyclerview-v7:${supportVersion}",
-        "design"      : "com.android.support:design:${supportVersion}",
-        "cardview"    : "com.android.support:cardview-v7:${supportVersion}",
-]
+def libList = rootProject.ext.dependencies
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    //okHttp
-    compile 'com.squareup.okhttp3:okhttp:3.9.1'
-    //butterknife
-    apt 'com.jakewharton:butterknife-compiler:8.1.0'
-    compile 'com.jakewharton:butterknife:8.1.0'
-    //glide
-    compile 'com.github.bumptech.glide:glide:3.7.0'
-    //support
-    compile supports.appcompat
-    compile supports.support
-    compile supports.recyclerview
-    compile supports.design
-    compile supports.cardview
-    // gson
-    compile 'com.google.code.gson:gson:2.8.2'
-    // module
+    //android support
+    compile libList.appcompat
+    compile libList.support
+    compile libList.recyclerview
+    compile libList.design
+    compile libList.cardview
+    //others
+    compile libList.okhttp3
+    apt libList.butterknifeCompiler
+    compile libList.butterknife
+    compile libList.glide
+    compile libList.gson
+    //module
     compile project(':ProgressIndicator')
     compile project(':XRecyclerView')
     compile project(':SmartTabLayout')

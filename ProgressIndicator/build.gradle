@@ -1,12 +1,14 @@
 apply plugin: 'com.android.library'
 
+def androidCode = rootProject.ext.android
+
 android {
-    compileSdkVersion 23
-    buildToolsVersion '23.0.1'
+    compileSdkVersion androidCode.compileSdkVersion
+    buildToolsVersion androidCode.buildToolsVersion
 
     defaultConfig {
-        minSdkVersion 15
-        targetSdkVersion 23
+        minSdkVersion androidCode.minSdkVersion
+        targetSdkVersion androidCode.targetSdkVersion
         versionCode 1
         versionName "1.0"
     }
@@ -22,5 +24,5 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
 
-    compile 'com.android.support:appcompat-v7:23.4.0'
+    compile rootProject.ext.dependencies.appcompat
 }

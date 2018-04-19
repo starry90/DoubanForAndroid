@@ -8,13 +8,15 @@ apply plugin: 'com.android.library'
 //def siteUrl = 'https://github.com/jianghejie/XRecyclerView'
 //def gitUrl = 'https://github.com/jianghejie/XRecyclerView.git'
 
+def androidCode = rootProject.ext.android
+
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.1"
+    compileSdkVersion androidCode.compileSdkVersion
+    buildToolsVersion androidCode.buildToolsVersion
 
     defaultConfig {
-        minSdkVersion 15
-        targetSdkVersion 23
+        minSdkVersion androidCode.minSdkVersion
+        targetSdkVersion androidCode.targetSdkVersion
         versionCode 1
         versionName "1.0"
     }
@@ -28,6 +30,6 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:recyclerview-v7:23.1.1'
+    compile rootProject.ext.dependencies.recyclerview
     compile project(':ProgressIndicator')
 }
