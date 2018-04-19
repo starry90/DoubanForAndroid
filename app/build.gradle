@@ -26,17 +26,6 @@ android {
         targetSdkVersion androidCode.targetSdkVersion
         versionCode androidCode.versionCode
         versionName androidCode.versionName
-
-        //NDK integration is deprecated in the current plugin.  Consider trying the new experimental plugin.
-        // For details, see http://tools.android.com/tech-docs/new-build-system/gradle-experimental.
-        // Set "android.useDeprecatedNdk=true" in gradle.properties to continue using the current NDK integration.
-        ndk {
-            moduleName "Sample"
-            stl "stlport_static"
-            ldLibs = ["log"]
-//            abiFilters "armeabi", "armeabi-v7a", "x86"
-        }
-
     }
 
     // keysore文件
@@ -58,7 +47,6 @@ android {
             resValue "string", "debug", "false"
         }
     }
-    sourceSets { debug { jni.srcDirs = ['src/debug/jni', 'src/debug/jni/'] } }
 }
 
 def supportVersion = "23.4.0"

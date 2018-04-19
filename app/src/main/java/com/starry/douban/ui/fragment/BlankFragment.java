@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.starry.douban.R;
-import com.starry.douban.jni.JNISample;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -69,6 +68,5 @@ public class BlankFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        tvBlank.setText(new JNISample().test());
     }
 }
