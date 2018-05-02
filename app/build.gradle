@@ -71,4 +71,10 @@ dependencies {
     compile project(':SmartTabLayout')
 }
 
-
+//modify apk output  file name, format：db-versionName-versionCode-*.apk
+android.applicationVariants.all { variant ->
+    variant.outputs.each { output ->
+        def format = "db-%s-%s-" + output.outputFile.name
+        output.outputFile = new File(output.outputFile.parent, String.format(format, androidCode.versionName, androidCode.versionCode))
+    }
+}
