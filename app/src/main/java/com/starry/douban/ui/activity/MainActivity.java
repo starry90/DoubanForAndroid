@@ -18,6 +18,7 @@ import com.starry.douban.ui.fragment.BlankFragment;
 import com.starry.douban.ui.fragment.HomeFragment;
 import com.starry.douban.ui.fragment.MovieFragment;
 import com.starry.douban.ui.fragment.MovieParentFragment;
+import com.starry.douban.util.PermissionUtils;
 import com.starry.douban.util.ToastUtil;
 import com.starry.douban.util.viewpager.v4.FragmentPagerItem;
 import com.starry.douban.util.viewpager.v4.FragmentPagerItemAdapter;
@@ -76,6 +77,7 @@ public class MainActivity extends BaseActivity {
     @Override
     public void initData() {
         setTitle(titles[0]);
+        PermissionUtils.requestPermission(this);
 
         FragmentPagerItems pages = new FragmentPagerItems(this);
         pages.add(FragmentPagerItem.of(HomeFragment.class.getSimpleName(), HomeFragment.class));
