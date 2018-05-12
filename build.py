@@ -3,19 +3,17 @@
 
 import os
 import platform
+import shutil
 
 current_path = os.path.abspath('.')
-project_path = current_path + os.sep + "%s" + os.sep
-out_path = project_path % 'outputs'
+out_path = os.path.join(current_path, 'outputs')
+build_path = os.path.join(current_path, 'app', 'build', 'outputs')
+apk_path = os.path.join(build_path, 'apk')
+mapping_path = os.path.join(build_path, 'mapping', 'release')
 
 gradlew_clean = 'gradlew clean'
-gradlew_build = 'gradlew assembleRelease'
-if platform.system() == 'Windows':
-    delete = r'rd /S /Q %s' % out_path
-    copy_format = r'xcopy /E %s\build\outputs\* %s'
-else:
-    delete = r'rm -rf %s/*' % out_path
-    copy_format = r'cp -r %s/build/outputs/* %s'
+gradlew_build = 'gradlew assemble'
+if platform.system() != 'Windows':
     gradlew_clean = './' + gradlew_clean
     gradlew_build = './' + gradlew_build
 
@@ -23,22 +21,25 @@ print out_path
 
 
 def build_apk():
-    print '>>> build apk start'
+    print '>>> Python build apk start'
 
-    if not os.path.exists(out_path):  # outputs目录不存在
-        os.makedirs(out_path)
-    else:  # outputs目录存在,删除outputs下所有文件
-        os.system(delete)
+    if os.path.exists(out_path):  # outputs目录存在,删除outputs下所有文件
+        shutil.rmtree(out_path)  # 删除文件夹
+    os.makedirs(out_path)  # 创建文件夹
 
     os.system(gradlew_clean)
     build_code = os.system(gradlew_build)
     if build_code == 0:
-        print '>>> build successful'
-        os.system(copy_format % ('app', out_path))
-    else:
-        '>>> build failure'
+        # copy mapping.txt
+        shutil.copy(os.path.join(mapping_path, 'mapping.txt'), out_path)
+        # copy *.apk
+        files = os.listdir(apk_path)
+        for file_temp in files:
+            print file_temp
+            shutil.copy(os.path.join(apk_path, file_temp), out_path)
 
-    print '>>> build apk end'
+    print '>>> Python build ', build_code == 0
+    print '>>> Python build apk end'
 
 
 def main():
