@@ -11,6 +11,4 @@ public class Common {
 
     public static final String DIR_CRASH = "crash";
 
-    public static final String FILE_CRASH_LOG = "crash.txt";
-
 }

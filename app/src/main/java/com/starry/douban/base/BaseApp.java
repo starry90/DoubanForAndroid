@@ -2,18 +2,19 @@ package com.starry.douban.base;
 
 import android.app.Application;
 import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
+import android.os.Build;
 
-import com.starry.douban.constant.Common;
 import com.starry.douban.util.FileUtils;
+import com.starry.douban.util.IOUtils;
+import com.starry.douban.util.TimeUtils;
 
 import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.lang.reflect.Field;
+import java.util.Date;
 
 /**
  * @author Starry Jerry
@@ -45,6 +46,13 @@ public class BaseApp {
         context = base;
     }
 
+    /**
+     * 退出应用
+     */
+    public void exitApp() {
+        lifeCallback.finishAll();
+    }
+
     public void onCreate(Application application) {
         lifeCallback = new ActivityCallback();
         application.registerActivityLifecycleCallbacks(lifeCallback);
@@ -53,36 +61,11 @@ public class BaseApp {
             @Override
             public void uncaughtException(Thread thread, Throwable ex) {
                 ex.printStackTrace();
-                saveCrashInfo(ex, FileUtils.getCrashDir(), Common.FILE_CRASH_LOG);
+                String crashFile = String.format("Crash-%s.txt", TimeUtils.date2String(new Date()));
+                saveCrashInfo(ex, FileUtils.getCrashDir(), crashFile);
+                android.os.Process.killProcess(android.os.Process.myPid());
             }
         });
-    }
-
-    /**
-     * 退出应用
-     */
-    public void exitApp() {
-        lifeCallback.finishAll();
-    }
-
-    /**
-     * 获取网络是否已连接
-     *
-     * @return {@code true} if the network is available, {@code false} otherwise
-     */
-    public boolean networkAvailable() {
-        ConnectivityManager manager = (ConnectivityManager) context.getApplicationContext().getSystemService(
-                Context.CONNECTIVITY_SERVICE);
-        if (null == manager) {
-            return false;
-        }
-
-        NetworkInfo networkInfo = manager.getActiveNetworkInfo();
-        if (null == networkInfo || !networkInfo.isAvailable() || !networkInfo.isConnected()) {
-            return false;
-        }
-
-        return true;
     }
 
     /**
@@ -94,6 +77,18 @@ public class BaseApp {
         PrintWriter printWriter = new PrintWriter(info);
         ex.printStackTrace(printWriter);
 
+        Field[] declaredFields = Build.class.getDeclaredFields();
+        for (Field declaredField : declaredFields) {
+            declaredField.setAccessible(true);
+            try {
+                String name = declaredField.getName();
+                sb.append(name).append(":").append(declaredField.get(name)).append("\n");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        sb.append("====================================================").append("\n");
+
         Throwable cause = ex.getCause();
         while (cause != null) {
             cause.printStackTrace(printWriter);
@@ -104,16 +99,12 @@ public class BaseApp {
         File crashFile = new File(crashDir, crashName);
         FileWriter writer = null;
         try {
-            writer = new FileWriter(crashFile, true);
+            writer = new FileWriter(crashFile, false);
             writer.write(sb.toString());
         } catch (Throwable e) {
             e.printStackTrace();
         } finally {
-            try {
-                writer.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            IOUtils.close(writer);
         }
     }
 
