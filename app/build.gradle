@@ -65,6 +65,8 @@ dependencies {
     compile libList.butterknife
     compile libList.glide
     compile libList.gson
+    compile libList.rxjava
+    compile libList.rxandroid
     //module
     compile project(':ProgressIndicator')
     compile project(':XRecyclerView')
