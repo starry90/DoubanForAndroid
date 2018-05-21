@@ -1,6 +1,7 @@
 package com.starry.douban.base;
 
 import android.app.Activity;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
@@ -21,7 +22,7 @@ import butterknife.ButterKnife;
  * Activity基类
  * <p>
  * 方法执行顺序
- * {@link #initData()} —> {@link #getLayoutResID()} —> {@link #setListener()}
+ * {@link #getLayoutResID()} —> {@link #initData()} —> {@link #setListener()}
  * <p>
  */
 
@@ -82,8 +83,21 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseAct
         setTitle("");//标题内容
         ActionBar ab = getSupportActionBar();
         if (ab != null) {
+            Drawable drawable = getToolbarBackground();
+            if (drawable != null) {
+                ab.setBackgroundDrawable(drawable);
+            }
             ab.setDisplayHomeAsUpEnabled(displayHomeAsUpEnabled());//显示返回键
         }
+    }
+
+    /**
+     * Toolbar背景
+     *
+     * @return 背景
+     */
+    protected Drawable getToolbarBackground() {
+        return null;
     }
 
     /**

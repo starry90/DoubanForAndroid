@@ -19,7 +19,7 @@ import java.util.List;
 import butterknife.BindView;
 
 /**
- * 电影详情页
+ * 书籍详情页
  *
  * @author Starry Jerry
  * @since 2016/12/31.

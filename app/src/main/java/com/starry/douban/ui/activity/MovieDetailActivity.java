@@ -1,6 +1,7 @@
 package com.starry.douban.ui.activity;
 
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MotionEvent;
@@ -65,10 +66,12 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
     }
 
     @Override
-    public void initData() {
-        //Toolbar设置成透明
-        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0x00000000));
+    protected Drawable getToolbarBackground() {
+        return new ColorDrawable(0x00000000); //透明背景
+    }
 
+    @Override
+    public void initData() {
         url = Apis.MovieDetail + getIntent().getStringExtra("movieId");
 
         mPresenter = new MovieDetailPresenter(this);
@@ -109,7 +112,7 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
         ImageManager.getBitmap(ivMovieDetail, response.getImages().getLarge(), iv_movie_detail_bg);
         tvMovieDetailTitle.setText(response.getTitle());
         tvMovieDetailOriginalTitle.setText(response.getOriginal_title());
-        tvMovieDetailRating.setText(response.getRating().getAverage() + "");
+        tvMovieDetailRating.setText(String.valueOf(response.getRating().getAverage()));
         tv_movie_detail_rating_count.setText("（" + response.getRatings_count() + "人评）");
         tvMovieDetailGenres.setText(format(response.getGenres().toString()));
         tvMovieDetailCountries.setText(format(response.getCountries().toString()) + " / " + response.getYear());
