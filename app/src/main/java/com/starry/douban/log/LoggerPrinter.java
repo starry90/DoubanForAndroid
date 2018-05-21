@@ -53,19 +53,19 @@ final class LoggerPrinter implements Printer {
      * The minimum stack trace index, starts at this class after two native calls.
      */
     private static final int MIN_STACK_OFFSET = 3;
-    /**
-     * Drawing toolbox
-     */
-    private static final char TOP_LEFT_CORNER = '╔';
-    private static final char BOTTOM_LEFT_CORNER = '╚';
-    private static final char MIDDLE_CORNER = '╟';
-    private static final char HORIZONTAL_DOUBLE_LINE = '║';
-    private static final String DOUBLE_DIVIDER = "════════════════════════════════════════════";
-    private static final String SINGLE_DIVIDER = "────────────────────────────────────────────";
-    private static final String TOP_BORDER = TOP_LEFT_CORNER + DOUBLE_DIVIDER + DOUBLE_DIVIDER;
-    private static final String BOTTOM_BORDER = BOTTOM_LEFT_CORNER + DOUBLE_DIVIDER + DOUBLE_DIVIDER;
-
-    private static final String MIDDLE_BORDER = MIDDLE_CORNER + SINGLE_DIVIDER + SINGLE_DIVIDER;
+//    /**
+//     * Drawing toolbox
+//     */
+//    private static final char TOP_LEFT_CORNER = '╔';
+//    private static final char BOTTOM_LEFT_CORNER = '╚';
+//    private static final char MIDDLE_CORNER = '╟';
+//    private static final char HORIZONTAL_DOUBLE_LINE = '║';
+//    private static final String DOUBLE_DIVIDER = "════════════════════════════════════════════";
+//    private static final String SINGLE_DIVIDER = "────────────────────────────────────────────";
+//    private static final String TOP_BORDER = TOP_LEFT_CORNER + DOUBLE_DIVIDER + DOUBLE_DIVIDER;
+//    private static final String BOTTOM_BORDER = BOTTOM_LEFT_CORNER + DOUBLE_DIVIDER + DOUBLE_DIVIDER;
+//
+//    private static final String MIDDLE_BORDER = MIDDLE_CORNER + SINGLE_DIVIDER + SINGLE_DIVIDER;
 
     /**
      * Localize single tag and method count for each thread
@@ -248,42 +248,28 @@ final class LoggerPrinter implements Printer {
             message = "Empty/NULL log message";
         }
 
-        logTopBorder(logType, tag);
         logHeaderContent(logType, tag, methodCount);
 
         //get bytes of message with system's default charset (which is UTF-8 for Android)
         byte[] bytes = message.getBytes();
         int length = bytes.length;
         if (length <= CHUNK_SIZE) {
-            if (methodCount > 0) {
-                logDivider(logType, tag);
-            }
             logContent(logType, tag, message);
-            logBottomBorder(logType, tag);
             return;
-        }
-        if (methodCount > 0) {
-            logDivider(logType, tag);
         }
         for (int i = 0; i < length; i += CHUNK_SIZE) {
             int count = Math.min(length - i, CHUNK_SIZE);
             //create a new String with system's default charset (which is UTF-8 for Android)
             logContent(logType, tag, new String(bytes, i, count));
         }
-        logBottomBorder(logType, tag);
     }
 
-    private void logTopBorder(int logType, String tag) {
-        logChunk(logType, tag, TOP_BORDER);
-    }
 
     private void logHeaderContent(int logType, String tag, int methodCount) {
         StackTraceElement[] trace = Thread.currentThread().getStackTrace();
         if (settings.isShowThreadInfo()) {
-            logChunk(logType, tag, HORIZONTAL_DOUBLE_LINE + " Thread: " + Thread.currentThread().getName());
-            logDivider(logType, tag);
+            logChunk(logType, tag, " Thread: " + Thread.currentThread().getName());
         }
-        String level = "";
 
         int stackOffset = getStackOffset(trace) + settings.getMethodOffset();
 
@@ -292,14 +278,14 @@ final class LoggerPrinter implements Printer {
             methodCount = trace.length - stackOffset - 1;
         }
 
+        String level = " ";
         for (int i = methodCount; i > 0; i--) {
             int stackIndex = i + stackOffset;
             if (stackIndex >= trace.length) {
                 continue;
             }
             StringBuilder builder = new StringBuilder();
-            builder.append("║ ")
-                    .append(level)
+            builder.append(level)
                     .append(getSimpleClassName(trace[stackIndex].getClassName()))
                     .append(".")
                     .append(trace[stackIndex].getMethodName())
@@ -314,18 +300,10 @@ final class LoggerPrinter implements Printer {
         }
     }
 
-    private void logBottomBorder(int logType, String tag) {
-        logChunk(logType, tag, BOTTOM_BORDER);
-    }
-
-    private void logDivider(int logType, String tag) {
-        logChunk(logType, tag, MIDDLE_BORDER);
-    }
-
     private void logContent(int logType, String tag, String chunk) {
         String[] lines = chunk.split(System.getProperty("line.separator"));
         for (String line : lines) {
-            logChunk(logType, tag, HORIZONTAL_DOUBLE_LINE + " " + line);
+            logChunk(logType, tag, " " + line);
         }
     }
 
