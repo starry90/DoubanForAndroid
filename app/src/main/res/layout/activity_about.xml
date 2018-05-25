@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@id/toolbar"
+        layout="@layout/toolbar_layout" />
+
+    <TextView
+        android:id="@+id/tv_about_github"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_margin="3dp"
+        android:padding="5dp"
+        android:text="作者GitHub"
+        android:textColor="@color/colorAccent" />
+
+    <TextView
+        android:id="@+id/tv_about_app_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/tv_about_github"
+        android:layout_centerInParent="true"
+        android:layout_margin="3dp"
+        android:drawableTop="@drawable/ic_launcher"
+        android:padding="5dp"
+        android:text="@string/app_name" />
+
+    <TextView
+        android:id="@+id/tv_about_version_code"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_about_github"
+        android:layout_centerInParent="true"
+        android:layout_margin="3dp"
+        android:padding="5dp"
+        android:text="VersionCode" />
+
+    <TextView
+        android:id="@+id/tv_version_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_about_version_code"
+        android:layout_centerInParent="true"
+        android:layout_margin="3dp"
+        android:padding="5dp"
+        android:text="VersionName" />
+
+    <TextView
+        android:id="@+id/tv_about_build"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_version_name"
+        android:layout_centerInParent="true"
+        android:layout_margin="3dp"
+        android:padding="5dp"
+        android:text="BuildTime" />
+
+
+</RelativeLayout>

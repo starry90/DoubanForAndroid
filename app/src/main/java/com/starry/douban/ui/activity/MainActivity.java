@@ -14,7 +14,7 @@ import android.widget.RadioGroup;
 import com.starry.douban.R;
 import com.starry.douban.base.BaseActivity;
 import com.starry.douban.base.BaseApp;
-import com.starry.douban.ui.fragment.BlankFragment;
+import com.starry.douban.ui.fragment.SettingFragment;
 import com.starry.douban.ui.fragment.HomeFragment;
 import com.starry.douban.ui.fragment.MovieFragment;
 import com.starry.douban.ui.fragment.MovieParentFragment;
@@ -82,7 +82,7 @@ public class MainActivity extends BaseActivity {
         FragmentPagerItems pages = new FragmentPagerItems(this);
         pages.add(FragmentPagerItem.of(HomeFragment.class.getSimpleName(), HomeFragment.class));
         pages.add(FragmentPagerItem.of(MovieFragment.class.getSimpleName(), MovieParentFragment.class));
-        pages.add(FragmentPagerItem.of(BlankFragment.class.getSimpleName(), BlankFragment.class));
+        pages.add(FragmentPagerItem.of(SettingFragment.class.getSimpleName(), SettingFragment.class));
 
         viewpagerMain.setOffscreenPageLimit(3);
         FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(getSupportFragmentManager(), pages);
