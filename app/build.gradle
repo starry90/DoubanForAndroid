@@ -1,3 +1,5 @@
+import java.text.SimpleDateFormat
+
 apply plugin: 'com.android.application'
 //butterknife
 apply plugin: 'android-apt'
@@ -16,6 +18,15 @@ buildscript {
 //需要在项目根目录的build.gradle 添加 apply from: 'xxx.gradle'
 def androidCode = rootProject.ext.android
 
+def static getBuildTime() {
+    def formatTime = new SimpleDateFormat("yyyy/MM/dd-HH:mm:ss")
+    return formatTime.format(new Date())
+}
+
+def getAppVersionName() {
+    return String.format("%s-%d", rootProject.ext.android.versionName, rootProject.ext.android.versionCode)
+}
+
 android {
     compileSdkVersion androidCode.compileSdkVersion
     buildToolsVersion androidCode.buildToolsVersion
@@ -25,7 +36,8 @@ android {
         targetSdkVersion androidCode.targetSdkVersion
         applicationId androidCode.applicationId
         versionCode androidCode.versionCode
-        versionName androidCode.versionName
+        versionName getAppVersionName()
+        buildConfigField "String", "BUILD_TIME", "\"" + getBuildTime() + "\""
     }
 
     // keysore文件
@@ -39,6 +51,13 @@ android {
     }
 
     buildTypes {
+        debug {
+            versionNameSuffix "_debug"
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            resValue "string", "debug", "true"
+        }
+
         release {
             debuggable true
             minifyEnabled true

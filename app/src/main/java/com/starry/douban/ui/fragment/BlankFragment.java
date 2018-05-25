@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.starry.douban.BuildConfig;
 import com.starry.douban.R;
 
 import butterknife.BindView;
@@ -22,8 +23,8 @@ public class BlankFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
-    @BindView(R.id.tv_blank)
-    TextView tvBlank;
+    @BindView(R.id.tv_blank_version)
+    TextView tv_blank_version;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -68,5 +69,6 @@ public class BlankFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        tv_blank_version.setText(BuildConfig.VERSION_NAME);
     }
 }
