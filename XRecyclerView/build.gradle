@@ -8,27 +8,17 @@ apply plugin: 'com.android.library'
 //def siteUrl = 'https://github.com/jianghejie/XRecyclerView'
 //def gitUrl = 'https://github.com/jianghejie/XRecyclerView.git'
 
-def androidCode = rootProject.ext.android
-
 android {
-    compileSdkVersion androidCode.compileSdkVersion
+    compileSdkVersion versions.compileSdkVersion
 
     defaultConfig {
-        minSdkVersion androidCode.minSdkVersion
-        targetSdkVersion androidCode.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion versions.minSdkVersion
     }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
+
 }
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile rootProject.ext.dependencies.recyclerview
+    compile deps.recyclerview
     compile project(':ProgressIndicator')
 }

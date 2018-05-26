@@ -1,32 +1,26 @@
-import java.text.SimpleDateFormat
-
 apply plugin: 'com.android.application'
 
-//需要在项目根目录的build.gradle 添加 apply from: 'xxx.gradle'
-def androidCode = rootProject.ext.android
-
 def static getBuildTime() {
-    def formatTime = new SimpleDateFormat("yyyy/MM/dd-HH:mm:ss")
-    return formatTime.format(new Date())
+    return new Date().format("yyyy/MM/dd-HH:mm:ss")
 }
 
 def getAppVersionName() {
-    return String.format("%s-%d", rootProject.ext.android.versionName, rootProject.ext.android.versionCode)
+    return String.format("%s-%s", versions.versionName, versions.versionCode)
 }
 
 android {
-    compileSdkVersion androidCode.compileSdkVersion
+    compileSdkVersion versions.compileSdkVersion
 
     defaultConfig {
-        minSdkVersion androidCode.minSdkVersion
-        targetSdkVersion androidCode.targetSdkVersion
-        applicationId androidCode.applicationId
-        versionCode androidCode.versionCode
+        minSdkVersion versions.minSdkVersion
+        targetSdkVersion versions.targetSdkVersion
+        applicationId apps.applicationId
+        versionCode versions.versionCode
         versionName getAppVersionName()
         buildConfigField "String", "BUILD_TIME", "\"" + getBuildTime() + "\""
     }
 
-    // keysore文件
+    // keystore文件
     signingConfigs {
         douban {
             storeFile file("../data/starry_douban.jks")
@@ -54,24 +48,22 @@ android {
     }
 }
 
-def libList = rootProject.ext.dependencies
-
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     //android support
-    compile libList.appcompat
-    compile libList.support
-    compile libList.recyclerview
-    compile libList.design
-    compile libList.cardview
+    compile deps.appcompat
+    compile deps.support
+    compile deps.recyclerview
+    compile deps.design
+    compile deps.cardview
     //others
-    compile libList.okhttp3
-    annotationProcessor libList.butterknifeCompiler
-    compile libList.butterknife
-    compile libList.glide
-    compile libList.gson
-    compile libList.rxjava
-    compile libList.rxandroid
+    compile deps.okhttp3
+    annotationProcessor deps.butterknifeCompiler
+    compile deps.butterknife
+    compile deps.glide
+    compile deps.gson
+    compile deps.rxjava
+    compile deps.rxandroid
     //module
     compile project(':ProgressIndicator')
     compile project(':XRecyclerView')
@@ -81,7 +73,7 @@ dependencies {
 //modify apk output  file name, format：db-versionName-versionCode-*.apk
 android.applicationVariants.all { variant ->
     variant.outputs.all {
-        def format = "db-%s-%s-" + outputFileName
-        outputFileName = String.format(format, androidCode.versionName, androidCode.versionCode)
+        def format = "db-%s-%d-" + outputFileName
+        outputFileName = String.format(format, versions.versionName, versions.versionCode)
     }
 }

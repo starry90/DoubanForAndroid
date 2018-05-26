@@ -1,18 +1,21 @@
 ext {
 
-    android = [
+    apps = [
+            "applicationId"    : "com.starry.douban",
+    ]
+
+    versions = [
             "compileSdkVersion": 26,
 
-            "applicationId"    : "com.starry.douban",
             "minSdkVersion"    : 15,
             "targetSdkVersion" : 26,
-            "versionCode"      : 6,
-            "versionName"      : "1.1.0",
+            "versionCode"      : 7,
+            "versionName"      : "1.1.1",
     ]
 
     def supportVersion = "26.+"
 
-    dependencies = [
+    deps = [
             "appcompat"          : "com.android.support:appcompat-v7:${supportVersion}",
             "support"            : "com.android.support:support-v4:${supportVersion}",
             "recyclerview"       : "com.android.support:recyclerview-v7:${supportVersion}",
