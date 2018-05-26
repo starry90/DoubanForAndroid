@@ -1,19 +1,6 @@
 import java.text.SimpleDateFormat
 
 apply plugin: 'com.android.application'
-//butterknife
-apply plugin: 'android-apt'
-
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-
-    dependencies {
-        //butterknife
-        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
-    }
-}
 
 //需要在项目根目录的build.gradle 添加 apply from: 'xxx.gradle'
 def androidCode = rootProject.ext.android
@@ -29,7 +16,6 @@ def getAppVersionName() {
 
 android {
     compileSdkVersion androidCode.compileSdkVersion
-    buildToolsVersion androidCode.buildToolsVersion
 
     defaultConfig {
         minSdkVersion androidCode.minSdkVersion
@@ -80,7 +66,7 @@ dependencies {
     compile libList.cardview
     //others
     compile libList.okhttp3
-    apt libList.butterknifeCompiler
+    annotationProcessor libList.butterknifeCompiler
     compile libList.butterknife
     compile libList.glide
     compile libList.gson
@@ -94,8 +80,8 @@ dependencies {
 
 //modify apk output  file name, format：db-versionName-versionCode-*.apk
 android.applicationVariants.all { variant ->
-    variant.outputs.each { output ->
-        def format = "db-%s-%s-" + output.outputFile.name
-        output.outputFile = new File(output.outputFile.parent, String.format(format, androidCode.versionName, androidCode.versionCode))
+    variant.outputs.all {
+        def format = "db-%s-%s-" + outputFileName
+        outputFileName = String.format(format, androidCode.versionName, androidCode.versionCode)
     }
 }

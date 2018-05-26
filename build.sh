@@ -28,11 +28,11 @@ buildApk()
     #clean
     ./gradlew clean
     #打包Release
-    ./gradlew assembleRelease
+    ./gradlew assemble
     #-r表示递归处理，将指定目录下的文件与子目录一并处理。
     #若源文件或目录的形态，不属于目录或符号链接，则一律视为普通文件处理
     echo "cp *.apk and mapping.txt to "$out_path
-    cp app/build/outputs/*/*.apk $out_path
+    cp app/build/outputs/apk/*/*.apk $out_path
     cp app/build/outputs/mapping/*/mapping.txt $out_path
     echo "<< 编译成功"
     exit

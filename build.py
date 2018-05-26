@@ -10,6 +10,7 @@ out_path = os.path.join(current_path, 'outputs')
 build_path = os.path.join(current_path, 'app', 'build', 'outputs')
 apk_path = os.path.join(build_path, 'apk')
 mapping_path = os.path.join(build_path, 'mapping', 'release')
+build_types = ['debug', 'release']
 
 gradlew_clean = 'gradlew clean'
 gradlew_build = 'gradlew assemble'
@@ -21,6 +22,18 @@ print out_path
 
 
 def build_apk():
+    '''
+    ├─app
+    │  ├─build
+    │  │  ├─outputs
+    │  │  │  ├─apk
+    │  │  │  │  ├─debug
+    │  │  │  │  └─release
+    │  │  │  ├─logs
+    │  │  │  └─mapping
+    │  │  │      └─release
+    '''
+
     print '>>> Python build apk start'
 
     if os.path.exists(out_path):  # outputs目录存在,删除outputs下所有文件
@@ -33,10 +46,12 @@ def build_apk():
         # copy mapping.txt
         shutil.copy(os.path.join(mapping_path, 'mapping.txt'), out_path)
         # copy *.apk
-        files = os.listdir(apk_path)
-        for file_temp in files:
-            print file_temp
-            shutil.copy(os.path.join(apk_path, file_temp), out_path)
+        for build_type in build_types:
+            files = os.listdir(os.path.join(apk_path, build_type))
+            for file_temp in files:
+                print file_temp
+                if 'apk' in file_temp:
+                    shutil.copy(os.path.join(apk_path, build_type, file_temp), out_path)
 
     print '>>> Python build ', build_code == 0
     print '>>> Python build apk end'
