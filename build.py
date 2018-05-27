@@ -8,9 +8,6 @@ import shutil
 current_path = os.path.abspath('.')
 out_path = os.path.join(current_path, 'outputs')
 build_path = os.path.join(current_path, 'app', 'build', 'outputs')
-apk_path = os.path.join(build_path, 'apk')
-mapping_path = os.path.join(build_path, 'mapping', 'release')
-build_types = ['debug', 'release']
 
 gradlew_clean = 'gradlew clean'
 gradlew_build = 'gradlew assemble'
@@ -21,8 +18,19 @@ if platform.system() != 'Windows':
 print out_path
 
 
+def copy_file_from_dir(dir_path):
+    for i in os.listdir(dir_path):
+        i_path = os.path.join(dir_path, i)
+        if os.path.isfile(i_path):
+            print i_path
+            if 'mapping.txt' in i or 'apk' in i:
+                shutil.copy(i_path, out_path)
+        else:
+            copy_file_from_dir(i_path)
+
+
 def build_apk():
-    '''
+    """
     ├─app
     │  ├─build
     │  │  ├─outputs
@@ -32,7 +40,7 @@ def build_apk():
     │  │  │  ├─logs
     │  │  │  └─mapping
     │  │  │      └─release
-    '''
+    """
 
     print '>>> Python build apk start'
 
@@ -43,15 +51,8 @@ def build_apk():
     os.system(gradlew_clean)
     build_code = os.system(gradlew_build)
     if build_code == 0:
-        # copy mapping.txt
-        shutil.copy(os.path.join(mapping_path, 'mapping.txt'), out_path)
-        # copy *.apk
-        for build_type in build_types:
-            files = os.listdir(os.path.join(apk_path, build_type))
-            for file_temp in files:
-                print file_temp
-                if 'apk' in file_temp:
-                    shutil.copy(os.path.join(apk_path, build_type, file_temp), out_path)
+        # copy *.apk and mapping.txt
+        copy_file_from_dir(build_path)
 
     print '>>> Python build ', build_code == 0
     print '>>> Python build apk end'
