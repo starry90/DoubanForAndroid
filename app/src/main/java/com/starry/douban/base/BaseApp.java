@@ -2,18 +2,10 @@ package com.starry.douban.base;
 
 import android.app.Application;
 import android.content.Context;
-import android.os.Build;
 
 import com.starry.douban.util.FileUtils;
-import com.starry.douban.util.IOUtils;
 import com.starry.douban.util.TimeUtils;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.io.Writer;
-import java.lang.reflect.Field;
 import java.util.Date;
 
 /**
@@ -62,50 +54,10 @@ public class BaseApp {
             public void uncaughtException(Thread thread, Throwable ex) {
                 ex.printStackTrace();
                 String crashFile = String.format("Crash-%s.txt", TimeUtils.date2String(new Date()));
-                saveCrashInfo(ex, FileUtils.getCrashDir(), crashFile);
+                FileUtils.saveCrashInfo(ex, FileUtils.getCrashDir(), crashFile);
                 android.os.Process.killProcess(android.os.Process.myPid());
             }
         });
-    }
-
-    /**
-     * 保存崩溃信息
-     */
-    private void saveCrashInfo(Throwable ex, File crashDir, String crashName) {
-        StringBuilder sb = new StringBuilder();
-        Writer info = new StringWriter();
-        PrintWriter printWriter = new PrintWriter(info);
-        ex.printStackTrace(printWriter);
-
-        Field[] declaredFields = Build.class.getDeclaredFields();
-        for (Field declaredField : declaredFields) {
-            declaredField.setAccessible(true);
-            try {
-                String name = declaredField.getName();
-                sb.append(name).append(":").append(declaredField.get(name)).append("\n");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        sb.append("====================================================").append("\n");
-
-        Throwable cause = ex.getCause();
-        while (cause != null) {
-            cause.printStackTrace(printWriter);
-            cause = cause.getCause();
-        }
-        sb.append(info.toString());
-        printWriter.close();
-        File crashFile = new File(crashDir, crashName);
-        FileWriter writer = null;
-        try {
-            writer = new FileWriter(crashFile, false);
-            writer.write(sb.toString());
-        } catch (Throwable e) {
-            e.printStackTrace();
-        } finally {
-            IOUtils.close(writer);
-        }
     }
 
 }
