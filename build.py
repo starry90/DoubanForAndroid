@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # coding=utf-8
 
+import hashlib
 import os
 import platform
 import shutil
@@ -29,6 +30,18 @@ def copy_file_from_dir(dir_path):
             copy_file_from_dir(i_path)
 
 
+def file_md5_from_dif(dir_path):
+    build_info = os.path.join(out_path, 'build-info.txt')
+    for i in os.listdir(dir_path):
+        i_path = os.path.join(dir_path, i)
+        if os.path.isfile(i_path) and 'apk' in i:
+            with open(i_path, 'rb') as f:
+                md5 = hashlib.md5(f.read()).hexdigest()
+                print md5, i
+                with open(build_info, 'a+') as build_file:
+                    build_file.writelines('%s %s\n' % (md5, i))
+
+
 def build_apk():
     """
     ├─app
@@ -53,6 +66,8 @@ def build_apk():
     if build_code == 0:
         # copy *.apk and mapping.txt
         copy_file_from_dir(build_path)
+        # get apk file md5
+        file_md5_from_dif(out_path)
 
     print '>>> Python build ', build_code == 0
     print '>>> Python build apk end'
