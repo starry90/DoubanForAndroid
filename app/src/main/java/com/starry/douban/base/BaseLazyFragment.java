@@ -10,7 +10,7 @@ import android.view.ViewGroup;
  * 懒加载的Fragment
  * Fragment基类
  */
-public abstract class BaseLazyFragment extends BaseFragment implements IBaseActivity {
+public abstract class BaseLazyFragment extends BaseFragment {
 
     protected boolean isViewCreated = false;
 

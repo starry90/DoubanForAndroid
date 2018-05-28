@@ -79,11 +79,6 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
         loadData();
     }
 
-    @Override
-    public void setListener() {
-
-    }
-
     private void initRecyclerView(List<MovieDetail.PerformerBean> performerBeanList) {
         MoviePhotoAdapter mAdapter = new MoviePhotoAdapter(getActivity(), performerBeanList);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));

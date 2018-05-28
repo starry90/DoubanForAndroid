@@ -50,11 +50,6 @@ public class HomeFragment extends BaseLazyFragment implements MainView {
         initRecyclerView();
     }
 
-    @Override
-    public void setListener() {
-
-    }
-
     private void initRecyclerView() {
         mAdapter = new BookAdapter(getActivity(), books);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

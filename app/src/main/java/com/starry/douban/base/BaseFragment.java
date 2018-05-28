@@ -21,7 +21,7 @@ import butterknife.ButterKnife;
  * 正常的Framgent
  * Fragment基类
  */
-public abstract class BaseFragment extends Fragment implements IBaseActivity, ILoadingView {
+public abstract class BaseFragment extends Fragment implements IBaseUI, ILoadingView {
 
 
     protected final String TAG = getClass().getSimpleName();
@@ -69,7 +69,6 @@ public abstract class BaseFragment extends Fragment implements IBaseActivity, IL
         setListener();
     }
 
-
     /**
      * @param view
      */
@@ -86,6 +85,17 @@ public abstract class BaseFragment extends Fragment implements IBaseActivity, IL
     }
 
     /**
+     * 加载数据，如请求网络，读取本地缓存等
+     */
+    public void loadData() {
+
+    }
+
+    public void setListener() {
+
+    }
+
+    /**
      * 展示网络请求各种状态
      *
      * @param networkStatus 网络请求状态
@@ -95,12 +105,6 @@ public abstract class BaseFragment extends Fragment implements IBaseActivity, IL
         mLoadingDataLayout.setStatus(networkStatus);
         if (LoadingDataLayout.STATUS_SUCCESS == networkStatus) isSuccess = true;
     }
-
-    /**
-     * 加载数据，如请求网络，读取本地缓存等
-     */
-    public abstract void loadData();
-
 
     @Override
     public void showLoading() {

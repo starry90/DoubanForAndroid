@@ -95,11 +95,6 @@ public class MovieFragment extends BaseLazyFragment implements MovieView {
     }
 
     @Override
-    public void setListener() {
-
-    }
-
-    @Override
     public void onLazyLoadingData() {
         super.onLazyLoadingData();
         mRecyclerView.setRefreshing(true);

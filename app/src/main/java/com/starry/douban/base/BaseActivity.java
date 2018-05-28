@@ -26,7 +26,7 @@ import butterknife.ButterKnife;
  * <p>
  */
 
-public abstract class BaseActivity extends AppCompatActivity implements IBaseActivity, ILoadingView {
+public abstract class BaseActivity extends AppCompatActivity implements IBaseUI, ILoadingView {
 
     protected final String TAG = getClass().getSimpleName();
 
@@ -66,6 +66,17 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseAct
                 }
             });
         }
+    }
+
+    /**
+     * 加载数据，如请求网络，读取本地缓存等
+     */
+    public void loadData() {
+
+    }
+
+    public void setListener() {
+
     }
 
     /**
@@ -134,12 +145,6 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseAct
     protected Activity getActivity() {
         return this;
     }
-
-
-    /**
-     * 加载数据，如请求网络，读取本地缓存等
-     */
-    public abstract void loadData();
 
     @Override
     public void showLoading() {

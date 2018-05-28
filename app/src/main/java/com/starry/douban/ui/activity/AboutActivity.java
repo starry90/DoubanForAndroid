@@ -47,13 +47,4 @@ public class AboutActivity extends BaseActivity {
         tvAboutBuild.setText(String.format(buildTime, BuildConfig.BUILD_TIME));
     }
 
-    @Override
-    public void setListener() {
-
-    }
-
-    @Override
-    public void loadData() {
-
-    }
 }

@@ -124,11 +124,6 @@ public class MainActivity extends BaseActivity {
         });
     }
 
-    @Override
-    public void loadData() {
-
-    }
-
     /**
      * 退出时间
      */

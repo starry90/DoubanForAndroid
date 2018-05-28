@@ -57,18 +57,9 @@ public class MovieParentFragment extends BaseLazyFragment {
     }
 
     @Override
-    public void setListener() {
-
-    }
-
-    @Override
     public void onLazyLoadingData() {
         super.onLazyLoadingData();
         ((MovieFragment) mAdapter.getPage(0)).onLazyLoadingData();
     }
 
-    @Override
-    public void loadData() {
-
-    }
 }

@@ -66,11 +66,6 @@ public class BookDetailActivity extends BaseActivity implements BookDetailView {
     }
 
     @Override
-    public void setListener() {
-
-    }
-
-    @Override
     public void loadData() {
         mPresenter.getData(url);
     }

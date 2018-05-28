@@ -23,11 +23,6 @@ public class SettingFragment extends BaseLazyFragment {
     TextView tv_blank_version;
 
     @Override
-    public void loadData() {
-
-    }
-
-    @Override
     public int getLayoutResID() {
         return R.layout.fragment_setting;
     }
