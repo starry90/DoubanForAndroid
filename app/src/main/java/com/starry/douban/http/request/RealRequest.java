@@ -125,8 +125,8 @@ public class RealRequest {
                     sendSuccessCallback(result, callback);
                 } catch (Exception ex) {
                     ex.printStackTrace();
-                    NetworkException netE = NetworkException.newException(ex);
-                    sendFailCallback(netE.getErrorCode(), netE.getErrorMessage(), callback);
+                    NetworkException netEx = NetworkException.newException(ex);
+                    sendFailCallback(netEx.getErrorCode(), netEx.getErrorMessage(), callback);
                 }
             }
         });
@@ -139,8 +139,8 @@ public class RealRequest {
      * @throws NetworkException 自定义网络异常
      */
     private void checkHttpCode(int code) throws NetworkException {
-        if (code < 200 || code >= 300) {// 不是2开头code统一以服务错误处理
-            throw NetworkException.newException(Errors.Code.SERVER_ERROR, Errors.Message.SERVER_ERROR);
+        if (code < 200 || code >= 300) {// 不是2开头code统一以服务器错误处理
+            throw NetworkException.newException(code, Errors.Message.SERVER_ERROR);
         }
     }
 

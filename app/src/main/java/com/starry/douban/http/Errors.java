@@ -9,7 +9,6 @@ public class Errors {
 
     public class Code {
         public final static int UNKNOWN_ERROR = 10001;
-        public final static int SERVER_ERROR = 10002;
         public final static int NETWORK_UNAVAILABLE = 10011;
         public final static int RESPONSE_PARSE_ERROR = 10012;
         public final static int NULL_EXCEPTION = 10013;
