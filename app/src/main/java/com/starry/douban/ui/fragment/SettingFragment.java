@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import com.starry.douban.BuildConfig;
 import com.starry.douban.R;
-import com.starry.douban.base.BaseLazyFragment;
+import com.starry.douban.base.BaseFragment;
 import com.starry.douban.ui.activity.AboutActivity;
 
 import butterknife.BindView;
@@ -17,7 +17,7 @@ import butterknife.BindView;
  * A simple {@link Fragment} subclass.
  * create an instance of this fragment.
  */
-public class SettingFragment extends BaseLazyFragment {
+public class SettingFragment extends BaseFragment {
 
     @BindView(R.id.tv_blank_version)
     TextView tv_blank_version;

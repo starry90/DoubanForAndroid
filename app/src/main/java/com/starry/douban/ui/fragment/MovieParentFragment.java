@@ -7,11 +7,11 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
+import com.starry.douban.R;
+import com.starry.douban.base.BaseFragment;
 import com.starry.douban.util.viewpager.v4.FragmentPagerItem;
 import com.starry.douban.util.viewpager.v4.FragmentPagerItemAdapter;
 import com.starry.douban.util.viewpager.v4.FragmentPagerItems;
-import com.starry.douban.R;
-import com.starry.douban.base.BaseLazyFragment;
 
 import butterknife.BindView;
 
@@ -19,7 +19,7 @@ import butterknife.BindView;
  * @author Starry Jerry
  * @since 2016/12/15.
  */
-public class MovieParentFragment extends BaseLazyFragment {
+public class MovieParentFragment extends BaseFragment {
 
     @BindView(R.id.tab)
     FrameLayout tab;
@@ -40,7 +40,7 @@ public class MovieParentFragment extends BaseLazyFragment {
     @Override
     public void initData() {
         tab.addView(LayoutInflater.from(getActivity()).inflate(R.layout.tab_smart_indicator, tab, false));
-        SmartTabLayout viewPagerTab = (SmartTabLayout) tab.findViewById(R.id.viewpagertab);
+        SmartTabLayout viewPagerTab = (SmartTabLayout) tab.findViewById(R.id.viewpager_tab);
 
         FragmentPagerItems pages = new FragmentPagerItems(getActivity());
         for (int i = 0; i < tabTitles.length; i++) {
@@ -55,11 +55,4 @@ public class MovieParentFragment extends BaseLazyFragment {
         viewPager.setAdapter(mAdapter);
         viewPagerTab.setViewPager(viewPager);
     }
-
-    @Override
-    public void onLazyLoadingData() {
-        super.onLazyLoadingData();
-        ((MovieFragment) mAdapter.getPage(0)).onLazyLoadingData();
-    }
-
 }

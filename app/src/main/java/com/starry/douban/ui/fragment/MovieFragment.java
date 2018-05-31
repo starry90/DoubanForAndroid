@@ -5,7 +5,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.starry.douban.R;
 import com.starry.douban.adapter.MovieAdapter;
-import com.starry.douban.base.BaseLazyFragment;
+import com.starry.douban.base.BaseFragment;
 import com.starry.douban.constant.Apis;
 import com.starry.douban.model.ErrorModel;
 import com.starry.douban.model.MovieBean;
@@ -24,7 +24,7 @@ import butterknife.BindView;
  * @author Starry Jerry
  * @since 2016/12/4.
  */
-public class MovieFragment extends BaseLazyFragment implements MovieView {
+public class MovieFragment extends BaseFragment implements MovieView {
 
     @BindView(R.id.XRecyclerView_home)
     XRecyclerView mRecyclerView;

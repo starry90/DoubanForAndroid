@@ -8,7 +8,7 @@
 
     <item name="tab" type="id" />
     <item name="viewpager" type="id" />
-    <item name="viewpagertab" type="id" />
+    <item name="viewpager_tab" type="id" />
 
     <item name="tv_title" type="id" />
     <item name="tv_back" type="id" />

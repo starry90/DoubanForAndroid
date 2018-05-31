@@ -5,7 +5,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.starry.douban.R;
 import com.starry.douban.adapter.BookAdapter;
-import com.starry.douban.base.BaseLazyFragment;
+import com.starry.douban.base.BaseFragment;
 import com.starry.douban.model.BookBean;
 import com.starry.douban.model.Books;
 import com.starry.douban.model.ErrorModel;
@@ -23,7 +23,7 @@ import butterknife.BindView;
  * @author Starry Jerry
  * @since 2016/12/4.
  */
-public class HomeFragment extends BaseLazyFragment implements MainView {
+public class HomeFragment extends BaseFragment implements MainView {
 
     @BindView(R.id.XRecyclerView_home)
     XRecyclerView mRecyclerView;
