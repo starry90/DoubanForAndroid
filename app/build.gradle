@@ -1,11 +1,11 @@
 apply plugin: 'com.android.application'
 
 def static getBuildTime() {
-    return new Date().format("yyyy/MM/dd-HH:mm:ss")
+    return new Date().format("yyyyMMdd.HH:mm:ss")
 }
 
 def getAppVersionName() {
-    return String.format("%s-%s", versions.versionName, versions.versionCode)
+    return "${versions.versionName}-${versions.versionCode}"
 }
 
 android {
@@ -17,25 +17,25 @@ android {
         applicationId apps.applicationId
         versionCode versions.versionCode
         versionName getAppVersionName()
-        buildConfigField "String", "BUILD_TIME", "\"" + getBuildTime() + "\""
+        buildConfigField 'String', 'BUILD_TIME', '"' + getBuildTime() + '"'
     }
 
     // keystore文件
     signingConfigs {
         douban {
-            storeFile file("../data/starry_douban.jks")
-            storePassword "starry123456"
-            keyAlias "douban"
-            keyPassword "douban123456"
+            storeFile file('../data/starry_douban.jks')
+            storePassword 'starry123456'
+            keyAlias 'douban'
+            keyPassword 'douban123456'
         }
     }
 
     buildTypes {
         debug {
-            versionNameSuffix "_debug"
+            versionNameSuffix '_debug'
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            resValue "string", "debug", "true"
+            resValue 'string', 'debug', 'true'
         }
 
         release {
@@ -43,7 +43,7 @@ android {
             minifyEnabled true
             signingConfig signingConfigs.douban
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            resValue "string", "debug", "false"
+            resValue 'string', 'debug', 'false'
         }
     }
 }
@@ -70,10 +70,10 @@ dependencies {
     compile project(':SmartTabLayout')
 }
 
-//modify apk output  file name, format：db-versionName-versionCode-*.apk
+//modify apk output  file name, format：db-versionName-versionCode-buildTime-buildType.apk
 android.applicationVariants.all { variant ->
     variant.outputs.all {
-        def format = "db-%s-%d-" + outputFileName
-        outputFileName = String.format(format, versions.versionName, versions.versionCode)
+        def apkName = "db-${versions.versionName}-${versions.versionCode}-${getBuildTime()}"
+        outputFileName = "${apkName}-${buildType.name}.apk"
     }
 }
