@@ -18,7 +18,7 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile deps.recyclerview
-    compile project(':ProgressIndicator')
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation deps.recyclerview
+    implementation project(':ProgressIndicator')
 }

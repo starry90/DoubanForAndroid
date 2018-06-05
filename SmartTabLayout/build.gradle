@@ -10,7 +10,7 @@ android {
 }
 
 dependencies {
-    compile deps.support
+    implementation deps.support
 }
 
 

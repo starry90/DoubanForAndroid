@@ -49,25 +49,25 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     //android support
-    compile deps.appcompat
-    compile deps.support
-    compile deps.recyclerview
-    compile deps.design
-    compile deps.cardview
+    implementation deps.appcompat
+    implementation deps.support
+    implementation deps.recyclerview
+    implementation deps.design
+    implementation deps.cardview
     //others
-    compile deps.okhttp3
+    implementation deps.okhttp3
     annotationProcessor deps.butterknifeCompiler
-    compile deps.butterknife
-    compile deps.glide
-    compile deps.gson
-    compile deps.rxjava
-    compile deps.rxandroid
+    implementation deps.butterknife
+    implementation deps.glide
+    implementation deps.gson
+    implementation deps.rxjava
+    implementation deps.rxandroid
     //module
-    compile project(':ProgressIndicator')
-    compile project(':XRecyclerView')
-    compile project(':SmartTabLayout')
+    implementation project(':ProgressIndicator')
+    implementation project(':XRecyclerView')
+    implementation project(':SmartTabLayout')
 }
 
 //modify apk output  file name, format：db-versionName-versionCode-buildTime-buildType.apk
