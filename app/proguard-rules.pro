@@ -17,6 +17,11 @@
 #}
 
 #=========================== 基本指令区 start ===========================
+#使用自定义混淆字典
+-obfuscationdictionary ../data/dic.txt
+-classobfuscationdictionary ../data/dic.txt
+-packageobfuscationdictionary ../data/dic.txt
+
 #代码混淆的压缩比例，值在0-7之间
 -optimizationpasses 5
 

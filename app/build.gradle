@@ -39,7 +39,7 @@ android {
         }
 
         release {
-            debuggable true
+            debuggable false
             minifyEnabled true
             signingConfig signingConfigs.douban
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
