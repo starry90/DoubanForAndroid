@@ -1,6 +1,6 @@
 apply plugin: 'com.android.library'
 
-apply from:'../base.gradle'
+apply from: rootProject.file('gradle/base.gradle')
 
 dependencies {
     implementation deps.support

@@ -9,11 +9,11 @@ ext {
 
             "minSdkVersion"    : 15,
             "targetSdkVersion" : 26,
-            "versionCode"      : 12,
-            "versionName"      : "1.1.6",
+            "versionCode"      : 13,
+            "versionName"      : "1.1.7",
     ]
 
-    def supportVersion = "26.+"
+    def supportVersion = "26.0.2"
 
     deps = [
             "appcompat"          : "com.android.support:appcompat-v7:${supportVersion}",
