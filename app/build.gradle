@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 def static getBuildTime() {
-    return new Date().format("yyyyMMdd.HH:mm:ss")
+    return new Date().format("yyyyMMddHHmmss")
 }
 
 def getAppVersionName() {
