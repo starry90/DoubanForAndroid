@@ -1,21 +1,9 @@
 apply plugin: 'com.android.library'
-//apply plugin: 'com.github.dcendents.android-maven'
-//apply plugin: 'com.jfrog.bintray'
 
 //version = "1.2.6"
-//group = "com.jcodecraeer"
-
-//def siteUrl = 'https://github.com/jianghejie/XRecyclerView'
 //def gitUrl = 'https://github.com/jianghejie/XRecyclerView.git'
 
-android {
-    compileSdkVersion versions.compileSdkVersion
-
-    defaultConfig {
-        minSdkVersion versions.minSdkVersion
-    }
-
-}
+apply from:'../base.gradle'
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
