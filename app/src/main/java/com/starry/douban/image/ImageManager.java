@@ -12,6 +12,8 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.target.Target;
 import com.starry.douban.R;
 import com.starry.douban.base.BaseApp;
+import com.starry.douban.rx.RxCommonTask;
+import com.starry.douban.rx.RxManager;
 
 /**
  * 图片管理器
@@ -43,11 +45,21 @@ public class ImageManager {
     public static void getBitmap(final ImageView imageView, String url, final ImageView bgView) {
         Glide.with(getContext()).load(url).asBitmap().into(new SimpleTarget<Bitmap>(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL) {
             @Override
-            public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+            public void onResourceReady(final Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
                 imageView.setImageBitmap(resource);
+                RxManager.create(new RxCommonTask<Bitmap>() {
 
-                Bitmap blurBitmap = FastBlurUtil.doBlur(resource, 20, false);
-                bgView.setImageBitmap(blurBitmap);
+                    @Override
+                    public Bitmap doIOWork() {
+                        //该方法耗时2秒，放在主线程会卡顿
+                        return FastBlurUtil.doBlur(resource, 20, false);
+                    }
+
+                    @Override
+                    public void doUIWork(Bitmap blurBitmap) {
+                        bgView.setImageBitmap(blurBitmap);
+                    }
+                });
             }
         });
     }
