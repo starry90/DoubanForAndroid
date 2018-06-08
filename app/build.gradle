@@ -1,11 +1,12 @@
 apply plugin: 'com.android.application'
+apply from: rootProject.file('gradle/resguard.gradle')
 
 def static getBuildTime() {
     return new Date().format("yyyyMMddHHmmss")
 }
 
 def getAppVersionName() {
-    return "${versions.versionName}-${versions.versionCode}"
+    return "${versions.versionName}.${versions.versionCode}"
 }
 
 android {
@@ -70,10 +71,10 @@ dependencies {
     implementation project(':SmartTabLayout')
 }
 
-//modify apk output  file name, format：db-versionName-versionCode-buildTime-buildType.apk
+//modify apk output  file name, format：db-versionName.versionCode-buildType.apk
 android.applicationVariants.all { variant ->
     variant.outputs.all {
-        def apkName = "db-${versions.versionName}-${versions.versionCode}-${getBuildTime()}"
+        def apkName = "db-${versions.versionName}.${versions.versionCode}"
         outputFileName = "${apkName}-${buildType.name}.apk"
     }
 }
