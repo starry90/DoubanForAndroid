@@ -63,12 +63,11 @@ dependencies {
     implementation deps.butterknife
     implementation deps.glide
     implementation deps.gson
-    implementation deps.rxjava
-    implementation deps.rxandroid
     //module
     implementation project(':ProgressIndicator')
     implementation project(':XRecyclerView')
     implementation project(':SmartTabLayout')
+    implementation project(':RxJava')
 }
 
 //modify apk output  file name, format：db-versionName.versionCode-buildType.apk

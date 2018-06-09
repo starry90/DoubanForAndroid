@@ -1,0 +1,8 @@
+apply plugin: 'com.android.library'
+apply from: rootProject.file('gradle/base.gradle')
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    api deps.rxjava
+    api deps.rxandroid
+}
