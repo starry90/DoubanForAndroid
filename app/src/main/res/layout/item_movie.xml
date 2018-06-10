@@ -1,92 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:skin="http://schemas.android.com/android/skin"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:layout_gravity="center"
+    android:layout_margin="5dp"
+    android:foreground="?android:attr/selectableItemBackground"
+    app:cardCornerRadius="5dp"
+    app:cardElevation="5dp">
 
-    <android.support.v7.widget.CardView
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="5dp"
-        android:foreground="?android:attr/selectableItemBackground"
-        app:cardCornerRadius="5dp"
-        app:cardElevation="5dp"
-        skin:enable="true">
+        android:orientation="vertical"
+        android:padding="10dp">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
+        <ImageView
+            android:id="@+id/iv_image"
+            android:layout_width="80dp"
+            android:layout_height="100dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/image_bg_default"
+            android:scaleType="fitXY" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="10dp">
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/iv_image"
+            android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/iv_image"
-                android:layout_width="80dp"
-                android:layout_height="100dp"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="10dp"
-                android:background="@drawable/image_bg_default"
-                android:scaleType="fitXY" />
-
-            <LinearLayout
+            <TextView
+                android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_toRightOf="@+id/iv_image"
-                android:orientation="vertical">
+                android:singleLine="true"
+                android:text="盗梦空间"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:textSize="18sp" />
 
-                <TextView
-                    android:id="@+id/tv_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:singleLine="true"
-                    android:text="盗梦空间"
-                    android:textColor="#292929"
-                    android:textSize="18sp" />
+            <TextView
+                android:id="@+id/tv_author"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:singleLine="true"
+                android:text="导        演：诺兰" />
 
-                <TextView
-                    android:id="@+id/tv_author"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="3dp"
-                    android:singleLine="true"
-                    android:text="导        演：诺兰"
-                    android:textColor="#575757" />
+            <TextView
+                android:id="@+id/tv_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:singleLine="true"
+                android:text="上映日期：2015-11" />
 
-                <TextView
-                    android:id="@+id/tv_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="3dp"
-                    android:singleLine="true"
-                    android:text="上映日期：2015-11"
-                    android:textColor="#575757" />
+            <TextView
+                android:id="@+id/tv_publisher"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:singleLine="true"
+                android:text="电影剧情：爱情" />
 
-                <TextView
-                    android:id="@+id/tv_publisher"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="3dp"
-                    android:singleLine="true"
-                    android:text="电影剧情：爱情"
-                    android:textColor="#575757" />
+            <TextView
+                android:id="@+id/tv_num_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:singleLine="true"
+                android:text="观众评分：8.5分" />
 
-                <TextView
-                    android:id="@+id/tv_num_rating"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="3dp"
-                    android:singleLine="true"
-                    android:text="观众评分：8.5分"
-                    android:textColor="#575757" />
+        </LinearLayout>
 
-            </LinearLayout>
-
-        </RelativeLayout>
-    </android.support.v7.widget.CardView>
-
-</FrameLayout>
+    </RelativeLayout>
+</android.support.v7.widget.CardView>

@@ -40,7 +40,7 @@ public class MovieAdapter extends BaseRecyclerAdapter<MovieBean> {
             holder.setText(R.id.tv_author, "导       演：" + bean.getDirectors().get(0).getName());
         holder.setText(R.id.tv_date, "上映日期：" + bean.getYear());
         holder.setText(R.id.tv_publisher, "电影剧情：" + bean.getGenres().toString());
-        holder.setText(R.id.tv_num_rating, "观众评分：" + bean.getRating().getAverage() + "分");
+        holder.setText(R.id.tv_num_rating, "观众评分：" + bean.getRating().getAverage());
         holder.setImageFromInternet(R.id.iv_image, bean.getImages().getMedium());
     }
 }
