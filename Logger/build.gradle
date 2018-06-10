@@ -1,8 +1,6 @@
 apply plugin: 'com.android.library'
-
-apply from: rootProject.file('gradle/base.gradle')
+apply from:rootProject.file('gradle/base.gradle')
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation deps.appcompat
 }

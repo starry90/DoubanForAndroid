@@ -1,8 +1,6 @@
 package com.starry.douban.log;
 
 
-import com.starry.douban.BuildConfig;
-
 public final class Settings {
 
     private int methodCount = 1;

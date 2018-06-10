@@ -68,6 +68,7 @@ dependencies {
     implementation project(':XRecyclerView')
     implementation project(':SmartTabLayout')
     implementation project(':RxJava')
+    implementation project(':Logger')
 }
 
 //modify apk output  file name, format：db-versionName.versionCode-buildType.apk
