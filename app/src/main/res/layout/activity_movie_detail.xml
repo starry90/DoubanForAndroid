@@ -33,7 +33,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="90dp"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:transitionName="@string/transition_item_name">
 
                     <LinearLayout
                         android:id="@+id/ll_movie_detail"
@@ -52,7 +53,6 @@
                             android:src="@drawable/image_bg_default" />
 
                     </LinearLayout>
-
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -165,11 +165,5 @@
     <include
         android:id="@id/toolbar"
         layout="@layout/toolbar_layout" />
-
-    <com.starry.douban.widget.LoadingDataLayout
-        android:id="@id/view_loading_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone" />
 
 </RelativeLayout>

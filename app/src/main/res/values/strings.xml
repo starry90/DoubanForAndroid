@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">DouBan</string>
 
+    <!-- Transitions -->
+    <string name="transition_item_name" translatable="false">item_transition</string>
+
     <string name="book_number_raters">%d人评</string>
     <string name="book_author_info">"作者：%1$s\n出版社：%2$s\n出版时间：%3$s"</string>
 

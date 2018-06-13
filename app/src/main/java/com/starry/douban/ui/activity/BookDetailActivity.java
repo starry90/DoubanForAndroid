@@ -70,7 +70,6 @@ public class BookDetailActivity extends BaseActivity implements BookDetailView {
         mPresenter.getData(url);
     }
 
-
     @Override
     public void showBookDetail(BookDetail response) {
         ImageManager.getBitmap(ivBookDetail, response.getImages().getLarge(), ivBookDetailBg);

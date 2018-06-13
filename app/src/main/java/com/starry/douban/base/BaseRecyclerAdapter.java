@@ -1,6 +1,11 @@
 package com.starry.douban.base;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -42,7 +47,7 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
 
 
     @Override
-    public void onBindViewHolder(BaseRecyclerAdapter.RecyclerViewHolder holder, final int position) {
+    public void onBindViewHolder(final BaseRecyclerAdapter.RecyclerViewHolder holder, final int position) {
         //TODO 快速上拉加载更多动画时item有视图重叠bug
 //        runEnterAnimation(holder.itemView, position);
 
@@ -57,7 +62,7 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
                 if (mOnItemViewClickListener != null) {
                     mOnItemViewClickListener.onItemClick(bean, position);
                 } else {
-                    onItemClick(position);
+                    onItemClick(position, holder.itemView);
                 }
             }
         });
@@ -144,7 +149,7 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
      *
      * @param position
      */
-    protected void onItemClick(int position) {
+    protected void onItemClick(int position, View item) {
     }
 
     /**
@@ -153,6 +158,13 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
      * @param position
      */
     protected void onLongItemClick(int position) {
+    }
+
+    public void startActivityWithAnimation(Context context, Intent intent, View item) {
+        Pair squareParticipant = new Pair<>(item, ViewCompat.getTransitionName(item));
+        Activity activity = (Activity) context;
+        ActivityOptionsCompat transitionActivityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, squareParticipant);
+        context.startActivity(intent, transitionActivityOptions.toBundle());
     }
 
     //#####################################################################################

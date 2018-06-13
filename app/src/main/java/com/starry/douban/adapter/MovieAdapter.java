@@ -2,11 +2,12 @@ package com.starry.douban.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.view.View;
 
 import com.starry.douban.R;
-import com.starry.douban.ui.activity.MovieDetailActivity;
 import com.starry.douban.base.BaseRecyclerAdapter;
 import com.starry.douban.model.MovieBean;
+import com.starry.douban.ui.activity.MovieDetailActivity;
 
 import java.util.List;
 
@@ -26,11 +27,11 @@ public class MovieAdapter extends BaseRecyclerAdapter<MovieBean> {
     }
 
     @Override
-    protected void onItemClick(int position) {
-        super.onItemClick(position);
+    protected void onItemClick(int position, View itemView) {
+        super.onItemClick(position, itemView);
         Intent intent = new Intent(mContext, MovieDetailActivity.class);
         intent.putExtra("movieId", mBeans.get(position).getId());
-        mContext.startActivity(intent);
+        startActivityWithAnimation(mContext, intent, itemView);
     }
 
     @Override

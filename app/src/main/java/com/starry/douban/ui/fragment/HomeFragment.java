@@ -1,6 +1,6 @@
 package com.starry.douban.ui.fragment;
 
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.starry.douban.R;
@@ -52,7 +52,7 @@ public class HomeFragment extends BaseFragment implements MainView {
 
     private void initRecyclerView() {
         mAdapter = new BookAdapter(getActivity(), books);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
