@@ -10,6 +10,7 @@ import com.starry.douban.BuildConfig;
 import com.starry.douban.R;
 import com.starry.douban.base.BaseFragment;
 import com.starry.douban.ui.activity.AboutActivity;
+import com.starry.douban.util.ActivityAnimationUtils;
 
 import butterknife.BindView;
 
@@ -19,8 +20,8 @@ import butterknife.BindView;
  */
 public class SettingFragment extends BaseFragment {
 
-    @BindView(R.id.tv_blank_version)
-    TextView tv_blank_version;
+    @BindView(R.id.tv_version)
+    TextView tv_version;
 
     @Override
     public int getLayoutResID() {
@@ -29,12 +30,12 @@ public class SettingFragment extends BaseFragment {
 
     @Override
     public void initData() {
-        tv_blank_version.setText(BuildConfig.VERSION_NAME);
+        tv_version.setText(BuildConfig.VERSION_NAME);
     }
 
     @Override
     public void setListener() {
-        tv_blank_version.setOnClickListener(new View.OnClickListener() {
+        tv_version.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startAbout();
@@ -51,7 +52,8 @@ public class SettingFragment extends BaseFragment {
         System.arraycopy(mClicks, 1, mClicks, 0, mClicks.length - 1);
         mClicks[mClicks.length - 1] = SystemClock.uptimeMillis();
         if (mClicks[0] >= (SystemClock.uptimeMillis() - 2000)) {
-            startActivity(new Intent(mActivity, AboutActivity.class));
+            Intent intent = new Intent(mActivity, AboutActivity.class);
+            ActivityAnimationUtils.transition(mActivity, intent, tv_version);
         }
     }
 }

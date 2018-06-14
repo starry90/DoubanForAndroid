@@ -3,12 +3,13 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/tv_blank_version"
+        android:id="@+id/tv_version"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="30dp"
-        android:padding="5dp" />
+        android:padding="10dp"
+        android:transitionName="@string/transition_item_name" />
 
 </RelativeLayout>

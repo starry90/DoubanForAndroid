@@ -1,5 +1,7 @@
 package com.starry.douban.ui.activity;
 
+import android.transition.Slide;
+import android.view.Gravity;
 import android.widget.TextView;
 
 import com.starry.douban.BuildConfig;
@@ -45,6 +47,13 @@ public class AboutActivity extends BaseActivity {
         tvVersionName.setText(String.format(versionName, BuildConfig.VERSION_NAME));
         String buildTime = "BuildTime %s";
         tvAboutBuild.setText(String.format(buildTime, BuildConfig.BUILD_TIME));
+
+        Slide slide = new Slide(Gravity.TOP);
+        slide.addTarget(tvAboutGithub);
+        slide.addTarget(tvAboutAppName);
+        slide.addTarget(tvAboutBuild);
+        slide.addTarget(tvAboutVersionCode);
+        getWindow().setEnterTransition(slide);
     }
 
 }

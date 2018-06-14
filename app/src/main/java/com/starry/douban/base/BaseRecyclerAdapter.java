@@ -1,11 +1,6 @@
 package com.starry.douban.base;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.util.Pair;
-import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -143,7 +138,6 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
         }
     }
 
-
     /**
      * ItemView的单击事件(如果需要，重写此方法就行)
      *
@@ -158,13 +152,6 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
      * @param position
      */
     protected void onLongItemClick(int position) {
-    }
-
-    public void startActivityWithAnimation(Context context, Intent intent, View item) {
-        Pair squareParticipant = new Pair<>(item, ViewCompat.getTransitionName(item));
-        Activity activity = (Activity) context;
-        ActivityOptionsCompat transitionActivityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, squareParticipant);
-        context.startActivity(intent, transitionActivityOptions.toBundle());
     }
 
     //#####################################################################################

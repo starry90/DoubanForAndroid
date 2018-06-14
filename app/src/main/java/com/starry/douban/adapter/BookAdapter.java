@@ -1,5 +1,6 @@
 package com.starry.douban.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.View;
@@ -8,6 +9,7 @@ import com.starry.douban.R;
 import com.starry.douban.base.BaseRecyclerAdapter;
 import com.starry.douban.model.BookBean;
 import com.starry.douban.ui.activity.BookDetailActivity;
+import com.starry.douban.util.ActivityAnimationUtils;
 
 import java.util.List;
 
@@ -31,7 +33,7 @@ public class BookAdapter extends BaseRecyclerAdapter<BookBean> {
         super.onItemClick(position, item);
         Intent intent = new Intent(mContext, BookDetailActivity.class);
         intent.putExtra("bookId", mBeans.get(position).getId());
-        startActivityWithAnimation(mContext, intent, item);
+        ActivityAnimationUtils.transition((Activity) mContext, intent, item);
     }
 
     @Override
