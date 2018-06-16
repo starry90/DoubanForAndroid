@@ -5,7 +5,6 @@ import com.google.gson.reflect.TypeToken;
 import com.starry.douban.log.Logger;
 import com.starry.douban.model.BaseModel;
 import com.starry.douban.model.ErrorModel;
-import com.starry.douban.ui.ILoadingView;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -18,8 +17,6 @@ import java.lang.reflect.Type;
  * @since 2016/6/19.
  */
 public abstract class CommonCallback<T> {
-
-    private ILoadingView mLoadingView;
 
     public final static CommonCallback<BaseModel> NO_CALLBACK = new CommonCallback<BaseModel>() {
         @Override
@@ -34,18 +31,9 @@ public abstract class CommonCallback<T> {
     };
 
     /**
-     * 无Loading View的网络请求
+     * 开始执行网络请求
      */
-    public CommonCallback() {
-    }
-
-    /**
-     * 有Loading View的网络请求
-     *
-     * @param mLoadingView ILoadingView
-     */
-    public CommonCallback(ILoadingView mLoadingView) {
-        this.mLoadingView = mLoadingView;
+    public void onBefore() {
     }
 
     /**
@@ -60,28 +48,11 @@ public abstract class CommonCallback<T> {
     public abstract void onFailure(ErrorModel errorModel);
 
     /**
-     * 开始执行网络请求
-     */
-    public void onBefore() {
-    }
-
-    /**
      * 网络请求结束
      *
-     * @param status 1正常 2加载失败 3数据为空
+     * @param success 请求状态标记，true表示请求成功结果正确
      */
-    public void onAfter(final int status) {
-        //保证是在UI线程操作UI
-        HandlerMain.getHandler().post(new Runnable() {
-            @Override
-            public void run() {
-                if (mLoadingView != null) {
-                    mLoadingView.hideLoading(status);
-                    mLoadingView.onLoadingComplete();
-                    mLoadingView = null;
-                }
-            }
-        });
+    public void onAfter(boolean success) {
     }
 
     /**

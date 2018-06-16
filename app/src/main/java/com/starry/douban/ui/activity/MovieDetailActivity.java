@@ -13,11 +13,12 @@ import com.starry.douban.R;
 import com.starry.douban.adapter.MoviePhotoAdapter;
 import com.starry.douban.base.BaseActivity;
 import com.starry.douban.constant.Apis;
+import com.starry.douban.http.CommonCallback;
+import com.starry.douban.http.HttpManager;
 import com.starry.douban.image.ImageManager;
 import com.starry.douban.model.ErrorModel;
 import com.starry.douban.model.MovieDetail;
-import com.starry.douban.presenter.MovieDetailPresenter;
-import com.starry.douban.ui.view.MovieDetailView;
+import com.starry.douban.util.ToastUtil;
 import com.starry.douban.widget.LoadingDataLayout;
 
 import java.util.List;
@@ -30,7 +31,7 @@ import butterknife.BindView;
  * @author Starry Jerry
  * @since 2016/12/31.
  */
-public class MovieDetailActivity extends BaseActivity implements MovieDetailView {
+public class MovieDetailActivity extends BaseActivity {
 
     @BindView(R.id.iv_movie_detail_bg)
     ImageView iv_movie_detail_bg;
@@ -58,8 +59,6 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
 
     private String url;
 
-    private MovieDetailPresenter mPresenter;
-
     @Override
     public int getLayoutResID() {
         return R.layout.activity_movie_detail;
@@ -73,8 +72,6 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
     @Override
     public void initData() {
         url = Apis.MovieDetail + getIntent().getStringExtra("movieId");
-
-        mPresenter = new MovieDetailPresenter(this);
 
         loadData();
     }
@@ -94,14 +91,28 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
 
     @Override
     public void loadData() {
-        mPresenter.getData(url);
+        HttpManager.get()
+                .tag(this)
+                .url(url)
+                .build()
+                .execute(new CommonCallback<MovieDetail>() {
+
+                    @Override
+                    public void onSuccess(MovieDetail response, Object... obj) {
+                        showMovieDetail(response);
+                    }
+
+                    @Override
+                    public void onFailure(ErrorModel errorModel) {
+                        ToastUtil.showToast(errorModel.getMessage());
+                    }
+                });
     }
 
     private String format(String str) {
         return str.replace("[", "").replace("]", " ").replace(",", " ");
     }
 
-    @Override
     public void showMovieDetail(MovieDetail response) {
         showLoadingStatus(LoadingDataLayout.STATUS_SUCCESS);
         ImageManager.getBitmap(ivMovieDetail, response.getImages().getLarge(), iv_movie_detail_bg);
@@ -116,11 +127,6 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
         List<MovieDetail.PerformerBean> directors = response.getDirectors();
         directors.addAll(response.getCasts());
         initRecyclerView(directors);
-    }
-
-    @Override
-    public void onFailure(ErrorModel errorModel) {
-
     }
 
 }

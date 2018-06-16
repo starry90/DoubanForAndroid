@@ -11,7 +11,6 @@ import android.view.MenuItem;
 
 import com.starry.douban.R;
 import com.starry.douban.http.HttpManager;
-import com.starry.douban.ui.ILoadingView;
 import com.starry.douban.widget.LoadingDataLayout;
 
 import butterknife.BindView;
@@ -26,7 +25,7 @@ import butterknife.ButterKnife;
  * <p>
  */
 
-public abstract class BaseActivity extends AppCompatActivity implements IBaseUI, ILoadingView {
+public abstract class BaseActivity extends AppCompatActivity implements IBaseUI {
 
     protected final String TAG = getClass().getSimpleName();
 
@@ -59,6 +58,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseUI,
 
     private void initLoadingDataLayout() {
         if (mLoadingDataLayout != null) {
+            showLoading();
             mLoadingDataLayout.setRetryListener(new LoadingDataLayout.OnRetryListener() {
                 @Override
                 public void onRetry() {
@@ -77,16 +77,6 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseUI,
 
     public void setListener() {
 
-    }
-
-    /**
-     * 展示网络请求各种状态
-     *
-     * @param status 网络请求状态
-     */
-    protected void showLoadingStatus(int status) {
-        if (mLoadingDataLayout != null)
-            mLoadingDataLayout.setStatus(status);
     }
 
     private void initToolBar() {
@@ -146,26 +136,27 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseUI,
         return this;
     }
 
-    @Override
     public void showLoading() {
         showLoadingStatus(LoadingDataLayout.STATUS_LOADING);
     }
 
-    @Override
-    public void hideLoading(int status) {
-        switch (status) {
-            case LoadingDataLayout.STATUS_SUCCESS:
-                showLoadingStatus(LoadingDataLayout.STATUS_SUCCESS);
-                break;
-
-            case LoadingDataLayout.STATUS_ERROR:
-                showLoadingStatus(LoadingDataLayout.STATUS_ERROR);
-                break;
+    public void hideLoading(boolean success) {
+        if (success) {
+            showLoadingStatus(LoadingDataLayout.STATUS_SUCCESS);
+        } else {
+            showLoadingStatus(LoadingDataLayout.STATUS_ERROR);
         }
     }
 
-    @Override
-    public void onLoadingComplete() {
-
+    /**
+     * 展示网络请求各种状态
+     *
+     * @param status 网络请求状态
+     */
+    protected void showLoadingStatus(int status) {
+        if (mLoadingDataLayout != null && !mLoadingDataLayout.isSuccess()) {
+            mLoadingDataLayout.setStatus(status);
+        }
     }
+
 }

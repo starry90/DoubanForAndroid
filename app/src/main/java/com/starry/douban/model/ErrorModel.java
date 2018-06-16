@@ -13,17 +13,9 @@ public class ErrorModel {
 
     private String message;
 
-    private int requestCode;
-
     public ErrorModel(int code, String message) {
         this.code = code;
         this.message = message;
-    }
-
-    public ErrorModel(int code, String message, int requestCode) {
-        this.code = code;
-        this.message = message;
-        this.requestCode = requestCode;
     }
 
     public int getCode() {
@@ -44,12 +36,4 @@ public class ErrorModel {
         return this;
     }
 
-    public int getRequestCode() {
-        return requestCode;
-    }
-
-    public ErrorModel setRequestCode(int requestCode) {
-        this.requestCode = requestCode;
-        return this;
-    }
 }

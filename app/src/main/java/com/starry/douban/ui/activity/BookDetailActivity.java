@@ -8,11 +8,12 @@ import android.widget.TextView;
 import com.starry.douban.R;
 import com.starry.douban.base.BaseActivity;
 import com.starry.douban.constant.Apis;
+import com.starry.douban.http.CommonCallback;
+import com.starry.douban.http.HttpManager;
 import com.starry.douban.image.ImageManager;
 import com.starry.douban.model.BookDetail;
 import com.starry.douban.model.ErrorModel;
-import com.starry.douban.presenter.BookDetailPresenter;
-import com.starry.douban.ui.view.BookDetailView;
+import com.starry.douban.util.ToastUtil;
 
 import java.util.List;
 
@@ -24,7 +25,7 @@ import butterknife.BindView;
  * @author Starry Jerry
  * @since 2016/12/31.
  */
-public class BookDetailActivity extends BaseActivity implements BookDetailView {
+public class BookDetailActivity extends BaseActivity {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -51,8 +52,6 @@ public class BookDetailActivity extends BaseActivity implements BookDetailView {
     TextView tv_book_detail_catalog;
     private String url;
 
-    private BookDetailPresenter mPresenter;
-
     @Override
     public int getLayoutResID() {
         return R.layout.activity_book_detail;
@@ -61,16 +60,29 @@ public class BookDetailActivity extends BaseActivity implements BookDetailView {
     @Override
     public void initData() {
         url = Apis.BookDetail + getIntent().getStringExtra("bookId");
-        mPresenter = new BookDetailPresenter(this);
         loadData();
     }
 
     @Override
     public void loadData() {
-        mPresenter.getData(url);
+        HttpManager.get()
+                .tag(this)
+                .url(url)
+                .build()
+                .execute(new CommonCallback<BookDetail>() {
+
+                    @Override
+                    public void onSuccess(BookDetail response, Object... obj) {
+                        showBookDetail(response);
+                    }
+
+                    @Override
+                    public void onFailure(ErrorModel errorModel) {
+                        ToastUtil.showToast(errorModel.getMessage());
+                    }
+                });
     }
 
-    @Override
     public void showBookDetail(BookDetail response) {
         ImageManager.getBitmap(ivBookDetail, response.getImages().getLarge(), ivBookDetailBg);
         collapsing_toolbar.setTitle(response.getTitle());
@@ -82,11 +94,6 @@ public class BookDetailActivity extends BaseActivity implements BookDetailView {
         tv_book_detail_summary.setText(response.getSummary());
         tv_book_detail_author_summary.setText(response.getAuthor_intro());
         tv_book_detail_catalog.setText(response.getCatalog());
-    }
-
-    @Override
-    public void onFailure(ErrorModel errorModel) {
-
     }
 
 }
