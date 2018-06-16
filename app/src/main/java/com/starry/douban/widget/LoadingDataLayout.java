@@ -18,6 +18,7 @@ import butterknife.ButterKnife;
 
 /**
  * Loading Data View
+ *
  * @author Starry Jerry
  */
 public class LoadingDataLayout extends RelativeLayout {
@@ -104,7 +105,6 @@ public class LoadingDataLayout extends RelativeLayout {
                 }
             }
         });
-        switchView();
     }
 
     /**
@@ -115,6 +115,10 @@ public class LoadingDataLayout extends RelativeLayout {
     public void setStatus(@Status int status) {
         mStatus = status;
         switchView();
+    }
+
+    public boolean isSuccess() {
+        return mStatus == STATUS_SUCCESS;
     }
 
     /**

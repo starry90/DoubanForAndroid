@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.starry.douban.R;
-import com.starry.douban.ui.ILoadingView;
 import com.starry.douban.widget.LoadingDataLayout;
 
 import butterknife.BindView;
@@ -21,12 +20,9 @@ import butterknife.ButterKnife;
  * 正常的Framgent
  * Fragment基类
  */
-public abstract class BaseFragment extends Fragment implements IBaseUI, ILoadingView {
-
+public abstract class BaseFragment extends Fragment implements IBaseUI {
 
     protected final String TAG = getClass().getSimpleName();
-
-    private boolean isSuccess;
 
     /**
      * 使用mActivity代替getActivity()，保证Fragment即使在onDetach后，仍持有Activity的引用<p>
@@ -68,7 +64,7 @@ public abstract class BaseFragment extends Fragment implements IBaseUI, ILoading
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        initLoadingDataLayout(view);
+        initLoadingDataLayout();
 
         initData();
         setListener();
@@ -105,21 +101,6 @@ public abstract class BaseFragment extends Fragment implements IBaseUI, ILoading
     }
 
     /**
-     * @param view
-     */
-    private void initLoadingDataLayout(View view) {
-        mLoadingDataLayout = (LoadingDataLayout) view.findViewById(R.id.view_loading_container);
-        if (mLoadingDataLayout != null) {
-            mLoadingDataLayout.setRetryListener(new LoadingDataLayout.OnRetryListener() {
-                @Override
-                public void onRetry() {
-                    loadData();
-                }
-            });
-        }
-    }
-
-    /**
      * 加载数据，如请求网络，读取本地缓存等
      */
     public void loadData() {
@@ -130,38 +111,39 @@ public abstract class BaseFragment extends Fragment implements IBaseUI, ILoading
 
     }
 
-    /**
-     * 展示网络请求各种状态
-     *
-     * @param networkStatus 网络请求状态
-     */
-    protected void showLoadingStatus(int networkStatus) {
-        if (mLoadingDataLayout == null || isSuccess) return;
-        mLoadingDataLayout.setStatus(networkStatus);
-        if (LoadingDataLayout.STATUS_SUCCESS == networkStatus) isSuccess = true;
+    private void initLoadingDataLayout() {
+        if (mLoadingDataLayout != null) {
+            showLoading();
+            mLoadingDataLayout.setRetryListener(new LoadingDataLayout.OnRetryListener() {
+                @Override
+                public void onRetry() {
+                    loadData();
+                }
+            });
+        }
     }
 
-    @Override
     public void showLoading() {
         showLoadingStatus(LoadingDataLayout.STATUS_LOADING);
     }
 
-    @Override
-    public void hideLoading(int status) {
-        switch (status) {
-            case LoadingDataLayout.STATUS_SUCCESS:
-                showLoadingStatus(LoadingDataLayout.STATUS_SUCCESS);
-                break;
-
-            case LoadingDataLayout.STATUS_ERROR:
-                showLoadingStatus(LoadingDataLayout.STATUS_ERROR);
-                break;
+    public void hideLoading(boolean success) {
+        if (success) {
+            showLoadingStatus(LoadingDataLayout.STATUS_SUCCESS);
+        } else {
+            showLoadingStatus(LoadingDataLayout.STATUS_ERROR);
         }
     }
 
-    @Override
-    public void onLoadingComplete() {
-
+    /**
+     * 展示网络请求各种状态
+     *
+     * @param status 网络请求状态
+     */
+    protected void showLoadingStatus(int status) {
+        if (mLoadingDataLayout != null && !mLoadingDataLayout.isSuccess()) {
+            mLoadingDataLayout.setStatus(status);
+        }
     }
 
 }

@@ -6,11 +6,13 @@ import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.starry.douban.R;
 import com.starry.douban.adapter.BookAdapter;
 import com.starry.douban.base.BaseFragment;
+import com.starry.douban.constant.Apis;
+import com.starry.douban.http.CommonCallback;
+import com.starry.douban.http.HttpManager;
 import com.starry.douban.model.BookBean;
 import com.starry.douban.model.Books;
 import com.starry.douban.model.ErrorModel;
-import com.starry.douban.presenter.MainPresenter;
-import com.starry.douban.ui.view.MainView;
+import com.starry.douban.util.ToastUtil;
 import com.starry.douban.widget.LoadingDataLayout;
 
 import java.util.ArrayList;
@@ -23,7 +25,7 @@ import butterknife.BindView;
  * @author Starry Jerry
  * @since 2016/12/4.
  */
-public class HomeFragment extends BaseFragment implements MainView {
+public class HomeFragment extends BaseFragment {
 
     @BindView(R.id.XRecyclerView_home)
     XRecyclerView mRecyclerView;
@@ -37,8 +39,6 @@ public class HomeFragment extends BaseFragment implements MainView {
 
     private List<BookBean> books = new ArrayList<>();
 
-    private MainPresenter mPresenter;
-
     @Override
     public int getLayoutResID() {
         return R.layout.fragment_home;
@@ -46,7 +46,6 @@ public class HomeFragment extends BaseFragment implements MainView {
 
     @Override
     public void initData() {
-        mPresenter = new MainPresenter(this);
         initRecyclerView();
     }
 
@@ -75,10 +74,33 @@ public class HomeFragment extends BaseFragment implements MainView {
         params.put("tag", tag);
         params.put("start", start + "");
         params.put("count", count + "");
-        mPresenter.getBookList(params);
+
+        HttpManager.get()
+                .tag(this)
+                .url(Apis.BookSearch)
+                .params(params)
+                .build()
+                .execute(new CommonCallback<Books>() {
+
+                    @Override
+                    public void onSuccess(Books response, Object... obj) {
+                        refreshBookList(response);
+                    }
+
+                    @Override
+                    public void onFailure(ErrorModel errorModel) {
+                        ToastUtil.showToast(errorModel.getMessage());
+                    }
+
+                    @Override
+                    public void onAfter(boolean success) {
+                        mRecyclerView.refreshComplete();
+                        mRecyclerView.loadMoreComplete();
+                        hideLoading(success);
+                    }
+                });
     }
 
-    @Override
     public void refreshBookList(Books response) {
         showLoadingStatus(LoadingDataLayout.STATUS_SUCCESS);
         //1、如果是第一页先清空数据 books不用做非空判断，不可能为空
@@ -93,16 +115,6 @@ public class HomeFragment extends BaseFragment implements MainView {
         start += count;
         //5、如果没有数据了，禁用加载更多功能
         mRecyclerView.setLoadingMoreEnabled(start < response.getTotal());
-    }
-
-    @Override
-    public void onFailure(ErrorModel errorModel) {
-    }
-
-    @Override
-    public void onLoadingComplete() {
-        mRecyclerView.refreshComplete();
-        mRecyclerView.loadMoreComplete();
     }
 
 }

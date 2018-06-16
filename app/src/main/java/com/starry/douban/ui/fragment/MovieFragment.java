@@ -7,11 +7,12 @@ import com.starry.douban.R;
 import com.starry.douban.adapter.MovieAdapter;
 import com.starry.douban.base.BaseFragment;
 import com.starry.douban.constant.Apis;
+import com.starry.douban.http.CommonCallback;
+import com.starry.douban.http.HttpManager;
 import com.starry.douban.model.ErrorModel;
 import com.starry.douban.model.MovieBean;
 import com.starry.douban.model.Movies;
-import com.starry.douban.presenter.MoviePresenter;
-import com.starry.douban.ui.view.MovieView;
+import com.starry.douban.util.ToastUtil;
 import com.starry.douban.widget.LoadingDataLayout;
 
 import java.util.ArrayList;
@@ -24,7 +25,7 @@ import butterknife.BindView;
  * @author Starry Jerry
  * @since 2016/12/4.
  */
-public class MovieFragment extends BaseFragment implements MovieView {
+public class MovieFragment extends BaseFragment {
 
     @BindView(R.id.XRecyclerView_home)
     XRecyclerView mRecyclerView;
@@ -39,8 +40,6 @@ public class MovieFragment extends BaseFragment implements MovieView {
     private String url = Apis.MovieInTheaters;
 
     private LinkedHashMap<String, String> params = new LinkedHashMap<>();
-
-    private MoviePresenter mPresenter;
 
     @Override
     public int getLayoutResID() {
@@ -70,8 +69,6 @@ public class MovieFragment extends BaseFragment implements MovieView {
                 params.put("tag", "喜剧");
                 break;
         }
-
-        mPresenter = new MoviePresenter(this);
 
         initRecyclerView();
     }
@@ -104,10 +101,32 @@ public class MovieFragment extends BaseFragment implements MovieView {
     public void loadData() {
         params.put("start", start + "");
         params.put("count", count + "");
-        mPresenter.getMovieList(url, params);
+        HttpManager.get()
+                .tag(this)
+                .url(url)
+                .params(params)
+                .build()
+                .execute(new CommonCallback<Movies>() {
+
+                    @Override
+                    public void onSuccess(Movies response, Object... obj) {
+                        refreshMovieList(response);
+                    }
+
+                    @Override
+                    public void onFailure(ErrorModel errorModel) {
+                        ToastUtil.showToast(errorModel.getMessage());
+                    }
+
+                    @Override
+                    public void onAfter(boolean success) {
+                        mRecyclerView.refreshComplete();
+                        mRecyclerView.loadMoreComplete();
+                        hideLoading(success);
+                    }
+                });
     }
 
-    @Override
     public void refreshMovieList(Movies response) {
         showLoadingStatus(LoadingDataLayout.STATUS_SUCCESS);
         //1、如果是第一页先清空数据 books不用做非空判断，不可能为空
@@ -122,17 +141,6 @@ public class MovieFragment extends BaseFragment implements MovieView {
         start += count;
         //5、如果没有数据了，禁用加载更多功能
         mRecyclerView.setLoadingMoreEnabled(start < response.getTotal());
-    }
-
-    @Override
-    public void onFailure(ErrorModel errorModel) {
-    }
-
-    @Override
-    public void onLoadingComplete() {
-        super.onLoadingComplete();
-        mRecyclerView.refreshComplete();
-        mRecyclerView.loadMoreComplete();
     }
 
 }

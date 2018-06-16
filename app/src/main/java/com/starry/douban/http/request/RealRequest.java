@@ -12,7 +12,6 @@ import com.starry.douban.model.BaseModel;
 import com.starry.douban.model.ErrorModel;
 import com.starry.douban.util.JsonUtil;
 import com.starry.douban.util.Preconditions;
-import com.starry.douban.widget.LoadingDataLayout;
 
 import java.io.IOException;
 import java.util.Map;
@@ -97,7 +96,7 @@ public class RealRequest {
                 e.printStackTrace();
                 //{@linkplain okhttp3.RealCall#isCanceled()}
                 if (call.isCanceled()) {
-                    callback.onAfter(LoadingDataLayout.STATUS_ERROR);
+                    sendCanceledCallback(callback);
                 } else {
                     sendFailCallback(Errors.Code.NETWORK_UNAVAILABLE, Errors.Message.NETWORK_UNAVAILABLE, callback);
                 }
@@ -161,7 +160,7 @@ public class RealRequest {
         HandlerMain.getHandler().post(new Runnable() {
             @Override
             public void run() {
-                callback.onAfter(LoadingDataLayout.STATUS_ERROR);
+                callback.onAfter(false);
                 callback.onFailure(new ErrorModel(code, message));
             }
         });
@@ -171,8 +170,17 @@ public class RealRequest {
         HandlerMain.getHandler().post(new Runnable() {
             @Override
             public void run() {
-                callback.onAfter(LoadingDataLayout.STATUS_SUCCESS);
+                callback.onAfter(true);
                 callback.onSuccess(object);
+            }
+        });
+    }
+
+    private <T> void sendCanceledCallback(final CommonCallback<T> callback) {
+        HandlerMain.getHandler().post(new Runnable() {
+            @Override
+            public void run() {
+                callback.onAfter(false);
             }
         });
     }
