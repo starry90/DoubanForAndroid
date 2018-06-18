@@ -10,9 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.starry.progress.AVLoadingIndicatorView;
@@ -21,12 +21,9 @@ import com.starry.progress.AVLoadingIndicatorView;
 public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeader {
     private LinearLayout mContainer;
     private ImageView mArrowImageView;
-    private SimpleViewSwithcer mProgressBar;
+    private FrameLayout mProgressBar;
     private TextView mStatusTextView;
     private int mState = STATE_NORMAL;
-    private Context mContext;
-
-    private TextView mHeaderTimeView;
 
     private Animation mRotateUpAnim;
     private Animation mRotateDownAnim;
@@ -40,18 +37,12 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
         initView(context);
     }
 
-    /**
-     * @param context
-     * @param attrs
-     */
     public ArrowRefreshHeader(Context context, AttributeSet attrs) {
         super(context, attrs);
         initView(context);
     }
 
     private void initView(Context context) {
-
-        mContext = context;
         // 初始情况，设置下拉刷新view高度为0
         mContainer = (LinearLayout) LayoutInflater.from(context).inflate(
                 R.layout.listview_header, null);
@@ -63,16 +54,11 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
         addView(mContainer, new LayoutParams(LayoutParams.MATCH_PARENT, 0));
         setGravity(Gravity.BOTTOM);
 
-        mArrowImageView = (ImageView) findViewById(R.id.listview_header_arrow);
-        mStatusTextView = (TextView) findViewById(R.id.refresh_status_textview);
+        mArrowImageView = (ImageView) findViewById(R.id.iv_header_arrow);
+        mStatusTextView = (TextView) findViewById(R.id.tv_refresh_status);
 
         //init the progress view
-        mProgressBar = (SimpleViewSwithcer) findViewById(R.id.listview_header_progressbar);
-        AVLoadingIndicatorView progressView = new AVLoadingIndicatorView(context);
-        progressView.setIndicatorColor(0xffB5B5B5);
-        progressView.setIndicatorId(ProgressStyle.BallSpinFadeLoader);
-        mProgressBar.setView(progressView);
-
+        mProgressBar = (FrameLayout) findViewById(R.id.fl_header_progressbar);
 
         mRotateUpAnim = new RotateAnimation(0.0f, -180.0f,
                 Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
@@ -85,24 +71,16 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
         mRotateDownAnim.setDuration(ROTATE_ANIM_DURATION);
         mRotateDownAnim.setFillAfter(true);
 
-        mHeaderTimeView = (TextView) findViewById(R.id.last_refresh_time);
         measure(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         mMeasuredHeight = getMeasuredHeight();
     }
 
     public void setProgressStyle(int style) {
-        if (style == ProgressStyle.SysProgress) {
-            mProgressBar.setView(new ProgressBar(mContext, null, android.R.attr.progressBarStyle));
-        } else {
-            AVLoadingIndicatorView progressView = new AVLoadingIndicatorView(this.getContext());
-            progressView.setIndicatorColor(0xffB5B5B5);
-            progressView.setIndicatorId(style);
-            mProgressBar.setView(progressView);
-        }
-    }
-
-    public void setArrowImageView(int resid) {
-        mArrowImageView.setImageResource(resid);
+        mProgressBar.removeAllViews();
+        AVLoadingIndicatorView progressView = new AVLoadingIndicatorView(getContext());
+        progressView.setIndicatorColor(0xffB5B5B5);
+        progressView.setIndicatorId(style);
+        mProgressBar.addView(progressView);
     }
 
     public void setState(int state) {
@@ -154,20 +132,14 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
     }
 
     @Override
-    public void refreshComplate() {
-        mHeaderTimeView.setText(friendlyTime(true));
+    public void refreshComplete() {
         setState(STATE_DONE);
         new Handler().postDelayed(new Runnable() {
             public void run() {
                 reset();
             }
-        }, 200);
+        }, 300);
     }
-
-    public void onReadyToReflesh() {
-        mHeaderTimeView.setText(friendlyTime(false));
-    }
-
 
     public void setVisiableHeight(int height) {
         if (height < 0)
@@ -244,42 +216,6 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
             }
         });
         animator.start();
-    }
-
-    private static long lastRefleshTime = 0;//上次刷新时间应该写入本地,在这里做还是有点不当
-
-    public String friendlyTime(boolean isRecorde) {
-        if (lastRefleshTime == 0) {
-            if (isRecorde)
-                lastRefleshTime = System.currentTimeMillis();
-            return "";
-        }
-        //获取time距离当前的秒数
-        long currentTime = System.currentTimeMillis();
-        int ct = (int) ((currentTime - lastRefleshTime) / 1000);
-        if (isRecorde)
-            lastRefleshTime = currentTime;
-        if (ct == 0) {
-            return "刚刚";
-        }
-
-        if (ct > 0 && ct < 60) {
-            return ct + "秒前";
-        }
-
-        if (ct >= 60 && ct < 3600) {
-            return Math.max(ct / 60, 1) + "分钟前";
-        }
-        if (ct >= 3600 && ct < 86400)
-            return ct / 3600 + "小时前";
-        if (ct >= 86400 && ct < 2592000) { //86400 * 30
-            int day = ct / 86400;
-            return day + "天前";
-        }
-        if (ct >= 2592000 && ct < 31104000) { //86400 * 30
-            return ct / 2592000 + "月前";
-        }
-        return ct / 31104000 + "年前";
     }
 
 }
