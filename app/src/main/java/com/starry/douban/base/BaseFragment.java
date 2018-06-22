@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.starry.douban.R;
+import com.starry.douban.http.HandlerMain;
 import com.starry.douban.widget.LoadingDataLayout;
 
 import butterknife.BindView;
@@ -66,10 +67,16 @@ public abstract class BaseFragment extends Fragment implements IBaseUI {
         super.onViewCreated(view, savedInstanceState);
         initLoadingDataLayout();
 
-        initData();
-        setListener();
-        //Fragment初始化时setUserVisibleHint方法会先于onCreateView执行
-        prepareLazyLoading(getUserVisibleHint(), isViewCreated);
+        //保证onCreate方法第一时间执行完，显示UI界面
+        HandlerMain.getHandler().post(new Runnable() {
+            @Override
+            public void run() {
+                initData();
+                setListener();
+                //Fragment初始化时setUserVisibleHint方法会先于onCreateView执行
+                prepareLazyLoading(getUserVisibleHint(), isViewCreated);
+            }
+        });
     }
 
     @Override

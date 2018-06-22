@@ -44,16 +44,21 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseUI 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(getLayoutResID());
         ButterKnife.bind(this);//必须在setContentView()之后调用
 
+        initToolBar();
         initLoadingDataLayout();
 
-        initToolBar();
-
-        initData();
-        setListener();
+        //保证onCreate方法第一时间执行完，显示UI界面
+        //如果加载数据的方法直接在onCreate里执行，可能会导致UI界面不能及时显示
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                initData();
+                setListener();
+            }
+        });
     }
 
     private void initLoadingDataLayout() {
