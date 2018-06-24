@@ -268,7 +268,7 @@ final class LoggerPrinter implements Printer {
     private void logHeaderContent(int logType, String tag, int methodCount) {
         StackTraceElement[] trace = Thread.currentThread().getStackTrace();
         if (settings.isShowThreadInfo()) {
-            logChunk(logType, tag, " Thread: " + Thread.currentThread().getName());
+            logContent(logType, tag, "Thread: " + Thread.currentThread().getName());
         }
 
         int stackOffset = getStackOffset(trace) + settings.getMethodOffset();
@@ -278,15 +278,13 @@ final class LoggerPrinter implements Printer {
             methodCount = trace.length - stackOffset - 1;
         }
 
-        String level = " ";
         for (int i = methodCount; i > 0; i--) {
             int stackIndex = i + stackOffset;
             if (stackIndex >= trace.length) {
                 continue;
             }
             StringBuilder builder = new StringBuilder();
-            builder.append(level)
-                    .append(getSimpleClassName(trace[stackIndex].getClassName()))
+            builder.append(getSimpleClassName(trace[stackIndex].getClassName()))
                     .append(".")
                     .append(trace[stackIndex].getMethodName())
                     .append(" ")
@@ -295,19 +293,11 @@ final class LoggerPrinter implements Printer {
                     .append(":")
                     .append(trace[stackIndex].getLineNumber())
                     .append(")");
-            level += "   ";
-            logChunk(logType, tag, builder.toString());
+            logContent(logType, tag, builder.toString());
         }
     }
 
     private void logContent(int logType, String tag, String chunk) {
-        String[] lines = chunk.split(System.getProperty("line.separator"));
-        for (String line : lines) {
-            logChunk(logType, tag, " " + line);
-        }
-    }
-
-    private void logChunk(int logType, String tag, String chunk) {
         String finalTag = formatTag(tag);
         switch (logType) {
             case VERBOSE:
