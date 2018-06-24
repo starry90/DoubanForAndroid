@@ -27,11 +27,13 @@ import okhttp3.Response;
  */
 public class RealRequest {
 
+    private final String TAG = getClass().getSimpleName();
+
     private Request request;
 
     private CommonParams commonParams;
 
-    public RealRequest(Request request, CommonParams commonParams) {
+    RealRequest(Request request, CommonParams commonParams) {
         this.request = request;
         this.commonParams = commonParams;
     }
@@ -46,7 +48,7 @@ public class RealRequest {
             callback = CommonCallback.NO_CALLBACK;
         }
         logRequest(request.url().toString(), request.method(), commonParams.params());
-        Call call = HttpManager.getOkHttpClient().newCall(request);
+        Call call = HttpManager.getInstance().getOkHttpClient().newCall(request);
         execute(call, callback);
     }
 
@@ -64,8 +66,8 @@ public class RealRequest {
         // --> https://api.douban.com/v2/book/search?tag=热门&start=0&count=20
         // --> GET
         // --> {tag=热门, start=0, count=20}
-        String result = String.format("Request\n --> %s\n --> %s\n --> %s", url, method, paramsStr);
-        Logger.i(result);
+        String result = String.format("Request\n >>> %s\n >>> %s\n >>> %s", url, method, paramsStr);
+        Logger.i(TAG, result);
     }
 
     /**
@@ -79,8 +81,8 @@ public class RealRequest {
         // Response
         // --> https://api.douban.com/v2/book/search?tag=热门&start=0&count=20
         // --> {"count":20,"start":0,"total":122,"books":[{"rating":{"max":10,"numRaters":487,……
-        String result = String.format("Response\n --> %s\n --> %s", url, json);
-        Logger.i(result);
+        String result = String.format("Response\n >>> %s\n >>> %s", url, json);
+        Logger.i(TAG, result);
     }
 
     /**

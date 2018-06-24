@@ -1,8 +1,5 @@
 package com.starry.douban.http;
 
-import com.starry.douban.http.request.GetRequest;
-import com.starry.douban.http.request.PostFormRequest;
-import com.starry.douban.http.request.PostStringRequest;
 import com.starry.douban.log.Logger;
 
 import java.util.concurrent.TimeUnit;
@@ -50,29 +47,33 @@ public class HttpManager {
                 .build();
     }
 
-    public static OkHttpClient getOkHttpClient() {
-        return getInstance().mOkHttpClient;
+    public OkHttpClient getOkHttpClient() {
+        return mOkHttpClient;
     }
 
     /**
      * Get 请求
      */
     public static CommonParams.Builder get() {
-        return new CommonParams.Builder(new GetRequest());
+        return newBuilder(CommonParams.GET);
     }
 
     /**
      * Post 请求
      */
     public static CommonParams.Builder post() {
-        return new CommonParams.Builder(new PostFormRequest());
+        return newBuilder(CommonParams.POST_FORM);
     }
 
     /**
-     * Post JSON
+     * Post String
      */
-    public static CommonParams.Builder postJson() {
-        return new CommonParams.Builder(new PostStringRequest());
+    public static CommonParams.Builder postString() {
+        return newBuilder(CommonParams.POST_STRING);
+    }
+
+    private static CommonParams.Builder newBuilder(String method) {
+        return new CommonParams.Builder(method);
     }
 
     /**

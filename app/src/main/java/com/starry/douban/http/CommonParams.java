@@ -1,7 +1,10 @@
 package com.starry.douban.http;
 
 
+import com.starry.douban.http.request.GetRequest;
 import com.starry.douban.http.request.OKHttpRequest;
+import com.starry.douban.http.request.PostFormRequest;
+import com.starry.douban.http.request.PostStringRequest;
 import com.starry.douban.http.request.RealRequest;
 
 import java.io.File;
@@ -19,6 +22,10 @@ import okhttp3.MediaType;
  * @since 2016/6/19.
  */
 public class CommonParams {
+
+    public static final String GET = "GET";
+    public static final String POST_FORM = "POST_FORM";
+    public static final String POST_STRING = "POST_STRING";
 
     // JSON --> application/json;charset=utf-8
     private static final MediaType MEDIA_TYPE_JSON = MediaType.parse("application/json;charset=utf-8");
@@ -81,11 +88,17 @@ public class CommonParams {
         private List<FileInput> files = new ArrayList<>();
         private String content;
         private MediaType mediaType;
-        private OKHttpRequest builder;
+        private OKHttpRequest okHttpRequest;
 
-        public Builder(OKHttpRequest builder) {
-            this.builder = builder;
-            mediaType = MEDIA_TYPE_JSON;
+        public Builder(String method) {
+            if (POST_FORM.equals(method)) {
+                this.okHttpRequest = new PostFormRequest();
+            } else if (POST_STRING.equals(method)) {
+                mediaType = MEDIA_TYPE_JSON;
+                this.okHttpRequest = new PostStringRequest();
+            } else {
+                this.okHttpRequest = new GetRequest();
+            }
         }
 
         public Builder url(String url) {
@@ -143,7 +156,7 @@ public class CommonParams {
             if (this.params == null) {
                 params = new LinkedHashMap<>();
             }
-            return builder.build(new CommonParams(this));
+            return okHttpRequest.build(new CommonParams(this));
         }
 
     }
