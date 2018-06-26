@@ -19,6 +19,8 @@ android {
         versionCode versions.versionCode
         versionName getAppVersionName()
         buildConfigField 'String', 'BUILD_TIME', '"' + getBuildTime() + '"'
+
+        testInstrumentationRunner deps.androidRunner
     }
 
     // keystore文件
@@ -57,6 +59,10 @@ dependencies {
     implementation deps.recyclerview
     implementation deps.design
     implementation deps.cardview
+    //test
+    implementation deps.junit
+    implementation deps.runner
+    implementation deps.espresso
     //others
     implementation deps.okhttp3
     annotationProcessor deps.butterknifeCompiler

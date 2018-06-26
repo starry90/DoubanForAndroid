@@ -80,7 +80,7 @@ public class HomeFragment extends BaseFragment {
                 .url(Apis.BookSearch)
                 .params(params)
                 .build()
-                .execute(new CommonCallback<Books>() {
+                .enqueue(new CommonCallback<Books>() {
 
                     @Override
                     public void onSuccess(Books response, Object... obj) {

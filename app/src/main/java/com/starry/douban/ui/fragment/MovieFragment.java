@@ -106,7 +106,7 @@ public class MovieFragment extends BaseFragment {
                 .url(url)
                 .params(params)
                 .build()
-                .execute(new CommonCallback<Movies>() {
+                .enqueue(new CommonCallback<Movies>() {
 
                     @Override
                     public void onSuccess(Movies response, Object... obj) {

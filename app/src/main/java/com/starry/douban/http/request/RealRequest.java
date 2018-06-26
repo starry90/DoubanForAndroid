@@ -1,6 +1,8 @@
 package com.starry.douban.http.request;
 
 
+import android.support.annotation.NonNull;
+
 import com.starry.douban.http.CommonCallback;
 import com.starry.douban.http.CommonParams;
 import com.starry.douban.http.Errors;
@@ -39,17 +41,28 @@ public class RealRequest {
     }
 
     /**
-     * 执行请求
+     * 同步执行请求
+     * Invokes the request immediately, and blocks until the response can be processed or is in  error.
+     *
+     * @param callback 回调对象
+     * @return 返回结果
+     */
+    public <T extends BaseModel> T execute(CommonCallback<T> callback) {
+        logRequest(request.url().toString(), request.method(), commonParams.params());
+        Call call = HttpManager.getInstance().getOkHttpClient().newCall(request);
+        return execute(call, callback);
+    }
+
+    /**
+     * 异步执行请求
+     * Schedules the request to be executed at some point in the future.
      *
      * @param callback 回调对象
      */
-    public void execute(CommonCallback callback) {
-        if (callback == null) {
-            callback = CommonCallback.NO_CALLBACK;
-        }
+    public <T extends BaseModel> void enqueue(CommonCallback<T> callback) {
         logRequest(request.url().toString(), request.method(), commonParams.params());
         Call call = HttpManager.getInstance().getOkHttpClient().newCall(request);
-        execute(call, callback);
+        enqueue(call, callback);
     }
 
     /**
@@ -90,47 +103,75 @@ public class RealRequest {
      * @param callback 回调对象
      * @param <T>      对象的泛型
      */
-    private <T extends BaseModel> void execute(Call call, final CommonCallback<T> callback) {
+    private <T extends BaseModel> T execute(Call call, final CommonCallback<T> callback) {
+        callback.onBefore();
+        try {
+            Response response = call.execute();
+            return onResponseResult(response, callback);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            onFailureResult(call, callback);
+        }
+        return null;
+    }
+
+    /**
+     * @param call     Call
+     * @param callback 回调对象
+     * @param <T>      对象的泛型
+     */
+    private <T extends BaseModel> void enqueue(Call call, final CommonCallback<T> callback) {
         callback.onBefore();
         call.enqueue(new Callback() {
             @Override
-            public void onFailure(Call call, final IOException e) {
-                e.printStackTrace();
-                //{@linkplain okhttp3.RealCall#isCanceled()}
-                if (call.isCanceled()) {
-                    sendCanceledCallback(callback);
-                } else {
-                    sendFailCallback(Errors.Code.NETWORK_UNAVAILABLE, Errors.Message.NETWORK_UNAVAILABLE, callback);
-                }
+            public void onFailure(@NonNull Call call, @NonNull IOException ex) {
+                ex.printStackTrace();
+                onFailureResult(call, callback);
             }
 
             @Override
-            public void onResponse(final Call call, final Response response) {
-                try {
-                    // 1. check http code
-                    checkHttpCode(response.code());
-
-                    // 2. print json log
-                    String json = response.body().string();
-                    logResponse(response.request().url().toString(), json);
-
-                    // 3. parse json to object
-                    // T extends BaseModel
-                    T result = JsonUtil.toObject(json, callback.getType());
-                    Preconditions.checkNotNull(result);
-
-                    // 4. check result code
-                    checkResultCode(result.getCode(), result.getMsg());
-
-                    // 5. call success method
-                    sendSuccessCallback(result, callback);
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                    NetworkException netEx = NetworkException.newException(ex);
-                    sendFailCallback(netEx.getErrorCode(), netEx.getErrorMessage(), callback);
-                }
+            public void onResponse(@NonNull Call call, @NonNull Response response) {
+                onResponseResult(response, callback);
             }
         });
+    }
+
+    private void onFailureResult(Call call, CommonCallback callback) {
+        //{@linkplain okhttp3.RealCall#isCanceled()}
+        if (call.isCanceled()) {
+            sendCanceledCallback(callback);
+        } else {
+            sendFailCallback(Errors.Code.NETWORK_UNAVAILABLE, Errors.Message.NETWORK_UNAVAILABLE, callback);
+        }
+    }
+
+    private <T extends BaseModel> T onResponseResult(Response response, CommonCallback<T> callback) {
+        try {
+            // 1. check http code
+            checkHttpCode(response.code());
+
+            // 2. print json log
+            String json = response.body().string();
+            logResponse(response.request().url().toString(), json);
+            response.close(); //To avoid leaking resources
+
+            // 3. parse json to object
+            // T extends BaseModel
+            T result = JsonUtil.toObject(json, callback.getType());
+            Preconditions.checkNotNull(result);
+
+            // 4. check result code
+            checkResultCode(result.getCode(), result.getMsg());
+
+            // 5. call success method
+            sendSuccessCallback(result, callback);
+            return result;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            NetworkException netEx = NetworkException.newException(ex);
+            sendFailCallback(netEx.getErrorCode(), netEx.getErrorMessage(), callback);
+        }
+        return null;
     }
 
     /**

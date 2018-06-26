@@ -95,7 +95,7 @@ public class MovieDetailActivity extends BaseActivity {
                 .tag(this)
                 .url(url)
                 .build()
-                .execute(new CommonCallback<MovieDetail>() {
+                .enqueue(new CommonCallback<MovieDetail>() {
 
                     @Override
                     public void onSuccess(MovieDetail response, Object... obj) {

@@ -69,7 +69,7 @@ public class BookDetailActivity extends BaseActivity {
                 .tag(this)
                 .url(url)
                 .build()
-                .execute(new CommonCallback<BookDetail>() {
+                .enqueue(new CommonCallback<BookDetail>() {
 
                     @Override
                     public void onSuccess(BookDetail response, Object... obj) {
