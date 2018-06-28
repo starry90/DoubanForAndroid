@@ -11,7 +11,7 @@ import com.starry.douban.http.CommonCallback;
 import com.starry.douban.http.HttpManager;
 import com.starry.douban.model.BookBean;
 import com.starry.douban.model.Books;
-import com.starry.douban.model.ErrorModel;
+import com.starry.douban.http.error.ErrorModel;
 import com.starry.douban.util.ToastUtil;
 import com.starry.douban.widget.LoadingDataLayout;
 

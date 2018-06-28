@@ -5,15 +5,16 @@ import android.support.annotation.NonNull;
 
 import com.starry.douban.http.CommonCallback;
 import com.starry.douban.http.CommonParams;
-import com.starry.douban.http.Errors;
+import com.starry.douban.http.error.Errors;
 import com.starry.douban.http.HandlerMain;
 import com.starry.douban.http.HttpManager;
-import com.starry.douban.http.NetworkException;
+import com.starry.douban.http.error.NetworkException;
 import com.starry.douban.log.Logger;
-import com.starry.douban.model.BaseModel;
-import com.starry.douban.model.ErrorModel;
+import com.starry.douban.http.error.ErrorModel;
 import com.starry.douban.util.JsonUtil;
 import com.starry.douban.util.Preconditions;
+
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.Map;
@@ -31,6 +32,10 @@ public class RealRequest {
 
     private final String TAG = getClass().getSimpleName();
 
+    private String code = "code";
+
+    private String msg = "msg";
+
     private Request request;
 
     private CommonParams commonParams;
@@ -47,7 +52,7 @@ public class RealRequest {
      * @param callback 回调对象
      * @return 返回结果
      */
-    public <T extends BaseModel> T execute(CommonCallback<T> callback) {
+    public <T> T execute(CommonCallback<T> callback) {
         logRequest(request.url().toString(), request.method(), commonParams.params());
         Call call = HttpManager.getInstance().getOkHttpClient().newCall(request);
         return execute(call, callback);
@@ -59,7 +64,7 @@ public class RealRequest {
      *
      * @param callback 回调对象
      */
-    public <T extends BaseModel> void enqueue(CommonCallback<T> callback) {
+    public <T> void enqueue(CommonCallback<T> callback) {
         logRequest(request.url().toString(), request.method(), commonParams.params());
         Call call = HttpManager.getInstance().getOkHttpClient().newCall(request);
         enqueue(call, callback);
@@ -103,7 +108,7 @@ public class RealRequest {
      * @param callback 回调对象
      * @param <T>      对象的泛型
      */
-    private <T extends BaseModel> T execute(Call call, final CommonCallback<T> callback) {
+    private <T> T execute(Call call, final CommonCallback<T> callback) {
         callback.onBefore();
         try {
             Response response = call.execute();
@@ -120,7 +125,7 @@ public class RealRequest {
      * @param callback 回调对象
      * @param <T>      对象的泛型
      */
-    private <T extends BaseModel> void enqueue(Call call, final CommonCallback<T> callback) {
+    private <T> void enqueue(Call call, final CommonCallback<T> callback) {
         callback.onBefore();
         call.enqueue(new Callback() {
             @Override
@@ -145,7 +150,7 @@ public class RealRequest {
         }
     }
 
-    private <T extends BaseModel> T onResponseResult(Response response, CommonCallback<T> callback) {
+    private <T> T onResponseResult(Response response, CommonCallback<T> callback) {
         try {
             // 1. check http code
             checkHttpCode(response.code());
@@ -155,13 +160,15 @@ public class RealRequest {
             logResponse(response.request().url().toString(), json);
             response.close(); //To avoid leaking resources
 
-            // 3. parse json to object
-            // T extends BaseModel
+            // 3. check result code
+            JSONObject jsonObject = new JSONObject(json);
+            int responseCode = jsonObject.optInt(code);
+            String responseMsg = jsonObject.optString(msg);
+            checkResultCode(responseCode, responseMsg);
+
+            // 4. parse json to object
             T result = JsonUtil.toObject(json, callback.getType());
             Preconditions.checkNotNull(result);
-
-            // 4. check result code
-            checkResultCode(result.getCode(), result.getMsg());
 
             // 5. call success method
             sendSuccessCallback(result, callback);

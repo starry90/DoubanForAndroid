@@ -2,9 +2,8 @@ package com.starry.douban.http;
 
 
 import com.google.gson.reflect.TypeToken;
+import com.starry.douban.http.error.ErrorModel;
 import com.starry.douban.log.Logger;
-import com.starry.douban.model.BaseModel;
-import com.starry.douban.model.ErrorModel;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -18,9 +17,9 @@ import java.lang.reflect.Type;
  */
 public abstract class CommonCallback<T> {
 
-    public final static CommonCallback<BaseModel> NO_CALLBACK = new CommonCallback<BaseModel>() {
+    public final static CommonCallback<String> NO_CALLBACK = new CommonCallback<String>() {
         @Override
-        public void onSuccess(BaseModel response, Object... obj) {
+        public void onSuccess(String response, Object... obj) {
 
         }
 

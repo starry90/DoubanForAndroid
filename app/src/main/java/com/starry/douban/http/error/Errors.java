@@ -1,4 +1,4 @@
-package com.starry.douban.http;
+package com.starry.douban.http.error;
 
 /**
  * @author Starry Jerry

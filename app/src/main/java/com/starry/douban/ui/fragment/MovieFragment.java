@@ -9,7 +9,7 @@ import com.starry.douban.base.BaseFragment;
 import com.starry.douban.constant.Apis;
 import com.starry.douban.http.CommonCallback;
 import com.starry.douban.http.HttpManager;
-import com.starry.douban.model.ErrorModel;
+import com.starry.douban.http.error.ErrorModel;
 import com.starry.douban.model.MovieBean;
 import com.starry.douban.model.Movies;
 import com.starry.douban.util.ToastUtil;

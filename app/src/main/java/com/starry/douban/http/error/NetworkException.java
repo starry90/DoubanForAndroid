@@ -1,4 +1,4 @@
-package com.starry.douban.http;
+package com.starry.douban.http.error;
 
 import com.google.gson.JsonParseException;
 import com.starry.douban.log.Logger;

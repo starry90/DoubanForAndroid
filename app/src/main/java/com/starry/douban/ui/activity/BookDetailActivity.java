@@ -12,7 +12,7 @@ import com.starry.douban.http.CommonCallback;
 import com.starry.douban.http.HttpManager;
 import com.starry.douban.image.ImageManager;
 import com.starry.douban.model.BookDetail;
-import com.starry.douban.model.ErrorModel;
+import com.starry.douban.http.error.ErrorModel;
 import com.starry.douban.util.ToastUtil;
 
 import java.util.List;

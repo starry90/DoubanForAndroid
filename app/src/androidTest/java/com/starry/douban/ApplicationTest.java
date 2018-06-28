@@ -8,7 +8,7 @@ import com.starry.douban.http.CommonCallback;
 import com.starry.douban.http.HttpManager;
 import com.starry.douban.log.Logger;
 import com.starry.douban.model.BookDetail;
-import com.starry.douban.model.ErrorModel;
+import com.starry.douban.http.error.ErrorModel;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
