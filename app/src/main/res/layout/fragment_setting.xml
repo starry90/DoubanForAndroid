@@ -2,6 +2,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextClock
+        android:id="@+id/tv_setting_hour"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:fontFamily="sans-serif-thin"
+        android:format12Hour="H:mm"
+        android:format24Hour="H:mm"
+        android:gravity="center"
+        android:textColor="@color/colorAccent"
+        android:textSize="72sp"
+        android:textStyle="normal" />
+
+    <TextClock
+        android:id="@+id/tv_setting_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_setting_hour"
+        android:format12Hour="MM月dd日 EEEE"
+        android:format24Hour="MM月dd日 EEEE"
+        android:gravity="center"
+        android:textColor="@color/colorAccent"
+        android:textSize="20sp" />
+
     <TextView
         android:id="@+id/tv_version"
         android:layout_width="wrap_content"
