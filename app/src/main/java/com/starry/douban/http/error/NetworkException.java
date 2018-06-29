@@ -15,6 +15,7 @@ public class NetworkException extends Exception {
     private static String logFormat = "%d --> %s";
 
     private NetworkException(int errorCode, String errorMessage) {
+        super(String.format(logFormat, errorCode, errorMessage));
         this.errorCode = errorCode;
         this.errorMessage = errorMessage;
     }
