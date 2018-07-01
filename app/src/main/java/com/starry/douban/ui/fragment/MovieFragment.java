@@ -7,8 +7,8 @@ import com.starry.douban.R;
 import com.starry.douban.adapter.MovieAdapter;
 import com.starry.douban.base.BaseFragment;
 import com.starry.douban.constant.Apis;
-import com.starry.douban.http.CommonCallback;
 import com.starry.douban.http.HttpManager;
+import com.starry.douban.http.callback.StringCallback;
 import com.starry.douban.http.error.ErrorModel;
 import com.starry.douban.model.MovieBean;
 import com.starry.douban.model.Movies;
@@ -106,7 +106,7 @@ public class MovieFragment extends BaseFragment {
                 .url(url)
                 .params(params)
                 .build()
-                .enqueue(new CommonCallback<Movies>() {
+                .enqueue(new StringCallback<Movies>() {
 
                     @Override
                     public void onSuccess(Movies response, Object... obj) {

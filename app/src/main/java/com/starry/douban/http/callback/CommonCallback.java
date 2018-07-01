@@ -1,4 +1,4 @@
-package com.starry.douban.http;
+package com.starry.douban.http.callback;
 
 
 import com.google.gson.reflect.TypeToken;
@@ -7,6 +7,8 @@ import com.starry.douban.log.Logger;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+
+import okhttp3.Response;
 
 /**
  * 网络请求回调类
@@ -17,7 +19,7 @@ import java.lang.reflect.Type;
  */
 public abstract class CommonCallback<T> {
 
-    public final static CommonCallback<String> NO_CALLBACK = new CommonCallback<String>() {
+    public final static CommonCallback<String> NO_CALLBACK = new StringCallback<String>() {
         @Override
         public void onSuccess(String response, Object... obj) {
 
@@ -34,6 +36,14 @@ public abstract class CommonCallback<T> {
      */
     public void onBefore() {
     }
+
+    /**
+     * parse {@link Response}
+     *
+     * @param response {@link Response}
+     * @throws Exception
+     */
+    public abstract T parseResponse(Response response) throws Exception;
 
     /**
      * @param response 返回的对象
@@ -56,9 +66,10 @@ public abstract class CommonCallback<T> {
 
     /**
      * @param progress 进度
+     * @param total    总长度
      */
-    public void inProgress(float progress) {
-        Logger.d("progress=" + progress);
+    public void inProgress(float progress, long total) {
+        Logger.i("progress=%f total=%d", progress, total);
     }
 
     /**

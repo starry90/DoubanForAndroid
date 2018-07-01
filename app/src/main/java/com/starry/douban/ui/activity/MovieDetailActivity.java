@@ -13,10 +13,10 @@ import com.starry.douban.R;
 import com.starry.douban.adapter.MoviePhotoAdapter;
 import com.starry.douban.base.BaseActivity;
 import com.starry.douban.constant.Apis;
-import com.starry.douban.http.CommonCallback;
 import com.starry.douban.http.HttpManager;
-import com.starry.douban.image.ImageManager;
+import com.starry.douban.http.callback.StringCallback;
 import com.starry.douban.http.error.ErrorModel;
+import com.starry.douban.image.ImageManager;
 import com.starry.douban.model.MovieDetail;
 import com.starry.douban.util.ToastUtil;
 import com.starry.douban.widget.LoadingDataLayout;
@@ -95,7 +95,7 @@ public class MovieDetailActivity extends BaseActivity {
                 .tag(this)
                 .url(url)
                 .build()
-                .enqueue(new CommonCallback<MovieDetail>() {
+                .enqueue(new StringCallback<MovieDetail>() {
 
                     @Override
                     public void onSuccess(MovieDetail response, Object... obj) {

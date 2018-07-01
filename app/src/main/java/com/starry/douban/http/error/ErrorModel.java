@@ -36,4 +36,11 @@ public class ErrorModel {
         return this;
     }
 
+    @Override
+    public String toString() {
+        return "ErrorModel{" +
+                "code=" + code +
+                ", message='" + message + '\'' +
+                '}';
+    }
 }

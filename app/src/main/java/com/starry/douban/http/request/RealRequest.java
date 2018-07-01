@@ -3,18 +3,14 @@ package com.starry.douban.http.request;
 
 import android.support.annotation.NonNull;
 
-import com.starry.douban.http.CommonCallback;
 import com.starry.douban.http.CommonParams;
-import com.starry.douban.http.error.Errors;
 import com.starry.douban.http.HandlerMain;
 import com.starry.douban.http.HttpManager;
+import com.starry.douban.http.callback.CommonCallback;
+import com.starry.douban.http.error.ErrorModel;
+import com.starry.douban.http.error.Errors;
 import com.starry.douban.http.error.NetworkException;
 import com.starry.douban.log.Logger;
-import com.starry.douban.http.error.ErrorModel;
-import com.starry.douban.util.JsonUtil;
-import com.starry.douban.util.Preconditions;
-
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.Map;
@@ -30,11 +26,7 @@ import okhttp3.Response;
  */
 public class RealRequest {
 
-    private final String TAG = getClass().getSimpleName();
-
-    private String code = "code";
-
-    private String msg = "msg";
+    private final String TAG = HttpManager.TAG;
 
     private Request request;
 
@@ -89,21 +81,6 @@ public class RealRequest {
     }
 
     /**
-     * 打印返回报文
-     *
-     * @param url  URL
-     * @param json 返回报文
-     */
-    private void logResponse(String url, String json) {
-        // 日志格式
-        // Response
-        // --> https://api.douban.com/v2/book/search?tag=热门&start=0&count=20
-        // --> {"count":20,"start":0,"total":122,"books":[{"rating":{"max":10,"numRaters":487,……
-        String result = String.format("Response\n >>> %s\n >>> %s", url, json);
-        Logger.i(TAG, result);
-    }
-
-    /**
      * @param call     Call
      * @param callback 回调对象
      * @param <T>      对象的泛型
@@ -146,7 +123,7 @@ public class RealRequest {
         if (call.isCanceled()) {
             sendCanceledCallback(callback);
         } else {
-            sendFailCallback(Errors.Code.NETWORK_UNAVAILABLE, Errors.Message.NETWORK_UNAVAILABLE, callback);
+            sendFailureCallback(Errors.Code.NETWORK_UNAVAILABLE, Errors.Message.NETWORK_UNAVAILABLE, callback);
         }
     }
 
@@ -155,28 +132,19 @@ public class RealRequest {
             // 1. check http code
             checkHttpCode(response.code());
 
-            // 2. print json log
-            String json = response.body().string();
-            logResponse(response.request().url().toString(), json);
-            response.close(); //To avoid leaking resources
+            // 2. parse response
+            T result = callback.parseResponse(response);
 
-            // 3. check result code
-            JSONObject jsonObject = new JSONObject(json);
-            int responseCode = jsonObject.optInt(code);
-            String responseMsg = jsonObject.optString(msg);
-            checkResultCode(responseCode, responseMsg);
-
-            // 4. parse json to object
-            T result = JsonUtil.toObject(json, callback.getType());
-            Preconditions.checkNotNull(result);
-
-            // 5. call success method
+            // 3. call success method
             sendSuccessCallback(result, callback);
             return result;
         } catch (Exception ex) {
+            // 1. print stack trace
             ex.printStackTrace();
+            // 2. Exception to NetworkException
             NetworkException netEx = NetworkException.newException(ex);
-            sendFailCallback(netEx.getErrorCode(), netEx.getErrorMessage(), callback);
+            // 3. call fail method
+            sendFailureCallback(netEx.getErrorCode(), netEx.getErrorMessage(), callback);
         }
         return null;
     }
@@ -193,20 +161,7 @@ public class RealRequest {
         }
     }
 
-    /**
-     * 检查返回结果code
-     *
-     * @param code    错误码
-     * @param message 错误信息
-     * @throws NetworkException 自定义网络异常
-     */
-    private void checkResultCode(int code, String message) throws NetworkException {
-        if (code != 0) {// 服务返回结果code不等于0，请求得到的数据有问题
-            throw NetworkException.newException(code, message);
-        }
-    }
-
-    private void sendFailCallback(final int code, final String message, final CommonCallback callback) {
+    private void sendFailureCallback(final int code, final String message, final CommonCallback callback) {
         HandlerMain.getHandler().post(new Runnable() {
             @Override
             public void run() {

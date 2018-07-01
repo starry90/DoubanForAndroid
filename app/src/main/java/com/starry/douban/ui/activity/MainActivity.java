@@ -69,7 +69,7 @@ public class MainActivity extends BaseActivity {
         viewpagerMain.setAdapter(adapter);
 
         argbEvaluatorUtil.addTab(rbMainHome, rbtnMainBook, rbtnMainSetting);
-        argbEvaluatorUtil.addTabDrawable(R.drawable.selector_main_home,R.drawable.selector_main_movie,R.drawable.selector_main_setting);
+        argbEvaluatorUtil.addTabDrawable(R.drawable.selector_main_home, R.drawable.selector_main_movie, R.drawable.selector_main_setting);
     }
 
     @Override

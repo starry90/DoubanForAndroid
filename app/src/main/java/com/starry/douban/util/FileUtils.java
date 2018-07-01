@@ -25,6 +25,10 @@ public class FileUtils {
         return buildPath(Environment.getExternalStorageDirectory(), Common.DIR_ROOT, Common.DIR_CRASH);
     }
 
+    public static File getFileDir() {
+        return buildPath(Environment.getExternalStorageDirectory(), Common.DIR_ROOT, Common.DIR_FILE);
+    }
+
     public static File buildPath(File base, String... segments) {
         File cur = base;
         for (String segment : segments) {

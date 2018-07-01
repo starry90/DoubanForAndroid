@@ -7,11 +7,11 @@ import com.starry.douban.R;
 import com.starry.douban.adapter.BookAdapter;
 import com.starry.douban.base.BaseFragment;
 import com.starry.douban.constant.Apis;
-import com.starry.douban.http.CommonCallback;
 import com.starry.douban.http.HttpManager;
+import com.starry.douban.http.callback.StringCallback;
+import com.starry.douban.http.error.ErrorModel;
 import com.starry.douban.model.BookBean;
 import com.starry.douban.model.Books;
-import com.starry.douban.http.error.ErrorModel;
 import com.starry.douban.util.ToastUtil;
 import com.starry.douban.widget.LoadingDataLayout;
 
@@ -80,7 +80,7 @@ public class HomeFragment extends BaseFragment {
                 .url(Apis.BookSearch)
                 .params(params)
                 .build()
-                .enqueue(new CommonCallback<Books>() {
+                .enqueue(new StringCallback<Books>() {
 
                     @Override
                     public void onSuccess(Books response, Object... obj) {

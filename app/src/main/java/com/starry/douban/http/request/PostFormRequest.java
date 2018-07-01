@@ -1,7 +1,7 @@
 package com.starry.douban.http.request;
 
 
-import com.starry.douban.http.CommonCallback;
+import com.starry.douban.http.callback.CommonCallback;
 import com.starry.douban.http.CommonParams;
 import com.starry.douban.http.HandlerMain;
 
@@ -82,7 +82,7 @@ public class PostFormRequest extends OKHttpRequest {
                 HandlerMain.getHandler().post(new Runnable() {
                     @Override
                     public void run() {
-                        CommonCallback.NO_CALLBACK.inProgress(bytesWritten * 1.0f / contentLength);
+                        CommonCallback.NO_CALLBACK.inProgress(bytesWritten * 1.0f / contentLength, contentLength);
                     }
                 });
 

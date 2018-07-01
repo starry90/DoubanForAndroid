@@ -15,6 +15,8 @@ import okhttp3.OkHttpClient;
  */
 public class HttpManager {
 
+    public static final String TAG = "HttpManager";
+
     /**
      * 超时时间
      */

@@ -53,7 +53,7 @@ public class BaseApp {
             @Override
             public void uncaughtException(Thread thread, Throwable ex) {
                 ex.printStackTrace();
-                String crashFile = String.format("Crash-%s.txt", TimeUtils.date2String(new Date()));
+                String crashFile = String.format("%s.txt", TimeUtils.date2String(new Date()));
                 FileUtils.saveCrashInfo(ex, FileUtils.getCrashDir(), crashFile);
                 android.os.Process.killProcess(android.os.Process.myPid());
             }

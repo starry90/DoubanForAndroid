@@ -7,8 +7,17 @@ package com.starry.douban.constant;
 
 public class Common {
 
-    public static final String DIR_ROOT = "dou-ban";
-
+    /**
+     * 根目录
+     */
+    public static final String DIR_ROOT = "DouBanForAndroid";
+    /**
+     * 崩溃日志目录
+     */
     public static final String DIR_CRASH = "crash";
+    /**
+     * 文件下载目录
+     */
+    public static final String DIR_FILE = "file";
 
 }
