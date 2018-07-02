@@ -19,27 +19,28 @@ if platform.system() != 'Windows':
 print out_path
 
 
-def copy_file_from_dir(dir_path):
-    for i in os.listdir(dir_path):
-        i_path = os.path.join(dir_path, i)
+def copy_file(source_path):
+    for i in os.listdir(source_path):
+        i_path = os.path.join(source_path, i)
         if os.path.isfile(i_path):
             print i_path
             if 'mapping.txt' in i or 'apk' in i:
                 shutil.copy(i_path, out_path)
         else:
-            copy_file_from_dir(i_path)
+            copy_file(i_path)
 
 
-def file_md5_from_dif(dir_path):
+def file_size_md5(source_path):
     build_info = os.path.join(out_path, 'build-info.txt')
-    for i in os.listdir(dir_path):
-        i_path = os.path.join(dir_path, i)
+    for i in os.listdir(source_path):
+        i_path = os.path.join(source_path, i)
         if os.path.isfile(i_path) and 'apk' in i:
             with open(i_path, 'rb') as f:
                 md5 = hashlib.md5(f.read()).hexdigest()
+                file_size = os.path.getsize(i_path)
                 print md5, i
                 with open(build_info, 'a+') as build_file:
-                    build_file.writelines('%s %s\n' % (md5, i))
+                    build_file.writelines('%s %s %d\n' % (md5, i, file_size))
 
 
 def build_apk():
@@ -65,9 +66,9 @@ def build_apk():
     build_code = os.system(gradlew_build)
     if build_code == 0:
         # copy *.apk and mapping.txt
-        copy_file_from_dir(build_path)
-        # get apk file md5
-        file_md5_from_dif(out_path)
+        copy_file(build_path)
+        # get apk file md5 and size
+        file_size_md5(out_path)
 
     print '>>> Python build ', build_code == 0
     print '>>> Python build apk end'
