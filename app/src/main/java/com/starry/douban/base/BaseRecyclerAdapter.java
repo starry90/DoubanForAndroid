@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.starry.douban.image.ImageManager;
-import com.starry.douban.util.AnimationController;
 
 import java.util.List;
 
@@ -25,8 +24,6 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
 
     protected List<T> mBeans;
     protected Context mContext;
-    protected boolean mAnimateItems = true;
-    protected int mLastAnimatedPosition = -1;
 
     public BaseRecyclerAdapter(Context context, List<T> beans) {
         mContext = context;
@@ -40,12 +37,8 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
         return new RecyclerViewHolder(view);
     }
 
-
     @Override
     public void onBindViewHolder(final BaseRecyclerAdapter.RecyclerViewHolder holder, final int position) {
-        //TODO 快速上拉加载更多动画时item有视图重叠bug
-//        runEnterAnimation(holder.itemView, position);
-
         final T bean = mBeans.get(position);
         onBindData(holder, bean, position);
 
@@ -122,22 +115,6 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
         return mBeans;
     }
 
-    /***
-     * item的加载动画
-     *
-     * @param view
-     * @param position
-     */
-    private void runEnterAnimation(final View view, int position) {
-        if (!mAnimateItems) {
-            return;
-        }
-        if (position > mLastAnimatedPosition) {
-            mLastAnimatedPosition = position;
-            AnimationController.scaleIn(view, 300, 100);
-        }
-    }
-
     /**
      * ItemView的单击事件(如果需要，重写此方法就行)
      *
@@ -183,12 +160,10 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
     public class RecyclerViewHolder extends
             RecyclerView.ViewHolder {
         private final SparseArray<View> viewHolder;
-        public View itemView;
 
         private RecyclerViewHolder(View itemView) {
             super(itemView);
             this.viewHolder = new SparseArray<>();
-            this.itemView = itemView;
         }
 
         public <T extends View> T getView(int viewId) {
