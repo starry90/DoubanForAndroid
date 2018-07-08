@@ -60,9 +60,9 @@ dependencies {
     implementation deps.design
     implementation deps.cardview
     //test
-    implementation deps.junit
-    implementation deps.runner
-    implementation deps.espresso
+    testImplementation deps.junit
+    androidTestImplementation  deps.runner
+    androidTestImplementation  deps.espresso
     //others
     implementation deps.okhttp3
     annotationProcessor deps.butterknifeCompiler
