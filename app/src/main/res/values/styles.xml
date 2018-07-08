@@ -1,8 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Base.AppTheme">
-    </style>
+    <style name="AppTheme" parent="Base.AppTheme"></style>
 
     <!-- Base application theme. -->
     <style name="Base.AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
@@ -30,5 +29,17 @@
         <item name="android:orientation">vertical</item>
     </style>
 
+    <!-- 水平线-->
+    <style name="HorizontalDivideLine">
+        <item name="android:layout_height">1px</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:background">@color/divider_color</item>
+    </style>
+    <!-- 垂直线-->
+    <style name="VerticalDivideLine">
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">1px</item>
+        <item name="android:background">@color/divider_color</item>
+    </style>
 
 </resources>

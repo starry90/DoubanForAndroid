@@ -1,14 +1,16 @@
 package com.starry.douban.ui.activity;
 
+import android.content.Intent;
 import android.transition.Slide;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.TextView;
 
 import com.starry.douban.BuildConfig;
 import com.starry.douban.R;
 import com.starry.douban.base.BaseActivity;
-
-import java.util.Locale;
+import com.starry.douban.constant.PreferencesName;
+import com.starry.douban.util.SPUtil;
 
 import butterknife.BindView;
 
@@ -19,18 +21,22 @@ import butterknife.BindView;
  * @since 2018/5/25.
  */
 
-public class AboutActivity extends BaseActivity {
+public class AboutActivity extends BaseActivity implements View.OnClickListener {
 
-    @BindView(R.id.tv_about_github)
-    TextView tvAboutGithub;
     @BindView(R.id.tv_about_app_name)
     TextView tvAboutAppName;
     @BindView(R.id.tv_about_build)
     TextView tvAboutBuild;
-    @BindView(R.id.tv_about_version_code)
-    TextView tvAboutVersionCode;
     @BindView(R.id.tv_version_name)
     TextView tvVersionName;
+    @BindView(R.id.tv_about_version_update)
+    TextView tvAboutVersionUpdate;
+    @BindView(R.id.tv_about_update_hint)
+    TextView tvAboutUpdateHint;
+    @BindView(R.id.tv_about_github)
+    TextView tvAboutGithub;
+
+    private boolean latestVersion;
 
     @Override
     public int getLayoutResID() {
@@ -41,9 +47,12 @@ public class AboutActivity extends BaseActivity {
     public void initData() {
         setTitle("关于");
 
-        String versionCode = "VersionCode %d";
-        tvAboutVersionCode.setText(String.format(Locale.getDefault(), versionCode, BuildConfig.VERSION_CODE));
-        String versionName = "VersionName %s";
+        latestVersion = SPUtil.getInt(PreferencesName.APP_UPDATE_VERSION_CODE) <= BuildConfig.VERSION_CODE;
+        if (latestVersion) {
+            tvAboutUpdateHint.setVisibility(View.VISIBLE);
+        }
+
+        String versionName = "V %s";
         tvVersionName.setText(String.format(versionName, BuildConfig.VERSION_NAME));
         String buildTime = "BuildTime %s";
         tvAboutBuild.setText(String.format(buildTime, BuildConfig.BUILD_TIME));
@@ -52,8 +61,29 @@ public class AboutActivity extends BaseActivity {
         slide.addTarget(tvAboutGithub);
         slide.addTarget(tvAboutAppName);
         slide.addTarget(tvAboutBuild);
-        slide.addTarget(tvAboutVersionCode);
         getWindow().setEnterTransition(slide);
     }
 
+    @Override
+    public void setListener() {
+        super.setListener();
+        tvAboutVersionUpdate.setOnClickListener(this);
+        tvAboutGithub.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.tv_about_version_update:
+                if (!latestVersion) {
+                    startActivity(new Intent(this, AppUpdateActivity.class));
+                }
+                break;
+
+            case R.id.tv_about_github:
+
+                break;
+
+        }
+    }
 }

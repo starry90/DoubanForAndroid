@@ -7,6 +7,8 @@ package com.starry.douban.constant;
  */
 public class Apis {
 
+    public static final String APP_UPDATE = "https://github.com/starry90/DoubanForAndroid/raw/master/data/update.txt";
+
     public static final String HOST_DOUBAN = "https://api.douban.com/";
 
     /**

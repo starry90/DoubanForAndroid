@@ -74,6 +74,11 @@ public abstract class FileCallback extends CommonCallback<File> {
             }
             fos.flush();
             return file;
+        } catch (Exception ex) {
+            if (file.exists()) {
+                file.delete();
+            }
+            throw ex;
         } finally {
             close(is);
             close(response);

@@ -9,6 +9,16 @@
 
     <!-- 页面的背景颜色 -->
     <color name="activity_bg">#F5F5F5</color>
+    <!-- View背景颜色 -->
+    <color name="view_bg">#ffffff</color>
+    <!-- 分割线颜色 -->
+    <color name="divider_color">#dddddd</color>
+    <!-- 一级字体颜色，主色 -->
+    <color name="text_color_level_1">#333333</color>
+    <!-- 二级字体颜色 -->
+    <color name="text_color_level_2">#888888</color>
+    <!-- 三级字体颜色 -->
+    <color name="text_color_level_3">#bbbbbb</color>
 
     <color name="white">#FFFFFF</color>
     <color name="black">#000</color>

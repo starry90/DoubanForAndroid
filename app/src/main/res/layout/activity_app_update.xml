@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/activity_bg"
+    android:orientation="vertical">
+
+    <include
+        android:id="@id/toolbar"
+        layout="@layout/toolbar_layout" />
+
+    <View
+        style="@style/HorizontalDivideLine"
+        android:layout_marginTop="20dp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/view_bg"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/iv_app_update"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/ic_launcher" />
+
+        <TextView
+            android:id="@+id/tv_app_update_version"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/iv_app_update"
+            android:layout_toRightOf="@id/iv_app_update"
+            android:textColor="@color/text_color_level_1"
+            android:textSize="16sp"
+            tools:text="App 1.3.2" />
+
+        <TextView
+            android:id="@+id/tv_app_update_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/iv_app_update"
+            android:layout_toRightOf="@id/iv_app_update"
+            android:textColor="@color/text_color_level_1"
+            android:textSize="16sp"
+            tools:text="1.6M" />
+
+
+        <ProgressBar
+            android:id="@+id/pb_app_update"
+            style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/iv_app_update"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+    </RelativeLayout>
+
+    <View style="@style/HorizontalDivideLine" />
+
+    <TextView
+        android:id="@+id/tv_app_update_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ripple_view_white_bg"
+        android:gravity="center_vertical"
+        android:padding="10dp"
+        android:textColor="@color/text_color_level_1"
+        tools:text="有新版了，快更新吧" />
+
+    <TextView
+        android:id="@+id/tv_app_update_other"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/view_bg"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:textColor="@color/text_color_level_1"
+        android:visibility="gone"
+        tools:text="嗟夫！予尝求古仁人之心，或异二者之为，何哉？不以物喜，不以己悲；居庙堂之高则忧其民；处江湖之远则忧其君。是进亦忧，退亦忧。然则何时而乐耶？其必曰“先天下之忧而忧，后天下之乐而乐”乎。噫！微斯人，吾谁与归？"
+        tools:visibility="visible" />
+
+    <View style="@style/HorizontalDivideLine" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@color/view_bg">
+
+        <TextView
+            android:id="@+id/tv_app_update_install"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:background="@drawable/ripple_view_white_bg"
+            android:gravity="center_vertical"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:textColor="@color/colorPrimary"
+            tools:text="下载并安装" />
+
+        <View
+            style="@style/HorizontalDivideLine"
+            android:layout_alignParentTop="true" />
+
+        <View
+            style="@style/HorizontalDivideLine"
+            android:layout_below="@id/tv_app_update_install" />
+
+    </RelativeLayout>
+
+
+</LinearLayout>

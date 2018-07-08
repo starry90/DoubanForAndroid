@@ -2,8 +2,10 @@ package com.starry.douban.util;
 
 import android.os.Build;
 import android.os.Environment;
+import android.text.format.Formatter;
 
 import com.starry.douban.BuildConfig;
+import com.starry.douban.base.BaseApp;
 import com.starry.douban.constant.Common;
 import com.starry.douban.log.Logger;
 
@@ -88,5 +90,16 @@ public class FileUtils {
         } finally {
             IOUtils.close(writer);
         }
+    }
+
+    /**
+     * 根据文件byte大小格式化成 KB, MB, 等等<p>
+     * Formats a content size to be in the form of bytes, kilobytes, megabytes, etc.
+     *
+     * @param sizeBytes size value to be formatted, in bytes
+     * @return 12.99 MB
+     */
+    public static String formatFileSize(long sizeBytes) {
+        return Formatter.formatFileSize(BaseApp.getContext(), sizeBytes);
     }
 }
