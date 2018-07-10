@@ -53,6 +53,11 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
+    configurations.all {
+        // add leakcanary, conflict with dependency 'com.android.support:support-annotations'
+        // 26.0.2 adn 27.1.1 differ, force used my dependency annotations version(26.0.2)
+        resolutionStrategy.force deps.annotations
+    }
     //android support
     implementation deps.appcompat
     implementation deps.support
@@ -61,14 +66,16 @@ dependencies {
     implementation deps.cardview
     //test
     testImplementation deps.junit
-    androidTestImplementation  deps.runner
-    androidTestImplementation  deps.espresso
+    androidTestImplementation deps.runner
+    androidTestImplementation deps.espresso
     //others
     implementation deps.okhttp3
     annotationProcessor deps.butterknifeCompiler
     implementation deps.butterknife
     implementation deps.glide
     implementation deps.gson
+    debugImplementation deps.leakcanary
+    releaseImplementation deps.leakcanaryNoOp
     //module
     implementation project(':ProgressIndicator')
     implementation project(':XRecyclerView')

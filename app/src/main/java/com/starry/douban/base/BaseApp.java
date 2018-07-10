@@ -3,6 +3,7 @@ package com.starry.douban.base;
 import android.app.Application;
 import android.content.Context;
 
+import com.squareup.leakcanary.LeakCanary;
 import com.starry.douban.util.FileUtils;
 import com.starry.douban.util.TimeUtils;
 
@@ -46,6 +47,14 @@ public class BaseApp {
     }
 
     public void onCreate(Application application) {
+        if (LeakCanary.isInAnalyzerProcess(application)) {
+            // This process is dedicated to LeakCanary for heap analysis.
+            // You should not init your app in this process.
+            return;
+        }
+        LeakCanary.install(application);
+        // Normal app init code...
+
         lifeCallback = new ActivityCallback();
         application.registerActivityLifecycleCallbacks(lifeCallback);
 
