@@ -144,8 +144,7 @@ public class AppUpdateActivity extends BaseActivity implements View.OnClickListe
         }
 
         pbAppUpdate.setVisibility(View.VISIBLE);
-        HttpManager.get()
-                .url(url)
+        HttpManager.get(url)
                 .tag(this)
                 .build()
                 .enqueue(new FileCallback(dirPath, fileName) {
