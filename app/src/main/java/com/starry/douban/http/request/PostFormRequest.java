@@ -1,9 +1,9 @@
 package com.starry.douban.http.request;
 
 
+import com.starry.douban.http.MainHandler;
 import com.starry.douban.http.callback.CommonCallback;
 import com.starry.douban.http.CommonParams;
-import com.starry.douban.http.HandlerMain;
 
 import java.net.FileNameMap;
 import java.net.URLConnection;
@@ -78,14 +78,12 @@ public class PostFormRequest extends OKHttpRequest {
         return new CountingRequestBody(requestBody, new CountingRequestBody.Listener() {
             @Override
             public void onRequestProgress(final long bytesWritten, final long contentLength) {
-
-                HandlerMain.getHandler().post(new Runnable() {
+                MainHandler.post(new Runnable() {
                     @Override
                     public void run() {
                         CommonCallback.NO_CALLBACK.inProgress(bytesWritten * 1.0f / contentLength, contentLength);
                     }
                 });
-
             }
         });
     }

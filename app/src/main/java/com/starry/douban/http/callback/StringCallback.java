@@ -1,10 +1,9 @@
 package com.starry.douban.http.callback;
 
 import com.starry.douban.http.HttpManager;
+import com.starry.douban.http.HttpUtil;
 import com.starry.douban.http.error.NetworkException;
 import com.starry.douban.log.Logger;
-import com.starry.douban.util.JsonUtil;
-import com.starry.douban.util.Preconditions;
 
 import org.json.JSONObject;
 
@@ -37,8 +36,8 @@ public abstract class StringCallback<T> extends CommonCallback<T> {
         checkResultCode(responseCode, responseMsg);
 
         // 3. parse json to object
-        T result = JsonUtil.toObject(json, getType());
-        Preconditions.checkNotNull(result);
+        T result = HttpUtil.toObject(json, getType());
+        HttpUtil.checkNotNull(result);
         return result;
     }
 

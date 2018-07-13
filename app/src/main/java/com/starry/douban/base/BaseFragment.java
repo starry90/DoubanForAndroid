@@ -3,6 +3,7 @@ package com.starry.douban.base;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -10,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.starry.douban.R;
-import com.starry.douban.http.HandlerMain;
 import com.starry.douban.widget.LoadingDataLayout;
 
 import butterknife.BindView;
@@ -68,7 +68,7 @@ public abstract class BaseFragment extends Fragment implements IBaseUI {
         initLoadingDataLayout();
 
         //保证onCreate方法第一时间执行完，显示UI界面
-        HandlerMain.getHandler().post(new Runnable() {
+        new Handler().post(new Runnable() {
             @Override
             public void run() {
                 initData();

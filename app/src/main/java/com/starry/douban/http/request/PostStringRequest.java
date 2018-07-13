@@ -1,6 +1,6 @@
 package com.starry.douban.http.request;
 
-import com.starry.douban.util.JsonUtil;
+import com.starry.douban.http.HttpUtil;
 
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -20,7 +20,7 @@ public class PostStringRequest extends OKHttpRequest {
         //优先使用content字段，content为空则使用params字段
         String content = commonParams.content();
         if (content == null || content.length() == 0) {
-            content = JsonUtil.toJson(commonParams.params());
+            content = HttpUtil.toJson(commonParams.params());
         }
         return content;
     }

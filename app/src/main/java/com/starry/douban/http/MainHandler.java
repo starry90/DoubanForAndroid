@@ -9,23 +9,19 @@ import android.os.Looper;
  * @author Starry Jerry
  * @since 2017/10/22.
  */
-public class HandlerMain {
+public class MainHandler {
 
     private Handler mHandler;
 
-    private HandlerMain() {
+    private MainHandler() {
         mHandler = new Handler(Looper.getMainLooper());
     }
 
-    public static HandlerMain getInstance() {
-        return Holder.INSTANCE;
-    }
-
     private static class Holder {
-        private final static HandlerMain INSTANCE = new HandlerMain();
+        private final static MainHandler INSTANCE = new MainHandler();
     }
 
-    public static Handler getHandler() {
-        return getInstance().mHandler;
+    public static void post(Runnable runnable) {
+        Holder.INSTANCE.mHandler.post(runnable);
     }
 }
