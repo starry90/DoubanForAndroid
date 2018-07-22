@@ -45,9 +45,8 @@ public class ApplicationTest {
             @Override
             public void run() {
                 Logger.e(TAG, "http start");
-                BookDetail bookDetail = HttpManager.get()
+                BookDetail bookDetail = HttpManager.get(url)
                         .tag(this)
-                        .url(url)
                         .build()
                         .execute(new StringCallback<BookDetail>() {
 
@@ -84,10 +83,9 @@ public class ApplicationTest {
     @Test
     public void download() {
         String url = "http://img.hb.aicdn.com/1b4494daa59e72ead4d5db77cf8b8216ff6f82951b0ca3-2l1uOm_fw658";
-        HttpManager.get()
-                .url(url)
+        HttpManager.get(url)
                 .build()
-                .enqueue(new FileCallback(FileUtils.getFileDir().getAbsolutePath(), "andy.jpg") {
+                .enqueue(new FileCallback(FileUtils.buildPath().getAbsolutePath(), "andy.jpg") {
                     @Override
                     public void onSuccess(File response, Object... obj) {
                         Logger.i(TAG, response.getAbsolutePath());

@@ -4,9 +4,11 @@ import android.app.Application;
 import android.content.Context;
 
 import com.squareup.leakcanary.LeakCanary;
+import com.starry.douban.constant.Common;
 import com.starry.douban.util.FileUtils;
 import com.starry.douban.util.TimeUtils;
 
+import java.io.File;
 import java.util.Date;
 
 /**
@@ -46,6 +48,14 @@ public class BaseApp {
         lifeCallback.finishAll();
     }
 
+    public static File getCrashDir() {
+        return FileUtils.buildPath(Common.DIR_ROOT, Common.DIR_CRASH);
+    }
+
+    public static File getDownloadDir() {
+        return FileUtils.buildPath(getContext().getExternalFilesDir(""), Common.DIR_DOWNLOAD);
+    }
+
     public void onCreate(Application application) {
         if (LeakCanary.isInAnalyzerProcess(application)) {
             // This process is dedicated to LeakCanary for heap analysis.
@@ -63,7 +73,7 @@ public class BaseApp {
             public void uncaughtException(Thread thread, Throwable ex) {
                 ex.printStackTrace();
                 String crashFile = String.format("%s.txt", TimeUtils.date2String(new Date()));
-                FileUtils.saveCrashInfo(ex, FileUtils.getCrashDir(), crashFile);
+                FileUtils.saveCrashInfo(ex, getCrashDir(), crashFile);
                 android.os.Process.killProcess(android.os.Process.myPid());
             }
         });

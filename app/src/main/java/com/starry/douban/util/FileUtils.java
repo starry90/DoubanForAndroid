@@ -6,7 +6,6 @@ import android.text.format.Formatter;
 
 import com.starry.douban.BuildConfig;
 import com.starry.douban.base.BaseApp;
-import com.starry.douban.constant.Common;
 import com.starry.douban.log.Logger;
 
 import java.io.File;
@@ -23,12 +22,8 @@ import java.lang.reflect.Field;
 
 public class FileUtils {
 
-    public static File getCrashDir() {
-        return buildPath(Environment.getExternalStorageDirectory(), Common.DIR_ROOT, Common.DIR_CRASH);
-    }
-
-    public static File getFileDir() {
-        return buildPath(Environment.getExternalStorageDirectory(), Common.DIR_ROOT, Common.DIR_FILE);
+    public static File buildPath(String... segments) {
+        return buildPath(Environment.getExternalStorageDirectory(), segments);
     }
 
     public static File buildPath(File base, String... segments) {

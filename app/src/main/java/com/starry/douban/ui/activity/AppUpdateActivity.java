@@ -67,7 +67,7 @@ public class AppUpdateActivity extends BaseActivity implements View.OnClickListe
     @Override
     protected void onResume() {
         super.onResume();
-        dirPath = FileUtils.getFileDir().getAbsolutePath();
+        dirPath = BaseApp.getDownloadDir().getAbsolutePath();
         fileName = String.format("db-%s-release.apk", versionFull);
         File file = new File(dirPath, fileName);
         checkFile(file);
