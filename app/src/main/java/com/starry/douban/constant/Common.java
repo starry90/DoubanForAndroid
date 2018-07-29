@@ -20,4 +20,6 @@ public class Common {
      */
     public static final String DIR_DOWNLOAD = "download";
 
+    public static final String FILE_PROVIDER_AUTHORITY = "com.starry.douban.fileprovider";
+
 }

@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.starry.douban.R;
 import com.starry.douban.base.BaseActivity;
 import com.starry.douban.base.BaseApp;
+import com.starry.douban.constant.Common;
 import com.starry.douban.constant.PreferencesName;
 import com.starry.douban.http.HttpManager;
 import com.starry.douban.http.callback.FileCallback;
@@ -167,6 +168,6 @@ public class AppUpdateActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void installApp(File file) {
-        AppUtil.installApk(BaseApp.getContext(), file.getAbsolutePath());
+        AppUtil.installApk(BaseApp.getContext(), Common.FILE_PROVIDER_AUTHORITY, file.getAbsolutePath());
     }
 }
