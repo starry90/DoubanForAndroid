@@ -74,8 +74,10 @@ dependencies {
     implementation deps.butterknife
     implementation deps.glide
     implementation deps.gson
-    debugImplementation deps.leakcanary
-    releaseImplementation deps.leakcanaryNoOp
+    debugImplementation deps.leakcanaryDebug
+    releaseImplementation deps.leakcanaryRelease
+    debugImplementation deps.anrDebug
+    releaseImplementation deps.anrRelease
     //module
     implementation project(':ProgressIndicator')
     implementation project(':XRecyclerView')

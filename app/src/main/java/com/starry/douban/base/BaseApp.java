@@ -3,6 +3,7 @@ package com.starry.douban.base;
 import android.app.Application;
 import android.content.Context;
 
+import com.github.moduth.blockcanary.BlockCanary;
 import com.squareup.leakcanary.LeakCanary;
 import com.starry.douban.constant.Common;
 import com.starry.douban.util.FileUtils;
@@ -64,6 +65,7 @@ public class BaseApp {
         }
         LeakCanary.install(application);
         // Normal app init code...
+        BlockCanary.install(application, new AppBlockCanaryContext(context)).start();
 
         lifeCallback = new ActivityCallback();
         application.registerActivityLifecycleCallbacks(lifeCallback);
