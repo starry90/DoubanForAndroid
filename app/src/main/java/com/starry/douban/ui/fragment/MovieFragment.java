@@ -101,9 +101,8 @@ public class MovieFragment extends BaseFragment {
     public void loadData() {
         params.put("start", start + "");
         params.put("count", count + "");
-        HttpManager.get()
+        HttpManager.get(url)
                 .tag(this)
-                .url(url)
                 .params(params)
                 .build()
                 .enqueue(new StringCallback<Movies>() {

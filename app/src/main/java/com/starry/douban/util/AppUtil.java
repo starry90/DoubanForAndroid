@@ -91,12 +91,13 @@ public class AppUtil {
     }
 
     // 安装apk
-    public static void installApk(Context context, String apkPath) {
+    public static void installApk(Context context, String authority, String apkPath) {
         File file = new File(apkPath);
         Intent intent = new Intent();
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.setAction(Intent.ACTION_VIEW);
-        intent.setDataAndType(Uri.parse("file://" + file), "application/vnd.android.package-archive");
+        Uri uri = FileProviderUtil.getUriForFile(context, authority, file, intent);
+        intent.setDataAndType(uri, "application/vnd.android.package-archive");
         context.startActivity(intent);
     }
 

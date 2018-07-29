@@ -42,8 +42,7 @@ public class SettingFragment extends BaseFragment {
     @Override
     public void onLazyLoadingData() {
         super.onLazyLoadingData();
-        HttpManager.get()
-                .url(Apis.APP_UPDATE)
+        HttpManager.get(Apis.APP_UPDATE)
                 .build()
                 .enqueue(new StringCallback<AppUpdate>() {
                     @Override

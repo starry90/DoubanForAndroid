@@ -75,9 +75,8 @@ public class HomeFragment extends BaseFragment {
         params.put("start", start + "");
         params.put("count", count + "");
 
-        HttpManager.get()
+        HttpManager.get(Apis.BookSearch)
                 .tag(this)
-                .url(Apis.BookSearch)
                 .params(params)
                 .build()
                 .enqueue(new StringCallback<Books>() {

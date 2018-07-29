@@ -11,6 +11,16 @@ public final class Logger {
     private Logger() {
     }
 
+    /**
+     * 初始化
+     * @param methodCount 打印方法堆栈层数
+     * @param showThreadInfo 是否显示线程信息
+     * @param methodOffset 方法堆栈偏移量
+     */
+    public static void initSettings(int methodCount, boolean showThreadInfo, int methodOffset) {
+        printer.getSettings().initSettings(methodCount, showThreadInfo, methodOffset);
+    }
+
     public static void clear() {
         printer.clear();
         printer = null;
@@ -70,16 +80,16 @@ public final class Logger {
         printer.e(throwable, message, args);
     }
 
-    public static Printer t(String tag) {
-        return printer.t(tag, printer.getSettings().getMethodCount());
+    public static void t(String tag) {
+        printer.t(tag, printer.getSettings().getMethodCount());
     }
 
-    public static Printer t(int methodCount) {
-        return printer.t(null, methodCount);
+    public static void t(int methodCount) {
+        printer.t(null, methodCount);
     }
 
-    public static Printer t(String tag, int methodCount) {
-        return printer.t(tag, methodCount);
+    public static void t(String tag, int methodCount) {
+        printer.t(tag, methodCount);
     }
 
     public static void wtf(String message, Object... args) {

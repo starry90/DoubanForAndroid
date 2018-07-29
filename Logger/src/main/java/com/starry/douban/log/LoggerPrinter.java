@@ -22,13 +22,64 @@ import javax.xml.transform.stream.StreamSource;
  * Logger is a wrapper for logging utils
  * But more pretty, simple and powerful
  */
-final class LoggerPrinter implements Printer {
+final class LoggerPrinter {
+
+    public enum LogLevel {
+
+        /**
+         * Prints all logs
+         */
+        FULL,
+
+        /**
+         * No log will be printed
+         */
+        NONE
+    }
+
+    public class Settings {
+
+        private int methodCount = 1;
+        private boolean showThreadInfo = true;
+        private int methodOffset = 0;
+
+        public void initSettings(int methodCount, boolean showThreadInfo, int methodOffset) {
+            this.methodCount = methodCount;
+            this.showThreadInfo = showThreadInfo;
+            this.methodOffset = methodOffset;
+        }
+
+        /**
+         * Determines how logs will printed
+         */
+        private LogLevel logLevel = LogLevel.FULL;
+
+        public int getMethodCount() {
+            return methodCount;
+        }
+
+        public boolean isShowThreadInfo() {
+            return showThreadInfo;
+        }
+
+        public LogLevel getLogLevel() {
+            if (!BuildConfig.DEBUG) {//  No log will be printed for release environment
+                logLevel = LogLevel.NONE;
+            }
+            return logLevel;
+        }
+
+        public int getMethodOffset() {
+            return methodOffset;
+        }
+
+    }
 
     /**
      * tag is used for the Log, the name is a little different
      * in order to differentiate the logs easily with the filter
      */
-    private String mTag = "J_LOGGER";
+    private String mTag = "LOGGER";
 
     private static final int VERBOSE = 2;
     private static final int DEBUG = 3;
@@ -53,19 +104,6 @@ final class LoggerPrinter implements Printer {
      * The minimum stack trace index, starts at this class after two native calls.
      */
     private static final int MIN_STACK_OFFSET = 3;
-//    /**
-//     * Drawing toolbox
-//     */
-//    private static final char TOP_LEFT_CORNER = '╔';
-//    private static final char BOTTOM_LEFT_CORNER = '╚';
-//    private static final char MIDDLE_CORNER = '╟';
-//    private static final char HORIZONTAL_DOUBLE_LINE = '║';
-//    private static final String DOUBLE_DIVIDER = "════════════════════════════════════════════";
-//    private static final String SINGLE_DIVIDER = "────────────────────────────────────────────";
-//    private static final String TOP_BORDER = TOP_LEFT_CORNER + DOUBLE_DIVIDER + DOUBLE_DIVIDER;
-//    private static final String BOTTOM_BORDER = BOTTOM_LEFT_CORNER + DOUBLE_DIVIDER + DOUBLE_DIVIDER;
-//
-//    private static final String MIDDLE_BORDER = MIDDLE_CORNER + SINGLE_DIVIDER + SINGLE_DIVIDER;
 
     /**
      * Localize single tag and method count for each thread
@@ -83,28 +121,23 @@ final class LoggerPrinter implements Printer {
      *
      * @param tag is the given string which will be used in Logger
      */
-    @Override
     public Settings init(String tag) {
         if (!TextUtils.isEmpty(tag))
             mTag = tag;
         return settings;
     }
 
-    @Override
     public Settings getSettings() {
         return settings;
     }
 
-    @Override
-    public Printer t(String tag, int methodCount) {
-        if (tag != null) {
-            localTag.set(tag);
+    public void v(String message, Object... args) {
+        if (settings.getLogLevel() == LogLevel.NONE) {
+            return;
         }
-        localMethodCount.set(methodCount);
-        return this;
+        log(VERBOSE, message, args);
     }
 
-    @Override
     public void d(String message, Object... args) {
         if (settings.getLogLevel() == LogLevel.NONE) {
             return;
@@ -112,7 +145,20 @@ final class LoggerPrinter implements Printer {
         log(DEBUG, message, args);
     }
 
-    @Override
+    public void i(String message, Object... args) {
+        if (settings.getLogLevel() == LogLevel.NONE) {
+            return;
+        }
+        log(INFO, message, args);
+    }
+
+    public void w(String message, Object... args) {
+        if (settings.getLogLevel() == LogLevel.NONE) {
+            return;
+        }
+        log(WARN, message, args);
+    }
+
     public void e(String message, Object... args) {
         if (settings.getLogLevel() == LogLevel.NONE) {
             return;
@@ -120,7 +166,6 @@ final class LoggerPrinter implements Printer {
         e(null, message, args);
     }
 
-    @Override
     public void e(Throwable throwable, String message, Object... args) {
         if (settings.getLogLevel() == LogLevel.NONE) {
             return;
@@ -138,31 +183,13 @@ final class LoggerPrinter implements Printer {
         log(ERROR, message, args);
     }
 
-    @Override
-    public void w(String message, Object... args) {
-        if (settings.getLogLevel() == LogLevel.NONE) {
-            return;
+    public void t(String tag, int methodCount) {
+        if (tag != null) {
+            localTag.set(tag);
         }
-        log(WARN, message, args);
+        localMethodCount.set(methodCount);
     }
 
-    @Override
-    public void i(String message, Object... args) {
-        if (settings.getLogLevel() == LogLevel.NONE) {
-            return;
-        }
-        log(INFO, message, args);
-    }
-
-    @Override
-    public void v(String message, Object... args) {
-        if (settings.getLogLevel() == LogLevel.NONE) {
-            return;
-        }
-        log(VERBOSE, message, args);
-    }
-
-    @Override
     public void wtf(String message, Object... args) {
         if (settings.getLogLevel() == LogLevel.NONE) {
             return;
@@ -175,7 +202,6 @@ final class LoggerPrinter implements Printer {
      *
      * @param json the json content
      */
-    @Override
     public void json(String json) {
         if (settings.getLogLevel() == LogLevel.NONE) {
             return;
@@ -208,7 +234,6 @@ final class LoggerPrinter implements Printer {
      *
      * @param xml the xml content
      */
-    @Override
     public void xml(String xml) {
         if (settings.getLogLevel() == LogLevel.NONE) {
             return;
@@ -231,7 +256,6 @@ final class LoggerPrinter implements Printer {
         }
     }
 
-    @Override
     public void clear() {
         settings = null;
     }

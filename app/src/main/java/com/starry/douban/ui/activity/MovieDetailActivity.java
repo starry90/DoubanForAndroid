@@ -91,9 +91,8 @@ public class MovieDetailActivity extends BaseActivity {
 
     @Override
     public void loadData() {
-        HttpManager.get()
+        HttpManager.get(url)
                 .tag(this)
-                .url(url)
                 .build()
                 .enqueue(new StringCallback<MovieDetail>() {
 

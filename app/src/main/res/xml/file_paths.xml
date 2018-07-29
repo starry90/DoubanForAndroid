@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--
+        <files-path name="name" path="path" /> Context.getFilesDir()
+        <cache-path name="name" path="path" /> Context.getCacheDir()
+        <external-path name="name" path="path" /> Environment.getExternalStorageDirectory()
+        <external-files-path name="name" path="path" /> Context#getExternalFilesDir(String) Context.getExternalFilesDir(null)
+        <external-cache-path name="name" path="path" /> Context.getExternalCacheDir()
+        <external-media-path name="name" path="path" /> Context.getExternalMediaDirs()
+        https://developer.android.google.cn/guide/topics/manifest/provider-element#gprmsn
+    -->
+    <external-files-path name="my_download" path="download/" />
+
+</paths>

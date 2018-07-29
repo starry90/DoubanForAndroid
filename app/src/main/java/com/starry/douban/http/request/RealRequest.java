@@ -4,7 +4,7 @@ package com.starry.douban.http.request;
 import android.support.annotation.NonNull;
 
 import com.starry.douban.http.CommonParams;
-import com.starry.douban.http.HandlerMain;
+import com.starry.douban.http.MainHandler;
 import com.starry.douban.http.HttpManager;
 import com.starry.douban.http.callback.CommonCallback;
 import com.starry.douban.http.error.ErrorModel;
@@ -162,7 +162,7 @@ public class RealRequest {
     }
 
     private void sendFailureCallback(final int code, final String message, final CommonCallback callback) {
-        HandlerMain.getHandler().post(new Runnable() {
+        MainHandler.post(new Runnable() {
             @Override
             public void run() {
                 callback.onAfter(false);
@@ -172,7 +172,7 @@ public class RealRequest {
     }
 
     private <T> void sendSuccessCallback(final T object, final CommonCallback<T> callback) {
-        HandlerMain.getHandler().post(new Runnable() {
+        MainHandler.post(new Runnable() {
             @Override
             public void run() {
                 callback.onAfter(true);
@@ -182,7 +182,7 @@ public class RealRequest {
     }
 
     private <T> void sendCanceledCallback(final CommonCallback<T> callback) {
-        HandlerMain.getHandler().post(new Runnable() {
+        MainHandler.post(new Runnable() {
             @Override
             public void run() {
                 callback.onAfter(false);

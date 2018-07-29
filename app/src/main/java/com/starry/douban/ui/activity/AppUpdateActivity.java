@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.starry.douban.R;
 import com.starry.douban.base.BaseActivity;
 import com.starry.douban.base.BaseApp;
+import com.starry.douban.constant.Common;
 import com.starry.douban.constant.PreferencesName;
 import com.starry.douban.http.HttpManager;
 import com.starry.douban.http.callback.FileCallback;
@@ -67,7 +68,7 @@ public class AppUpdateActivity extends BaseActivity implements View.OnClickListe
     @Override
     protected void onResume() {
         super.onResume();
-        dirPath = FileUtils.getFileDir().getAbsolutePath();
+        dirPath = BaseApp.getDownloadDir().getAbsolutePath();
         fileName = String.format("db-%s-release.apk", versionFull);
         File file = new File(dirPath, fileName);
         checkFile(file);
@@ -144,8 +145,7 @@ public class AppUpdateActivity extends BaseActivity implements View.OnClickListe
         }
 
         pbAppUpdate.setVisibility(View.VISIBLE);
-        HttpManager.get()
-                .url(url)
+        HttpManager.get(url)
                 .tag(this)
                 .build()
                 .enqueue(new FileCallback(dirPath, fileName) {
@@ -168,6 +168,6 @@ public class AppUpdateActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void installApp(File file) {
-        AppUtil.installApk(BaseApp.getContext(), file.getAbsolutePath());
+        AppUtil.installApk(BaseApp.getContext(), Common.FILE_PROVIDER_AUTHORITY, file.getAbsolutePath());
     }
 }

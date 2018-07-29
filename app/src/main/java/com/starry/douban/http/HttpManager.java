@@ -56,26 +56,26 @@ public class HttpManager {
     /**
      * Get 请求
      */
-    public static CommonParams.Builder get() {
-        return newBuilder(CommonParams.GET);
+    public static CommonParams.Builder get(String url) {
+        return newBuilder(CommonParams.GET, url);
     }
 
     /**
      * Post 请求
      */
-    public static CommonParams.Builder post() {
-        return newBuilder(CommonParams.POST_FORM);
+    public static CommonParams.Builder post(String url) {
+        return newBuilder(CommonParams.POST_FORM, url);
     }
 
     /**
      * Post String
      */
-    public static CommonParams.Builder postString() {
-        return newBuilder(CommonParams.POST_STRING);
+    public static CommonParams.Builder postString(String url) {
+        return newBuilder(CommonParams.POST_STRING, url);
     }
 
-    private static CommonParams.Builder newBuilder(String method) {
-        return new CommonParams.Builder(method);
+    private static CommonParams.Builder newBuilder(String method, String url) {
+        return new CommonParams.Builder(method).url(url);
     }
 
     /**

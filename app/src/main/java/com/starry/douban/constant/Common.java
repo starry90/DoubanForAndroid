@@ -18,6 +18,8 @@ public class Common {
     /**
      * 文件下载目录
      */
-    public static final String DIR_FILE = "file";
+    public static final String DIR_DOWNLOAD = "download";
+
+    public static final String FILE_PROVIDER_AUTHORITY = "com.starry.douban.fileprovider";
 
 }
