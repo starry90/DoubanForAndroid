@@ -9,8 +9,8 @@ ext {
 
             "minSdkVersion"    : 21,
             "targetSdkVersion" : 26,
-            "versionCode"      : 34,
-            "versionName"      : "1.2.3",
+            "versionCode"      : 35,
+            "versionName"      : "1.2.4",
     ]
 
     def supportVersion = "26.0.2"
