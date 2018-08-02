@@ -1,7 +1,6 @@
 package com.starry.douban.http;
 
-import com.starry.douban.log.Logger;
-
+import java.io.InputStream;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
@@ -23,9 +22,15 @@ public class HttpManager {
     private static final int TIME_OUT = 30;
 
     /**
-     * OkHttpClient 只有一个实例
+     * OkHttpClient
      */
-    private OkHttpClient mOkHttpClient;
+    private OkHttpClient okHttpClient;
+    /**
+     * OkHttpClient.Builder
+     */
+    private OkHttpClient.Builder okHttpClientBuilder;
+
+    private HttpInterceptor interceptor = HttpInterceptor.NO_INTERCEPTOR;
 
     /**
      * @return HttpManager
@@ -42,15 +47,72 @@ public class HttpManager {
     }
 
     private HttpManager() {
-        mOkHttpClient = new OkHttpClient.Builder()
-                .connectTimeout(TIME_OUT, TimeUnit.SECONDS)//连接主机超时
-                .readTimeout(TIME_OUT, TimeUnit.SECONDS)//从主机读取数据超时
-                .writeTimeout(TIME_OUT, TimeUnit.SECONDS)//从主机写数据超时
-                .build();
+        okHttpClientBuilder = new OkHttpClient.Builder();
+        timeOut(TIME_OUT);
+        build();
+    }
+
+    private void timeOut(long timeOut) {
+        okHttpClientBuilder.connectTimeout(timeOut, TimeUnit.SECONDS)//连接主机超时
+                .readTimeout(timeOut, TimeUnit.SECONDS)//从主机读取数据超时
+                .writeTimeout(timeOut, TimeUnit.SECONDS);//从主机写数据超时
+    }
+
+    public void build() {
+        okHttpClient = okHttpClientBuilder.build();
     }
 
     public OkHttpClient getOkHttpClient() {
-        return mOkHttpClient;
+        return okHttpClient;
+    }
+
+    public void setOkHttpClient(OkHttpClient okHttpClient) {
+        this.okHttpClient = okHttpClient;
+        this.okHttpClientBuilder = okHttpClient.newBuilder();
+    }
+
+    public HttpInterceptor getInterceptor() {
+        return interceptor;
+    }
+
+    public HttpManager setInterceptor(HttpInterceptor interceptor) {
+        this.interceptor = interceptor;
+        return this;
+    }
+
+    /**
+     * 设置超时时间 单位秒
+     *
+     * @param timeOut 超时时间 默认30秒
+     * @return HttpManager
+     */
+    public HttpManager setTimeOut(long timeOut) {
+        timeOut(timeOut);
+        return this;
+    }
+
+    /**
+     * https单向认证
+     * 用含有服务端公钥的证书校验服务端证书
+     */
+    public HttpManager setCertificates(InputStream... certificates) {
+        setCertificates(null, null, certificates);
+        return this;
+    }
+
+    /**
+     * https双向认证
+     *
+     * @param bksFile      bks证书
+     * @param password     the password used to check the integrity of the keystore, the password used to unlock the keystore or {@code null}
+     * @param certificates 用含有服务端公钥的证书校验服务端证书
+     */
+    public HttpManager setCertificates(InputStream bksFile, String password, InputStream... certificates) {
+        HttpsUtils.SSLParams sslParams = HttpsUtils.getSslSocketFactory(null, bksFile, password, certificates);
+        if (sslParams != null) {
+            okHttpClientBuilder.sslSocketFactory(sslParams.sSLSocketFactory, sslParams.trustManager);
+        }
+        return this;
     }
 
     /**
@@ -83,18 +145,16 @@ public class HttpManager {
      *
      * @param tag 标签
      */
-    public void cancelTag(Object tag) {
-        OkHttpClient client = mOkHttpClient;
+    public static void cancelTag(Object tag) {
+        OkHttpClient client = getInstance().getOkHttpClient();
         for (Call call : client.dispatcher().queuedCalls()) {
             if (tag.equals(call.request().tag())) {
                 call.cancel();
-                Logger.i("queuedCalls cancel");
             }
         }
         for (Call call : client.dispatcher().runningCalls()) {
             if (tag.equals(call.request().tag())) {
                 call.cancel();
-                Logger.i("runningCalls cancel");
             }
         }
     }

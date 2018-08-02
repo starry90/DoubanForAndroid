@@ -1,4 +1,4 @@
-package com.starry.douban.base;
+package com.starry.douban.env;
 
 /*
  * Copyright (C) 2016 MarkZhai (http://zhaiyifan.cn).

@@ -1,7 +1,7 @@
 package com.starry.douban.http.callback;
 
 import com.starry.douban.http.MainHandler;
-import com.starry.douban.http.HttpUtil;
+import com.starry.douban.http.Util;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -61,7 +61,7 @@ public abstract class FileCallback extends CommonCallback<File> {
         FileOutputStream fos = null;
         try {
             ResponseBody body = response.body();
-            HttpUtil.checkNotNull(body);
+            Util.checkNotNull(body);
             is = body.byteStream();
             final long total = body.contentLength();
 
@@ -86,9 +86,9 @@ public abstract class FileCallback extends CommonCallback<File> {
             }
             throw ex;
         } finally {
-            HttpUtil.closeQuietly(is);
-            HttpUtil.closeQuietly(response);
-            HttpUtil.closeQuietly(fos);
+            Util.closeQuietly(is);
+            Util.closeQuietly(response);
+            Util.closeQuietly(fos);
         }
     }
 

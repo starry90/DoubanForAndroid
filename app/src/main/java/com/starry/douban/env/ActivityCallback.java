@@ -1,4 +1,4 @@
-package com.starry.douban.base;
+package com.starry.douban.env;
 
 import android.app.Activity;
 import android.app.Application;

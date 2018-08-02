@@ -1,11 +1,13 @@
 package com.starry.douban.http.callback;
 
+import com.google.gson.reflect.TypeToken;
 import com.starry.douban.http.HttpManager;
-import com.starry.douban.http.HttpUtil;
-import com.starry.douban.http.error.NetworkException;
-import com.starry.douban.log.Logger;
+import com.starry.douban.http.Util;
+import com.starry.douban.http.error.BIZException;
 
 import org.json.JSONObject;
+
+import java.lang.reflect.Type;
 
 import okhttp3.Response;
 
@@ -16,44 +18,33 @@ import okhttp3.Response;
 
 public abstract class StringCallback<T> extends CommonCallback<T> {
 
-    private final String TAG = HttpManager.TAG;
-
     private String code = "code";
 
     private String msg = "msg";
 
     @Override
     public T parseResponse(Response response) throws Exception {
-        // 1. print json log
+        // 1. get json
         String json = response.body().string();
-        logResponse(response.request().url().toString(), json);
         response.close(); //To avoid leaking resources
 
         // 2. check result code
         JSONObject jsonObject = new JSONObject(json);
         int responseCode = jsonObject.optInt(code);
         String responseMsg = jsonObject.optString(msg);
-        checkResultCode(responseCode, responseMsg);
+        checkResultCode(responseCode, responseMsg, json);
 
         // 3. parse json to object
-        T result = HttpUtil.toObject(json, getType());
-        HttpUtil.checkNotNull(result);
+        T result;
+        Type type = getType();
+        if (type == new TypeToken<String>() {
+        }.getType()) {
+            result = (T) json;
+        } else {
+            result = HttpManager.getInstance().getInterceptor().convert(json, type);
+        }
+        Util.checkNotNull(result);
         return result;
-    }
-
-    /**
-     * 打印返回报文
-     *
-     * @param url  URL
-     * @param json 返回报文
-     */
-    private void logResponse(String url, String json) {
-        // 日志格式
-        // Response
-        // --> https://api.douban.com/v2/book/search?tag=热门&start=0&count=20
-        // --> {"count":20,"start":0,"total":122,"books":[{"rating":{"max":10,"numRaters":487,……
-        String result = String.format("Response\n >>> %s\n >>> %s", url, json);
-        Logger.i(TAG, result);
     }
 
     /**
@@ -61,11 +52,11 @@ public abstract class StringCallback<T> extends CommonCallback<T> {
      *
      * @param code    错误码
      * @param message 错误信息
-     * @throws NetworkException 自定义网络异常
+     * @throws BIZException 业务异常
      */
-    private void checkResultCode(int code, String message) throws NetworkException {
+    private void checkResultCode(int code, String message, String response) throws BIZException {
         if (code != 0) {// 服务返回结果code不等于0，请求得到的数据有问题
-            throw NetworkException.newException(code, message);
+            throw new BIZException(code, message).setResponse(response);
         }
     }
 

@@ -4,16 +4,14 @@ package com.starry.douban.http.request;
 import android.support.annotation.NonNull;
 
 import com.starry.douban.http.CommonParams;
-import com.starry.douban.http.MainHandler;
+import com.starry.douban.http.HttpInterceptor;
 import com.starry.douban.http.HttpManager;
+import com.starry.douban.http.MainHandler;
 import com.starry.douban.http.callback.CommonCallback;
 import com.starry.douban.http.error.ErrorModel;
-import com.starry.douban.http.error.Errors;
-import com.starry.douban.http.error.NetworkException;
-import com.starry.douban.log.Logger;
 
+import java.io.EOFException;
 import java.io.IOException;
-import java.util.Map;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -26,15 +24,16 @@ import okhttp3.Response;
  */
 public class RealRequest {
 
-    private final String TAG = HttpManager.TAG;
-
     private Request request;
 
     private CommonParams commonParams;
 
+    private HttpInterceptor httpInterceptor;
+
     RealRequest(Request request, CommonParams commonParams) {
         this.request = request;
         this.commonParams = commonParams;
+        this.httpInterceptor = HttpManager.getInstance().getInterceptor();
     }
 
     /**
@@ -45,7 +44,7 @@ public class RealRequest {
      * @return 返回结果
      */
     public <T> T execute(CommonCallback<T> callback) {
-        logRequest(request.url().toString(), request.method(), commonParams.params());
+        httpInterceptor.logRequest(commonParams);
         Call call = HttpManager.getInstance().getOkHttpClient().newCall(request);
         return execute(call, callback);
     }
@@ -57,27 +56,9 @@ public class RealRequest {
      * @param callback 回调对象
      */
     public <T> void enqueue(CommonCallback<T> callback) {
-        logRequest(request.url().toString(), request.method(), commonParams.params());
+        httpInterceptor.logRequest(commonParams);
         Call call = HttpManager.getInstance().getOkHttpClient().newCall(request);
         enqueue(call, callback);
-    }
-
-    /**
-     * 打印报文
-     *
-     * @param url    URL
-     * @param method 方法
-     * @param params 参数
-     */
-    private void logRequest(String url, String method, Map<String, String> params) {
-        String paramsStr = params == null ? "" : params.toString();
-        // 日志格式
-        // Request
-        // --> https://api.douban.com/v2/book/search?tag=热门&start=0&count=20
-        // --> GET
-        // --> {tag=热门, start=0, count=20}
-        String result = String.format("Request\n >>> %s\n >>> %s\n >>> %s", url, method, paramsStr);
-        Logger.i(TAG, result);
     }
 
     /**
@@ -92,7 +73,7 @@ public class RealRequest {
             return onResponseResult(response, callback);
         } catch (IOException ex) {
             ex.printStackTrace();
-            onFailureResult(call, callback);
+            onFailureResult(call, ex, callback);
         }
         return null;
     }
@@ -108,7 +89,7 @@ public class RealRequest {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException ex) {
                 ex.printStackTrace();
-                onFailureResult(call, callback);
+                onFailureResult(call, ex, callback);
             }
 
             @Override
@@ -118,12 +99,16 @@ public class RealRequest {
         });
     }
 
-    private void onFailureResult(Call call, CommonCallback callback) {
+    private void onFailureResult(Call call, IOException ex, CommonCallback callback) {
         //{@linkplain okhttp3.RealCall#isCanceled()}
         if (call.isCanceled()) {
             sendCanceledCallback(callback);
         } else {
-            sendFailureCallback(Errors.Code.NETWORK_UNAVAILABLE, Errors.Message.NETWORK_UNAVAILABLE, callback);
+            // handle failure exception
+            ErrorModel errorModel = new ErrorModel(0, "");
+            errorModel.setUrl(commonParams.url());
+            httpInterceptor.handleFailure(ex, errorModel);
+            sendFailureCallback(errorModel, callback);
         }
     }
 
@@ -132,19 +117,26 @@ public class RealRequest {
             // 1. check http code
             checkHttpCode(response.code());
 
-            // 2. parse response
-            T result = callback.parseResponse(response);
+            // 2. log response
+            Response cloneResponse = httpInterceptor.logResponse(response);
 
-            // 3. call success method
+            // 3. parse response
+            T result = callback.parseResponse(cloneResponse);
+
+            // 4. call success method
             sendSuccessCallback(result, callback);
             return result;
         } catch (Exception ex) {
             // 1. print stack trace
             ex.printStackTrace();
-            // 2. Exception to NetworkException
-            NetworkException netEx = NetworkException.newException(ex);
+
+            // 2. handle response exception
+            ErrorModel errorModel = new ErrorModel(0, "");
+            errorModel.setUrl(commonParams.url());
+            httpInterceptor.handleResponse(ex, errorModel);
+
             // 3. call fail method
-            sendFailureCallback(netEx.getErrorCode(), netEx.getErrorMessage(), callback);
+            sendFailureCallback(errorModel, callback);
         }
         return null;
     }
@@ -153,20 +145,24 @@ public class RealRequest {
      * 检查http code
      *
      * @param code 错误码
-     * @throws NetworkException 自定义网络异常
+     * @throws Exception 自定义网络异常
      */
-    private void checkHttpCode(int code) throws NetworkException {
+    private void checkHttpCode(int code) throws Exception {
         if (code < 200 || code >= 300) {// 不是2开头code统一以服务器错误处理
-            throw NetworkException.newException(code, Errors.Message.SERVER_ERROR);
+            throw new EOFException("服务器异常:HTTP status code " + code);
         }
     }
 
-    private void sendFailureCallback(final int code, final String message, final CommonCallback callback) {
+    private void sendFailureCallback(final ErrorModel errorModel, final CommonCallback callback) {
+        if (errorModel.isProcessed()) { //处理过错误信息，不再回调
+            return;
+        }
+
         MainHandler.post(new Runnable() {
             @Override
             public void run() {
                 callback.onAfter(false);
-                callback.onFailure(new ErrorModel(code, message));
+                callback.onFailure(errorModel);
             }
         });
     }

@@ -3,7 +3,6 @@ package com.starry.douban.http.callback;
 
 import com.google.gson.reflect.TypeToken;
 import com.starry.douban.http.error.ErrorModel;
-import com.starry.douban.log.Logger;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -69,7 +68,6 @@ public abstract class CommonCallback<T> {
      * @param total    总长度
      */
     public void inProgress(float progress, long total) {
-        Logger.i("progress=%f total=%d", progress, total);
     }
 
     /**

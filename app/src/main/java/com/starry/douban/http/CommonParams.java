@@ -40,6 +40,7 @@ public class CommonParams {
 
     private String content;
     private MediaType mediaType;
+    private String method;
 
     private CommonParams(Builder builder) {
         this.url = builder.url;
@@ -50,6 +51,7 @@ public class CommonParams {
         this.files = builder.files;
         this.content = builder.content;
         this.mediaType = builder.mediaType;
+        this.method = builder.method;
     }
 
     public String url() {
@@ -80,6 +82,10 @@ public class CommonParams {
         return mediaType;
     }
 
+    public String method() {
+        return method;
+    }
+
     public static final class Builder {
         private String url;
         private Object tag;
@@ -89,8 +95,10 @@ public class CommonParams {
         private String content;
         private MediaType mediaType;
         private OKHttpRequest okHttpRequest;
+        private String method;
 
         public Builder(String method) {
+            this.method = method;
             if (POST_FORM.equals(method)) {
                 this.okHttpRequest = new PostFormRequest();
             } else if (POST_STRING.equals(method)) {
