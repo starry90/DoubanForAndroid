@@ -7,3 +7,13 @@ dependencies {
     compileOnly deps.gson
     compileOnly deps.support
 }
+
+task makeJar(type: Copy) {
+    delete 'libs/http.jar'
+    from('build/intermediates/bundles/debug/')
+    into('libs/')
+    include('classes.jar')
+    rename('classes.jar', 'http.jar')
+}
+
+makeJar.dependsOn(build)
