@@ -1,7 +1,5 @@
 package com.starry.douban.http.error;
 
-import com.starry.douban.log.Logger;
-
 /**
  * @author Starry Jerry
  * @since 2017/10/29.
@@ -37,8 +35,4 @@ public class BIZException extends Exception {
         return response;
     }
 
-    public static BIZException newException(int code, String message) {
-        Logger.i(String.format(logFormat, code, message));
-        return new BIZException(code, message);
-    }
 }

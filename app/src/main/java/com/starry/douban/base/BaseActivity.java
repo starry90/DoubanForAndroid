@@ -127,7 +127,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseUI 
     @Override
     protected void onDestroy() {
         //如果关闭页面，取消请求
-        HttpManager.getInstance().cancelTag(this);
+        HttpManager.cancelTag(this);
 
         super.onDestroy();
     }
