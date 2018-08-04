@@ -1,8 +1,8 @@
-package com.starry.douban.http.callback;
+package com.starry.http.callback;
 
 
 import com.google.gson.reflect.TypeToken;
-import com.starry.douban.http.error.ErrorModel;
+import com.starry.http.error.ErrorModel;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;

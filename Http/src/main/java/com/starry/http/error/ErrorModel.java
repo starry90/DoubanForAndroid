@@ -1,4 +1,4 @@
-package com.starry.douban.http.error;
+package com.starry.http.error;
 
 /**
  * 请求失败的Model

@@ -1,6 +1,6 @@
-package com.starry.douban.http.request;
+package com.starry.http.request;
 
-import com.starry.douban.http.CommonParams;
+import com.starry.http.CommonParams;
 
 import java.util.Map;
 

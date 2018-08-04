@@ -1,4 +1,4 @@
-package com.starry.douban.log;
+package com.starry.log;
 
 /**
  * Logger is a wrapper of {@link android.util.Log}

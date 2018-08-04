@@ -1,7 +1,7 @@
-package com.starry.douban.http;
+package com.starry.http;
 
 
-import com.starry.douban.http.error.ErrorModel;
+import com.starry.http.error.ErrorModel;
 
 import java.lang.reflect.Type;
 

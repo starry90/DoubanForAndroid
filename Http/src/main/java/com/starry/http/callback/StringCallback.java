@@ -1,9 +1,9 @@
-package com.starry.douban.http.callback;
+package com.starry.http.callback;
 
 import com.google.gson.reflect.TypeToken;
-import com.starry.douban.http.HttpManager;
-import com.starry.douban.http.Util;
-import com.starry.douban.http.error.BIZException;
+import com.starry.http.HttpManager;
+import com.starry.http.Util;
+import com.starry.http.error.BIZException;
 
 import org.json.JSONObject;
 

@@ -1,9 +1,9 @@
-package com.starry.douban.http.request;
+package com.starry.http.request;
 
 
-import com.starry.douban.http.MainHandler;
-import com.starry.douban.http.callback.CommonCallback;
-import com.starry.douban.http.CommonParams;
+import com.starry.http.MainHandler;
+import com.starry.http.callback.CommonCallback;
+import com.starry.http.CommonParams;
 
 import java.net.FileNameMap;
 import java.net.URLConnection;

@@ -22,7 +22,7 @@ import android.content.pm.PackageManager;
 
 import com.github.moduth.blockcanary.BlockCanaryContext;
 import com.starry.douban.BuildConfig;
-import com.starry.douban.log.Logger;
+import com.starry.log.Logger;
 
 import java.util.List;
 

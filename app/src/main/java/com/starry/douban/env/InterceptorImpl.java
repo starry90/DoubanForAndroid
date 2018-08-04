@@ -1,11 +1,11 @@
 package com.starry.douban.env;
 
 import com.google.gson.JsonParseException;
-import com.starry.douban.http.CommonParams;
-import com.starry.douban.http.HttpInterceptor;
-import com.starry.douban.http.error.BIZException;
-import com.starry.douban.http.error.ErrorModel;
-import com.starry.douban.log.Logger;
+import com.starry.http.CommonParams;
+import com.starry.http.HttpInterceptor;
+import com.starry.http.error.BIZException;
+import com.starry.http.error.ErrorModel;
+import com.starry.log.Logger;
 import com.starry.douban.util.JsonUtil;
 
 import java.io.EOFException;

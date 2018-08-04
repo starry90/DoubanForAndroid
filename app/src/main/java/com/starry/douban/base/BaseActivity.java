@@ -10,7 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.starry.douban.R;
-import com.starry.douban.http.HttpManager;
+import com.starry.http.HttpManager;
 import com.starry.douban.widget.LoadingDataLayout;
 
 import butterknife.BindView;

@@ -1,6 +1,6 @@
-package com.starry.douban.http.request;
+package com.starry.http.request;
 
-import com.starry.douban.http.HttpManager;
+import com.starry.http.HttpManager;
 
 import okhttp3.Request;
 import okhttp3.RequestBody;

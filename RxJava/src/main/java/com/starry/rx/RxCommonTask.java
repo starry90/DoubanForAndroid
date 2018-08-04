@@ -1,4 +1,4 @@
-package com.starry.douban.rx;
+package com.starry.rx;
 
 /**
  * IO线程获取数据，UI线程刷新界面的公共任务

@@ -4,11 +4,11 @@ import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.starry.douban.http.HttpManager;
-import com.starry.douban.http.callback.FileCallback;
-import com.starry.douban.http.callback.StringCallback;
-import com.starry.douban.http.error.ErrorModel;
-import com.starry.douban.log.Logger;
+import com.starry.http.HttpManager;
+import com.starry.http.callback.FileCallback;
+import com.starry.http.callback.StringCallback;
+import com.starry.http.error.ErrorModel;
+import com.starry.log.Logger;
 import com.starry.douban.model.BookDetail;
 import com.starry.douban.util.FileUtils;
 

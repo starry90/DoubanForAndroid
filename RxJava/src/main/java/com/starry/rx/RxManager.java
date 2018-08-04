@@ -1,4 +1,4 @@
-package com.starry.douban.rx;
+package com.starry.rx;
 
 
 import java.util.concurrent.TimeUnit;

@@ -9,7 +9,7 @@ import com.starry.douban.constant.Common;
 import com.starry.douban.env.ActivityCallback;
 import com.starry.douban.env.AppBlockCanaryContext;
 import com.starry.douban.env.InterceptorImpl;
-import com.starry.douban.http.HttpManager;
+import com.starry.http.HttpManager;
 import com.starry.douban.util.FileUtils;
 import com.starry.douban.util.TimeUtils;
 

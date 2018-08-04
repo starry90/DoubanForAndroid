@@ -1,4 +1,4 @@
-package com.starry.douban.http.cookie;
+package com.starry.http.cookie;
 
 import java.util.ArrayList;
 import java.util.HashMap;

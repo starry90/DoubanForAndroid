@@ -1,4 +1,4 @@
-package com.starry.douban.http;
+package com.starry.http;
 
 import java.io.InputStream;
 import java.util.concurrent.TimeUnit;

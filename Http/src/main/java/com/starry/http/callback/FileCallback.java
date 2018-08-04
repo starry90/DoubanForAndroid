@@ -1,7 +1,7 @@
-package com.starry.douban.http.callback;
+package com.starry.http.callback;
 
-import com.starry.douban.http.MainHandler;
-import com.starry.douban.http.Util;
+import com.starry.http.MainHandler;
+import com.starry.http.Util;
 
 import java.io.File;
 import java.io.FileOutputStream;

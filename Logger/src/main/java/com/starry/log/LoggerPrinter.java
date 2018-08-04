@@ -1,4 +1,4 @@
-package com.starry.douban.log;
+package com.starry.log;
 
 import android.text.TextUtils;
 import android.util.Log;

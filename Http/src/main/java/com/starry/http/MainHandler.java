@@ -1,4 +1,4 @@
-package com.starry.douban.http;
+package com.starry.http;
 
 import android.os.Handler;
 import android.os.Looper;

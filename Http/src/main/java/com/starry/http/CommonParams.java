@@ -1,11 +1,11 @@
-package com.starry.douban.http;
+package com.starry.http;
 
 
-import com.starry.douban.http.request.GetRequest;
-import com.starry.douban.http.request.OKHttpRequest;
-import com.starry.douban.http.request.PostFormRequest;
-import com.starry.douban.http.request.PostStringRequest;
-import com.starry.douban.http.request.RealRequest;
+import com.starry.http.request.GetRequest;
+import com.starry.http.request.OKHttpRequest;
+import com.starry.http.request.PostFormRequest;
+import com.starry.http.request.PostStringRequest;
+import com.starry.http.request.RealRequest;
 
 import java.io.File;
 import java.util.ArrayList;

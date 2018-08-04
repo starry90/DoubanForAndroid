@@ -1,4 +1,4 @@
-package com.starry.douban.http.request;
+package com.starry.http.request;
 
 import java.util.Map;
 

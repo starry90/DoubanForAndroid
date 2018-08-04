@@ -1,14 +1,14 @@
-package com.starry.douban.http.request;
+package com.starry.http.request;
 
 
 import android.support.annotation.NonNull;
 
-import com.starry.douban.http.CommonParams;
-import com.starry.douban.http.HttpInterceptor;
-import com.starry.douban.http.HttpManager;
-import com.starry.douban.http.MainHandler;
-import com.starry.douban.http.callback.CommonCallback;
-import com.starry.douban.http.error.ErrorModel;
+import com.starry.http.CommonParams;
+import com.starry.http.HttpInterceptor;
+import com.starry.http.HttpManager;
+import com.starry.http.MainHandler;
+import com.starry.http.callback.CommonCallback;
+import com.starry.http.error.ErrorModel;
 
 import java.io.EOFException;
 import java.io.IOException;
