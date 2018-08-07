@@ -12,9 +12,11 @@ build_path = os.path.join(current_path, 'app', 'build', 'outputs')
 
 gradlew_clean = 'gradlew clean'
 gradlew_build = 'gradlew assemble'
+gradlew_make_http_jar = 'gradlew  Http:makeJar'
 if platform.system() != 'Windows':
     gradlew_clean = './' + gradlew_clean
     gradlew_build = './' + gradlew_build
+    gradlew_make_http_jar = './' + gradlew_make_http_jar
 
 print out_path
 
@@ -65,6 +67,7 @@ def build_apk():
     os.system(gradlew_clean)
     build_code = os.system(gradlew_build)
     if build_code == 0:
+        os.system(gradlew_make_http_jar)
         # copy *.apk and mapping.txt
         copy_file(build_path)
         # get apk file md5 and size

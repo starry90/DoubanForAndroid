@@ -4,16 +4,13 @@ apply from: rootProject.file('gradle/base.gradle')
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     compileOnly deps.okhttp3
-    compileOnly deps.gson
     compileOnly deps.support
 }
 
 task makeJar(type: Copy) {
-    delete 'libs/http.jar'
+    delete "../outputs/http-wrapper-${versions.httpVersion}.jar"
     from('build/intermediates/bundles/debug/')
-    into('libs/')
+    into('../outputs/')
     include('classes.jar')
-    rename('classes.jar', 'http.jar')
+    rename('classes.jar', "http-wrapper-${versions.httpVersion}.jar")
 }
-
-makeJar.dependsOn(build)
