@@ -21,7 +21,7 @@ public class Util {
      */
     public static <T> T checkNotNull(T reference) {
         if (reference == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("reference == null");
         }
         return reference;
     }

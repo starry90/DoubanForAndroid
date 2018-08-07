@@ -53,4 +53,11 @@ public abstract class OKHttpRequest {
         this.commonParams = commonParams;
         return new RealRequest(generateRequest(), commonParams);
     }
+
+    protected String convert(Object value) {
+        if (value == null) {
+            return "";
+        }
+        return value.toString();
+    }
 }

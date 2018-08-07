@@ -8,13 +8,20 @@ import okhttp3.OkHttpClient;
 
 /**
  * HTTP请求管理者
+ * <p>
+ * For example,
+ * <pre><code>
+ * HttpManager.getInstance()
+ * .setTimeOut(30)
+ * .setHttpConverter(GsonConverter.create())
+ * .setInterceptor(new InterceptorImpl())
+ * .setCertificates()
+ * .build();
  *
  * @author Starry Jerry
  * @since 2016/6/19.
  */
 public class HttpManager {
-
-    public static final String TAG = "HttpManager";
 
     /**
      * 超时时间
@@ -30,7 +37,14 @@ public class HttpManager {
      */
     private OkHttpClient.Builder okHttpClientBuilder;
 
-    private HttpInterceptor interceptor = HttpInterceptor.NO_INTERCEPTOR;
+    /**
+     * http converter
+     */
+    private HttpConverter httpConverter;
+    /**
+     * http interceptor
+     */
+    private HttpInterceptor interceptor;
 
     /**
      * @return HttpManager
@@ -48,8 +62,8 @@ public class HttpManager {
 
     private HttpManager() {
         okHttpClientBuilder = new OkHttpClient.Builder();
+        interceptor = HttpInterceptor.NO_INTERCEPTOR;
         timeOut(TIME_OUT);
-        build();
     }
 
     private void timeOut(long timeOut) {
@@ -59,6 +73,7 @@ public class HttpManager {
     }
 
     public void build() {
+        if (httpConverter == null) throw new NullPointerException("httpConverter == null");
         okHttpClient = okHttpClientBuilder.build();
     }
 
@@ -77,6 +92,15 @@ public class HttpManager {
 
     public HttpManager setInterceptor(HttpInterceptor interceptor) {
         this.interceptor = interceptor;
+        return this;
+    }
+
+    public HttpConverter getHttpConverter() {
+        return httpConverter;
+    }
+
+    public HttpManager setHttpConverter(HttpConverter httpConverter) {
+        this.httpConverter = httpConverter;
         return this;
     }
 

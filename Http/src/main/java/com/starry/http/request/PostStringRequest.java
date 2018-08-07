@@ -1,5 +1,6 @@
 package com.starry.http.request;
 
+import com.starry.http.HttpConverter;
 import com.starry.http.HttpManager;
 
 import okhttp3.Request;
@@ -13,16 +14,14 @@ public class PostStringRequest extends OKHttpRequest {
 
     @Override
     protected RequestBody buildRequestBody() {
-        return RequestBody.create(commonParams.mediaType(), getContent());
-    }
-
-    private String getContent() {
         //优先使用content字段，content为空则使用params字段
         String content = commonParams.content();
-        if (content == null || content.length() == 0) {
-            content = HttpManager.getInstance().getInterceptor().toJson(commonParams.params());
+        Object temp = content;
+        if (content == null) {
+            temp = commonParams.params();
         }
-        return content;
+        HttpConverter httpConverter = HttpManager.getInstance().getHttpConverter();
+        return httpConverter.convert(temp);
     }
 
     @Override

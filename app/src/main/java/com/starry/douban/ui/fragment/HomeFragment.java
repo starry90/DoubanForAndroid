@@ -70,10 +70,10 @@ public class HomeFragment extends BaseFragment {
 
     @Override
     public void loadData() {
-        LinkedHashMap<String, String> params = new LinkedHashMap<>();
+        LinkedHashMap<String, Object> params = new LinkedHashMap<>();
         params.put("tag", tag);
-        params.put("start", start + "");
-        params.put("count", count + "");
+        params.put("start", start);
+        params.put("count", count);
 
         HttpManager.get(Apis.BookSearch)
                 .tag(this)

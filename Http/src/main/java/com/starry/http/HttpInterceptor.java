@@ -3,8 +3,6 @@ package com.starry.http;
 
 import com.starry.http.error.ErrorModel;
 
-import java.lang.reflect.Type;
-
 import okhttp3.Callback;
 import okhttp3.Response;
 
@@ -17,26 +15,8 @@ import okhttp3.Response;
 public interface HttpInterceptor {
 
     /**
-     * 对象转换成Json
-     *
-     * @param src Object
-     * @return String
-     */
-    String toJson(Object src);
-
-    /**
-     * 转换Json成对象
-     *
-     * @param json json串
-     * @param type Type
-     * @param <T>  T
-     * @return T
-     */
-    <T> T convert(String json, Type type);
-
-    /**
      * 打印请求报文
-     * 该方法运行在UI线程
+     * 该方法运行于调用网络请求的线程
      *
      * @param commonParams CommonParams
      */
@@ -72,15 +52,6 @@ public interface HttpInterceptor {
     Response logResponse(Response response) throws Exception;
 
     HttpInterceptor NO_INTERCEPTOR = new HttpInterceptor() {
-        @Override
-        public String toJson(Object src) {
-            return src.toString();
-        }
-
-        @Override
-        public <T> T convert(String json, Type type) {
-            return null;
-        }
 
         @Override
         public void logRequest(CommonParams commonParams) {

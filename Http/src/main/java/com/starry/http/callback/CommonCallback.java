@@ -1,11 +1,7 @@
 package com.starry.http.callback;
 
 
-import com.google.gson.reflect.TypeToken;
 import com.starry.http.error.ErrorModel;
-
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 
 import okhttp3.Response;
 
@@ -70,9 +66,9 @@ public abstract class CommonCallback<T> {
     public void inProgress(float progress, long total) {
     }
 
-    /**
-     * 获取Json对象的类型，因为数据可能是Json数组也可能是Json对象
-     */
+    /**/
+    //获取Json对象的类型，因为数据可能是Json数组也可能是Json对象
+    /*
     public Type getType() {
         Type type = ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
         if (type instanceof Class) {//如果是Object直接返回
@@ -81,6 +77,6 @@ public abstract class CommonCallback<T> {
             return new TypeToken<T>() {
             }.getType();
         }
-    }
+    }*/
 
 }

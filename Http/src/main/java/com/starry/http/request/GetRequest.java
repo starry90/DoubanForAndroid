@@ -14,12 +14,13 @@ public class GetRequest extends OKHttpRequest {
     @Override
     protected String buildUrl() {
         String url = commonParams.url();
-        Map<String, String> params = commonParams.params();
+        Map<String, Object> params = commonParams.params();
         StringBuilder sb = new StringBuilder();
         sb.append(url).append("?");
         if (params != null && !params.isEmpty()) {
             for (String key : params.keySet()) {
-                sb.append(key).append("=").append(params.get(key)).append("&");
+                String value = convert(params.get(key));
+                sb.append(key).append("=").append(value).append("&");
             }
         }
 

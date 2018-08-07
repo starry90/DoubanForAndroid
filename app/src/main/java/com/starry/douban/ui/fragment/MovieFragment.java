@@ -39,7 +39,7 @@ public class MovieFragment extends BaseFragment {
 
     private String url = Apis.MovieInTheaters;
 
-    private LinkedHashMap<String, String> params = new LinkedHashMap<>();
+    private LinkedHashMap<String, Object> params = new LinkedHashMap<>();
 
     @Override
     public int getLayoutResID() {
@@ -99,8 +99,8 @@ public class MovieFragment extends BaseFragment {
 
     @Override
     public void loadData() {
-        params.put("start", start + "");
-        params.put("count", count + "");
+        params.put("start", start);
+        params.put("count", count);
         HttpManager.get(url)
                 .tag(this)
                 .params(params)

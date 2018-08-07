@@ -6,10 +6,8 @@ import com.starry.http.HttpInterceptor;
 import com.starry.http.error.BIZException;
 import com.starry.http.error.ErrorModel;
 import com.starry.log.Logger;
-import com.starry.douban.util.JsonUtil;
 
 import java.io.EOFException;
-import java.lang.reflect.Type;
 import java.net.SocketTimeoutException;
 import java.util.Map;
 
@@ -41,18 +39,8 @@ public final class InterceptorImpl implements HttpInterceptor {
     }
 
     @Override
-    public String toJson(Object src) {
-        return JsonUtil.toJson(src);
-    }
-
-    @Override
-    public <T> T convert(String json, Type type) {
-        return JsonUtil.toObject(json, type);
-    }
-
-    @Override
     public void logRequest(CommonParams commonParams) {
-        Map<String, String> params = commonParams.params();
+        Map<String, Object> params = commonParams.params();
         String paramsStr = commonParams.content();
         if (paramsStr == null || paramsStr.length() == 0) {
             paramsStr = params == null ? "" : params.toString();

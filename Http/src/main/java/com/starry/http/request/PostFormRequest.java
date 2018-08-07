@@ -25,44 +25,44 @@ public class PostFormRequest extends OKHttpRequest {
 
     @Override
     protected RequestBody buildRequestBody() {
+        Map<String, Object> params = commonParams.params();
         List<CommonParams.FileInput> files = commonParams.files();
-        Map<String, String> params = commonParams.params();
         if (files == null || files.isEmpty()) {
             FormBody.Builder builder = new FormBody.Builder();
-            for (String key : params.keySet()) {
-                builder.add(key, params.get(key));
+            if (params != null && !params.isEmpty()) {
+                for (String key : params.keySet()) {
+                    String value = convert(params.get(key));
+                    builder.add(key, value);
+                }
             }
             return builder.build();
         } else {
             MultipartBody.Builder builder = new MultipartBody.Builder()
                     .setType(MultipartBody.FORM);
-            addParams(builder, params);
+            if (params != null && !params.isEmpty()) {
+                for (String key : params.keySet()) {
+                    String value = convert(params.get(key));
+                    builder.addPart(Headers.of("Content-Disposition", "form-data; name=\"" + key + "\""),
+                            RequestBody.create(null, value));
+                }
+            }
 
             for (int i = 0; i < files.size(); i++) {
                 CommonParams.FileInput fileInput = files.get(i);
-                RequestBody fileBody = RequestBody.create(MediaType.parse(guessMimeType(fileInput.filename)), fileInput.file);
+                RequestBody fileBody = RequestBody.create(getMediaType(fileInput.filename), fileInput.file);
                 builder.addFormDataPart(fileInput.key, fileInput.filename, fileBody);
             }
             return builder.build();
         }
     }
 
-    private void addParams(MultipartBody.Builder builder, Map<String, String> params) {
-        if (params != null && !params.isEmpty()) {
-            for (String key : params.keySet()) {
-                builder.addPart(Headers.of("Content-Disposition", "form-data; name=\"" + key + "\""),
-                        RequestBody.create(null, params.get(key)));
-            }
-        }
-    }
-
-    private String guessMimeType(String path) {
+    private MediaType getMediaType(String path) {
         FileNameMap fileNameMap = URLConnection.getFileNameMap();
         String contentTypeFor = fileNameMap.getContentTypeFor(path);
         if (contentTypeFor == null) {
             contentTypeFor = "application/octet-stream";
         }
-        return contentTypeFor;
+        return MediaType.parse(contentTypeFor);
     }
 
     protected RequestBody wrapRequestBody(RequestBody requestBody) {

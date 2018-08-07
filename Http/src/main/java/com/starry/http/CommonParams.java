@@ -13,8 +13,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import okhttp3.MediaType;
-
 /**
  * Builder模式
  *
@@ -27,31 +25,24 @@ public class CommonParams {
     public static final String POST_FORM = "POST_FORM";
     public static final String POST_STRING = "POST_STRING";
 
-    // JSON --> application/json;charset=utf-8
-    private static final MediaType MEDIA_TYPE_JSON = MediaType.parse("application/json;charset=utf-8");
-
     private String url;
     private Object tag;
-
-    private Map<String, String> params;
-    private Map<String, String> headers;
-
-    private List<FileInput> files;
-
-    private String content;
-    private MediaType mediaType;
     private String method;
+
+    private Map<String, String> headers;
+    private Map<String, Object> params;
+    private List<FileInput> files;
+    private String content;
 
     private CommonParams(Builder builder) {
         this.url = builder.url;
         this.tag = builder.tag;
+        this.method = builder.method;
+
         this.params = builder.params;
         this.headers = builder.headers;
-
         this.files = builder.files;
         this.content = builder.content;
-        this.mediaType = builder.mediaType;
-        this.method = builder.method;
     }
 
     public String url() {
@@ -62,7 +53,11 @@ public class CommonParams {
         return tag;
     }
 
-    public Map<String, String> params() {
+    public String method() {
+        return method;
+    }
+
+    public Map<String, Object> params() {
         return params;
     }
 
@@ -78,31 +73,22 @@ public class CommonParams {
         return content;
     }
 
-    public MediaType mediaType() {
-        return mediaType;
-    }
-
-    public String method() {
-        return method;
-    }
-
     public static final class Builder {
         private String url;
         private Object tag;
-        private Map<String, String> headers;
-        private Map<String, String> params;
-        private List<FileInput> files = new ArrayList<>();
-        private String content;
-        private MediaType mediaType;
-        private OKHttpRequest okHttpRequest;
         private String method;
+
+        private Map<String, String> headers;
+        private Map<String, Object> params;
+        private List<FileInput> files;
+        private String content;
+        private OKHttpRequest okHttpRequest;
 
         public Builder(String method) {
             this.method = method;
             if (POST_FORM.equals(method)) {
                 this.okHttpRequest = new PostFormRequest();
             } else if (POST_STRING.equals(method)) {
-                mediaType = MEDIA_TYPE_JSON;
                 this.okHttpRequest = new PostStringRequest();
             } else {
                 this.okHttpRequest = new GetRequest();
@@ -119,7 +105,7 @@ public class CommonParams {
             return this;
         }
 
-        public Builder params(Map<String, String> params) {
+        public Builder params(Map<String, Object> params) {
             this.params = params;
             return this;
         }
@@ -146,17 +132,15 @@ public class CommonParams {
         }
 
         public Builder files(String name, String filename, File file) {
+            if (files == null) {
+                files = new ArrayList<>();
+            }
             files.add(new FileInput(name, filename, file));
             return this;
         }
 
         public Builder content(String content) {
             this.content = content;
-            return this;
-        }
-
-        public Builder mediaType(MediaType mediaType) {
-            this.mediaType = mediaType;
             return this;
         }
 
