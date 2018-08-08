@@ -79,6 +79,12 @@ public class BookDetailActivity extends BaseActivity {
                     public void onFailure(ErrorModel errorModel) {
                         ToastUtil.showToast(errorModel.getMessage());
                     }
+
+                    @Override
+                    public void onAfter(boolean success) {
+                        super.onAfter(success);
+                        hideLoading(success);
+                    }
                 });
     }
 

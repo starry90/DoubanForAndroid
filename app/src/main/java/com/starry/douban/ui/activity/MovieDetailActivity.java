@@ -13,13 +13,12 @@ import com.starry.douban.R;
 import com.starry.douban.adapter.MoviePhotoAdapter;
 import com.starry.douban.base.BaseActivity;
 import com.starry.douban.constant.Apis;
-import com.starry.http.HttpManager;
-import com.starry.http.callback.StringCallback;
-import com.starry.http.error.ErrorModel;
 import com.starry.douban.image.ImageManager;
 import com.starry.douban.model.MovieDetail;
 import com.starry.douban.util.ToastUtil;
-import com.starry.douban.widget.LoadingDataLayout;
+import com.starry.http.HttpManager;
+import com.starry.http.callback.StringCallback;
+import com.starry.http.error.ErrorModel;
 
 import java.util.List;
 
@@ -105,6 +104,12 @@ public class MovieDetailActivity extends BaseActivity {
                     public void onFailure(ErrorModel errorModel) {
                         ToastUtil.showToast(errorModel.getMessage());
                     }
+
+                    @Override
+                    public void onAfter(boolean success) {
+                        super.onAfter(success);
+                        hideLoading(success);
+                    }
                 });
     }
 
@@ -113,7 +118,6 @@ public class MovieDetailActivity extends BaseActivity {
     }
 
     public void showMovieDetail(MovieDetail response) {
-        showLoadingStatus(LoadingDataLayout.STATUS_SUCCESS);
         ImageManager.getBitmap(ivMovieDetail, response.getImages().getLarge(), iv_movie_detail_bg);
         tvMovieDetailTitle.setText(response.getTitle());
         tvMovieDetailOriginalTitle.setText(response.getOriginal_title());

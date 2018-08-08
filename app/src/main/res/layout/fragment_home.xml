@@ -7,10 +7,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <com.starry.douban.widget.LoadingDataLayout
-        android:id="@id/view_loading_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone" />
+    <include layout="@layout/loading_layout" />
 
 </FrameLayout>

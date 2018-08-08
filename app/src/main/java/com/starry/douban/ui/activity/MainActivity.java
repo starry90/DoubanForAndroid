@@ -1,6 +1,7 @@
 package com.starry.douban.ui.activity;
 
 import android.os.Handler;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
 import android.widget.RadioButton;
@@ -9,16 +10,16 @@ import android.widget.RadioGroup;
 import com.starry.douban.R;
 import com.starry.douban.base.BaseActivity;
 import com.starry.douban.base.BaseApp;
+import com.starry.douban.base.BaseFragmentPagerAdapter;
 import com.starry.douban.ui.fragment.HomeFragment;
-import com.starry.douban.ui.fragment.MovieFragment;
 import com.starry.douban.ui.fragment.MovieParentFragment;
 import com.starry.douban.ui.fragment.SettingFragment;
 import com.starry.douban.util.ArgbEvaluatorUtil;
 import com.starry.douban.util.PermissionUtils;
 import com.starry.douban.util.ToastUtil;
-import com.starry.douban.util.viewpager.v4.FragmentPagerItem;
-import com.starry.douban.util.viewpager.v4.FragmentPagerItemAdapter;
-import com.starry.douban.util.viewpager.v4.FragmentPagerItems;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -59,14 +60,12 @@ public class MainActivity extends BaseActivity {
         setTitle(titles[0]);
         PermissionUtils.requestPermission(this);
 
-        FragmentPagerItems pages = new FragmentPagerItems(this);
-        pages.add(FragmentPagerItem.of(HomeFragment.class.getSimpleName(), HomeFragment.class));
-        pages.add(FragmentPagerItem.of(MovieFragment.class.getSimpleName(), MovieParentFragment.class));
-        pages.add(FragmentPagerItem.of(SettingFragment.class.getSimpleName(), SettingFragment.class));
-
+        final List<Fragment> pages = new ArrayList<>();
+        pages.add(new HomeFragment());
+        pages.add(new MovieParentFragment());
+        pages.add(new SettingFragment());
+        viewpagerMain.setAdapter(new BaseFragmentPagerAdapter(getSupportFragmentManager(), pages));
         viewpagerMain.setOffscreenPageLimit(3);
-        FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(getSupportFragmentManager(), pages);
-        viewpagerMain.setAdapter(adapter);
 
         argbEvaluatorUtil.addTab(rbMainHome, rbtnMainBook, rbtnMainSetting);
         argbEvaluatorUtil.addTabDrawable(R.drawable.selector_main_home, R.drawable.selector_main_movie, R.drawable.selector_main_setting);
