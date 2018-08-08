@@ -1,6 +1,6 @@
 package com.starry.http.request;
 
-import com.starry.http.HttpConverter;
+import com.starry.http.interfaces.HttpConverter;
 import com.starry.http.HttpManager;
 
 import okhttp3.Request;
@@ -25,8 +25,8 @@ public class PostStringRequest extends OKHttpRequest {
     }
 
     @Override
-    protected Request buildRequest(RequestBody requestBody) {
-        return requestBuilder.post(requestBody).build();
+    protected Request buildRequest(Request.Builder builder, RequestBody requestBody) {
+        return builder.post(requestBody).build();
     }
 
 }

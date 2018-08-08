@@ -1,7 +1,7 @@
 package com.starry.http.callback;
 
-import com.starry.http.MainHandler;
-import com.starry.http.Util;
+import com.starry.http.utils.MainHandler;
+import com.starry.http.utils.Util;
 
 import java.io.File;
 import java.io.FileOutputStream;

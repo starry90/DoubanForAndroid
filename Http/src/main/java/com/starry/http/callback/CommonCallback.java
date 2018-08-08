@@ -14,18 +14,6 @@ import okhttp3.Response;
  */
 public abstract class CommonCallback<T> {
 
-    public final static CommonCallback<String> NO_CALLBACK = new StringCallback<String>() {
-        @Override
-        public void onSuccess(String response, Object... obj) {
-
-        }
-
-        @Override
-        public void onFailure(ErrorModel errorModel) {
-
-        }
-    };
-
     /**
      * 开始执行网络请求
      */

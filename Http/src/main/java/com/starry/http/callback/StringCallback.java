@@ -1,8 +1,8 @@
 package com.starry.http.callback;
 
-import com.starry.http.HttpConverter;
+import com.starry.http.interfaces.HttpConverter;
 import com.starry.http.HttpManager;
-import com.starry.http.Util;
+import com.starry.http.utils.Util;
 
 import okhttp3.Response;
 

@@ -1,4 +1,4 @@
-package com.starry.http;
+package com.starry.http.interfaces;
 
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;

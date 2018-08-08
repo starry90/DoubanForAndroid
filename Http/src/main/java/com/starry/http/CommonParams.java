@@ -5,7 +5,6 @@ import com.starry.http.request.GetRequest;
 import com.starry.http.request.OKHttpRequest;
 import com.starry.http.request.PostFormRequest;
 import com.starry.http.request.PostStringRequest;
-import com.starry.http.request.RealRequest;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -145,10 +144,7 @@ public class CommonParams {
         }
 
         public RealRequest build() {
-            if (this.params == null) {
-                params = new LinkedHashMap<>();
-            }
-            return okHttpRequest.build(new CommonParams(this));
+            return new RealRequest(okHttpRequest, new CommonParams(this));
         }
 
     }

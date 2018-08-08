@@ -1,5 +1,7 @@
 package com.starry.http.request;
 
+import com.starry.http.utils.Util;
+
 import java.util.Map;
 
 import okhttp3.Request;
@@ -19,7 +21,7 @@ public class GetRequest extends OKHttpRequest {
         sb.append(url).append("?");
         if (params != null && !params.isEmpty()) {
             for (String key : params.keySet()) {
-                String value = convert(params.get(key));
+                String value = Util.convert(params.get(key));
                 sb.append(key).append("=").append(value).append("&");
             }
         }
@@ -35,8 +37,8 @@ public class GetRequest extends OKHttpRequest {
 
 
     @Override
-    protected Request buildRequest(RequestBody requestBody) {
-        return requestBuilder.get().build();
+    protected Request buildRequest(Request.Builder builder, RequestBody requestBody) {
+        return builder.get().build();
     }
 
 }

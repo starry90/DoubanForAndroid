@@ -2,7 +2,7 @@ package com.starry.douban.env;
 
 import com.google.gson.JsonParseException;
 import com.starry.http.CommonParams;
-import com.starry.http.HttpInterceptor;
+import com.starry.http.interfaces.HttpInterceptor;
 import com.starry.http.error.BIZException;
 import com.starry.http.error.ErrorModel;
 import com.starry.log.Logger;
@@ -39,7 +39,7 @@ public final class InterceptorImpl implements HttpInterceptor {
     }
 
     @Override
-    public void logRequest(CommonParams commonParams) {
+    public CommonParams logRequest(CommonParams commonParams) {
         Map<String, Object> params = commonParams.params();
         String paramsStr = commonParams.content();
         if (paramsStr == null || paramsStr.length() == 0) {
@@ -59,6 +59,7 @@ public final class InterceptorImpl implements HttpInterceptor {
                 , headersStr
                 , paramsStr);
         Logger.i(TAG, result);
+        return commonParams;
     }
 
     @Override

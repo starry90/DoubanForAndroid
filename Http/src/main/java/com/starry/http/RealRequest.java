@@ -1,14 +1,13 @@
-package com.starry.http.request;
+package com.starry.http;
 
 
 import android.support.annotation.NonNull;
 
-import com.starry.http.CommonParams;
-import com.starry.http.HttpInterceptor;
-import com.starry.http.HttpManager;
-import com.starry.http.MainHandler;
 import com.starry.http.callback.CommonCallback;
 import com.starry.http.error.ErrorModel;
+import com.starry.http.interfaces.HttpInterceptor;
+import com.starry.http.request.OKHttpRequest;
+import com.starry.http.utils.MainHandler;
 
 import java.io.EOFException;
 import java.io.IOException;
@@ -24,14 +23,14 @@ import okhttp3.Response;
  */
 public class RealRequest {
 
-    private Request request;
+    private OKHttpRequest okHttpRequest;
 
     private CommonParams commonParams;
 
     private HttpInterceptor httpInterceptor;
 
-    RealRequest(Request request, CommonParams commonParams) {
-        this.request = request;
+    public RealRequest(OKHttpRequest okHttpRequest, CommonParams commonParams) {
+        this.okHttpRequest = okHttpRequest;
         this.commonParams = commonParams;
         this.httpInterceptor = HttpManager.getInstance().getInterceptor();
     }
@@ -44,7 +43,8 @@ public class RealRequest {
      * @return 返回结果
      */
     public <T> T execute(CommonCallback<T> callback) {
-        httpInterceptor.logRequest(commonParams);
+        commonParams = httpInterceptor.logRequest(commonParams);
+        Request request = okHttpRequest.build(commonParams, callback);
         Call call = HttpManager.getInstance().getOkHttpClient().newCall(request);
         return execute(call, callback);
     }
@@ -56,7 +56,8 @@ public class RealRequest {
      * @param callback 回调对象
      */
     public <T> void enqueue(CommonCallback<T> callback) {
-        httpInterceptor.logRequest(commonParams);
+        commonParams = httpInterceptor.logRequest(commonParams);
+        Request request = okHttpRequest.build(commonParams, callback);
         Call call = HttpManager.getInstance().getOkHttpClient().newCall(request);
         enqueue(call, callback);
     }
@@ -99,7 +100,7 @@ public class RealRequest {
         });
     }
 
-    private void onFailureResult(Call call, IOException ex, CommonCallback callback) {
+    private <T> void onFailureResult(Call call, IOException ex, CommonCallback<T> callback) {
         //{@linkplain okhttp3.RealCall#isCanceled()}
         if (call.isCanceled()) {
             sendCanceledCallback(callback);

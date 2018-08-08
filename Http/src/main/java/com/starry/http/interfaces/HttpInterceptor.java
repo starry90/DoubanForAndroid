@@ -1,6 +1,7 @@
-package com.starry.http;
+package com.starry.http.interfaces;
 
 
+import com.starry.http.CommonParams;
 import com.starry.http.error.ErrorModel;
 
 import okhttp3.Callback;
@@ -19,15 +20,16 @@ public interface HttpInterceptor {
      * 该方法运行于调用网络请求的线程
      *
      * @param commonParams CommonParams
+     * @return CommonParams
      */
-    void logRequest(CommonParams commonParams);
+    CommonParams logRequest(CommonParams commonParams);
 
     /**
      * 处理 OkHttp onResponse Exception信息
      * 该方法运行在子线程
      *
      * @param ex Exception
-     * @return NetworkException
+     * @return ErrorModel
      * @see Callback#onResponse(okhttp3.Call, okhttp3.Response)
      */
     ErrorModel handleResponse(Exception ex, ErrorModel errorModel);
@@ -37,7 +39,7 @@ public interface HttpInterceptor {
      * 该方法运行在子线程
      *
      * @param ex Exception
-     * @return NetworkException
+     * @return ErrorModel
      * @see Callback#onFailure(okhttp3.Call, java.io.IOException)
      */
     ErrorModel handleFailure(Exception ex, ErrorModel errorModel);
@@ -54,8 +56,8 @@ public interface HttpInterceptor {
     HttpInterceptor NO_INTERCEPTOR = new HttpInterceptor() {
 
         @Override
-        public void logRequest(CommonParams commonParams) {
-
+        public CommonParams logRequest(CommonParams commonParams) {
+            return commonParams;
         }
 
         @Override

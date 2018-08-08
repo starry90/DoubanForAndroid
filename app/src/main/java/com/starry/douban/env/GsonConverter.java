@@ -2,7 +2,7 @@ package com.starry.douban.env;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.starry.http.HttpConverter;
+import com.starry.http.interfaces.HttpConverter;
 import com.starry.http.error.BIZException;
 
 import org.json.JSONObject;

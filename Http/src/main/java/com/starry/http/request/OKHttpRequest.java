@@ -1,6 +1,7 @@
 package com.starry.http.request;
 
 import com.starry.http.CommonParams;
+import com.starry.http.callback.CommonCallback;
 
 import java.util.Map;
 
@@ -16,26 +17,16 @@ public abstract class OKHttpRequest {
 
     protected CommonParams commonParams;
 
-    protected Request.Builder requestBuilder = new Request.Builder();
-
     protected String buildUrl() {
         return commonParams.url();
     }
 
     protected abstract RequestBody buildRequestBody();
 
-    protected abstract Request buildRequest(RequestBody requestBody);
+    protected abstract Request buildRequest(Request.Builder builder, RequestBody requestBody);
 
-    protected RequestBody wrapRequestBody(RequestBody requestBody) {
+    protected RequestBody wrapRequestBody(RequestBody requestBody, CommonCallback callback) {
         return requestBody;
-    }
-
-    public Request generateRequest() {
-        requestBuilder.tag(commonParams.tag())
-                .url(buildUrl())
-                .headers(buildHeaders());
-        RequestBody requestBody = wrapRequestBody(buildRequestBody());
-        return buildRequest(requestBody);
     }
 
     private Headers buildHeaders() {
@@ -49,15 +40,13 @@ public abstract class OKHttpRequest {
         return headerBuilder.build();
     }
 
-    public RealRequest build(CommonParams commonParams) {
+    public Request build(CommonParams commonParams, CommonCallback callback) {
         this.commonParams = commonParams;
-        return new RealRequest(generateRequest(), commonParams);
-    }
-
-    protected String convert(Object value) {
-        if (value == null) {
-            return "";
-        }
-        return value.toString();
+        Request.Builder requestBuilder = new Request.Builder()
+                .tag(this.commonParams.tag())
+                .url(buildUrl())
+                .headers(buildHeaders());
+        RequestBody requestBody = wrapRequestBody(buildRequestBody(), callback);
+        return buildRequest(requestBuilder, requestBody);
     }
 }

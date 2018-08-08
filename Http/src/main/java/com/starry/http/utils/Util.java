@@ -1,4 +1,4 @@
-package com.starry.http;
+package com.starry.http.utils;
 
 import java.io.Closeable;
 
@@ -33,6 +33,13 @@ public class Util {
             } catch (Exception ignored) {
             }
         }
+    }
+
+    public static String convert(Object value) {
+        if (value == null) {
+            return "";
+        }
+        return value.toString();
     }
 
 }
