@@ -15,13 +15,11 @@ import okhttp3.RequestBody;
  */
 public abstract class OKHttpRequest {
 
-    protected CommonParams commonParams;
-
-    protected String buildUrl() {
+    protected String buildUrl(CommonParams commonParams) {
         return commonParams.url();
     }
 
-    protected abstract RequestBody buildRequestBody();
+    protected abstract RequestBody buildRequestBody(CommonParams commonParams);
 
     protected abstract Request buildRequest(Request.Builder builder, RequestBody requestBody);
 
@@ -29,7 +27,7 @@ public abstract class OKHttpRequest {
         return requestBody;
     }
 
-    private Headers buildHeaders() {
+    private Headers buildHeaders(CommonParams commonParams) {
         Map<String, String> headers = commonParams.headers();
         Headers.Builder headerBuilder = new Headers.Builder();
         if (headers != null && !headers.isEmpty()) {
@@ -41,12 +39,12 @@ public abstract class OKHttpRequest {
     }
 
     public Request build(CommonParams commonParams, CommonCallback callback) {
-        this.commonParams = commonParams;
         Request.Builder requestBuilder = new Request.Builder()
-                .tag(this.commonParams.tag())
-                .url(buildUrl())
-                .headers(buildHeaders());
-        RequestBody requestBody = wrapRequestBody(buildRequestBody(), callback);
+                .tag(commonParams.tag())
+                .url(buildUrl(commonParams))
+                .headers(buildHeaders(commonParams));
+        RequestBody requestBody = wrapRequestBody(buildRequestBody(commonParams), callback);
         return buildRequest(requestBuilder, requestBody);
     }
+
 }

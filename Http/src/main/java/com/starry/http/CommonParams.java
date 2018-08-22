@@ -32,6 +32,7 @@ public class CommonParams {
     private Map<String, Object> params;
     private List<FileInput> files;
     private String content;
+    private OKHttpRequest okHttpRequest;
 
     private CommonParams(Builder builder) {
         this.url = builder.url;
@@ -42,6 +43,7 @@ public class CommonParams {
         this.headers = builder.headers;
         this.files = builder.files;
         this.content = builder.content;
+        this.okHttpRequest = builder.okHttpRequest;
     }
 
     public String url() {
@@ -72,6 +74,14 @@ public class CommonParams {
         return content;
     }
 
+    public OKHttpRequest okHttpRequest() {
+        return okHttpRequest;
+    }
+
+    public Builder newBuilder() {
+        return new Builder(this);
+    }
+
     public static final class Builder {
         private String url;
         private Object tag;
@@ -83,6 +93,9 @@ public class CommonParams {
         private String content;
         private OKHttpRequest okHttpRequest;
 
+        public Builder() {
+        }
+
         public Builder(String method) {
             this.method = method;
             if (POST_FORM.equals(method)) {
@@ -92,6 +105,18 @@ public class CommonParams {
             } else {
                 this.okHttpRequest = new GetRequest();
             }
+        }
+
+        private Builder(CommonParams commonParams) {
+            this.url = commonParams.url;
+            this.tag = commonParams.tag;
+            this.method = commonParams.method;
+
+            this.params = commonParams.params;
+            this.headers = commonParams.headers;
+            this.files = commonParams.files;
+            this.content = commonParams.content;
+            this.okHttpRequest = commonParams.okHttpRequest;
         }
 
         public Builder url(String url) {
@@ -141,6 +166,10 @@ public class CommonParams {
         public Builder content(String content) {
             this.content = content;
             return this;
+        }
+
+        public CommonParams newCommonParams() {
+            return new CommonParams(this);
         }
 
         public RealRequest build() {

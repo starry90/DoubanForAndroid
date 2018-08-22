@@ -25,7 +25,7 @@ import okhttp3.RequestBody;
 public class PostFormRequest extends OKHttpRequest {
 
     @Override
-    protected RequestBody buildRequestBody() {
+    protected RequestBody buildRequestBody(CommonParams commonParams) {
         Map<String, Object> params = commonParams.params();
         List<CommonParams.FileInput> files = commonParams.files();
         if (files == null || files.isEmpty()) {

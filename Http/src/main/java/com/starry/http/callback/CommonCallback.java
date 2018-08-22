@@ -7,12 +7,30 @@ import okhttp3.Response;
 
 /**
  * 网络请求回调类
+ * <p>
+ * 调用顺序如下：
+ * <li>成功：{@link #onBefore} -> {@link #parseResponse} -> {@link #onAfter} -> {@link #onSuccess}</li>
+ * <li>上传：{@link #onBefore} -> {@link #inProgress} -> {@link #parseResponse} -> {@link #onAfter} -> {@link #onSuccess}</li>
+ * <li>失败：{@link #onBefore} -> {@link #onAfter} -> {@link #onFailure}</li>
+ * <li>取消：{@link #onBefore} -> {@link #onAfter}</li>
  *
  * @param <T> 解析的对象
  * @author Starry Jerry
  * @since 2016/6/19.
  */
 public abstract class CommonCallback<T> {
+
+    public final static CommonCallback<String> NO_CALLBACK = new StringCallback<String>() {
+        @Override
+        public void onSuccess(String response, Object... obj) {
+
+        }
+
+        @Override
+        public void onFailure(ErrorModel errorModel) {
+
+        }
+    };
 
     /**
      * 开始执行网络请求

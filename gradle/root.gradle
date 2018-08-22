@@ -12,7 +12,7 @@ ext {
             "versionCode"      : 43,
             "versionName"      : "1.2.4",
 
-            "httpVersion"      : 3
+            "httpVersion"      : 4
     ]
 
     def supportVersion = "26.0.2"
