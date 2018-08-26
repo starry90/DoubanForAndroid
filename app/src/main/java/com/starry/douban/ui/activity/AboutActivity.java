@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import com.starry.douban.BuildConfig;
 import com.starry.douban.R;
-import com.starry.douban.base.BaseActivity;
+import com.starry.douban.base.BaseNFCActivity;
 import com.starry.douban.constant.PreferencesName;
 import com.starry.douban.util.SPUtil;
 
@@ -21,7 +21,7 @@ import butterknife.BindView;
  * @since 2018/5/25.
  */
 
-public class AboutActivity extends BaseActivity implements View.OnClickListener {
+public class AboutActivity extends BaseNFCActivity implements View.OnClickListener {
 
     @BindView(R.id.tv_about_app_name)
     TextView tvAboutAppName;
@@ -37,6 +37,16 @@ public class AboutActivity extends BaseActivity implements View.OnClickListener 
     TextView tvAboutGithub;
 
     private boolean latestVersion;
+
+    @Override
+    protected Class<?> getNFCClass() {
+        return getClass();
+    }
+
+    @Override
+    protected void responseNFCResult(String nfcResult) {
+        NFCActivity.startPage(this, nfcResult);
+    }
 
     @Override
     public int getLayoutResID() {

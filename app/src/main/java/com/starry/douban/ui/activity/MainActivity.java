@@ -8,9 +8,9 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.starry.douban.R;
-import com.starry.douban.base.BaseActivity;
 import com.starry.douban.base.BaseApp;
 import com.starry.douban.base.BaseFragmentPagerAdapter;
+import com.starry.douban.base.BaseNFCActivity;
 import com.starry.douban.ui.fragment.HomeFragment;
 import com.starry.douban.ui.fragment.MovieParentFragment;
 import com.starry.douban.ui.fragment.SettingFragment;
@@ -28,7 +28,7 @@ import butterknife.BindView;
  * Main
  * Created by Starry Jerry on 2016/12/1.
  */
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseNFCActivity {
 
     @BindView(R.id.viewpager_main)
     ViewPager viewpagerMain;
@@ -44,6 +44,16 @@ public class MainActivity extends BaseActivity {
     private String[] titles = new String[]{"首页", "电影", "设置"};
 
     private ArgbEvaluatorUtil argbEvaluatorUtil = ArgbEvaluatorUtil.get();
+
+    @Override
+    protected Class<?> getNFCClass() {
+        return getClass();
+    }
+
+    @Override
+    protected void responseNFCResult(String nfcResult) {
+        NFCActivity.startPage(this, nfcResult);
+    }
 
     @Override
     public int getLayoutResID() {
