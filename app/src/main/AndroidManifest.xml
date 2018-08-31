@@ -8,6 +8,13 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
+    <!-- The NFC <uses-permission> element to access the NFC hardware -->
+    <uses-permission android:name="android.permission.NFC" />
+    <!-- The uses-feature element so that your application shows up in Google Play only for devices that have NFC hardware -->
+    <uses-feature
+        android:name="android.hardware.nfc"
+        android:required="true" />
+
     <application
         android:name=".DBApplication"
         android:allowBackup="true"
@@ -32,10 +39,27 @@
             android:screenOrientation="portrait" />
         <activity
             android:name="com.starry.douban.ui.activity.AboutActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.starry.douban.ui.activity.AppUpdateActivity"
             android:screenOrientation="portrait" />
+
+        <!-- NFC页面设置：SingleTop模式 ，并且锁死竖屏，以避免屏幕旋转Intent丢失 -->
+        <activity
+            android:name="com.starry.douban.ui.activity.NFCActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait">
+
+            <intent-filter>
+                <action android:name="android.nfc.action.TECH_DISCOVERED" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.nfc.action.TECH_DISCOVERED"
+                android:resource="@xml/nfc_tech_filter" />
+
+        </activity>
 
         <provider
             android:name="android.support.v4.content.FileProvider"

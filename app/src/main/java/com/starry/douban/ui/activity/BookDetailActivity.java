@@ -8,9 +8,9 @@ import android.widget.TextView;
 import com.starry.douban.R;
 import com.starry.douban.base.BaseActivity;
 import com.starry.douban.constant.Apis;
-import com.starry.douban.http.HttpManager;
-import com.starry.douban.http.callback.StringCallback;
-import com.starry.douban.http.error.ErrorModel;
+import com.starry.http.HttpManager;
+import com.starry.http.callback.StringCallback;
+import com.starry.http.error.ErrorModel;
 import com.starry.douban.image.ImageManager;
 import com.starry.douban.model.BookDetail;
 import com.starry.douban.util.ToastUtil;
@@ -78,6 +78,12 @@ public class BookDetailActivity extends BaseActivity {
                     @Override
                     public void onFailure(ErrorModel errorModel) {
                         ToastUtil.showToast(errorModel.getMessage());
+                    }
+
+                    @Override
+                    public void onAfter(boolean success) {
+                        super.onAfter(success);
+                        hideLoading(success);
                     }
                 });
     }

@@ -1,6 +1,5 @@
 package com.starry.douban.adapter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.View;
@@ -9,7 +8,6 @@ import com.starry.douban.R;
 import com.starry.douban.base.BaseRecyclerAdapter;
 import com.starry.douban.model.MovieBean;
 import com.starry.douban.ui.activity.MovieDetailActivity;
-import com.starry.douban.util.ActivityAnimationUtils;
 
 import java.util.List;
 
@@ -33,7 +31,7 @@ public class MovieAdapter extends BaseRecyclerAdapter<MovieBean> {
         super.onItemClick(position, itemView);
         Intent intent = new Intent(mContext, MovieDetailActivity.class);
         intent.putExtra("movieId", mBeans.get(position).getId());
-        ActivityAnimationUtils.transition((Activity) mContext, intent, itemView);
+        mContext.startActivity(intent);
     }
 
     @Override

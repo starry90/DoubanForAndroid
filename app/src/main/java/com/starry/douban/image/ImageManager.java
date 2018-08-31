@@ -12,8 +12,8 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.target.Target;
 import com.starry.douban.R;
 import com.starry.douban.base.BaseApp;
-import com.starry.douban.rx.RxCommonTask;
-import com.starry.douban.rx.RxManager;
+import com.starry.rx.RxCommonTask;
+import com.starry.rx.RxManager;
 
 /**
  * 图片管理器

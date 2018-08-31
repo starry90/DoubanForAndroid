@@ -6,7 +6,7 @@ import android.text.format.Formatter;
 
 import com.starry.douban.BuildConfig;
 import com.starry.douban.base.BaseApp;
-import com.starry.douban.log.Logger;
+import com.starry.log.Logger;
 
 import java.io.File;
 import java.io.FileWriter;

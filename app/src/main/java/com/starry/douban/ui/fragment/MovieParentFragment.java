@@ -1,6 +1,7 @@
 package com.starry.douban.ui.fragment;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.widget.FrameLayout;
@@ -9,9 +10,11 @@ import android.widget.LinearLayout;
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
 import com.starry.douban.R;
 import com.starry.douban.base.BaseFragment;
-import com.starry.douban.util.viewpager.v4.FragmentPagerItem;
-import com.starry.douban.util.viewpager.v4.FragmentPagerItemAdapter;
-import com.starry.douban.util.viewpager.v4.FragmentPagerItems;
+import com.starry.douban.base.BaseFragmentPagerAdapter;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -28,8 +31,6 @@ public class MovieParentFragment extends BaseFragment {
     @BindView(R.id.viewpager)
     ViewPager viewPager;
 
-    FragmentPagerItemAdapter mAdapter;
-
     private String[] tabTitles = new String[]{"正在热映", "即将上映", "Top250", "科幻", "喜剧"};
 
     @Override
@@ -42,17 +43,18 @@ public class MovieParentFragment extends BaseFragment {
         tab.addView(LayoutInflater.from(getActivity()).inflate(R.layout.tab_smart_indicator, tab, false));
         SmartTabLayout viewPagerTab = (SmartTabLayout) tab.findViewById(R.id.viewpager_tab);
 
-        FragmentPagerItems pages = new FragmentPagerItems(getActivity());
+        List<Fragment> pages = new ArrayList<>();
         for (int i = 0; i < tabTitles.length; i++) {
             Bundle bundle = new Bundle();
             bundle.putInt("type", i);
-            pages.add(FragmentPagerItem.of(tabTitles[i], MovieFragment.class, bundle));
+            MovieFragment movieFragment = new MovieFragment();
+            movieFragment.setArguments(bundle);
+            pages.add(movieFragment);
         }
-
-        mAdapter = new FragmentPagerItemAdapter(getActivity().getSupportFragmentManager(), pages);
-
+        BaseFragmentPagerAdapter adapter = new BaseFragmentPagerAdapter(getActivity().getSupportFragmentManager(), pages);
+        adapter.setPageTitles(Arrays.asList(tabTitles));
+        viewPager.setAdapter(adapter);
         viewPager.setOffscreenPageLimit(5);
-        viewPager.setAdapter(mAdapter);
         viewPagerTab.setViewPager(viewPager);
     }
 }

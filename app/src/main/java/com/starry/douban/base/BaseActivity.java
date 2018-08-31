@@ -10,7 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.starry.douban.R;
-import com.starry.douban.http.HttpManager;
+import com.starry.http.HttpManager;
 import com.starry.douban.widget.LoadingDataLayout;
 
 import butterknife.BindView;
@@ -127,7 +127,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseUI 
     @Override
     protected void onDestroy() {
         //如果关闭页面，取消请求
-        HttpManager.getInstance().cancelTag(this);
+        HttpManager.cancelTag(this);
 
         super.onDestroy();
     }

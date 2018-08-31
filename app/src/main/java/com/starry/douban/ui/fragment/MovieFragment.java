@@ -7,13 +7,12 @@ import com.starry.douban.R;
 import com.starry.douban.adapter.MovieAdapter;
 import com.starry.douban.base.BaseFragment;
 import com.starry.douban.constant.Apis;
-import com.starry.douban.http.HttpManager;
-import com.starry.douban.http.callback.StringCallback;
-import com.starry.douban.http.error.ErrorModel;
 import com.starry.douban.model.MovieBean;
 import com.starry.douban.model.Movies;
 import com.starry.douban.util.ToastUtil;
-import com.starry.douban.widget.LoadingDataLayout;
+import com.starry.http.HttpManager;
+import com.starry.http.callback.StringCallback;
+import com.starry.http.error.ErrorModel;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -39,7 +38,7 @@ public class MovieFragment extends BaseFragment {
 
     private String url = Apis.MovieInTheaters;
 
-    private LinkedHashMap<String, String> params = new LinkedHashMap<>();
+    private LinkedHashMap<String, Object> params = new LinkedHashMap<>();
 
     @Override
     public int getLayoutResID() {
@@ -99,8 +98,8 @@ public class MovieFragment extends BaseFragment {
 
     @Override
     public void loadData() {
-        params.put("start", start + "");
-        params.put("count", count + "");
+        params.put("start", start);
+        params.put("count", count);
         HttpManager.get(url)
                 .tag(this)
                 .params(params)
@@ -127,7 +126,6 @@ public class MovieFragment extends BaseFragment {
     }
 
     public void refreshMovieList(Movies response) {
-        showLoadingStatus(LoadingDataLayout.STATUS_SUCCESS);
         //1、如果是第一页先清空数据 books不用做非空判断，不可能为空
         if (start == 0) {
             books.clear();

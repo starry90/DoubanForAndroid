@@ -6,8 +6,13 @@ import android.content.Context;
 import com.github.moduth.blockcanary.BlockCanary;
 import com.squareup.leakcanary.LeakCanary;
 import com.starry.douban.constant.Common;
+import com.starry.douban.env.ActivityCallback;
+import com.starry.douban.env.AppBlockCanaryContext;
+import com.starry.douban.env.GsonConverter;
+import com.starry.douban.env.InterceptorImpl;
 import com.starry.douban.util.FileUtils;
 import com.starry.douban.util.TimeUtils;
+import com.starry.http.HttpManager;
 
 import java.io.File;
 import java.util.Date;
@@ -69,6 +74,7 @@ public class BaseApp {
 
         lifeCallback = new ActivityCallback();
         application.registerActivityLifecycleCallbacks(lifeCallback);
+        initOkHttp();
 
         Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
             @Override
@@ -79,6 +85,15 @@ public class BaseApp {
                 android.os.Process.killProcess(android.os.Process.myPid());
             }
         });
+    }
+
+    private void initOkHttp() {
+        HttpManager.getInstance()
+                .setTimeOut(30)
+                .setHttpConverter(GsonConverter.create())
+                .setInterceptor(new InterceptorImpl())
+                .setCertificates()
+                .build();
     }
 
 }

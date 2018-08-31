@@ -14,7 +14,7 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 
 import com.starry.douban.base.BaseApp;
-import com.starry.douban.log.Logger;
+import com.starry.log.Logger;
 
 import java.io.File;
 import java.util.List;
