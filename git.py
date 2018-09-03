@@ -1,10 +1,10 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 # coding = utf-8
 
 
 import os
 import re
-import commands
+import subprocess
 
 # support git command
 # 1.git rebase = git fetch --> git rebase
@@ -21,13 +21,13 @@ format_str = "$ %s"
 def git_branch():
     com_str = git_command[-1]
     print(format_str % com_str)
-    result = commands.getstatusoutput(com_str)
+    result = subprocess.getstatusoutput(com_str)
     if result[0] == 0:  # 0 is success
         content = result[1]
-        print (content)
-        # * master  f389b41 [origin/master: ahead 1]
+        print(content)
+        # * master  f389b41 [origin/master: ahead 1] 可能会存在中文冒号
         result_group = re.search('\[(.*?)\]', content[content.find("* "):])
-        cur_branch.extend(result_group.group(1).split(":")[0].split("/"))
+        cur_branch.extend(result_group.group(1).replace("：",":").split(":")[0].split("/"))
         command_flag[0] = True
 
 
@@ -68,10 +68,10 @@ def git_push():
 
 def main():
     while True:
-        print format_str % "[1: rebase]  [2: pull]  [3: push_rebase]  [4: push_pull]  [q: exit]"
-        command_type = raw_input(format_str % "input: ")
+        print(format_str % "[1: rebase]  [2: pull]  [3: push_rebase]  [4: push_pull]  [q: exit]")
+        command_type = input(format_str % "input: ")
         if command_type not in "1234":
-            if command_type == 'q':
+            if command_type == "q":
                 break
             else:
                 continue
