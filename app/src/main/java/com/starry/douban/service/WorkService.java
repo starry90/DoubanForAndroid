@@ -1,6 +1,7 @@
 package com.starry.douban.service;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -31,7 +32,7 @@ public class WorkService extends Service {
     private volatile Looper mServiceLooper;
     private volatile WorkHandler mWorkHandler;
 
-    private static class WorkHandler extends Handler {
+    private class WorkHandler extends Handler {
         WorkHandler(Looper looper) {
             super(looper);
         }
@@ -73,13 +74,17 @@ public class WorkService extends Service {
         return null;
     }
 
+    public static void stopWorkService(Context context) {
+        context.stopService(new Intent(context, WorkService.class));
+    }
+
     public static void checkAppVersion() {
         Intent intent = new Intent(BaseApp.getContext(), WorkService.class);
         intent.setAction(ACTION_CHECK_APP_VERSION);
         BaseApp.getContext().startService(intent);
     }
 
-    private static void onHandleIntent(Intent intent) {
+    private void onHandleIntent(Intent intent) {
         String action = intent.getAction();
         if (TextUtils.isEmpty(action)) {
             return;
@@ -92,7 +97,7 @@ public class WorkService extends Service {
         }
     }
 
-    private static void getAppVersion() {
+    private void getAppVersion() {
         HttpManager.get(Apis.APP_UPDATE)
                 .build()
                 .enqueue(new StringCallback<AppUpdate>() {
