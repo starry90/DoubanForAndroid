@@ -13,10 +13,17 @@ import android.text.TextUtils;
 
 import com.starry.douban.base.BaseApp;
 import com.starry.douban.constant.Apis;
+import com.starry.douban.constant.PreferencesName;
+import com.starry.douban.event.AppUpdateEvent;
 import com.starry.douban.model.AppUpdate;
+import com.starry.douban.util.SPUtil;
 import com.starry.http.HttpManager;
+import com.starry.http.callback.FileCallback;
 import com.starry.http.callback.StringCallback;
 import com.starry.http.error.ErrorModel;
+import com.starry.rx.RxBus;
+
+import java.io.File;
 
 /**
  * work service
@@ -27,6 +34,11 @@ import com.starry.http.error.ErrorModel;
 public class WorkService extends Service {
 
     private static final String ACTION_CHECK_APP_VERSION = "com.starry.douban.CHECK_APP_VERSION";
+    private static final String ACTION_DOWNLOAD_APP = "com.starry.douban.DOWNLOAD_APP";
+
+    private static final String EXTRA_APP_DOWNLOAD_DIR = "appDownloadDir";
+    private static final String EXTRA_APP_DOWNLOAD_NAME = "appDownloadName";
+
 
     private static final String TAG = "WorkService";
     private volatile Looper mServiceLooper;
@@ -78,9 +90,17 @@ public class WorkService extends Service {
         context.stopService(new Intent(context, WorkService.class));
     }
 
-    public static void checkAppVersion() {
+    public static void startCheckAppVersion() {
         Intent intent = new Intent(BaseApp.getContext(), WorkService.class);
         intent.setAction(ACTION_CHECK_APP_VERSION);
+        BaseApp.getContext().startService(intent);
+    }
+
+    public static void startDownloadApp(String dirPath, String fileName) {
+        Intent intent = new Intent(BaseApp.getContext(), WorkService.class);
+        intent.setAction(ACTION_DOWNLOAD_APP);
+        intent.putExtra(EXTRA_APP_DOWNLOAD_DIR, dirPath);
+        intent.putExtra(EXTRA_APP_DOWNLOAD_NAME, fileName);
         BaseApp.getContext().startService(intent);
     }
 
@@ -93,6 +113,10 @@ public class WorkService extends Service {
         switch (action) {
             case ACTION_CHECK_APP_VERSION:
                 getAppVersion();
+                break;
+            case ACTION_DOWNLOAD_APP:
+                downloadApp(intent.getStringExtra(EXTRA_APP_DOWNLOAD_DIR),
+                        intent.getStringExtra(EXTRA_APP_DOWNLOAD_NAME));
                 break;
         }
     }
@@ -112,5 +136,43 @@ public class WorkService extends Service {
                 });
     }
 
+    private void downloadApp(String dirPath, String fileName) {
+        String url = SPUtil.getString(PreferencesName.APP_UPDATE_APK_URL);
+        if (TextUtils.isEmpty(url)) {
+            return;
+        }
+        File file = new File(dirPath, fileName);
+        if (file.exists()) { //已下载，直接安装
+            BaseApp.installApp(file);
+            return;
+        }
+
+        HttpManager.get(url)
+                .tag(this)
+                .build()
+                .enqueue(new FileCallback(dirPath, fileName) {
+
+                    @Override
+                    public void onBefore() {
+                        super.onBefore();
+                        RxBus.getDefault().post(new AppUpdateEvent(1));
+                    }
+
+                    @Override
+                    public void onSuccess(File response, Object... obj) {
+                        BaseApp.installApp(response);
+                    }
+
+                    @Override
+                    public void onFailure(ErrorModel errorModel) {
+                    }
+
+                    @Override
+                    public void inProgress(float progress, long total) {
+                        super.inProgress(progress, total);
+                        RxBus.getDefault().post(new AppUpdateEvent(2, progress));
+                    }
+                });
+    }
 
 }

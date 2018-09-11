@@ -32,7 +32,7 @@ public class SettingFragment extends BaseFragment {
     @Override
     public void initData() {
         tv_version.setText(BuildConfig.VERSION_NAME);
-        WorkService.checkAppVersion();
+        WorkService.startCheckAppVersion();
     }
 
     @Override
