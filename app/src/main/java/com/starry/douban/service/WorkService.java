@@ -33,6 +33,15 @@ import java.io.File;
  */
 public class WorkService extends Service {
 
+    /**
+     * https://developer.android.google.cn/guide/components/intents-filters#Types
+     * <p>为了确保应用的安全性，启动 Service 时，请始终使用显式 Intent，且不要为服务声明 Intent 过滤器。
+     * <p>使用隐式 Intent 启动服务存在安全隐患，因为您无法确定哪些服务将响应 Intent，且用户无法看到哪些服务已启动。
+     * <p>从 Android 5.0（API 级别 21）开始，如果使用隐式 Intent 调用 bindService()，系统会引发异常。
+     * <p>为了避免无意中运行不同应用的 Service，请始终使用显式 Intent 启动您自己的服务，且不必为该服务声明 Intent 过滤器。
+     */
+    private static final String EXTRA_ACTION = "action";
+
     private static final String ACTION_CHECK_APP_VERSION = "com.starry.douban.CHECK_APP_VERSION";
     private static final String ACTION_DOWNLOAD_APP = "com.starry.douban.DOWNLOAD_APP";
 
@@ -92,20 +101,20 @@ public class WorkService extends Service {
 
     public static void startCheckAppVersion() {
         Intent intent = new Intent(BaseApp.getContext(), WorkService.class);
-        intent.setAction(ACTION_CHECK_APP_VERSION);
+        intent.putExtra(EXTRA_ACTION, ACTION_CHECK_APP_VERSION);
         BaseApp.getContext().startService(intent);
     }
 
     public static void startDownloadApp(String dirPath, String fileName) {
         Intent intent = new Intent(BaseApp.getContext(), WorkService.class);
-        intent.setAction(ACTION_DOWNLOAD_APP);
+        intent.putExtra(EXTRA_ACTION, ACTION_DOWNLOAD_APP);
         intent.putExtra(EXTRA_APP_DOWNLOAD_DIR, dirPath);
         intent.putExtra(EXTRA_APP_DOWNLOAD_NAME, fileName);
         BaseApp.getContext().startService(intent);
     }
 
     private void onHandleIntent(Intent intent) {
-        String action = intent.getAction();
+        String action = intent.getStringExtra(EXTRA_ACTION);
         if (TextUtils.isEmpty(action)) {
             return;
         }
