@@ -78,6 +78,8 @@ dependencies {
     releaseImplementation deps.leakcanaryRelease
     debugImplementation deps.anrDebug
     releaseImplementation deps.anrRelease
+    //弹性View
+    implementation deps.overscrollDecor
     //module
     implementation project(':ProgressIndicator')
     implementation project(':XRecyclerView')
