@@ -1,5 +1,6 @@
 package com.starry.douban.image;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.widget.ImageView;
@@ -12,8 +13,10 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.target.Target;
 import com.starry.douban.R;
 import com.starry.douban.base.BaseApp;
-import com.starry.rx.RxCommonTask;
 import com.starry.rx.RxManager;
+import com.starry.rx.RxTask;
+
+import io.reactivex.functions.Consumer;
 
 /**
  * 图片管理器
@@ -44,20 +47,21 @@ public class ImageManager {
      */
     public static void getBitmap(final ImageView imageView, String url, final ImageView bgView) {
         Glide.with(getContext()).load(url).asBitmap().into(new SimpleTarget<Bitmap>(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL) {
+            @SuppressLint("CheckResult")
             @Override
             public void onResourceReady(final Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
                 imageView.setImageBitmap(resource);
-                RxManager.create(new RxCommonTask<Bitmap>() {
-
+                RxManager.createIO(new RxTask<Bitmap>() {
                     @Override
-                    public Bitmap doIOWork() {
+                    public Bitmap run() {
                         //该方法耗时2秒，放在主线程会卡顿
                         return FastBlurUtil.doBlur(resource, 20, false);
                     }
-
+                }).subscribe(new Consumer<Bitmap>() {
                     @Override
-                    public void doUIWork(Bitmap blurBitmap) {
+                    public void accept(Bitmap blurBitmap) {
                         bgView.setImageBitmap(blurBitmap);
+
                     }
                 });
             }
