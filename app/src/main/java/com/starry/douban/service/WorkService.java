@@ -11,11 +11,13 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
+import com.starry.douban.BuildConfig;
 import com.starry.douban.base.BaseApp;
 import com.starry.douban.constant.Apis;
 import com.starry.douban.constant.PreferencesName;
 import com.starry.douban.event.AppUpdateEvent;
 import com.starry.douban.model.AppUpdate;
+import com.starry.douban.ui.activity.UpdateDialogActivity;
 import com.starry.douban.util.SPUtil;
 import com.starry.http.HttpManager;
 import com.starry.http.callback.FileCallback;
@@ -137,6 +139,9 @@ public class WorkService extends Service {
                     @Override
                     public void onSuccess(AppUpdate response, Object... obj) {
                         response.savePreferences();
+                        if (response.getVersionCode() > BuildConfig.VERSION_CODE) {
+                            UpdateDialogActivity.startPage(response.getMsg() + "\n" + response.getOther());
+                        }
                     }
 
                     @Override

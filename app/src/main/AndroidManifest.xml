@@ -44,6 +44,11 @@
         <activity
             android:name="com.starry.douban.ui.activity.AppUpdateActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name="com.starry.douban.ui.activity.UpdateDialogActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/ActivityTranslucentTheme" />
 
         <!-- NFC页面设置：SingleTop模式 ，并且锁死竖屏，以避免屏幕旋转Intent丢失 -->
         <activity
