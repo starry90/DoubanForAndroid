@@ -172,8 +172,7 @@ public class LoadingDataLayout extends RelativeLayout {
                                 container.setVisibility(GONE);
                             }
                         })
-                        .build()
-                        .foldWithAnimatorSet();
+                        .hide();
                 break;
 
             case STATUS_EMPTY:

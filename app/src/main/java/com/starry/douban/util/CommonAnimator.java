@@ -16,64 +16,38 @@ import android.view.ViewGroup;
  */
 public class CommonAnimator {
 
-    private Builder builder;
-
-    public Builder getBuilder() {
-        return builder;
-    }
-
-    private CommonAnimator(Builder builder) {
-        this.builder = builder;
-    }
-
     public interface Listener {
         void onAnimationEnd();
     }
 
-    /**
-     * 默认收起效果: 从View的实际高度变成0，同时渐变效果从100%变成0%
-     */
-    public void foldWithDefault() {
-        foldWithAnimatorSet(true);
-    }
-
-    /**
-     * 其它收起效果，设置了相关参数就有，未设置就没有
-     */
-    public void foldWithAnimatorSet() {
-        foldWithAnimatorSet(false);
-    }
-
-    private void foldWithAnimatorSet(final boolean defaultAnimator) {
+    private static AnimatorSet baseAnimatorSet(Builder builder) {
         AnimatorSet animatorSet = new AnimatorSet();
-
         int start = builder.startValue;
         int end = builder.endValue;
+        float[] alphaValues = builder.alphaValues;
         final View target = builder.target;
-        if (defaultAnimator && start == 0 && end == 0) { //默认动画从View的实际高度变成0
-            start = target.getHeight();
-            end = 0;
-        }
+
         if (start != end) {
             ValueAnimator animator = createIntAnimator(target, start, end);
             animatorSet.playTogether(animator);
         }
 
-        float[] alphaValues = builder.alphaValues;
-        if (defaultAnimator && alphaValues == null) { //默认渐变效果从100%变成0%
-            alphaValues = new float[]{1f, 0f};
-        }
         if (alphaValues != null) {
             ObjectAnimator alphaAnimator = createAlphaAnimator(target, alphaValues);
             animatorSet.playTogether(alphaAnimator);
         }
 
         setDuration(animatorSet, builder.duration);
+        return animatorSet;
+    }
+
+    private static void hideWithAnimatorSet(final Builder builder) {
+        AnimatorSet animatorSet = baseAnimatorSet(builder);
         animatorSet.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
-                if (defaultAnimator) { //默认动画结束后隐藏View
-                    target.setVisibility(View.GONE);
+                if (builder.defaultAnimator) { //默认动画结束后隐藏View
+                    builder.target.setVisibility(View.GONE);
                 }
                 if (builder.listener != null)
                     builder.listener.onAnimationEnd();
@@ -82,46 +56,8 @@ public class CommonAnimator {
         animatorSet.start();
     }
 
-    /**
-     * 默认展开效果: 从0变成View的实际高度，同时渐变效果从0%变成100%
-     */
-    public void unfoldWithDefault() {
-        unfoldWithAnimatorSet(true);
-    }
-
-    /**
-     * 其它展开效果，设置了相关参数就有，未设置就没有
-     */
-    public void unfoldWithAnimatorSet() {
-        unfoldWithAnimatorSet(false);
-    }
-
-    private void unfoldWithAnimatorSet(boolean defaultAnimator) {
-        AnimatorSet animatorSet = new AnimatorSet();
-
-        int start = builder.startValue;
-        int end = builder.endValue;
-        View target = builder.target;
-        if (defaultAnimator && start == 0 && end == 0) { //默认动画从0变成View的实际高度
-            //测量扩展动画的起始高度和结束高度
-            start = target.getMeasuredHeight();
-            end = getMeasureUnSpecHeight(target);
-        }
-        if (start != end) {
-            Animator animator = createIntAnimator(target, start, end);
-            animatorSet.playTogether(animator);
-        }
-
-        float[] alphaValues = builder.alphaValues;
-        if (defaultAnimator && alphaValues == null) { //默认渐变效果从0%变成100%
-            alphaValues = new float[]{0f, 1f};
-        }
-        if (alphaValues != null) {
-            ObjectAnimator alphaAnimator = createAlphaAnimator(target, alphaValues);
-            animatorSet.playTogether(alphaAnimator);
-        }
-
-        setDuration(animatorSet, builder.duration);
+    private static void showWithAnimatorSet(final Builder builder) {
+        AnimatorSet animatorSet = baseAnimatorSet(builder);
         animatorSet.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
@@ -129,7 +65,7 @@ public class CommonAnimator {
                     builder.listener.onAnimationEnd();
             }
         });
-        target.setVisibility(View.VISIBLE);
+        builder.target.setVisibility(View.VISIBLE);
         animatorSet.start();
     }
 
@@ -145,14 +81,14 @@ public class CommonAnimator {
         return target.getMeasuredHeight();
     }
 
-    private void setDuration(AnimatorSet animatorSet, long duration) {
+    private static void setDuration(AnimatorSet animatorSet, long duration) {
         if (duration == 0) {
             duration = 300;
         }
         animatorSet.setDuration(duration);
     }
 
-    private ObjectAnimator createAlphaAnimator(final View v, float... values) {
+    private static ObjectAnimator createAlphaAnimator(final View v, float... values) {
         ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(v, View.ALPHA, values);
         alphaAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
@@ -163,7 +99,7 @@ public class CommonAnimator {
         return alphaAnimator;
     }
 
-    private ValueAnimator createIntAnimator(final View v, int start, int end) {
+    private static ValueAnimator createIntAnimator(final View v, int start, int end) {
         ValueAnimator animator = ValueAnimator.ofInt(start, end);
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
 
@@ -192,12 +128,10 @@ public class CommonAnimator {
 
         private Listener listener;
 
+        private boolean defaultAnimator;
+
         public Builder(View target) {
             this.target = target;
-        }
-
-        public View target() {
-            return target;
         }
 
         public Builder target(View target) {
@@ -205,17 +139,9 @@ public class CommonAnimator {
             return this;
         }
 
-        public int duration() {
-            return duration;
-        }
-
         public Builder duration(int duration) {
             this.duration = duration;
             return this;
-        }
-
-        public int startValue() {
-            return startValue;
         }
 
         public Builder startValue(int startValue) {
@@ -223,17 +149,9 @@ public class CommonAnimator {
             return this;
         }
 
-        public int endValue() {
-            return endValue;
-        }
-
         public Builder endValue(int endValue) {
             this.endValue = endValue;
             return this;
-        }
-
-        public float[] alphaValues() {
-            return alphaValues;
         }
 
         public Builder alphaValues(float... alphaValues) {
@@ -241,17 +159,39 @@ public class CommonAnimator {
             return this;
         }
 
-        public Listener listener() {
-            return listener;
-        }
-
         public Builder listener(Listener listener) {
             this.listener = listener;
             return this;
         }
 
-        public CommonAnimator build() {
-            return new CommonAnimator(this);
+        /**
+         * 默认隐藏动画: 从View的实际高度变成0
+         */
+        public Builder defaultHideAnimator() {
+            defaultAnimator = true;
+            ViewGroup.LayoutParams layoutParams = target.getLayoutParams();
+            this.startValue = layoutParams.height;
+            this.endValue = 0;
+            return this;
+        }
+
+        /**
+         * 默认显示动画: 从0变成View的实际高度
+         */
+        public Builder defaultShowAnimator() {
+            defaultAnimator = true;
+            //测量扩展动画的起始高度和结束高度
+            this.startValue = target.getMeasuredHeight();
+            this.endValue = getMeasureUnSpecHeight(target);
+            return this;
+        }
+
+        public void hide() {
+            hideWithAnimatorSet(this);
+        }
+
+        public void show() {
+            showWithAnimatorSet(this);
         }
     }
 

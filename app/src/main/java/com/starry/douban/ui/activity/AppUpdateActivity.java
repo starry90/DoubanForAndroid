@@ -122,24 +122,22 @@ public class AppUpdateActivity extends BaseActivity implements View.OnClickListe
         }
     }
 
-    CommonAnimator hideAnimator;
+    CommonAnimator.Builder hideAnimator;
 
     private void hide() {
         if (hideAnimator == null) {
-            hideAnimator = new CommonAnimator.Builder(tvAppUpdateOther)
-                    .build();
+            hideAnimator = new CommonAnimator.Builder(tvAppUpdateOther).defaultHideAnimator();
         }
-        hideAnimator.foldWithDefault();
+        hideAnimator.hide();
     }
 
-    CommonAnimator showAnimator;
+    CommonAnimator.Builder showAnimator;
 
     private void show() {
         if (showAnimator == null) {
-            showAnimator = new CommonAnimator.Builder(tvAppUpdateOther)
-                    .build();
+            showAnimator = new CommonAnimator.Builder(tvAppUpdateOther).defaultShowAnimator();
         }
-        showAnimator.unfoldWithDefault();
+        showAnimator.show();
     }
 
 }
