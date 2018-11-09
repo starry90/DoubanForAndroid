@@ -5,7 +5,7 @@
     android:background="@color/activity_bg"
     android:orientation="vertical">
 
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    <com.starry.overscroll.OverScrollScrollView
         android:id="@+id/sv_movie_detail"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -161,7 +161,8 @@
 
 
         </RelativeLayout>
-    </ScrollView>
+
+    </com.starry.overscroll.OverScrollScrollView>
 
     <include
         android:id="@id/toolbar"

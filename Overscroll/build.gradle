@@ -1,0 +1,11 @@
+apply plugin: 'com.android.library'
+apply from: rootProject.file('gradle/base.gradle')
+
+//原项目下载地址
+//https://github.com/Mixiaoxiao/OverScroll-Everywhere
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation deps.recyclerview
+}

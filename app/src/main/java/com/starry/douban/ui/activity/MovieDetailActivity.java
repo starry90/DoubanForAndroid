@@ -7,7 +7,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.starry.douban.R;
@@ -24,7 +23,6 @@ import com.starry.http.error.ErrorModel;
 import java.util.List;
 
 import butterknife.BindView;
-import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 
 /**
  * 电影详情页
@@ -72,9 +70,6 @@ public class MovieDetailActivity extends BaseActivity {
 
     @Override
     public void initData() {
-        ScrollView sv = findViewById(R.id.sv_movie_detail);
-        OverScrollDecoratorHelper.setUpOverScroll(sv);
-
         url = Apis.MovieDetail + getIntent().getStringExtra("movieId");
 
         loadData();

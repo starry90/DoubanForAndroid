@@ -38,7 +38,6 @@ ext {
             "leakcanaryRelease"  : "com.squareup.leakcanary:leakcanary-android-no-op:1.5.4",
             "anrDebug"           : "com.github.markzhai:blockcanary-android:1.5.0",
             "anrRelease"         : "com.github.markzhai:blockcanary-no-op:1.5.0",
-            "overscrollDecor"    : "me.everything:overscroll-decor-android:1.0.4",
 
             // rx
             "rxjava"             : "io.reactivex.rxjava2:rxjava:2.1.5",
