@@ -1,0 +1,59 @@
+#https://www.websequencediagrams.com/
+
+title Http
+
+HttpManager->HttpManager:getInstance()...
+
+HttpManager->+HttpManager:get(), post() ...
+HttpManager->HttpManager:newBuilder()
+HttpManager->-CommonParams.Builder:new()
+
+CommonParams.Builder->CommonParams.Builder:url(), tag(), params()...
+
+CommonParams.Builder->+CommonParams.Builder:build()
+CommonParams.Builder->RealRequest:new()
+CommonParams.Builder-->-OKHttpRequest:new()
+RealRequest->+RealRequest:execute(), enqueue():start
+RealRequest->RealRequest:HttpInterceptor.logRequest()
+RealRequest->+OKHttpRequest:return=OKHttpRequest.build()
+OKHttpRequest->OKHttpRequest:new Request.Builder()
+OKHttpRequest->OKHttpRequest:wrapRequestBody()
+OKHttpRequest->-OKHttpRequest:buildRequest()
+RealRequest->RealRequest:OkHttpClient().newCall()
+
+alt execute
+    RealRequest->+RealRequest:execute(Call,CommonCallback)
+    RealRequest-->CommonCallback:CommonCallback.onBefore()
+    RealRequest->-okhttp3.Call:return=okhttp3.Call.execute()
+else enqueue
+    RealRequest->+RealRequest:enqueue(Call,CommonCallback):start
+    RealRequest-->CommonCallback:CommonCallback.onBefore()
+    RealRequest->okhttp3.Call:okhttp3.Call.enqueue()
+    okhttp3.Call->+okhttp3.Call:Callback.onFailure(), onResponse()
+    okhttp3.Call-->-RealRequest:return=okhttp3.Call.enqueue()
+    
+    alt onFailureResult
+        RealRequest->+RealRequest:onFailureResult():start
+        alt isCanceled = true
+            RealRequest->+RealRequest:sendCanceledCallback()
+            RealRequest-->-CommonCallback:CommonCallback.onAfter()
+        else isCanceled = false
+            RealRequest->RealRequest:HttpInterceptor.handleFailure()
+            RealRequest->+RealRequest:sendFailureCallback()
+            RealRequest-->CommonCallback:CommonCallback.onAfter()
+            RealRequest-->-CommonCallback:CommonCallback.onFailure()
+        end
+        RealRequest->-RealRequest:onFailureResult():end
+    else onResponseResult
+        RealRequest->+RealRequest:onResponseResult():start
+        RealRequest->RealRequest:checkHttpCode()
+        RealRequest->RealRequest:HttpInterceptor.logResponse()
+        RealRequest->CommonCallback:return=CommonCallback.parseResponse()
+        RealRequest->+RealRequest:sendSuccessCallback()
+        RealRequest-->CommonCallback:CommonCallback.onAfter()
+        RealRequest-->-CommonCallback:CommonCallback.onSuccess()
+        RealRequest->-RealRequest:onResponseResult():end
+    end
+    RealRequest->-RealRequest:enqueue(Call,CommonCallback):end
+end
+RealRequest->-RealRequest:execute(), enqueue():end
