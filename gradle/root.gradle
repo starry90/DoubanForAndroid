@@ -9,8 +9,8 @@ ext {
 
             "minSdkVersion"    : 21,
             "targetSdkVersion" : 26,
-            "versionCode"      : 44,
-            "versionName"      : "1.2.5",
+            "versionCode"      : 45,
+            "versionName"      : "1.2.6",
 
             "httpVersion"      : 4
     ]
