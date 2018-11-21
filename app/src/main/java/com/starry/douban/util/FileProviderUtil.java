@@ -19,7 +19,8 @@ public class FileProviderUtil {
         Uri uri;
         if (Build.VERSION.SDK_INT >= 24) {
             uri = FileProvider.getUriForFile(context, authority, file);
-            intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            // startActivity called from non-Activity context; forcing Intent.FLAG_ACTIVITY_NEW_TASK
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         } else {
             uri = Uri.fromFile(file);
         }

@@ -85,6 +85,7 @@ dependencies {
     implementation project(':RxJava')
     implementation project(':Logger')
     implementation project(':Http')
+    implementation project(':Overscroll')
 }
 
 //modify apk output  file name, format：db-versionName.versionCode-buildType.apk

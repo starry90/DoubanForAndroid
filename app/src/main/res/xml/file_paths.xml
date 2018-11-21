@@ -7,7 +7,7 @@
         <external-files-path name="name" path="path" /> Context#getExternalFilesDir(String) Context.getExternalFilesDir(null)
         <external-cache-path name="name" path="path" /> Context.getExternalCacheDir()
         <external-media-path name="name" path="path" /> Context.getExternalMediaDirs()
-        https://developer.android.google.cn/guide/topics/manifest/provider-element#gprmsn
+        https://developer.android.google.cn/reference/android/support/v4/content/FileProvider
     -->
     <external-files-path name="my_download" path="download/" />
 

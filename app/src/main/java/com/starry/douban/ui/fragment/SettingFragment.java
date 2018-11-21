@@ -9,14 +9,9 @@ import android.widget.TextView;
 import com.starry.douban.BuildConfig;
 import com.starry.douban.R;
 import com.starry.douban.base.BaseFragment;
-import com.starry.douban.constant.Apis;
-import com.starry.http.HttpManager;
-import com.starry.http.callback.StringCallback;
-import com.starry.http.error.ErrorModel;
-import com.starry.douban.model.AppUpdate;
+import com.starry.douban.service.WorkService;
 import com.starry.douban.ui.activity.AboutActivity;
 import com.starry.douban.util.ActivityAnimationUtils;
-import com.starry.douban.util.ToastUtil;
 
 import butterknife.BindView;
 
@@ -37,24 +32,7 @@ public class SettingFragment extends BaseFragment {
     @Override
     public void initData() {
         tv_version.setText(BuildConfig.VERSION_NAME);
-    }
-
-    @Override
-    public void onLazyLoadingData() {
-        super.onLazyLoadingData();
-        HttpManager.get(Apis.APP_UPDATE)
-                .build()
-                .enqueue(new StringCallback<AppUpdate>() {
-                    @Override
-                    public void onSuccess(AppUpdate response, Object... obj) {
-                        response.savePreferences();
-                    }
-
-                    @Override
-                    public void onFailure(ErrorModel errorModel) {
-                        ToastUtil.showToast(errorModel.getMessage());
-                    }
-                });
+        WorkService.startCheckAppVersion();
     }
 
     @Override

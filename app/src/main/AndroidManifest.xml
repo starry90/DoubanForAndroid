@@ -7,6 +7,8 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!-- Android 8.0 安装应用需要未知来源应用权限-->
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
 
     <!-- The NFC <uses-permission> element to access the NFC hardware -->
     <uses-permission android:name="android.permission.NFC" />
@@ -44,6 +46,11 @@
         <activity
             android:name="com.starry.douban.ui.activity.AppUpdateActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name="com.starry.douban.ui.activity.UpdateDialogActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/ActivityTranslucentTheme" />
 
         <!-- NFC页面设置：SingleTop模式 ，并且锁死竖屏，以避免屏幕旋转Intent丢失 -->
         <activity
@@ -70,6 +77,11 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+
+        <service
+            android:name=".service.WorkService"
+            android:exported="false" />
+
     </application>
 
 </manifest>

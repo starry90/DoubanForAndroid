@@ -4,10 +4,12 @@ package com.starry.http;
 import android.support.annotation.NonNull;
 
 import com.starry.http.callback.CommonCallback;
+import com.starry.http.callback.StringCallback;
 import com.starry.http.error.ErrorModel;
 import com.starry.http.interfaces.HttpInterceptor;
 import com.starry.http.request.OKHttpRequest;
 import com.starry.http.utils.MainHandler;
+import com.starry.http.utils.Util;
 
 import java.io.EOFException;
 import java.io.IOException;
@@ -119,8 +121,12 @@ public class RealRequest {
             checkHttpCode(response.code());
 
             // 2. log response
-            Response cloneResponse = httpInterceptor.logResponse(response);
-
+            Response cloneResponse;
+            if (callback instanceof StringCallback) {
+                cloneResponse = httpInterceptor.logResponse(response);
+            } else {
+                cloneResponse = response;
+            }
             // 3. parse response
             T result = callback.parseResponse(cloneResponse);
 
@@ -138,6 +144,8 @@ public class RealRequest {
 
             // 3. call fail method
             sendFailureCallback(errorModel, callback);
+        } finally {
+            Util.closeQuietly(response);
         }
         return null;
     }

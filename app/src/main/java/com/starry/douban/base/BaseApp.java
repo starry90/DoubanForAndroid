@@ -10,6 +10,8 @@ import com.starry.douban.env.ActivityCallback;
 import com.starry.douban.env.AppBlockCanaryContext;
 import com.starry.douban.env.GsonConverter;
 import com.starry.douban.env.InterceptorImpl;
+import com.starry.douban.service.WorkService;
+import com.starry.douban.util.AppUtil;
 import com.starry.douban.util.FileUtils;
 import com.starry.douban.util.TimeUtils;
 import com.starry.http.HttpManager;
@@ -52,6 +54,7 @@ public class BaseApp {
      */
     public void exitApp() {
         lifeCallback.finishAll();
+        WorkService.stopWorkService(context);
     }
 
     public static File getCrashDir() {
@@ -60,6 +63,10 @@ public class BaseApp {
 
     public static File getDownloadDir() {
         return FileUtils.buildPath(getContext().getExternalFilesDir(""), Common.DIR_DOWNLOAD);
+    }
+
+    public static void installApp(File file) {
+        AppUtil.installApk(getContext(), Common.FILE_PROVIDER_AUTHORITY, file.getAbsolutePath());
     }
 
     public void onCreate(Application application) {

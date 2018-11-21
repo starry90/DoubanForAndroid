@@ -44,7 +44,10 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseUI 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(getLayoutResID());
+        int layoutResID = getLayoutResID();
+        if (layoutResID != 0) {
+            setContentView(layoutResID);
+        }
         ButterKnife.bind(this);//必须在setContentView()之后调用
 
         initToolBar();

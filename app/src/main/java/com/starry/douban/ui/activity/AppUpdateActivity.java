@@ -1,6 +1,5 @@
 package com.starry.douban.ui.activity;
 
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -9,19 +8,19 @@ import android.widget.TextView;
 import com.starry.douban.R;
 import com.starry.douban.base.BaseActivity;
 import com.starry.douban.base.BaseApp;
-import com.starry.douban.constant.Common;
 import com.starry.douban.constant.PreferencesName;
-import com.starry.http.HttpManager;
-import com.starry.http.callback.FileCallback;
-import com.starry.http.error.ErrorModel;
-import com.starry.douban.util.AppUtil;
+import com.starry.douban.event.AppUpdateEvent;
+import com.starry.douban.service.WorkService;
 import com.starry.douban.util.CommonAnimator;
 import com.starry.douban.util.FileUtils;
 import com.starry.douban.util.SPUtil;
+import com.starry.rx.RxBus;
 
 import java.io.File;
 
 import butterknife.BindView;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
 
 /**
  * @author Starry Jerry
@@ -91,13 +90,24 @@ public class AppUpdateActivity extends BaseActivity implements View.OnClickListe
         super.setListener();
         tvAppUpdateInstall.setOnClickListener(this);
         tvAppUpdateMessage.setOnClickListener(this);
+
+        RxBus.getDefault().register(AppUpdateEvent.class, new Consumer<AppUpdateEvent>() {
+            @Override
+            public void accept(AppUpdateEvent appUpdateEvent) throws Exception {
+                if (appUpdateEvent.type == 1) {
+                    pbAppUpdate.setVisibility(View.VISIBLE);
+                } else if (appUpdateEvent.type == 2) {
+                    pbAppUpdate.setProgress((int) (appUpdateEvent.progress * 100));
+                }
+            }
+        }, AndroidSchedulers.mainThread());
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_app_update_install:
-                downloadFile();
+                WorkService.startDownloadApp(dirPath, fileName);
                 break;
 
             case R.id.tv_app_update_message:
@@ -112,62 +122,22 @@ public class AppUpdateActivity extends BaseActivity implements View.OnClickListe
         }
     }
 
-    CommonAnimator hideAnimator;
+    CommonAnimator.Builder hideAnimator;
 
     private void hide() {
         if (hideAnimator == null) {
-            hideAnimator = new CommonAnimator.Builder(tvAppUpdateOther)
-                    .build();
+            hideAnimator = new CommonAnimator.Builder(tvAppUpdateOther).defaultHideAnimator();
         }
-        hideAnimator.foldWithDefault();
+        hideAnimator.hide();
     }
 
-    CommonAnimator showAnimator;
+    CommonAnimator.Builder showAnimator;
 
     private void show() {
         if (showAnimator == null) {
-            showAnimator = new CommonAnimator.Builder(tvAppUpdateOther)
-                    .build();
+            showAnimator = new CommonAnimator.Builder(tvAppUpdateOther).defaultShowAnimator();
         }
-        showAnimator.unfoldWithDefault();
+        showAnimator.show();
     }
 
-    private void downloadFile() {
-        String url = SPUtil.getString(PreferencesName.APP_UPDATE_APK_URL);
-        if (TextUtils.isEmpty(url)) {
-            return;
-        }
-
-        File file = new File(dirPath, fileName);
-        if (file.exists()) { //已下载，直接安装
-            installApp(file);
-            return;
-        }
-
-        pbAppUpdate.setVisibility(View.VISIBLE);
-        HttpManager.get(url)
-                .tag(this)
-                .build()
-                .enqueue(new FileCallback(dirPath, fileName) {
-                    @Override
-                    public void onSuccess(File response, Object... obj) {
-                        checkFile(response);
-                        installApp(response);
-                    }
-
-                    @Override
-                    public void onFailure(ErrorModel errorModel) {
-                    }
-
-                    @Override
-                    public void inProgress(float progress, long total) {
-                        super.inProgress(progress, total);
-                        pbAppUpdate.setProgress((int) (progress * 100));
-                    }
-                });
-    }
-
-    private void installApp(File file) {
-        AppUtil.installApk(BaseApp.getContext(), Common.FILE_PROVIDER_AUTHORITY, file.getAbsolutePath());
-    }
 }
