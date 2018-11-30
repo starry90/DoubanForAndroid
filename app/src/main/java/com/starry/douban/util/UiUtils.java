@@ -1,6 +1,9 @@
 package com.starry.douban.util;
 
 import android.content.DialogInterface;
+import android.support.v4.content.ContextCompat;
+
+import com.starry.douban.base.BaseApp;
 
 /**
  * @author Starry Jerry
@@ -13,5 +16,9 @@ public class UiUtils {
         if (dialog != null) {
             dialog.dismiss();
         }
+    }
+
+    public static int getColor(int colorResId) {
+        return ContextCompat.getColor(BaseApp.getContext(), colorResId);
     }
 }

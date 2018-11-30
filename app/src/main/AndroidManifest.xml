@@ -47,6 +47,9 @@
             android:name="com.starry.douban.ui.activity.AppUpdateActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name="com.starry.douban.ui.activity.WebViewActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name="com.starry.douban.ui.activity.UpdateDialogActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"

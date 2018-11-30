@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.starry.douban.BuildConfig;
 import com.starry.douban.R;
 import com.starry.douban.base.BaseNFCActivity;
+import com.starry.douban.constant.Apis;
 import com.starry.douban.constant.PreferencesName;
 import com.starry.douban.util.SPUtil;
 
@@ -91,7 +92,7 @@ public class AboutActivity extends BaseNFCActivity implements View.OnClickListen
                 break;
 
             case R.id.tv_about_github:
-
+                WebViewActivity.showActivity(this, Apis.GITHUB_AUTHOR_HOME);
                 break;
 
         }
