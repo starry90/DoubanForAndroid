@@ -1,8 +1,10 @@
 package com.starry.http.error;
 
 /**
+ * 业务异常
+ *
  * @author Starry Jerry
- * @since 2017/10/29.
+ * @since 2018/18/2.
  */
 
 public class BIZException extends Exception {

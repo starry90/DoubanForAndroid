@@ -6,12 +6,12 @@ import android.support.annotation.NonNull;
 import com.starry.http.callback.CommonCallback;
 import com.starry.http.callback.StringCallback;
 import com.starry.http.error.ErrorModel;
+import com.starry.http.error.HttpStatusException;
 import com.starry.http.interfaces.HttpInterceptor;
 import com.starry.http.request.OKHttpRequest;
 import com.starry.http.utils.MainHandler;
 import com.starry.http.utils.Util;
 
-import java.io.EOFException;
 import java.io.IOException;
 
 import okhttp3.Call;
@@ -158,7 +158,7 @@ public class RealRequest {
      */
     private void checkHttpCode(int code) throws Exception {
         if (code < 200 || code >= 300) {// 不是2开头code统一以服务器错误处理
-            throw new EOFException("服务器异常:HTTP status code " + code);
+            throw new HttpStatusException(code);
         }
     }
 

@@ -2,12 +2,12 @@ package com.starry.douban.env;
 
 import com.google.gson.JsonParseException;
 import com.starry.http.CommonParams;
-import com.starry.http.interfaces.HttpInterceptor;
 import com.starry.http.error.BIZException;
 import com.starry.http.error.ErrorModel;
+import com.starry.http.error.HttpStatusException;
+import com.starry.http.interfaces.HttpInterceptor;
 import com.starry.log.Logger;
 
-import java.io.EOFException;
 import java.net.SocketTimeoutException;
 import java.util.Map;
 
@@ -73,7 +73,7 @@ public final class InterceptorImpl implements HttpInterceptor {
             errorModel.setResponse(cloneWhy.getResponse());
             Logger.e(getFormatLog(errorModel.getUrl(), errorModel.getResponse(), errorModel.getMessage()));
             return handleBIZ(errorModel);
-        } else if (why instanceof EOFException) { //http status code不是200的网络异常
+        } else if (why instanceof HttpStatusException) { //http status code不是200的网络异常
             return errorModel;
         } else if (why instanceof NullPointerException) {
             return errorModel;
