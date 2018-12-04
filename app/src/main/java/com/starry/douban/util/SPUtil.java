@@ -8,6 +8,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.starry.douban.base.BaseApp;
 
+import java.util.Map;
+
 /**
  * SharedPreferences 本地文件存储（形式：键值对）工具类
  * Create by Starry Jerry on 2016-7-5 21:51:16
@@ -296,6 +298,17 @@ public class SPUtil {
     public static boolean clearFile(String fileName) {
         SharedPreferences sp = getSharedPreferences(fileName);
         return sp.edit().clear().commit();
+    }
+
+    /**
+     * Retrieve all values from the preferences
+     *
+     * @param fileName 文件名称
+     * @return all values
+     */
+    public static Map<String, ?> getAll(String fileName) {
+        SharedPreferences sp = getSharedPreferences(fileName);
+        return sp.getAll();
     }
 
 }

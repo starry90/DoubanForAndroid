@@ -22,4 +22,6 @@ public class Common {
 
     public static final String FILE_PROVIDER_AUTHORITY = "com.starry.douban.fileprovider";
 
+    public static final String SP_FILE_COOKIE= "sp_cookie";
+
 }
