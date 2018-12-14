@@ -73,7 +73,7 @@ public class MovieFragment extends BaseFragment {
     }
 
     private void initRecyclerView() {
-        mAdapter = new MovieAdapter(getActivity(), books);
+        mAdapter = new MovieAdapter(books);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {

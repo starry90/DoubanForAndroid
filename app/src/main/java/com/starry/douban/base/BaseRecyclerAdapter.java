@@ -22,52 +22,57 @@ import java.util.List;
  */
 public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRecyclerAdapter.RecyclerViewHolder> {
 
-    protected List<T> mBeans;
+    protected List<T> dataSet;
     protected Context mContext;
+    private OnItemClickListener<T> mOnItemViewClickListener;
+    private OnItemLongClickListener<T> mOnItemLongClickListener;
 
-    public BaseRecyclerAdapter(Context context, List<T> beans) {
-        mContext = context;
-        mBeans = beans;
+    public BaseRecyclerAdapter(List<T> dataSet) {
+        this.dataSet = dataSet;
     }
 
     @Override
     public BaseRecyclerAdapter.RecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        mContext = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(mContext);
         View view = inflater.inflate(getItemLayout(viewType), parent, false);
-        return new RecyclerViewHolder(view);
-    }
-
-    @Override
-    public void onBindViewHolder(final BaseRecyclerAdapter.RecyclerViewHolder holder, final int position) {
-        final T bean = mBeans.get(position);
-        onBindData(holder, bean, position);
-
+        final BaseRecyclerAdapter.RecyclerViewHolder holder = new RecyclerViewHolder(view);
         // item点击事件
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
+        view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //设置监听器优化级高于实现onItemClick方法
+                //position只有在列表展示后才有值
+                int position = holder.getLayoutPosition() - getHeaderLayoutCount();
+                //设置监听器优先级高于实现onItemClick方法
                 if (mOnItemViewClickListener != null) {
-                    mOnItemViewClickListener.onItemClick(bean, position);
+                    mOnItemViewClickListener.onItemClick(holder.itemView, position, dataSet.get(position));
                 } else {
-                    onItemClick(position, holder.itemView);
+                    onItemClick(holder.itemView, position);
                 }
             }
         });
 
         // item长按事件
-        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+        view.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                //设置监听器优化级高于实现onLongItemClick方法
-                if (mOnLongItemClickListener != null) {
-                    mOnLongItemClickListener.onLongClick(bean, position);
+                //position只有在列表展示后才有值
+                int position = holder.getLayoutPosition() - getHeaderLayoutCount();
+                //设置监听器优先级高于实现onLongItemClick方法
+                if (mOnItemLongClickListener != null) {
+                    mOnItemLongClickListener.onItemLongClick(holder.itemView, position, dataSet.get(position));
                 } else {
-                    onLongItemClick(position);
+                    onItemLongClick(holder.itemView, position);
                 }
                 return false;
             }
         });
+        return holder;
+    }
+
+    @Override
+    public void onBindViewHolder(BaseRecyclerAdapter.RecyclerViewHolder holder, int position) {
+        onBindData(holder, dataSet.get(position), position);
     }
 
     /**
@@ -82,77 +87,76 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
      * 绑定数据
      *
      * @param holder   ViewHolder
-     * @param bean     数据bean
+     * @param itemData 数据bean
      * @param position 当前位置
      */
-    public abstract void onBindData(RecyclerViewHolder holder, T bean, int position);
+    public abstract void onBindData(BaseRecyclerAdapter.RecyclerViewHolder holder, T itemData, int position);
 
 
     @Override
     public int getItemCount() {
-        return mBeans != null ? mBeans.size() : 0;
+        return dataSet != null ? dataSet.size() : 0;
     }
 
-    public void setData(List<T> beans) {
-        mBeans = beans;
+    /**
+     * if addHeaderView will be return 1, if not will be return 0
+     */
+    public int getHeaderLayoutCount() {
+        return 0;
+    }
+
+    public void setDataSet(List<T> dataSet) {
+        this.dataSet = dataSet;
         notifyDataSetChanged();
     }
 
-    public void clear() {
-        if (mBeans != null) {
-            mBeans.clear();
+    public void clearDataSet() {
+        if (dataSet != null) {
+            dataSet.clear();
+            notifyDataSetChanged();
         }
-        notifyDataSetChanged();
     }
 
     public void removeItem(int position) {
-        mBeans.remove(position);
-        notifyItemRemoved(position + 1);//第一项是header 需要做下偏移
+        dataSet.remove(position);
+        notifyItemRemoved(position);//第一项是header 需要做下偏移
         notifyDataSetChanged();
     }
 
-    public List<T> getBeans() {
-        return mBeans;
+    public List<T> getDataSet() {
+        return dataSet;
     }
 
     /**
      * ItemView的单击事件(如果需要，重写此方法就行)
-     *
-     * @param position
      */
-    protected void onItemClick(int position, View item) {
+    protected void onItemClick(View itemView, int position) {
     }
 
     /**
      * ItemView的长按事件(如果需要，重写此方法就行)
-     *
-     * @param position
      */
-    protected void onLongItemClick(int position) {
+    protected void onItemLongClick(View itemView, int position) {
     }
 
     //#####################################################################################
 
-    private OnItemViewClickListener<T> mOnItemViewClickListener;
-
-    public void setOnItemViewClickListener(OnItemViewClickListener<T> mOnItemViewClickListener) {
-        this.mOnItemViewClickListener = mOnItemViewClickListener;
+    public interface OnItemClickListener<T> {
+        void onItemClick(View itemView, int position, T t);
     }
 
-    public interface OnItemViewClickListener<T> {
-        void onItemClick(T t, int position);
+    public void setOnItemClickListener(OnItemClickListener<T> listener) {
+        this.mOnItemViewClickListener = listener;
     }
 
     //#####################################################################################
 
-    private OnLongItemClickListener<T> mOnLongItemClickListener;
-
-    public void setOnLongItemClickListener(OnLongItemClickListener<T> mOnLongItemClickListener) {
-        this.mOnLongItemClickListener = mOnLongItemClickListener;
+    public interface OnItemLongClickListener<T> {
+        void onItemLongClick(View itemView, int position, T t);
     }
 
-    public interface OnLongItemClickListener<T> {
-        void onLongClick(T t, int position);
+    public void setOnItemLongClickListener(OnItemLongClickListener<T> listener) {
+        this.mOnItemLongClickListener = listener;
     }
 
     //#####################################################################################

@@ -1,7 +1,5 @@
 package com.starry.douban.adapter;
 
-import android.content.Context;
-
 import com.starry.douban.R;
 import com.starry.douban.base.BaseRecyclerAdapter;
 import com.starry.douban.model.MovieDetail;
@@ -14,8 +12,8 @@ import java.util.List;
  */
 public class MoviePhotoAdapter extends BaseRecyclerAdapter<MovieDetail.PerformerBean> {
 
-    public MoviePhotoAdapter(Context context, List<MovieDetail.PerformerBean> beans) {
-        super(context, beans);
+    public MoviePhotoAdapter(List<MovieDetail.PerformerBean> beans) {
+        super(beans);
     }
 
     @Override
@@ -24,10 +22,10 @@ public class MoviePhotoAdapter extends BaseRecyclerAdapter<MovieDetail.Performer
     }
 
     @Override
-    public void onBindData(RecyclerViewHolder holder, MovieDetail.PerformerBean bean, int position) {
-        if (bean.getAvatars() != null)
-            holder.setImageFromInternet(R.id.iv_movie_photo, bean.getAvatars().getMedium());
-        holder.setText(R.id.tv_movie_photo, bean.getName());
+    public void onBindData(BaseRecyclerAdapter.RecyclerViewHolder holder, MovieDetail.PerformerBean itemData, int position) {
+        if (itemData.getAvatars() != null)
+            holder.setImageFromInternet(R.id.iv_movie_photo, itemData.getAvatars().getMedium());
+        holder.setText(R.id.tv_movie_photo, itemData.getName());
         if (position == 0) {
             holder.setText(R.id.tv_movie_photo_type, "导演");
         } else if (position == 1) {

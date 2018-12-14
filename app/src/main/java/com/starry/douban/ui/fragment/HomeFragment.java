@@ -49,7 +49,7 @@ public class HomeFragment extends BaseFragment {
     }
 
     private void initRecyclerView() {
-        mAdapter = new BookAdapter(getActivity(), books);
+        mAdapter = new BookAdapter(books);
         mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
