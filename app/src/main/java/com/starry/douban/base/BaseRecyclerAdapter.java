@@ -16,9 +16,6 @@ import java.util.List;
 
 /**
  * 通用的RecyclerView的适配器
- * <p/>
- * 参考了Hongyang的 http://blog.csdn.net/lmj623565791/article/details/38902805这篇博客
- * <p/>
  */
 public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRecyclerAdapter.RecyclerViewHolder> {
 
@@ -26,6 +23,11 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
     protected Context mContext;
     private OnItemClickListener<T> mOnItemViewClickListener;
     private OnItemLongClickListener<T> mOnItemLongClickListener;
+
+    /**
+     * 为了保证滑动流畅及不浪费流量，此时不加载图片,true表示列表滑动中
+     */
+    protected boolean isScrolling;
 
     public BaseRecyclerAdapter(List<T> dataSet) {
         this.dataSet = dataSet;
@@ -125,6 +127,23 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
 
     public List<T> getDataSet() {
         return dataSet;
+    }
+
+    /**
+     * 设置RecyclerView滑动监听器
+     *
+     * @param recyclerView RecyclerView
+     */
+    public void addOnScrollListener(RecyclerView recyclerView) {
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                isScrolling = newState != RecyclerView.SCROLL_STATE_IDLE;
+                if (!isScrolling) {
+                    notifyDataSetChanged();
+                }
+            }
+        });
     }
 
     /**
