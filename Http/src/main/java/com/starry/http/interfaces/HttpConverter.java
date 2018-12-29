@@ -1,7 +1,7 @@
 package com.starry.http.interfaces;
 
 import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
+import okhttp3.Response;
 
 /**
  * @author Starry Jerry
@@ -22,12 +22,12 @@ public interface HttpConverter {
      * <p>
      * 如果不知道怎么解析，请参考 {@code CommonCallback} 最下面注释了的方法
      *
-     * @param cbClass      CommonCallback class
-     * @param responseBody ResponseBody
-     * @param <T>          the type of desired object
+     * @param cbClass  CommonCallback class
+     * @param response Response
+     * @param <T>      the type of desired object
      * @return T
      * @throws Exception Exception
      */
-    <T> T convert(Class<?> cbClass, ResponseBody responseBody) throws Exception;
+    <T> T convert(Class<?> cbClass, Response response) throws Exception;
 
 }
