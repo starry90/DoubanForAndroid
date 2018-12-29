@@ -11,7 +11,9 @@ import android.widget.TextView;
 
 import com.starry.douban.image.ImageManager;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -28,6 +30,24 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
      * 为了保证滑动流畅及不浪费流量，此时不加载图片,true表示列表滑动中
      */
     protected boolean isScrolling;
+
+    /**
+     * 子View点击事件集合
+     */
+    public Map<Integer, OnChildViewClickListener> clickListenerMap;
+
+    /**
+     * 添加子View点击事件
+     *
+     * @param viewId   子View id
+     * @param listener 点击事件监听器
+     */
+    public void addChildViewClickListener(int viewId, OnChildViewClickListener listener) {
+        if (clickListenerMap == null) {
+            clickListenerMap = new HashMap<>();
+        }
+        clickListenerMap.put(viewId, listener);
+    }
 
     public BaseRecyclerAdapter(List<T> dataSet) {
         this.dataSet = dataSet;
@@ -69,6 +89,22 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
                 return false;
             }
         });
+
+        if (clickListenerMap != null) {
+            for (final Map.Entry<Integer, OnChildViewClickListener> entry : clickListenerMap.entrySet()) {
+                View childView = view.findViewById(entry.getKey());
+                childView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        OnChildViewClickListener value = entry.getValue();
+                        //position只有在列表展示后才有值
+                        int position = holder.getLayoutPosition() - getHeaderLayoutCount();
+                        value.onChildViewClick(holder, position);
+                    }
+                });
+            }
+        }
+
         return holder;
     }
 
@@ -168,6 +204,15 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
         this.mOnItemViewClickListener = listener;
     }
 
+    /**
+     * item子View点击事件
+     *
+     * @param <T>
+     */
+    public interface OnChildViewClickListener<T> {
+        void onChildViewClick(RecyclerViewHolder holder, int position);
+    }
+
     //#####################################################################################
 
     public interface OnItemLongClickListener<T> {
@@ -180,8 +225,8 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
 
     //#####################################################################################
 
-    public class RecyclerViewHolder extends
-            RecyclerView.ViewHolder {
+    public static class RecyclerViewHolder extends RecyclerView.ViewHolder {
+
         private final SparseArray<View> viewHolder;
 
         private RecyclerViewHolder(View itemView) {
@@ -222,7 +267,7 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
          */
         public void setImageFromInternet(int viewId, String url) {
             ImageView iv = getView(viewId);
-            ImageManager.loadImage(mContext, iv, url);
+            ImageManager.loadImage(iv, url);
         }
     }
 
