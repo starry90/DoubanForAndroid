@@ -26,10 +26,15 @@ public class AboutActivity extends BaseNFCActivity implements View.OnClickListen
 
     @BindView(R.id.tv_about_app_name)
     TextView tvAboutAppName;
-    @BindView(R.id.tv_about_build)
-    TextView tvAboutBuild;
+    @BindView(R.id.tv_about_build_time)
+    TextView tvAboutBuildTime;
     @BindView(R.id.tv_version_name)
     TextView tvVersionName;
+    @BindView(R.id.tv_about_git_branch)
+    TextView tvAboutGitBranch;
+    @BindView(R.id.tv_about_git_commit_time)
+    TextView tvAboutGitCommitTime;
+
     @BindView(R.id.tv_about_version_update)
     TextView tvAboutVersionUpdate;
     @BindView(R.id.tv_about_update_hint)
@@ -63,15 +68,20 @@ public class AboutActivity extends BaseNFCActivity implements View.OnClickListen
             tvAboutUpdateHint.setVisibility(View.VISIBLE);
         }
 
-        String versionName = "V %s";
-        tvVersionName.setText(String.format(versionName, BuildConfig.VERSION_NAME));
-        String buildTime = "BuildTime %s";
-        tvAboutBuild.setText(String.format(buildTime, BuildConfig.BUILD_TIME));
+        String versionName = String.format("V %s", BuildConfig.VERSION_NAME);
+        tvVersionName.setText(versionName);
+        String buildTime = String.format("BuildTime %s", BuildConfig.BUILD_TIME);
+        tvAboutBuildTime.setText(buildTime);
+
+        String branch = String.format("GitBranch %s", BuildConfig.GIT_BRANCH);
+        tvAboutGitBranch.setText(branch);
+        String commitTime = String.format("CommitTime %s", BuildConfig.GIT_COMMIT_TIME);
+        tvAboutGitCommitTime.setText(commitTime);
 
         Slide slide = new Slide(Gravity.TOP);
         slide.addTarget(tvAboutGithub);
         slide.addTarget(tvAboutAppName);
-        slide.addTarget(tvAboutBuild);
+        slide.addTarget(tvAboutBuildTime);
         getWindow().setEnterTransition(slide);
     }
 

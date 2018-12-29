@@ -4,14 +4,22 @@ ext {
             "applicationId": "com.starry.douban",
     ]
 
+    gits = [
+            // 2018-12-29 20:21:59 +0800
+            "gitCommitTime"  : 'git log -1 --pretty=%ci'.execute([], project.rootDir).text.trim(),
+            // * develop 286f78e [origin/develop] Add...
+            "gitCommitBranch": 'git branch -vv'.execute([], project.rootDir).text.trim().split()[3],
+            // 129
+            "gitCommitCount" : Integer.parseInt('git rev-list HEAD --count'.execute([], project.rootDir).text.trim()),
+    ]
+
     versions = [
             "compileSdkVersion": 26,
-
             "minSdkVersion"    : 21,
             "targetSdkVersion" : 26,
-            "versionCode"      : 45,
-            "versionName"      : "1.2.6",
 
+            "versionCode"      : gits.gitCommitCount,
+            "versionName"      : "1.2.6",
             "httpVersion"      : 6
     ]
 

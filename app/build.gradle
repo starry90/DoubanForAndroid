@@ -19,6 +19,8 @@ android {
         versionCode versions.versionCode
         versionName getAppVersionName()
         buildConfigField 'String', 'BUILD_TIME', '"' + getBuildTime() + '"'
+        buildConfigField 'String', 'GIT_COMMIT_TIME', '"' + gits.gitCommitTime + '"'
+        buildConfigField 'String', 'GIT_BRANCH', '"' + gits.gitCommitBranch + '"'
 
         testInstrumentationRunner deps.androidRunner
     }

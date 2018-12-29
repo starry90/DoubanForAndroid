@@ -15,7 +15,6 @@
         android:id="@+id/tv_about_app_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
         android:layout_marginTop="20dp"
         android:drawableTop="@drawable/ic_launcher"
         android:padding="5dp"
@@ -27,7 +26,6 @@
         android:id="@+id/tv_version_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
         android:layout_margin="3dp"
         android:padding="5dp"
         android:textColor="@color/text_color_level_2"
@@ -35,14 +33,33 @@
         tools:text="V 1.1.2.33" />
 
     <TextView
-        android:id="@+id/tv_about_build"
+        android:id="@+id/tv_about_build_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
         android:layout_margin="3dp"
         android:padding="5dp"
         android:textColor="@color/text_color_level_2"
-        tools:text="BuildTime" />
+        tools:text="BuildTime 20181229225626" />
+
+    <TextView
+        android:id="@+id/tv_about_git_branch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="3dp"
+        android:padding="5dp"
+        android:textColor="@color/text_color_level_2"
+        android:transitionName="@string/transition_item_name"
+        tools:text="GitBranch [origin/develop]" />
+
+    <TextView
+        android:id="@+id/tv_about_git_commit_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="3dp"
+        android:padding="5dp"
+        android:textColor="@color/text_color_level_2"
+        android:transitionName="@string/transition_item_name"
+        tools:text="CommitTime 2018-12-29 20:21:59 +0800" />
 
     <RelativeLayout
         android:layout_width="match_parent"
