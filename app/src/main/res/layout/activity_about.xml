@@ -20,7 +20,8 @@
         android:padding="5dp"
         android:text="@string/app_name"
         android:textColor="@color/text_color_level_1"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:transitionName="@string/transition_item_name" />
 
     <TextView
         android:id="@+id/tv_version_name"
@@ -29,7 +30,6 @@
         android:layout_margin="3dp"
         android:padding="5dp"
         android:textColor="@color/text_color_level_2"
-        android:transitionName="@string/transition_item_name"
         tools:text="V 1.1.2.33" />
 
     <TextView
@@ -48,7 +48,6 @@
         android:layout_margin="3dp"
         android:padding="5dp"
         android:textColor="@color/text_color_level_2"
-        android:transitionName="@string/transition_item_name"
         tools:text="GitBranch [origin/develop]" />
 
     <TextView
@@ -58,64 +57,6 @@
         android:layout_margin="3dp"
         android:padding="5dp"
         android:textColor="@color/text_color_level_2"
-        android:transitionName="@string/transition_item_name"
         tools:text="CommitTime 2018-12-29 20:21:59 +0800" />
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:background="@color/view_bg">
-
-        <TextView
-            android:id="@+id/tv_about_version_update"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:background="@drawable/ripple_view_white_bg"
-            android:gravity="center_vertical"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:text="版本更新"
-            android:textColor="@color/text_color_level_1" />
-
-        <TextView
-            android:id="@+id/tv_about_update_hint"
-            android:layout_width="wrap_content"
-            android:layout_height="45dp"
-            android:layout_alignParentRight="true"
-            android:gravity="center_vertical"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:text="已是最新版本"
-            android:textColor="@color/text_color_level_2"
-            android:visibility="gone"
-            tools:visibility="visible" />
-
-
-        <TextView
-            android:id="@+id/tv_about_github"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_below="@id/tv_about_version_update"
-            android:background="@drawable/ripple_view_white_bg"
-            android:gravity="center_vertical"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:text="作者GitHub"
-            android:textColor="@color/text_color_level_1" />
-
-        <View
-            style="@style/HorizontalDivideLine"
-            android:layout_below="@id/tv_about_version_update" />
-
-        <View
-            style="@style/HorizontalDivideLine"
-            android:layout_alignParentTop="true" />
-
-        <View
-            style="@style/HorizontalDivideLine"
-            android:layout_below="@id/tv_about_github" />
-
-    </RelativeLayout>
 
 </LinearLayout>

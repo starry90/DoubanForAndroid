@@ -26,14 +26,31 @@
         android:textColor="@color/colorAccent"
         android:textSize="20sp" />
 
-    <TextView
-        android:id="@+id/tv_version"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="30dp"
-        android:padding="10dp"
-        android:transitionName="@string/transition_item_name" />
+    <LinearLayout
+        style="@style/ItemParentStyle"
+        android:layout_below="@id/tv_setting_date"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_setting_version_update"
+            style="@style/ItemRippleStyle"
+            android:text="版本更新" />
+
+        <View style="@style/HorizontalDivideLine" />
+
+        <TextView
+            android:id="@+id/tv_setting_github"
+            style="@style/ItemRippleStyle"
+            android:text="作者GitHub" />
+
+        <View style="@style/HorizontalDivideLine" />
+
+        <TextView
+            android:id="@+id/tv_setting_about"
+            style="@style/ItemRippleStyle"
+            android:text="关于"
+            android:transitionName="@string/transition_item_name" />
+
+    </LinearLayout>
 
 </RelativeLayout>
