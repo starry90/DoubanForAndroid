@@ -8,6 +8,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.starry.douban.R;
 import com.starry.http.HttpManager;
@@ -36,6 +37,10 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseUI 
     @Nullable
     @BindView(R.id.view_loading_container)
     protected LoadingDataLayout mLoadingDataLayout;
+
+    @Nullable
+    @BindView(R.id.tv_toolbar_title)
+    protected TextView tvToolbarTitle;
 
     @Nullable
     @BindView(R.id.toolbar)
@@ -96,8 +101,21 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseUI 
             if (drawable != null) {
                 ab.setBackgroundDrawable(drawable);
             }
+            ab.setDisplayShowTitleEnabled(false);//自定义标题居中需要关闭
             ab.setDisplayHomeAsUpEnabled(displayHomeAsUpEnabled());//显示返回键
         }
+    }
+
+    @Override
+    public void setTitle(int titleId) {
+        super.setTitle(titleId);
+        if (tvToolbarTitle != null) tvToolbarTitle.setText(titleId);
+    }
+
+    @Override
+    public void setTitle(CharSequence title) {
+        super.setTitle(title);
+        if (tvToolbarTitle != null) tvToolbarTitle.setText(title);
     }
 
     /**

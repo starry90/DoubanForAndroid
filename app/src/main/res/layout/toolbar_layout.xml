@@ -9,4 +9,16 @@
     app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
     app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
+    <TextView
+        android:id="@+id/tv_toolbar_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/toolbar_title_margin"
+        android:ellipsize="end"
+        android:gravity="left"
+        android:singleLine="true"
+        android:text="@string/app_name"
+        android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
+        android:textColor="@color/title_text_color" />
+
 </android.support.v7.widget.Toolbar>
