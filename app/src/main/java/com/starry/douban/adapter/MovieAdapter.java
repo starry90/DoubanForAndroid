@@ -46,7 +46,7 @@ public class MovieAdapter extends BaseRecyclerAdapter<MovieBean> {
         holder.setText(R.id.tv_publisher, "电影剧情：" + itemData.getGenres().toString());
         holder.setText(R.id.tv_num_rating, "观众评分：" + itemData.getRating().getAverage());
         holder.setImage(R.id.iv_image, R.drawable.image_bg_default);
-        if (!isScrolling) {
+        if (allowLoadImage(position)) {
             holder.setImageFromInternet(R.id.iv_image, itemData.getImages().getMedium());
         }
     }

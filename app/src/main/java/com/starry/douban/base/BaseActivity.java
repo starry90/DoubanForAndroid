@@ -174,12 +174,16 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseUI 
         }
     }
 
+    public void showEmpty() {
+        showLoadingStatus(LoadingDataLayout.STATUS_EMPTY);
+    }
+
     /**
      * 展示网络请求各种状态
      *
      * @param status 网络请求状态
      */
-    protected void showLoadingStatus(int status) {
+    private void showLoadingStatus(int status) {
         if (mLoadingDataLayout != null && !mLoadingDataLayout.isSuccess()) {
             mLoadingDataLayout.setStatus(status);
         }

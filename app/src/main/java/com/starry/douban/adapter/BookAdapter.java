@@ -42,6 +42,8 @@ public class BookAdapter extends BaseRecyclerAdapter<BookBean> {
         holder.setText(R.id.tv_title, itemData.getTitle());
         holder.setText(R.id.tv_num_rating, "豆瓣评分：" + itemData.getRating().getAverage());
         holder.setImage(R.id.iv_image, R.drawable.image_bg_default);
-        if (!isScrolling) holder.setImageFromInternet(R.id.iv_image, itemData.getImage());
+        if (allowLoadImage(position)) {
+            holder.setImageFromInternet(R.id.iv_image, itemData.getImage());
+        }
     }
 }

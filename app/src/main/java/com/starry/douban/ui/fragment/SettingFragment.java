@@ -14,6 +14,7 @@ import com.starry.douban.constant.PreferencesName;
 import com.starry.douban.service.WorkService;
 import com.starry.douban.ui.activity.AboutActivity;
 import com.starry.douban.ui.activity.AppUpdateActivity;
+import com.starry.douban.ui.activity.BeautyActivity;
 import com.starry.douban.ui.activity.WebViewActivity;
 import com.starry.douban.util.ActivityAnimationUtils;
 import com.starry.douban.util.SPUtil;
@@ -27,6 +28,8 @@ import butterknife.BindView;
  */
 public class SettingFragment extends BaseFragment implements View.OnClickListener {
 
+    @BindView(R.id.tv_setting_beauty)
+    TextView tvBeauty;
     @BindView(R.id.tv_setting_version_update)
     TextView tvVersionUpdate;
     @BindView(R.id.tv_setting_github)
@@ -49,6 +52,7 @@ public class SettingFragment extends BaseFragment implements View.OnClickListene
 
     @Override
     public void setListener() {
+        tvBeauty.setOnClickListener(this);
         tvAbout.setOnClickListener(this);
         tvVersionUpdate.setOnClickListener(this);
         tvGithub.setOnClickListener(this);
@@ -71,6 +75,10 @@ public class SettingFragment extends BaseFragment implements View.OnClickListene
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.tv_setting_beauty:
+                startActivity(new Intent(mActivity, BeautyActivity.class));
+                break;
+
             case R.id.tv_setting_about:
                 startAbout();
                 break;

@@ -3,6 +3,7 @@ package com.starry.douban.base;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,12 +30,17 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
     /**
      * 为了保证滑动流畅及不浪费流量，此时不加载图片,true表示列表滑动中
      */
-    protected boolean isScrolling;
+    private boolean isScrolling;
+
+    /**
+     * 已加载过的数据集合
+     */
+    private SparseBooleanArray loadedMap = new SparseBooleanArray();
 
     /**
      * 子View点击事件集合
      */
-    public Map<Integer, OnChildViewClickListener> clickListenerMap;
+    private Map<Integer, OnChildViewClickListener> clickListenerMap;
 
     /**
      * 添加子View点击事件
@@ -111,6 +117,10 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
     @Override
     public void onBindViewHolder(BaseRecyclerAdapter.RecyclerViewHolder holder, int position) {
         onBindData(holder, dataSet.get(position), position);
+
+        if (!isScrolling) {
+            loadedMap.put(position, true);
+        }
     }
 
     /**
@@ -141,6 +151,16 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
      */
     public int getHeaderLayoutCount() {
         return 0;
+    }
+
+    /**
+     * 是否允许加载图片，两种情况允许：1 滑动已停止，2 已经加载过图片
+     *
+     * @param position item位置
+     * @return true表示允许
+     */
+    protected boolean allowLoadImage(int position) {
+        return !isScrolling || loadedMap.get(position);
     }
 
     public void setDataSet(List<T> dataSet) {
