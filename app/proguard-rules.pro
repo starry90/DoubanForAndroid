@@ -152,13 +152,12 @@
 }
 #-keepresourcexmlelements manifest/application/meta-data@value=GlideModule
 
-#不混淆eventBus
-#-dontwarn de.greenrobot.event.**
-#-keep class de.greenrobot.event.** { *;}
-#为保证eventBus正常使用 所有onEvent的方法名不进行混淆
-#-keepclasseswithmembers class * {
-#	void onEvent*(***);
-#}
+#java.lang.IllegalStateException: Unable to load publicsuffixes.gz resource from the classpath.
+-dontwarn okhttp3.**
+-keep class okhttp3.** { *;}
+
+-dontwarn okio.**
+-keep class okio.** { *;}
 
 
 #=========================== 第三方包 end ===========================
