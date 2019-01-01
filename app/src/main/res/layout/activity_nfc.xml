@@ -5,9 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include
-        android:id="@id/toolbar"
-        layout="@layout/toolbar_layout" />
+    <include layout="@layout/toolbar_layout" />
 
     <TextView
         android:id="@+id/tv_nfc_content"
@@ -15,7 +13,7 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:gravity="center"
-        tools:text="12EH2F55"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        tools:text="12EH2F55" />
 
 </LinearLayout>

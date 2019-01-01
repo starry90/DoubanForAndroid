@@ -1,10 +1,13 @@
 package com.starry.douban.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * @author Starry Jerry
  * @since 18-12-29.
  */
-public class BeautyModel {
+public class BeautyModel implements Parcelable {
 
     /**
      * _id : 5b5e93499d21220fc64181a9
@@ -99,4 +102,50 @@ public class BeautyModel {
     public void setWho(String who) {
         this.who = who;
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this._id);
+        dest.writeString(this.createdAt);
+        dest.writeString(this.desc);
+        dest.writeString(this.publishedAt);
+        dest.writeString(this.source);
+        dest.writeString(this.type);
+        dest.writeString(this.url);
+        dest.writeByte(this.used ? (byte) 1 : (byte) 0);
+        dest.writeString(this.who);
+    }
+
+    public BeautyModel() {
+    }
+
+    protected BeautyModel(Parcel in) {
+        this._id = in.readString();
+        this.createdAt = in.readString();
+        this.desc = in.readString();
+        this.publishedAt = in.readString();
+        this.source = in.readString();
+        this.type = in.readString();
+        this.url = in.readString();
+        this.used = in.readByte() != 0;
+        this.who = in.readString();
+    }
+
+    public static final Creator<BeautyModel> CREATOR = new Creator<BeautyModel>() {
+        @Override
+        public BeautyModel createFromParcel(Parcel source) {
+            return new BeautyModel(source);
+        }
+
+        @Override
+        public BeautyModel[] newArray(int size) {
+            return new BeautyModel[size];
+        }
+    };
 }

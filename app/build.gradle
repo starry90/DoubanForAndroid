@@ -93,6 +93,7 @@ dependencies {
     implementation project(':Http')
     implementation project(':Overscroll')
     implementation project(':CoolIndicator')
+    implementation project(':ParallaxViewPager')
 }
 
 //modify apk output  file name, format：db-versionName.versionCode-buildType.apk

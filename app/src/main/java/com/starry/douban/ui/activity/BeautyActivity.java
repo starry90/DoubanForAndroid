@@ -1,11 +1,13 @@
 package com.starry.douban.ui.activity;
 
 import android.support.v7.widget.GridLayoutManager;
+import android.view.View;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.starry.douban.R;
 import com.starry.douban.adapter.BeautyAdapter;
 import com.starry.douban.base.BaseActivity;
+import com.starry.douban.base.BaseRecyclerAdapter;
 import com.starry.douban.constant.Apis;
 import com.starry.douban.model.BeautyModel;
 import com.starry.douban.model.GankBaseModel;
@@ -32,7 +34,7 @@ public class BeautyActivity extends BaseActivity {
 
     private BeautyAdapter mAdapter;
 
-    private List<BeautyModel> beautyList = new ArrayList<>();
+    private ArrayList<BeautyModel> beautyList = new ArrayList<>();
 
     private int pageNo = 1;
 
@@ -53,6 +55,13 @@ public class BeautyActivity extends BaseActivity {
     private void initRecyclerView() {
         mAdapter = new BeautyAdapter(beautyList);
         mAdapter.addOnScrollListener(mRecyclerView);
+        mAdapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener<BeautyModel>() {
+            @Override
+            public void onItemClick(View itemView, int position, BeautyModel beautyModel) {
+                BeautyDetailActivity.showActivity(BeautyActivity.this, beautyList, position);
+            }
+        });
+
         mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {

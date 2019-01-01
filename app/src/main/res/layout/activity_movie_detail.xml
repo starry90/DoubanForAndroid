@@ -164,9 +164,7 @@
 
     </com.starry.overscroll.OverScrollScrollView>
 
-    <include
-        android:id="@id/toolbar"
-        layout="@layout/toolbar_layout" />
+    <include layout="@layout/toolbar_layout" />
 
     <include layout="@layout/loading_layout" />
 

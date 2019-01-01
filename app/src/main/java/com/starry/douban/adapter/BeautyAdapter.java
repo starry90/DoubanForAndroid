@@ -1,7 +1,5 @@
 package com.starry.douban.adapter;
 
-import android.view.View;
-
 import com.starry.douban.R;
 import com.starry.douban.base.BaseRecyclerAdapter;
 import com.starry.douban.model.BeautyModel;
@@ -26,10 +24,6 @@ public class BeautyAdapter extends BaseRecyclerAdapter<BeautyModel> {
     @Override
     public int getHeaderLayoutCount() {
         return 1;
-    }
-
-    @Override
-    protected void onItemClick(View itemView, int position) {
     }
 
     @Override
