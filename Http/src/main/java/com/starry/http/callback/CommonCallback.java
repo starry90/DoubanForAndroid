@@ -79,10 +79,15 @@ public abstract class CommonCallback<T> {
         Type type = ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
         if (type instanceof Class) {//如果是Object直接返回
             return type;
-        } else {//如果是集合，获取集合的类型map或list
-            return new TypeToken<T>() {
-            }.getType();
+        } else if (type instanceof ParameterizedType) { // 泛型
+            String rawType = ((ParameterizedType) type).getRawType().toString();
+            String baseName = BaseModel.class.getName();
+            if (rawType.contains(baseName)) { //自定义泛型 BaseModel<App>, BaseModel<Map<String,String>>
+                return type;
+            }
         }
+        //如果是集合，获取集合的类型map或list
+        return new TypeToken<T>() {}.getType();
     }*/
 
 }

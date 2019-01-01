@@ -13,5 +13,17 @@
     <dimen name="card_margin">16dp</dimen>
 
     <dimen name="toolbar_padding_top">0dp</dimen>
+    <!-- 查源码得知toolbar标题margin为12dp -->
+    <dimen name="toolbar_title_margin">12dp</dimen>
+
+    <dimen name="common_margin_level_1">8dp</dimen>
+    <dimen name="common_margin_level_2">16dp</dimen>
+    <dimen name="common_margin_level_3">24dp</dimen>
+    <dimen name="common_margin_level_4">32dp</dimen>
+
+    <dimen name="common_height_level_1">48dp</dimen>
+    <dimen name="common_height_level_2">56dp</dimen>
+    <dimen name="common_height_level_3">64dp</dimen>
+    <dimen name="common_height_level_4">72dp</dimen>
 
 </resources>

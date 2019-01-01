@@ -1,6 +1,5 @@
 package com.starry.douban.adapter;
 
-import android.content.Context;
 import android.content.Intent;
 import android.view.View;
 
@@ -17,8 +16,8 @@ import java.util.List;
  */
 public class BookAdapter extends BaseRecyclerAdapter<BookBean> {
 
-    public BookAdapter(Context context, List<BookBean> beans) {
-        super(context, beans);
+    public BookAdapter(List<BookBean> beans) {
+        super(beans);
     }
 
     @Override
@@ -27,17 +26,24 @@ public class BookAdapter extends BaseRecyclerAdapter<BookBean> {
     }
 
     @Override
-    protected void onItemClick(int position, View item) {
-        super.onItemClick(position, item);
+    public int getHeaderLayoutCount() {
+        return 1;
+    }
+
+    @Override
+    protected void onItemClick(View itemView, int position) {
         Intent intent = new Intent(mContext, BookDetailActivity.class);
-        intent.putExtra("bookId", mBeans.get(position).getId());
+        intent.putExtra("bookId", dataSet.get(position).getId());
         mContext.startActivity(intent);
     }
 
     @Override
-    public void onBindData(RecyclerViewHolder holder, BookBean bean, int position) {
-        holder.setText(R.id.tv_title, bean.getTitle());
-        holder.setText(R.id.tv_num_rating, "豆瓣评分：" + bean.getRating().getAverage());
-        holder.setImageFromInternet(R.id.iv_image, bean.getImage());
+    public void onBindData(BaseRecyclerAdapter.RecyclerViewHolder holder, BookBean itemData, int position) {
+        holder.setText(R.id.tv_title, itemData.getTitle());
+        holder.setText(R.id.tv_num_rating, "豆瓣评分：" + itemData.getRating().getAverage());
+        holder.setImage(R.id.iv_image, R.drawable.image_bg_default);
+        if (allowLoadImage(position)) {
+            holder.setImageFromInternet(R.id.iv_image, itemData.getImage());
+        }
     }
 }

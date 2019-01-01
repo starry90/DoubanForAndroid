@@ -7,7 +7,13 @@ package com.starry.douban.constant;
  */
 public class Apis {
 
+    public static final String GITHUB_AUTHOR_HOME = "https://github.com/starry90";
+
     public static final String APP_UPDATE = "https://github.com/starry90/DoubanForAndroid/raw/master/data/update.txt";
+
+    public static final String HOST_GANK = "https://gank.io";
+
+    public static final String GANK_BEAUTY = HOST_GANK + "/api/data/福利/%d/%d";
 
     public static final String HOST_DOUBAN = "https://api.douban.com/";
 

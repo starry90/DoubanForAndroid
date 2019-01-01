@@ -4,8 +4,12 @@ import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
+import com.starry.douban.constant.Apis;
+import com.starry.douban.model.BeautyModel;
+import com.starry.douban.model.GankBaseModel;
 import com.starry.http.HttpManager;
 import com.starry.http.callback.FileCallback;
+import com.starry.http.callback.FinalCallback;
 import com.starry.http.callback.StringCallback;
 import com.starry.http.error.ErrorModel;
 import com.starry.log.Logger;
@@ -16,6 +20,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.io.File;
+import java.util.List;
 import java.util.concurrent.Executors;
 
 import static junit.framework.Assert.assertEquals;
@@ -94,6 +99,21 @@ public class ApplicationTest {
                     @Override
                     public void onFailure(ErrorModel errorModel) {
                         Logger.i(TAG, errorModel.toString());
+                    }
+                });
+    }
+
+    @Test
+    public void testGank() {
+        String url = String.format(Apis.GANK_BEAUTY, 10, 1);
+        HttpManager.get(url)
+                .build()
+                .execute(new FinalCallback<GankBaseModel<BeautyModel>>() {
+
+                    @Override
+                    public void onSuccess(GankBaseModel<BeautyModel> response, Object... obj) {
+                        List<BeautyModel> results = response.getResults();
+                        Logger.e("size: " + results.size());
                     }
                 });
     }

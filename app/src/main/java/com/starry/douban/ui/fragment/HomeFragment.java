@@ -49,7 +49,8 @@ public class HomeFragment extends BaseFragment {
     }
 
     private void initRecyclerView() {
-        mAdapter = new BookAdapter(getActivity(), books);
+        mAdapter = new BookAdapter(books);
+        mAdapter.addOnScrollListener(mRecyclerView);
         mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {

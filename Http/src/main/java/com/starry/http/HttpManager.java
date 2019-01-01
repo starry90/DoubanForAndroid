@@ -1,5 +1,6 @@
 package com.starry.http;
 
+import com.starry.http.cookie.OkHttpCookie;
 import com.starry.http.interfaces.HttpConverter;
 import com.starry.http.interfaces.HttpInterceptor;
 import com.starry.http.utils.HttpsUtils;
@@ -116,6 +117,16 @@ public class HttpManager {
      */
     public HttpManager setTimeOut(long timeOut) {
         timeOut(timeOut);
+        return this;
+    }
+
+    /**
+     * 设置Cookie，用于维持登录状态
+     * @param okHttpCookie OkHttpCookie
+     * @return HttpManager
+     */
+    public HttpManager setCookie(OkHttpCookie okHttpCookie) {
+        okHttpClientBuilder.cookieJar(okHttpCookie);
         return this;
     }
 

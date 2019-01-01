@@ -19,6 +19,8 @@ android {
         versionCode versions.versionCode
         versionName getAppVersionName()
         buildConfigField 'String', 'BUILD_TIME', '"' + getBuildTime() + '"'
+        buildConfigField 'String', 'GIT_COMMIT_TIME', '"' + gits.gitCommitTime + '"'
+        buildConfigField 'String', 'GIT_BRANCH', '"' + gits.gitCommitBranch + '"'
 
         testInstrumentationRunner deps.androidRunner
     }
@@ -37,6 +39,7 @@ android {
         debug {
             versionNameSuffix '_debug'
             minifyEnabled false
+            signingConfig signingConfigs.douban
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             resValue 'string', 'debug', 'true'
         }
@@ -69,15 +72,18 @@ dependencies {
     androidTestImplementation deps.runner
     androidTestImplementation deps.espresso
     //others
-    implementation deps.okhttp3
-    annotationProcessor deps.butterknifeCompiler
-    implementation deps.butterknife
     implementation deps.glide
     implementation deps.gson
+    implementation deps.okhttp3
+    implementation deps.agentweb
+
+    annotationProcessor deps.butterknifeCompiler
+    implementation deps.butterknife
     debugImplementation deps.leakcanaryDebug
     releaseImplementation deps.leakcanaryRelease
     debugImplementation deps.anrDebug
     releaseImplementation deps.anrRelease
+
     //module
     implementation project(':ProgressIndicator')
     implementation project(':XRecyclerView')
@@ -86,6 +92,7 @@ dependencies {
     implementation project(':Logger')
     implementation project(':Http')
     implementation project(':Overscroll')
+    implementation project(':CoolIndicator')
 }
 
 //modify apk output  file name, format：db-versionName.versionCode-buildType.apk

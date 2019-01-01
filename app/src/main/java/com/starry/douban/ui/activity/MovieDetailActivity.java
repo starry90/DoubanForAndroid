@@ -76,7 +76,7 @@ public class MovieDetailActivity extends BaseActivity {
     }
 
     private void initRecyclerView(List<MovieDetail.PerformerBean> performerBeanList) {
-        MoviePhotoAdapter mAdapter = new MoviePhotoAdapter(getActivity(), performerBeanList);
+        MoviePhotoAdapter mAdapter = new MoviePhotoAdapter(performerBeanList);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         recyclerView.setAdapter(mAdapter);
         recyclerView.setOnTouchListener(new View.OnTouchListener() {

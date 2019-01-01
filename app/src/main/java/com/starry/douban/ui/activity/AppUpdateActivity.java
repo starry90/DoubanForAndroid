@@ -12,6 +12,7 @@ import com.starry.douban.constant.PreferencesName;
 import com.starry.douban.event.AppUpdateEvent;
 import com.starry.douban.service.WorkService;
 import com.starry.douban.util.CommonAnimator;
+import com.starry.douban.util.DownloadHelper;
 import com.starry.douban.util.FileUtils;
 import com.starry.douban.util.SPUtil;
 import com.starry.rx.RxBus;
@@ -49,6 +50,10 @@ public class AppUpdateActivity extends BaseActivity implements View.OnClickListe
     private String versionFull = String.format("%s.%s",
             SPUtil.getString(PreferencesName.APP_UPDATE_VERSION_NAME),
             String.valueOf(SPUtil.getInt(PreferencesName.APP_UPDATE_VERSION_CODE)));
+    private File apkFile;
+
+    private boolean useSystemDownload = true;
+    private DownloadHelper downloadHelper;
 
     @Override
     public int getLayoutResID() {
@@ -62,15 +67,19 @@ public class AppUpdateActivity extends BaseActivity implements View.OnClickListe
         tvAppUpdateVersion.setText(String.format("App %s", versionFull));
         tvAppUpdateMessage.setText(SPUtil.getString(PreferencesName.APP_UPDATE_MESSAGE));
         tvAppUpdateOther.setText(SPUtil.getString(PreferencesName.APP_UPDATE_OTHER));
+
+        dirPath = BaseApp.getDownloadDir().getAbsolutePath();
+        fileName = String.format("db-%s-release.apk", versionFull);
+        apkFile = new File(dirPath, fileName);
+
+        String url = SPUtil.getString(PreferencesName.APP_UPDATE_APK_URL);
+        downloadHelper = DownloadHelper.getInstance(this, fileName, url);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        dirPath = BaseApp.getDownloadDir().getAbsolutePath();
-        fileName = String.format("db-%s-release.apk", versionFull);
-        File file = new File(dirPath, fileName);
-        checkFile(file);
+        checkFile(apkFile);
     }
 
     private void checkFile(File file) {
@@ -101,13 +110,40 @@ public class AppUpdateActivity extends BaseActivity implements View.OnClickListe
                 }
             }
         }, AndroidSchedulers.mainThread());
+
+        downloadHelper.setDownloadListener(new DownloadHelper.H5DownloadListener() {
+            @Override
+            public void onStart() {
+                pbAppUpdate.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onProgress(long soFarSize, long totalSize) {
+                pbAppUpdate.setProgress((int) (soFarSize * 1.0f / totalSize * 100));
+            }
+
+            @Override
+            public void onFinish(String fileFullPath, long totalSize) {
+                BaseApp.installApp(new File(fileFullPath));
+            }
+
+            @Override
+            public void onFailed() {
+                downloadHelper.removeDownload();
+                tvAppUpdateInstall.setText("下载并安装");
+            }
+        });
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_app_update_install:
-                WorkService.startDownloadApp(dirPath, fileName);
+                if (useSystemDownload) {
+                    downloadHelper.startDownload();
+                } else {
+                    WorkService.startDownloadApp(dirPath, fileName);
+                }
                 break;
 
             case R.id.tv_app_update_message:
@@ -140,4 +176,9 @@ public class AppUpdateActivity extends BaseActivity implements View.OnClickListe
         showAnimator.show();
     }
 
+    @Override
+    protected void onDestroy() {
+        downloadHelper.onDestroy();
+        super.onDestroy();
+    }
 }

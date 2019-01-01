@@ -9,9 +9,16 @@ import android.widget.TextView;
 import com.starry.douban.BuildConfig;
 import com.starry.douban.R;
 import com.starry.douban.base.BaseFragment;
+import com.starry.douban.constant.Apis;
+import com.starry.douban.constant.PreferencesName;
 import com.starry.douban.service.WorkService;
 import com.starry.douban.ui.activity.AboutActivity;
+import com.starry.douban.ui.activity.AppUpdateActivity;
+import com.starry.douban.ui.activity.BeautyActivity;
+import com.starry.douban.ui.activity.WebViewActivity;
 import com.starry.douban.util.ActivityAnimationUtils;
+import com.starry.douban.util.SPUtil;
+import com.starry.douban.util.ToastUtil;
 
 import butterknife.BindView;
 
@@ -19,10 +26,18 @@ import butterknife.BindView;
  * A simple {@link Fragment} subclass.
  * create an instance of this fragment.
  */
-public class SettingFragment extends BaseFragment {
+public class SettingFragment extends BaseFragment implements View.OnClickListener {
 
-    @BindView(R.id.tv_version)
-    TextView tv_version;
+    @BindView(R.id.tv_setting_beauty)
+    TextView tvBeauty;
+    @BindView(R.id.tv_setting_version_update)
+    TextView tvVersionUpdate;
+    @BindView(R.id.tv_setting_github)
+    TextView tvGithub;
+    @BindView(R.id.tv_setting_about)
+    TextView tvAbout;
+
+    private boolean latestVersion;
 
     @Override
     public int getLayoutResID() {
@@ -31,18 +46,16 @@ public class SettingFragment extends BaseFragment {
 
     @Override
     public void initData() {
-        tv_version.setText(BuildConfig.VERSION_NAME);
+        latestVersion = SPUtil.getInt(PreferencesName.APP_UPDATE_VERSION_CODE) <= BuildConfig.VERSION_CODE;
         WorkService.startCheckAppVersion();
     }
 
     @Override
     public void setListener() {
-        tv_version.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startAbout();
-            }
-        });
+        tvBeauty.setOnClickListener(this);
+        tvAbout.setOnClickListener(this);
+        tvVersionUpdate.setOnClickListener(this);
+        tvGithub.setOnClickListener(this);
     }
 
     private long[] mClicks = new long[5];
@@ -55,7 +68,32 @@ public class SettingFragment extends BaseFragment {
         mClicks[mClicks.length - 1] = SystemClock.uptimeMillis();
         if (mClicks[0] >= (SystemClock.uptimeMillis() - 2000)) {
             Intent intent = new Intent(mActivity, AboutActivity.class);
-            ActivityAnimationUtils.transition(mActivity, intent, tv_version);
+            ActivityAnimationUtils.transition(mActivity, intent, tvAbout);
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.tv_setting_beauty:
+                startActivity(new Intent(mActivity, BeautyActivity.class));
+                break;
+
+            case R.id.tv_setting_about:
+                startAbout();
+                break;
+
+            case R.id.tv_setting_version_update:
+                if (!latestVersion) {
+                    startActivity(new Intent(mActivity, AppUpdateActivity.class));
+                } else {
+                    ToastUtil.showToast("当前已是最新版本！");
+                }
+                break;
+
+            case R.id.tv_setting_github:
+                WebViewActivity.showActivity(mActivity, Apis.GITHUB_AUTHOR_HOME);
+                break;
         }
     }
 }

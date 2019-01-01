@@ -1,6 +1,5 @@
 package com.starry.douban.adapter;
 
-import android.content.Context;
 import android.content.Intent;
 import android.view.View;
 
@@ -17,8 +16,8 @@ import java.util.List;
  */
 public class MovieAdapter extends BaseRecyclerAdapter<MovieBean> {
 
-    public MovieAdapter(Context context, List<MovieBean> beans) {
-        super(context, beans);
+    public MovieAdapter(List<MovieBean> beans) {
+        super(beans);
     }
 
     @Override
@@ -27,21 +26,28 @@ public class MovieAdapter extends BaseRecyclerAdapter<MovieBean> {
     }
 
     @Override
-    protected void onItemClick(int position, View itemView) {
-        super.onItemClick(position, itemView);
+    public int getHeaderLayoutCount() {
+        return 1;
+    }
+
+    @Override
+    protected void onItemClick(View itemView, int position) {
         Intent intent = new Intent(mContext, MovieDetailActivity.class);
-        intent.putExtra("movieId", mBeans.get(position).getId());
+        intent.putExtra("movieId", dataSet.get(position).getId());
         mContext.startActivity(intent);
     }
 
     @Override
-    public void onBindData(RecyclerViewHolder holder, MovieBean bean, int position) {
-        holder.setText(R.id.tv_title, bean.getTitle());
-        if (!bean.getDirectors().isEmpty())
-            holder.setText(R.id.tv_author, "导       演：" + bean.getDirectors().get(0).getName());
-        holder.setText(R.id.tv_date, "上映日期：" + bean.getYear());
-        holder.setText(R.id.tv_publisher, "电影剧情：" + bean.getGenres().toString());
-        holder.setText(R.id.tv_num_rating, "观众评分：" + bean.getRating().getAverage());
-        holder.setImageFromInternet(R.id.iv_image, bean.getImages().getMedium());
+    public void onBindData(BaseRecyclerAdapter.RecyclerViewHolder holder, MovieBean itemData, int position) {
+        holder.setText(R.id.tv_title, itemData.getTitle());
+        if (!itemData.getDirectors().isEmpty())
+            holder.setText(R.id.tv_author, "导       演：" + itemData.getDirectors().get(0).getName());
+        holder.setText(R.id.tv_date, "上映日期：" + itemData.getYear());
+        holder.setText(R.id.tv_publisher, "电影剧情：" + itemData.getGenres().toString());
+        holder.setText(R.id.tv_num_rating, "观众评分：" + itemData.getRating().getAverage());
+        holder.setImage(R.id.iv_image, R.drawable.image_bg_default);
+        if (allowLoadImage(position)) {
+            holder.setImageFromInternet(R.id.iv_image, itemData.getImages().getMedium());
+        }
     }
 }

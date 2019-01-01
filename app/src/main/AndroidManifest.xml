@@ -40,11 +40,17 @@
             android:name="com.starry.douban.ui.activity.BookDetailActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name="com.starry.douban.ui.activity.BeautyActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name="com.starry.douban.ui.activity.AboutActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.starry.douban.ui.activity.AppUpdateActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.starry.douban.ui.activity.WebViewActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.starry.douban.ui.activity.UpdateDialogActivity"
