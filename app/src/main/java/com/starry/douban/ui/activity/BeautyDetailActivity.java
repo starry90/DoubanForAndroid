@@ -11,11 +11,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.starry.douban.R;
 import com.starry.douban.base.BaseActivity;
 import com.starry.douban.image.ImageManager;
 import com.starry.douban.model.BeautyModel;
+import com.starry.douban.util.StringUtils;
 import com.starry.douban.util.ToastUtil;
 import com.starry.parallaxviewpager.Mode;
 import com.starry.parallaxviewpager.ParallaxViewPager;
@@ -39,6 +41,9 @@ public class BeautyDetailActivity extends BaseActivity {
 
     @BindView(R.id.vp_beauty_detail)
     ParallaxViewPager viewPager;
+
+    @BindView(R.id.tv_beauty_detail_page)
+    TextView tvPage;
 
     private ArrayList<BeautyModel> beautyList;
 
@@ -67,6 +72,7 @@ public class BeautyDetailActivity extends BaseActivity {
         beautyList = intent.getParcelableArrayListExtra(EXTRA_BEAUTY_LIST);
         selectPosition = intent.getIntExtra(EXTRA_POSITION, 0);
 
+        setPageAndTitle();
         initViewPager();
         viewPager.setCurrentItem(selectPosition, false);
     }
@@ -112,6 +118,7 @@ public class BeautyDetailActivity extends BaseActivity {
             @Override
             public void onPageSelected(int position) {
                 selectPosition = position;
+                setPageAndTitle();
             }
 
             @Override
@@ -119,6 +126,11 @@ public class BeautyDetailActivity extends BaseActivity {
 
             }
         });
+    }
+
+    private void setPageAndTitle() {
+        tvPage.setText(StringUtils.format("%d/%d", selectPosition + 1, beautyList.size()));
+        setTitle(beautyList.get(selectPosition).getDesc());
     }
 
     @Override
