@@ -8,9 +8,9 @@ dependencies {
 }
 
 task makeJar(type: Copy) {
-    delete "../outputs/http-wrapper-${versions.httpVersion}.jar"
+    delete "../outputs/http-${versions.httpVersion}.jar"
     from('build/intermediates/bundles/debug/')
     into('../outputs/')
     include('classes.jar')
-    rename('classes.jar', "http-wrapper-${versions.httpVersion}.jar")
+    rename('classes.jar', "http-${versions.httpVersion}.jar")
 }
