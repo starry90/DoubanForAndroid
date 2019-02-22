@@ -19,7 +19,7 @@ ext {
             "targetSdkVersion" : 26,
 
             "versionCode"      : gits.gitCommitCount,
-            "versionName"      : "1.2.7",
+            "versionName"      : "1.2.8",
             "httpVersion"      : 6
     ]
 
