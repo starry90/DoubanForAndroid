@@ -5345,7 +5345,7 @@ android.support.v4.app.Fragment -> android.support.v4.app.Fragment:
     486:494:boolean isSupportFragmentClass(android.content.Context,java.lang.String) -> O000000o
     499:509:void restoreViewState(android.os.Bundle) -> O000000o
     512:518:void setIndex(int,android.support.v4.app.Fragment) -> O000000o
-    521:521:boolean isInBackStack() -> d_
+    521:521:boolean isInBackStack() -> f_
     528:528:boolean equals(java.lang.Object) -> equals
     535:535:int hashCode() -> hashCode
     540:555:java.lang.String toString() -> toString
@@ -5553,7 +5553,7 @@ android.support.v4.app.FragmentActivity -> android.support.v4.app.FragmentActivi
     519:536:void onSaveInstanceState(android.os.Bundle) -> onSaveInstanceState
     544:564:void onStart() -> onStart
     571:577:void onStop() -> onStop
-    588:588:java.lang.Object onRetainCustomNonConfigurationInstance() -> c_
+    588:588:java.lang.Object onRetainCustomNonConfigurationInstance() -> e_
     613:614:void supportInvalidateOptionsMenu() -> O00000o0
     628:640:void dump(java.lang.String,java.io.FileDescriptor,java.io.PrintWriter,java.lang.String[]) -> dump
     643:656:void doReallyStop(boolean) -> O000000o
@@ -6292,7 +6292,7 @@ android.support.v4.app.TaskStackBuilder -> android.support.v4.app.O00O0Oo:
     304:317:void startActivities(android.os.Bundle) -> O000000o
     99:104:void <clinit>() -> <clinit>
 android.support.v4.app.TaskStackBuilder$SupportParentable -> android.support.v4.app.O00O0Oo$O000000o:
-    android.content.Intent getSupportParentActivityIntent() -> b_
+    android.content.Intent getSupportParentActivityIntent() -> d_
 android.support.v4.app.TaskStackBuilder$TaskStackBuilderApi16Impl -> android.support.v4.app.O00O0Oo$O00000Oo:
     86:86:void <init>() -> <init>
 android.support.v4.app.TaskStackBuilder$TaskStackBuilderBaseImpl -> android.support.v4.app.O00O0Oo$O00000o0:
@@ -8756,6 +8756,8 @@ android.support.v4.view.ViewPager -> android.support.v4.view.ViewPager:
     702:703:void setOnPageChangeListener(android.support.v4.view.ViewPager$OnPageChangeListener) -> setOnPageChangeListener
     716:720:void addOnPageChangeListener(android.support.v4.view.ViewPager$OnPageChangeListener) -> O000000o
     729:732:void removeOnPageChangeListener(android.support.v4.view.ViewPager$OnPageChangeListener) -> O00000Oo
+    761:762:void setPageTransformer(boolean,android.support.v4.view.ViewPager$PageTransformer) -> O000000o
+    779:790:void setPageTransformer(boolean,android.support.v4.view.ViewPager$PageTransformer,int) -> O000000o
     794:797:int getChildDrawingOrder(int,int) -> getChildDrawingOrder
     820:820:int getOffscreenPageLimit() -> getOffscreenPageLimit
     841:850:void setOffscreenPageLimit(int) -> setOffscreenPageLimit
@@ -10402,7 +10404,7 @@ android.support.v7.app.AppCompatActivity -> android.support.v7.app.AppCompatActi
     347:348:void onCreateSupportNavigateUpTaskStack(android.support.v4.app.TaskStackBuilder) -> O000000o
     366:366:void onPrepareSupportNavigateUpTaskStack(android.support.v4.app.TaskStackBuilder) -> O00000Oo
     392:415:boolean onSupportNavigateUp() -> O0000O0o
-    430:430:android.content.Intent getSupportParentActivityIntent() -> b_
+    430:430:android.content.Intent getSupportParentActivityIntent() -> d_
     447:447:boolean supportShouldUpRecreateTask(android.content.Intent) -> O000000o
     463:464:void supportNavigateUpTo(android.content.Intent) -> O00000Oo
     469:470:void onContentChanged() -> onContentChanged
@@ -18473,6 +18475,7 @@ com.bumptech.glide.BitmapRequestBuilder -> com.bumptech.glide.O000000o:
     com.bumptech.glide.load.ResourceDecoder videoDecoder -> O0000OoO
     50:63:void <init>(com.bumptech.glide.provider.LoadProvider,java.lang.Class,com.bumptech.glide.GenericRequestBuilder) -> <init>
     169:170:com.bumptech.glide.BitmapRequestBuilder decoder(com.bumptech.glide.load.ResourceDecoder) -> O000000o
+    249:250:com.bumptech.glide.BitmapRequestBuilder priority(com.bumptech.glide.Priority) -> O000000o
     264:265:com.bumptech.glide.BitmapRequestBuilder transform(com.bumptech.glide.load.resource.bitmap.BitmapTransformation[]) -> O000000o
     278:278:com.bumptech.glide.BitmapRequestBuilder centerCrop() -> O000000o
     291:291:com.bumptech.glide.BitmapRequestBuilder fitCenter() -> O00000Oo
@@ -18497,6 +18500,7 @@ com.bumptech.glide.BitmapRequestBuilder -> com.bumptech.glide.O000000o:
     46:46:com.bumptech.glide.GenericRequestBuilder error(int) -> O00000o0
     46:46:com.bumptech.glide.GenericRequestBuilder placeholder(int) -> O00000o
     46:46:com.bumptech.glide.GenericRequestBuilder transform(com.bumptech.glide.load.Transformation[]) -> O00000Oo
+    46:46:com.bumptech.glide.GenericRequestBuilder priority(com.bumptech.glide.Priority) -> O00000Oo
     46:46:com.bumptech.glide.GenericRequestBuilder diskCacheStrategy(com.bumptech.glide.load.engine.DiskCacheStrategy) -> O00000Oo
     46:46:com.bumptech.glide.GenericRequestBuilder sourceEncoder(com.bumptech.glide.load.Encoder) -> O00000Oo
     46:46:com.bumptech.glide.GenericRequestBuilder decoder(com.bumptech.glide.load.ResourceDecoder) -> O00000Oo
@@ -18511,6 +18515,7 @@ com.bumptech.glide.BitmapTypeRequest -> com.bumptech.glide.O00000Oo:
 com.bumptech.glide.DrawableRequestBuilder -> com.bumptech.glide.O00000o0:
     48:51:void <init>(android.content.Context,java.lang.Class,com.bumptech.glide.provider.LoadProvider,com.bumptech.glide.Glide,com.bumptech.glide.manager.RequestTracker,com.bumptech.glide.manager.Lifecycle) -> <init>
     115:116:com.bumptech.glide.DrawableRequestBuilder decoder(com.bumptech.glide.load.ResourceDecoder) -> O000000o
+    142:143:com.bumptech.glide.DrawableRequestBuilder priority(com.bumptech.glide.Priority) -> O000000o
     179:179:com.bumptech.glide.DrawableRequestBuilder centerCrop() -> O000000o
     194:194:com.bumptech.glide.DrawableRequestBuilder fitCenter() -> O00000Oo
     228:229:com.bumptech.glide.DrawableRequestBuilder transform(com.bumptech.glide.load.Transformation[]) -> O000000o
@@ -18535,6 +18540,7 @@ com.bumptech.glide.DrawableRequestBuilder -> com.bumptech.glide.O00000o0:
     41:41:com.bumptech.glide.GenericRequestBuilder error(int) -> O00000o0
     41:41:com.bumptech.glide.GenericRequestBuilder placeholder(int) -> O00000o
     41:41:com.bumptech.glide.GenericRequestBuilder transform(com.bumptech.glide.load.Transformation[]) -> O00000Oo
+    41:41:com.bumptech.glide.GenericRequestBuilder priority(com.bumptech.glide.Priority) -> O00000Oo
     41:41:com.bumptech.glide.GenericRequestBuilder diskCacheStrategy(com.bumptech.glide.load.engine.DiskCacheStrategy) -> O00000Oo
     41:41:com.bumptech.glide.GenericRequestBuilder sourceEncoder(com.bumptech.glide.load.Encoder) -> O00000Oo
     41:41:com.bumptech.glide.GenericRequestBuilder decoder(com.bumptech.glide.load.ResourceDecoder) -> O00000Oo
@@ -18546,6 +18552,8 @@ com.bumptech.glide.DrawableTypeRequest -> com.bumptech.glide.O00000o:
     40:51:com.bumptech.glide.provider.FixedLoadProvider buildProvider(com.bumptech.glide.Glide,com.bumptech.glide.load.model.ModelLoader,com.bumptech.glide.load.model.ModelLoader,java.lang.Class,java.lang.Class,com.bumptech.glide.load.resource.transcode.ResourceTranscoder) -> O000000o
     57:64:void <init>(java.lang.Class,com.bumptech.glide.load.model.ModelLoader,com.bumptech.glide.load.model.ModelLoader,android.content.Context,com.bumptech.glide.Glide,com.bumptech.glide.manager.RequestTracker,com.bumptech.glide.manager.Lifecycle,com.bumptech.glide.RequestManager$OptionsApplier) -> <init>
     72:72:com.bumptech.glide.BitmapTypeRequest asBitmap() -> O0000OOo
+    103:103:com.bumptech.glide.request.FutureTarget downloadOnly(int,int) -> O00000o0
+    107:107:com.bumptech.glide.GenericTranscodeRequest getDownloadOnlyRequest() -> O0000Oo0
 com.bumptech.glide.GenericRequestBuilder -> com.bumptech.glide.O0000O0o:
     java.lang.Class modelClass -> O000000o
     android.content.Context context -> O00000Oo
@@ -18581,6 +18589,7 @@ com.bumptech.glide.GenericRequestBuilder -> com.bumptech.glide.O0000O0o:
     207:211:com.bumptech.glide.GenericRequestBuilder decoder(com.bumptech.glide.load.ResourceDecoder) -> O00000Oo
     246:250:com.bumptech.glide.GenericRequestBuilder sourceEncoder(com.bumptech.glide.load.Encoder) -> O00000Oo
     271:273:com.bumptech.glide.GenericRequestBuilder diskCacheStrategy(com.bumptech.glide.load.engine.DiskCacheStrategy) -> O00000Oo
+    308:310:com.bumptech.glide.GenericRequestBuilder priority(com.bumptech.glide.Priority) -> O00000Oo
     322:329:com.bumptech.glide.GenericRequestBuilder transform(com.bumptech.glide.load.Transformation[]) -> O00000Oo
     417:422:com.bumptech.glide.GenericRequestBuilder animate(com.bumptech.glide.request.animation.GlideAnimationFactory) -> O000000o
     434:436:com.bumptech.glide.GenericRequestBuilder placeholder(int) -> O00000o
@@ -18592,6 +18601,7 @@ com.bumptech.glide.GenericRequestBuilder -> com.bumptech.glide.O0000O0o:
     624:629:com.bumptech.glide.GenericRequestBuilder clone() -> O00000oo
     642:663:com.bumptech.glide.request.target.Target into(com.bumptech.glide.request.target.Target) -> O000000o
     676:697:com.bumptech.glide.request.target.Target into(android.widget.ImageView) -> O000000o
+    714:727:com.bumptech.glide.request.FutureTarget into(int,int) -> O00000o
     768:768:void applyCenterCrop() -> O00000oO
     772:772:void applyFitCenter() -> O00000o
     776:783:com.bumptech.glide.Priority getThumbnailPriority() -> O000000o
@@ -18599,7 +18609,12 @@ com.bumptech.glide.GenericRequestBuilder -> com.bumptech.glide.O0000O0o:
     794:832:com.bumptech.glide.request.Request buildRequestRecursive(com.bumptech.glide.request.target.Target,com.bumptech.glide.request.ThumbnailRequestCoordinator) -> O000000o
     838:838:com.bumptech.glide.request.Request obtainRequest(com.bumptech.glide.request.target.Target,float,com.bumptech.glide.Priority,com.bumptech.glide.request.RequestCoordinator) -> O000000o
     49:49:java.lang.Object clone() -> clone
-com.bumptech.glide.GenericRequestBuilder$2 -> com.bumptech.glide.O0000O0o$1:
+com.bumptech.glide.GenericRequestBuilder$1 -> com.bumptech.glide.O0000O0o$1:
+    com.bumptech.glide.request.RequestFutureTarget val$target -> O000000o
+    com.bumptech.glide.GenericRequestBuilder this$0 -> O00000Oo
+    718:718:void <init>(com.bumptech.glide.GenericRequestBuilder,com.bumptech.glide.request.RequestFutureTarget) -> <init>
+    721:724:void run() -> run
+com.bumptech.glide.GenericRequestBuilder$2 -> com.bumptech.glide.O0000O0o$2:
     int[] $SwitchMap$android$widget$ImageView$ScaleType -> O000000o
     682:682:void <clinit>() -> <clinit>
 com.bumptech.glide.GenericTranscodeRequest -> com.bumptech.glide.O0000OOo:
@@ -18608,7 +18623,10 @@ com.bumptech.glide.GenericTranscodeRequest -> com.bumptech.glide.O0000OOo:
     java.lang.Class resourceClass -> O0000Oo0
     com.bumptech.glide.RequestManager$OptionsApplier optionsApplier -> O0000Oo
     41:42:com.bumptech.glide.provider.LoadProvider build(com.bumptech.glide.Glide,com.bumptech.glide.load.model.ModelLoader,java.lang.Class,java.lang.Class,com.bumptech.glide.load.resource.transcode.ResourceTranscoder) -> O000000o
+    49:55:void <init>(java.lang.Class,com.bumptech.glide.GenericRequestBuilder,com.bumptech.glide.load.model.ModelLoader,java.lang.Class,java.lang.Class,com.bumptech.glide.RequestManager$OptionsApplier) -> <init>
     60:66:void <init>(android.content.Context,com.bumptech.glide.Glide,java.lang.Class,com.bumptech.glide.load.model.ModelLoader,java.lang.Class,java.lang.Class,com.bumptech.glide.manager.RequestTracker,com.bumptech.glide.manager.Lifecycle,com.bumptech.glide.RequestManager$OptionsApplier) -> <init>
+    96:96:com.bumptech.glide.request.FutureTarget downloadOnly(int,int) -> O000000o
+    100:104:com.bumptech.glide.GenericRequestBuilder getDownloadOnlyRequest() -> O000000o
 com.bumptech.glide.Glide -> com.bumptech.glide.O0000Oo0:
     com.bumptech.glide.Glide glide -> O000000o
     com.bumptech.glide.load.model.GenericLoaderFactory loaderFactory -> O00000Oo
@@ -18636,9 +18654,10 @@ com.bumptech.glide.Glide -> com.bumptech.glide.O0000Oo0:
     309:309:com.bumptech.glide.load.resource.bitmap.FitCenter getBitmapFitCenter() -> O00000o
     313:313:com.bumptech.glide.load.resource.gifbitmap.GifBitmapWrapperTransformation getDrawableCenterCrop() -> O00000oO
     317:317:com.bumptech.glide.load.resource.gifbitmap.GifBitmapWrapperTransformation getDrawableFitCenter() -> O00000oo
-    325:325:com.bumptech.glide.load.DecodeFormat getDecodeFormat() -> O0000O0o
-    329:329:com.bumptech.glide.load.model.GenericLoaderFactory getLoaderFactory() -> O0000Oo0
-    370:374:void clearMemory() -> O0000OOo
+    321:321:android.os.Handler getMainHandler() -> O0000O0o
+    325:325:com.bumptech.glide.load.DecodeFormat getDecodeFormat() -> O0000OOo
+    329:329:com.bumptech.glide.load.model.GenericLoaderFactory getLoaderFactory() -> O0000Oo
+    370:374:void clearMemory() -> O0000Oo0
     383:387:void trimMemory(int) -> O000000o
     427:433:void clear(com.bumptech.glide.request.target.Target) -> O000000o
     492:496:void register(java.lang.Class,java.lang.Class,com.bumptech.glide.load.model.ModelLoaderFactory) -> O000000o
@@ -20359,7 +20378,7 @@ com.bumptech.glide.load.resource.gif.GifFrameLoader$DelayTarget -> com.bumptech.
     long targetTime -> O00000o0
     android.graphics.Bitmap resource -> O00000o
     152:156:void <init>(android.os.Handler,int,long) -> <init>
-    159:159:android.graphics.Bitmap getResource() -> O000000o
+    159:159:android.graphics.Bitmap getResource() -> b_
     164:167:void onResourceReady(android.graphics.Bitmap,com.bumptech.glide.request.animation.GlideAnimation) -> O000000o
     146:146:void onResourceReady(java.lang.Object,com.bumptech.glide.request.animation.GlideAnimation) -> O000000o
     146:146:int access$100(com.bumptech.glide.load.resource.gif.GifFrameLoader$DelayTarget) -> O000000o
@@ -20735,7 +20754,8 @@ com.bumptech.glide.provider.FixedLoadProvider -> com.bumptech.glide.O00000oo.O00
 com.bumptech.glide.provider.LoadProvider -> com.bumptech.glide.O00000oo.O00oOooO:
     com.bumptech.glide.load.model.ModelLoader getModelLoader() -> O00000oO
     com.bumptech.glide.load.resource.transcode.ResourceTranscoder getTranscoder() -> O00000oo
-com.bumptech.glide.request.GenericRequest -> com.bumptech.glide.O0000O0o.O000000o:
+com.bumptech.glide.request.FutureTarget -> com.bumptech.glide.O0000O0o.O000000o:
+com.bumptech.glide.request.GenericRequest -> com.bumptech.glide.O0000O0o.O00000Oo:
     java.util.Queue REQUEST_POOL -> O000000o
     java.lang.String tag -> O00000Oo
     com.bumptech.glide.load.Key signature -> O00000o0
@@ -20795,7 +20815,7 @@ com.bumptech.glide.request.GenericRequest -> com.bumptech.glide.O0000O0o.O000000
     541:550:void onException(java.lang.Exception) -> O000000o
     553:554:void logV(java.lang.String) -> O000000o
     37:37:void <clinit>() -> <clinit>
-com.bumptech.glide.request.GenericRequest$Status -> com.bumptech.glide.O0000O0o.O000000o$O000000o:
+com.bumptech.glide.request.GenericRequest$Status -> com.bumptech.glide.O0000O0o.O00000Oo$O000000o:
     com.bumptech.glide.request.GenericRequest$Status PENDING -> O000000o
     com.bumptech.glide.request.GenericRequest$Status RUNNING -> O00000Oo
     com.bumptech.glide.request.GenericRequest$Status WAITING_FOR_SIZE -> O00000o0
@@ -20809,7 +20829,7 @@ com.bumptech.glide.request.GenericRequest$Status -> com.bumptech.glide.O0000O0o.
     40:40:com.bumptech.glide.request.GenericRequest$Status valueOf(java.lang.String) -> valueOf
     40:40:void <init>(java.lang.String,int) -> <init>
     40:56:void <clinit>() -> <clinit>
-com.bumptech.glide.request.Request -> com.bumptech.glide.O0000O0o.O00000Oo:
+com.bumptech.glide.request.Request -> com.bumptech.glide.O0000O0o.O00000o0:
     void begin() -> O00000Oo
     void pause() -> O00000oO
     void clear() -> O00000o
@@ -20818,18 +20838,56 @@ com.bumptech.glide.request.Request -> com.bumptech.glide.O0000O0o.O00000Oo:
     boolean isResourceSet() -> O0000OOo
     boolean isCancelled() -> O0000Oo0
     void recycle() -> O000000o
-com.bumptech.glide.request.RequestCoordinator -> com.bumptech.glide.O0000O0o.O00000o0:
+com.bumptech.glide.request.RequestCoordinator -> com.bumptech.glide.O0000O0o.O00000o:
     boolean canSetImage(com.bumptech.glide.request.Request) -> O000000o
     boolean canNotifyStatusChanged(com.bumptech.glide.request.Request) -> O00000Oo
     boolean isAnyResourceSet() -> O00000o0
     void onRequestSuccess(com.bumptech.glide.request.Request) -> O00000o0
-com.bumptech.glide.request.RequestListener -> com.bumptech.glide.O0000O0o.O00000o:
+com.bumptech.glide.request.RequestFutureTarget -> com.bumptech.glide.O0000O0o.O0000O0o:
+    com.bumptech.glide.request.RequestFutureTarget$Waiter DEFAULT_WAITER -> O000000o
+    android.os.Handler mainHandler -> O00000Oo
+    int width -> O00000o0
+    int height -> O00000o
+    boolean assertBackgroundThread -> O00000oO
+    com.bumptech.glide.request.RequestFutureTarget$Waiter waiter -> O00000oo
+    java.lang.Object resource -> O0000O0o
+    com.bumptech.glide.request.Request request -> O0000OOo
+    boolean isCancelled -> O0000Oo0
+    java.lang.Exception exception -> O0000Oo
+    boolean resultReceived -> O0000OoO
+    boolean exceptionReceived -> O0000Ooo
+    59:60:void <init>(android.os.Handler,int,int) -> <init>
+    62:68:void <init>(android.os.Handler,int,int,boolean,com.bumptech.glide.request.RequestFutureTarget$Waiter) -> <init>
+    72:84:boolean cancel(boolean) -> cancel
+    89:89:boolean isCancelled() -> isCancelled
+    94:94:boolean isDone() -> isDone
+    100:102:java.lang.Object get() -> get
+    108:108:java.lang.Object get(long,java.util.concurrent.TimeUnit) -> get
+    116:117:void getSize(com.bumptech.glide.request.target.SizeReadyCallback) -> O000000o
+    121:122:void setRequest(com.bumptech.glide.request.Request) -> O000000o
+    126:126:com.bumptech.glide.request.Request getRequest() -> O000000o
+    135:135:void onLoadCleared(android.graphics.drawable.Drawable) -> O000000o
+    143:143:void onLoadStarted(android.graphics.drawable.Drawable) -> O00000Oo
+    151:154:void onLoadFailed(java.lang.Exception,android.graphics.drawable.Drawable) -> O000000o
+    162:165:void onResourceReady(java.lang.Object,com.bumptech.glide.request.animation.GlideAnimation) -> O000000o
+    168:196:java.lang.Object doGet(java.lang.Long) -> O000000o
+    204:208:void run() -> run
+    216:217:void clear() -> O00000Oo
+    222:222:void onStart() -> O00000o
+    227:227:void onStop() -> O00000oO
+    232:232:void onDestroy() -> O00000oo
+    39:39:void <clinit>() -> <clinit>
+com.bumptech.glide.request.RequestFutureTarget$Waiter -> com.bumptech.glide.O0000O0o.O0000O0o$O000000o:
+    235:235:void <init>() -> <init>
+    238:239:void waitForTimeout(java.lang.Object,long) -> O000000o
+    242:243:void notifyAll(java.lang.Object) -> O000000o
+com.bumptech.glide.request.RequestListener -> com.bumptech.glide.O0000O0o.O0000OOo:
     boolean onException(java.lang.Exception,java.lang.Object,com.bumptech.glide.request.target.Target,boolean) -> O000000o
     boolean onResourceReady(java.lang.Object,java.lang.Object,com.bumptech.glide.request.target.Target,boolean,boolean) -> O000000o
-com.bumptech.glide.request.ResourceCallback -> com.bumptech.glide.O0000O0o.O0000O0o:
+com.bumptech.glide.request.ResourceCallback -> com.bumptech.glide.O0000O0o.O0000Oo0:
     void onResourceReady(com.bumptech.glide.load.engine.Resource) -> O000000o
     void onException(java.lang.Exception) -> O000000o
-com.bumptech.glide.request.ThumbnailRequestCoordinator -> com.bumptech.glide.O0000O0o.O0000OOo:
+com.bumptech.glide.request.ThumbnailRequestCoordinator -> com.bumptech.glide.O0000O0o.O0000Oo:
     com.bumptech.glide.request.Request full -> O000000o
     com.bumptech.glide.request.Request thumb -> O00000Oo
     com.bumptech.glide.request.RequestCoordinator coordinator -> O00000o0
@@ -20875,9 +20933,9 @@ com.bumptech.glide.request.animation.DrawableCrossFadeViewAnimation -> com.bumpt
 com.bumptech.glide.request.animation.GlideAnimation -> com.bumptech.glide.O0000O0o.O000000o.O00000o0:
     boolean animate(java.lang.Object,com.bumptech.glide.request.animation.GlideAnimation$ViewAdapter) -> O000000o
 com.bumptech.glide.request.animation.GlideAnimation$ViewAdapter -> com.bumptech.glide.O0000O0o.O000000o.O00000o0$O000000o:
-    android.view.View getView() -> O000000o
+    android.view.View getView() -> c_
     android.graphics.drawable.Drawable getCurrentDrawable() -> O00000Oo
-    void setDrawable(android.graphics.drawable.Drawable) -> O000000o
+    void setDrawable(android.graphics.drawable.Drawable) -> O00000o0
 com.bumptech.glide.request.animation.GlideAnimationFactory -> com.bumptech.glide.O0000O0o.O000000o.O00000o:
     com.bumptech.glide.request.animation.GlideAnimation build(boolean,boolean) -> O000000o
 com.bumptech.glide.request.animation.NoAnimation -> com.bumptech.glide.O0000O0o.O000000o.O0000O0o:
@@ -20907,9 +20965,9 @@ com.bumptech.glide.request.target.BaseTarget -> com.bumptech.glide.O0000O0o.O000
     com.bumptech.glide.request.Request request -> O000000o
     25:25:void <init>() -> <init>
     34:35:void setRequest(com.bumptech.glide.request.Request) -> O000000o
-    42:42:com.bumptech.glide.request.Request getRequest() -> O00000o0
-    51:51:void onLoadCleared(android.graphics.drawable.Drawable) -> O00000Oo
-    59:59:void onLoadStarted(android.graphics.drawable.Drawable) -> O00000o0
+    42:42:com.bumptech.glide.request.Request getRequest() -> O000000o
+    51:51:void onLoadCleared(android.graphics.drawable.Drawable) -> O000000o
+    59:59:void onLoadStarted(android.graphics.drawable.Drawable) -> O00000Oo
     67:67:void onLoadFailed(java.lang.Exception,android.graphics.drawable.Drawable) -> O000000o
     75:75:void onStart() -> O00000o
     83:83:void onStop() -> O00000oO
@@ -20936,10 +20994,10 @@ com.bumptech.glide.request.target.GlideDrawableImageViewTarget -> com.bumptech.g
 com.bumptech.glide.request.target.ImageViewTarget -> com.bumptech.glide.O0000O0o.O00000Oo.O0000O0o:
     17:18:void <init>(android.widget.ImageView) -> <init>
     26:26:android.graphics.drawable.Drawable getCurrentDrawable() -> O00000Oo
-    37:38:void setDrawable(android.graphics.drawable.Drawable) -> O000000o
-    48:49:void onLoadStarted(android.graphics.drawable.Drawable) -> O00000o0
+    37:38:void setDrawable(android.graphics.drawable.Drawable) -> O00000o0
+    48:49:void onLoadStarted(android.graphics.drawable.Drawable) -> O00000Oo
     59:60:void onLoadFailed(java.lang.Exception,android.graphics.drawable.Drawable) -> O000000o
-    70:71:void onLoadCleared(android.graphics.drawable.Drawable) -> O00000Oo
+    70:71:void onLoadCleared(android.graphics.drawable.Drawable) -> O000000o
     75:78:void onResourceReady(java.lang.Object,com.bumptech.glide.request.animation.GlideAnimation) -> O000000o
     void setResource(java.lang.Object) -> O000000o
 com.bumptech.glide.request.target.ImageViewTargetFactory -> com.bumptech.glide.O0000O0o.O00000Oo.O0000OOo:
@@ -21001,25 +21059,25 @@ com.bumptech.glide.request.target.SquaringDrawable$State -> com.bumptech.glide.O
     209:209:android.graphics.drawable.Drawable$ConstantState access$000(com.bumptech.glide.request.target.SquaringDrawable$State) -> O000000o
     209:209:int access$100(com.bumptech.glide.request.target.SquaringDrawable$State) -> O00000Oo
 com.bumptech.glide.request.target.Target -> com.bumptech.glide.O0000O0o.O00000Oo.O0000o0:
-    void onLoadStarted(android.graphics.drawable.Drawable) -> O00000o0
+    void onLoadStarted(android.graphics.drawable.Drawable) -> O00000Oo
     void onLoadFailed(java.lang.Exception,android.graphics.drawable.Drawable) -> O000000o
     void onResourceReady(java.lang.Object,com.bumptech.glide.request.animation.GlideAnimation) -> O000000o
-    void onLoadCleared(android.graphics.drawable.Drawable) -> O00000Oo
+    void onLoadCleared(android.graphics.drawable.Drawable) -> O000000o
     void getSize(com.bumptech.glide.request.target.SizeReadyCallback) -> O000000o
     void setRequest(com.bumptech.glide.request.Request) -> O000000o
-    com.bumptech.glide.request.Request getRequest() -> O00000o0
+    com.bumptech.glide.request.Request getRequest() -> O000000o
 com.bumptech.glide.request.target.ViewTarget -> com.bumptech.glide.O0000O0o.O00000Oo.O0000o:
     boolean isTagUsedAtLeastOnce -> O00000Oo
     java.lang.Integer tagId -> O00000o0
     android.view.View view -> O000000o
     com.bumptech.glide.request.target.ViewTarget$SizeDeterminer sizeDeterminer -> O00000o
     74:80:void <init>(android.view.View) -> <init>
-    86:86:android.view.View getView() -> O000000o
+    86:86:android.view.View getView() -> c_
     100:101:void getSize(com.bumptech.glide.request.target.SizeReadyCallback) -> O000000o
     110:111:void setRequest(com.bumptech.glide.request.Request) -> O000000o
-    127:136:com.bumptech.glide.request.Request getRequest() -> O00000o0
+    127:136:com.bumptech.glide.request.Request getRequest() -> O000000o
     140:146:void setTag(java.lang.Object) -> O000000o
-    149:152:java.lang.Object getTag() -> O0000O0o
+    149:152:java.lang.Object getTag() -> O00000o0
     158:158:java.lang.String toString() -> toString
     42:43:void <clinit>() -> <clinit>
 com.bumptech.glide.request.target.ViewTarget$SizeDeterminer -> com.bumptech.glide.O0000O0o.O00000Oo.O0000o$O000000o:
@@ -21136,8 +21194,9 @@ com.bumptech.glide.util.Util -> com.bumptech.glide.O0000Oo0.O0000Oo:
     123:123:boolean isValidDimensions(int,int) -> O000000o
     127:127:boolean isValidDimension(int) -> O00000Oo
     134:137:void assertMainThread() -> O000000o
-    152:152:boolean isOnMainThread() -> O00000Oo
-    159:159:boolean isOnBackgroundThread() -> O00000o0
+    143:146:void assertBackgroundThread() -> O00000Oo
+    152:152:boolean isOnMainThread() -> O00000o0
+    159:159:boolean isOnBackgroundThread() -> O00000o
     166:166:java.util.Queue createQueue(int) -> O000000o
     178:182:java.util.List getSnapshot(java.util.Collection) -> O000000o
     20:24:void <clinit>() -> <clinit>
@@ -24120,12 +24179,11 @@ com.starry.douban.DBApplication -> com.starry.douban.DBApplication:
     21:23:void onCreate() -> onCreate
     36:37:void onTerminate() -> onTerminate
 com.starry.douban.adapter.BeautyAdapter -> com.starry.douban.O000000o.O000000o:
-    18:19:void <init>(java.util.List) -> <init>
-    23:23:int getItemLayout(int) -> O00000o0
-    28:28:int getHeaderLayoutCount() -> O00000Oo
-    33:33:void onItemClick(android.view.View,int) -> O000000o
-    37:42:void onBindData(com.starry.douban.base.BaseRecyclerAdapter$RecyclerViewHolder,com.starry.douban.model.BeautyModel,int) -> O000000o
-    15:15:void onBindData(com.starry.douban.base.BaseRecyclerAdapter$RecyclerViewHolder,java.lang.Object,int) -> O000000o
+    16:17:void <init>(java.util.List) -> <init>
+    21:21:int getItemLayout(int) -> O00000o0
+    26:26:int getHeaderLayoutCount() -> O00000Oo
+    31:36:void onBindData(com.starry.douban.base.BaseRecyclerAdapter$RecyclerViewHolder,com.starry.douban.model.BeautyModel,int) -> O000000o
+    13:13:void onBindData(com.starry.douban.base.BaseRecyclerAdapter$RecyclerViewHolder,java.lang.Object,int) -> O000000o
 com.starry.douban.adapter.BookAdapter -> com.starry.douban.O000000o.O00000Oo:
     20:21:void <init>(java.util.List) -> <init>
     25:25:int getItemLayout(int) -> O00000o0
@@ -24274,6 +24332,7 @@ com.starry.douban.base.BaseRecyclerAdapter -> com.starry.douban.base.O00000o0:
     194:203:void addOnScrollListener(android.support.v7.widget.RecyclerView) -> O00000o0
     209:209:void onItemClick(android.view.View,int) -> O000000o
     215:215:void onItemLongClick(android.view.View,int) -> O00000Oo
+    224:225:void setOnItemClickListener(com.starry.douban.base.BaseRecyclerAdapter$OnItemClickListener) -> O000000o
     23:23:void onBindViewHolder(android.support.v7.widget.RecyclerView$ViewHolder,int) -> O000000o
     23:23:android.support.v7.widget.RecyclerView$ViewHolder onCreateViewHolder(android.view.ViewGroup,int) -> O00000Oo
     23:23:com.starry.douban.base.BaseRecyclerAdapter$OnItemClickListener access$100(com.starry.douban.base.BaseRecyclerAdapter) -> O000000o
@@ -24316,7 +24375,7 @@ com.starry.douban.base.BaseRecyclerAdapter$RecyclerViewHolder -> com.starry.doub
     248:248:void <init>(android.view.View,com.starry.douban.base.BaseRecyclerAdapter$1) -> <init>
 com.starry.douban.base.IBaseUI -> com.starry.douban.base.O00000o:
     int getLayoutResID() -> O000000o
-    void initData() -> e_
+    void initData() -> g_
 com.starry.douban.constant.Apis -> com.starry.douban.O00000Oo.O000000o:
     java.lang.String BookSearch -> O000000o
     java.lang.String BookDetail -> O00000Oo
@@ -24385,27 +24444,28 @@ com.starry.douban.event.AppUpdateEvent -> com.starry.douban.O00000o.O000000o:
 com.starry.douban.image.FastBlurUtil -> com.starry.douban.O00000oO.O00000Oo:
     41:242:android.graphics.Bitmap doBlur(android.graphics.Bitmap,int,boolean) -> O000000o
 com.starry.douban.image.ImageManager -> com.starry.douban.O00000oO.O00000o0:
-    40:40:android.content.Context getContext() -> O000000o
-    49:69:void getBitmap(android.widget.ImageView,java.lang.String,android.widget.ImageView) -> O000000o
-    78:84:void loadImage(android.widget.ImageView,java.lang.String) -> O000000o
+    45:45:android.content.Context getContext() -> O000000o
+    54:74:void getBitmap(android.widget.ImageView,java.lang.String,android.widget.ImageView) -> O000000o
+    83:89:void loadImage(android.widget.ImageView,java.lang.String) -> O000000o
+    99:110:boolean downloadImage(java.lang.String) -> O000000o
 com.starry.douban.image.ImageManager$1 -> com.starry.douban.O00000oO.O00000o0$1:
     android.widget.ImageView val$imageView -> O000000o
     android.widget.ImageView val$bgView -> O00000Oo
-    49:49:void <init>(int,int,android.widget.ImageView,android.widget.ImageView) -> <init>
-    53:67:void onResourceReady(android.graphics.Bitmap,com.bumptech.glide.request.animation.GlideAnimation) -> O000000o
-    49:49:void onResourceReady(java.lang.Object,com.bumptech.glide.request.animation.GlideAnimation) -> O000000o
+    54:54:void <init>(int,int,android.widget.ImageView,android.widget.ImageView) -> <init>
+    58:72:void onResourceReady(android.graphics.Bitmap,com.bumptech.glide.request.animation.GlideAnimation) -> O000000o
+    54:54:void onResourceReady(java.lang.Object,com.bumptech.glide.request.animation.GlideAnimation) -> O000000o
 com.starry.douban.image.ImageManager$1$1 -> com.starry.douban.O00000oO.O00000o0$1$1:
     com.starry.douban.image.ImageManager$1 this$0 -> O000000o
-    60:60:void <init>(com.starry.douban.image.ImageManager$1) -> <init>
-    63:65:void accept(android.graphics.Bitmap) -> O000000o
-    60:60:void accept(java.lang.Object) -> O000000o
+    65:65:void <init>(com.starry.douban.image.ImageManager$1) -> <init>
+    68:70:void accept(android.graphics.Bitmap) -> O000000o
+    65:65:void accept(java.lang.Object) -> O000000o
 com.starry.douban.image.ImageManager$1$2 -> com.starry.douban.O00000oO.O00000o0$1$2:
     android.graphics.Bitmap val$resource -> O000000o
     com.starry.douban.image.ImageManager$1 this$0 -> O00000Oo
-    54:54:void <init>(com.starry.douban.image.ImageManager$1,android.graphics.Bitmap) -> <init>
-    58:58:android.graphics.Bitmap run() -> O000000o
-    54:54:java.lang.Object run() -> O00000Oo
-com.starry.douban.model.AppUpdate -> com.starry.douban.O00000oo.O00000o:
+    59:59:void <init>(com.starry.douban.image.ImageManager$1,android.graphics.Bitmap) -> <init>
+    63:63:android.graphics.Bitmap run() -> O000000o
+    59:59:java.lang.Object run() -> O00000Oo
+com.starry.douban.model.AppUpdate -> com.starry.douban.model.O000000o:
     long contentLength -> contentLength
     int versionCode -> versionCode
     java.lang.String versionName -> versionName
@@ -24426,7 +24486,7 @@ com.starry.douban.model.AppUpdate -> com.starry.douban.O00000oo.O00000o:
     88:88:java.lang.String getOther() -> getOther
     92:93:com.starry.douban.model.AppUpdate setOther(java.lang.String) -> setOther
     97:104:void savePreferences() -> savePreferences
-com.starry.douban.model.BaseModel -> com.starry.douban.O00000oo.O0000O0o:
+com.starry.douban.model.BaseModel -> com.starry.douban.model.O00000Oo:
     long serialVersionUID -> serialVersionUID
     int code -> code
     java.lang.String msg -> msg
@@ -24445,7 +24505,7 @@ com.starry.douban.model.BaseModel -> com.starry.douban.O00000oo.O0000O0o:
     60:61:void setStart(int) -> setStart
     64:64:int getTotal() -> getTotal
     68:69:void setTotal(int) -> setTotal
-com.starry.douban.model.BeautyModel -> com.starry.douban.O00000oo.O0000OOo:
+com.starry.douban.model.BeautyModel -> com.starry.douban.model.BeautyModel:
     java.lang.String _id -> _id
     java.lang.String createdAt -> createdAt
     java.lang.String desc -> desc
@@ -24455,26 +24515,37 @@ com.starry.douban.model.BeautyModel -> com.starry.douban.O00000oo.O0000OOo:
     java.lang.String url -> url
     boolean used -> used
     java.lang.String who -> who
-    7:7:void <init>() -> <init>
-    32:32:java.lang.String get_id() -> get_id
-    36:37:void set_id(java.lang.String) -> set_id
-    40:40:java.lang.String getCreatedAt() -> getCreatedAt
-    44:45:void setCreatedAt(java.lang.String) -> setCreatedAt
-    48:48:java.lang.String getDesc() -> getDesc
-    52:53:void setDesc(java.lang.String) -> setDesc
-    56:56:java.lang.String getPublishedAt() -> getPublishedAt
-    60:61:void setPublishedAt(java.lang.String) -> setPublishedAt
-    64:64:java.lang.String getSource() -> getSource
-    68:69:void setSource(java.lang.String) -> setSource
-    72:72:java.lang.String getType() -> getType
-    76:77:void setType(java.lang.String) -> setType
-    80:80:java.lang.String getUrl() -> getUrl
-    84:85:void setUrl(java.lang.String) -> setUrl
-    88:88:boolean isUsed() -> isUsed
-    92:93:void setUsed(boolean) -> setUsed
-    96:96:java.lang.String getWho() -> getWho
-    100:101:void setWho(java.lang.String) -> setWho
-com.starry.douban.model.BookBean -> com.starry.douban.O00000oo.O0000Oo0:
+    android.os.Parcelable$Creator CREATOR -> CREATOR
+    35:35:java.lang.String get_id() -> get_id
+    39:40:void set_id(java.lang.String) -> set_id
+    43:43:java.lang.String getCreatedAt() -> getCreatedAt
+    47:48:void setCreatedAt(java.lang.String) -> setCreatedAt
+    51:51:java.lang.String getDesc() -> getDesc
+    55:56:void setDesc(java.lang.String) -> setDesc
+    59:59:java.lang.String getPublishedAt() -> getPublishedAt
+    63:64:void setPublishedAt(java.lang.String) -> setPublishedAt
+    67:67:java.lang.String getSource() -> getSource
+    71:72:void setSource(java.lang.String) -> setSource
+    75:75:java.lang.String getType() -> getType
+    79:80:void setType(java.lang.String) -> setType
+    83:83:java.lang.String getUrl() -> getUrl
+    87:88:void setUrl(java.lang.String) -> setUrl
+    91:91:boolean isUsed() -> isUsed
+    95:96:void setUsed(boolean) -> setUsed
+    99:99:java.lang.String getWho() -> getWho
+    103:104:void setWho(java.lang.String) -> setWho
+    109:109:int describeContents() -> describeContents
+    114:123:void writeToParcel(android.os.Parcel,int) -> writeToParcel
+    125:126:void <init>() -> <init>
+    128:138:void <init>(android.os.Parcel) -> <init>
+    140:140:void <clinit>() -> <clinit>
+com.starry.douban.model.BeautyModel$1 -> com.starry.douban.model.BeautyModel$1:
+    140:140:void <init>() -> <init>
+    143:143:com.starry.douban.model.BeautyModel createFromParcel(android.os.Parcel) -> createFromParcel
+    148:148:com.starry.douban.model.BeautyModel[] newArray(int) -> newArray
+    140:140:java.lang.Object[] newArray(int) -> newArray
+    140:140:java.lang.Object createFromParcel(android.os.Parcel) -> createFromParcel
+com.starry.douban.model.BookBean -> com.starry.douban.model.O00000o0:
     com.starry.douban.model.BookBean$RatingBean rating -> rating
     java.lang.String subtitle -> subtitle
     java.lang.String pubdate -> pubdate
@@ -24546,7 +24617,7 @@ com.starry.douban.model.BookBean -> com.starry.douban.O00000oo.O0000Oo0:
     257:257:java.util.List getTranslator() -> getTranslator
     261:262:void setTranslator(java.util.List) -> setTranslator
     366:366:java.lang.String toString() -> toString
-com.starry.douban.model.BookBean$ImagesBean -> com.starry.douban.O00000oo.O0000Oo0$O000000o:
+com.starry.douban.model.BookBean$ImagesBean -> com.starry.douban.model.O00000o0$O000000o:
     java.lang.String small -> small
     java.lang.String large -> large
     java.lang.String medium -> medium
@@ -24557,7 +24628,7 @@ com.starry.douban.model.BookBean$ImagesBean -> com.starry.douban.O00000oo.O0000O
     321:322:void setLarge(java.lang.String) -> setLarge
     325:325:java.lang.String getMedium() -> getMedium
     329:330:void setMedium(java.lang.String) -> setMedium
-com.starry.douban.model.BookBean$RatingBean -> com.starry.douban.O00000oo.O0000Oo0$O00000Oo:
+com.starry.douban.model.BookBean$RatingBean -> com.starry.douban.model.O00000o0$O00000Oo:
     int max -> max
     int numRaters -> numRaters
     java.lang.String average -> average
@@ -24571,7 +24642,7 @@ com.starry.douban.model.BookBean$RatingBean -> com.starry.douban.O00000oo.O0000O
     291:292:void setAverage(java.lang.String) -> setAverage
     295:295:int getMin() -> getMin
     299:300:void setMin(int) -> setMin
-com.starry.douban.model.BookDetail -> com.starry.douban.O00000oo.O0000Oo:
+com.starry.douban.model.BookDetail -> com.starry.douban.model.O00000o:
     com.starry.douban.model.BookDetail$RatingBean rating -> rating
     java.lang.String subtitle -> subtitle
     java.lang.String pubdate -> pubdate
@@ -24645,7 +24716,7 @@ com.starry.douban.model.BookDetail -> com.starry.douban.O00000oo.O0000Oo:
     367:368:void setTags(java.util.List) -> setTags
     371:371:java.util.List getTranslator() -> getTranslator
     375:376:void setTranslator(java.util.List) -> setTranslator
-com.starry.douban.model.BookDetail$ImagesBean -> com.starry.douban.O00000oo.O0000Oo$O000000o:
+com.starry.douban.model.BookDetail$ImagesBean -> com.starry.douban.model.O00000o$O000000o:
     java.lang.String small -> small
     java.lang.String large -> large
     java.lang.String medium -> medium
@@ -24656,7 +24727,7 @@ com.starry.douban.model.BookDetail$ImagesBean -> com.starry.douban.O00000oo.O000
     435:436:void setLarge(java.lang.String) -> setLarge
     439:439:java.lang.String getMedium() -> getMedium
     443:444:void setMedium(java.lang.String) -> setMedium
-com.starry.douban.model.BookDetail$RatingBean -> com.starry.douban.O00000oo.O0000Oo$O00000Oo:
+com.starry.douban.model.BookDetail$RatingBean -> com.starry.douban.model.O00000o$O00000Oo:
     int max -> max
     int numRaters -> numRaters
     java.lang.String average -> average
@@ -24670,7 +24741,7 @@ com.starry.douban.model.BookDetail$RatingBean -> com.starry.douban.O00000oo.O000
     405:406:void setAverage(java.lang.String) -> setAverage
     409:409:int getMin() -> getMin
     413:414:void setMin(int) -> setMin
-com.starry.douban.model.BookDetail$SeriesBean -> com.starry.douban.O00000oo.O0000Oo$O00000o0:
+com.starry.douban.model.BookDetail$SeriesBean -> com.starry.douban.model.O00000o$O00000o0:
     java.lang.String id -> id
     java.lang.String title -> title
     447:447:void <init>() -> <init>
@@ -24678,12 +24749,12 @@ com.starry.douban.model.BookDetail$SeriesBean -> com.starry.douban.O00000oo.O000
     456:457:void setId(java.lang.String) -> setId
     460:460:java.lang.String getTitle() -> getTitle
     464:465:void setTitle(java.lang.String) -> setTitle
-com.starry.douban.model.Books -> com.starry.douban.O00000oo.O0000o00:
+com.starry.douban.model.Books -> com.starry.douban.model.O0000O0o:
     java.util.List books -> books
     9:9:void <init>() -> <init>
     14:14:java.util.List getBooks() -> getBooks
     18:19:com.starry.douban.model.Books setBooks(java.util.List) -> setBooks
-com.starry.douban.model.GankBaseModel -> com.starry.douban.O00000oo.O0000o0:
+com.starry.douban.model.GankBaseModel -> com.starry.douban.model.O0000OOo:
     boolean error -> error
     java.util.List results -> results
     9:9:void <init>() -> <init>
@@ -24691,7 +24762,7 @@ com.starry.douban.model.GankBaseModel -> com.starry.douban.O00000oo.O0000o0:
     24:25:void setError(boolean) -> setError
     28:28:java.util.List getResults() -> getResults
     32:33:void setResults(java.util.List) -> setResults
-com.starry.douban.model.MovieBean -> com.starry.douban.O00000oo.O0000o:
+com.starry.douban.model.MovieBean -> com.starry.douban.model.O0000Oo0:
     com.starry.douban.model.MovieBean$RatingBean rating -> rating
     java.lang.String title -> title
     int collect_count -> collect_count
@@ -24729,7 +24800,7 @@ com.starry.douban.model.MovieBean -> com.starry.douban.O00000oo.O0000o:
     152:153:void setCasts(java.util.List) -> setCasts
     156:156:java.util.List getDirectors() -> getDirectors
     160:161:void setDirectors(java.util.List) -> setDirectors
-com.starry.douban.model.MovieBean$DirectorsBean -> com.starry.douban.O00000oo.O0000o$O000000o:
+com.starry.douban.model.MovieBean$DirectorsBean -> com.starry.douban.model.O0000Oo0$O000000o:
     java.lang.String alt -> alt
     com.starry.douban.model.MovieBean$DirectorsBean$AvatarsBean avatars -> avatars
     java.lang.String name -> name
@@ -24743,7 +24814,7 @@ com.starry.douban.model.MovieBean$DirectorsBean -> com.starry.douban.O00000oo.O0
     340:341:void setName(java.lang.String) -> setName
     344:344:java.lang.String getId() -> getId
     348:349:void setId(java.lang.String) -> setId
-com.starry.douban.model.MovieBean$DirectorsBean$AvatarsBean -> com.starry.douban.O00000oo.O0000o$O000000o$O000000o:
+com.starry.douban.model.MovieBean$DirectorsBean$AvatarsBean -> com.starry.douban.model.O0000Oo0$O000000o$O000000o:
     java.lang.String small -> small
     java.lang.String large -> large
     java.lang.String medium -> medium
@@ -24754,7 +24825,7 @@ com.starry.douban.model.MovieBean$DirectorsBean$AvatarsBean -> com.starry.douban
     369:370:void setLarge(java.lang.String) -> setLarge
     373:373:java.lang.String getMedium() -> getMedium
     377:378:void setMedium(java.lang.String) -> setMedium
-com.starry.douban.model.MovieBean$ImagesBean -> com.starry.douban.O00000oo.O0000o$O00000Oo:
+com.starry.douban.model.MovieBean$ImagesBean -> com.starry.douban.model.O0000Oo0$O00000Oo:
     java.lang.String small -> small
     java.lang.String large -> large
     java.lang.String medium -> medium
@@ -24765,7 +24836,7 @@ com.starry.douban.model.MovieBean$ImagesBean -> com.starry.douban.O00000oo.O0000
     220:221:void setLarge(java.lang.String) -> setLarge
     224:224:java.lang.String getMedium() -> getMedium
     228:229:void setMedium(java.lang.String) -> setMedium
-com.starry.douban.model.MovieBean$RatingBean -> com.starry.douban.O00000oo.O0000o$O00000o0:
+com.starry.douban.model.MovieBean$RatingBean -> com.starry.douban.model.O0000Oo0$O00000o0:
     int max -> max
     double average -> average
     java.lang.String stars -> stars
@@ -24779,7 +24850,7 @@ com.starry.douban.model.MovieBean$RatingBean -> com.starry.douban.O00000oo.O0000
     190:191:void setStars(java.lang.String) -> setStars
     194:194:int getMin() -> getMin
     198:199:void setMin(int) -> setMin
-com.starry.douban.model.MovieDetail -> com.starry.douban.O00000oo.O00oOooO:
+com.starry.douban.model.MovieDetail -> com.starry.douban.model.O0000Oo:
     com.starry.douban.model.MovieDetail$RatingBean rating -> rating
     int reviews_count -> reviews_count
     int wish_count -> wish_count
@@ -24862,7 +24933,7 @@ com.starry.douban.model.MovieDetail -> com.starry.douban.O00000oo.O00oOooO:
     302:303:void setDirectors(java.util.List) -> setDirectors
     306:306:java.util.List getAka() -> getAka
     310:311:void setAka(java.util.List) -> setAka
-com.starry.douban.model.MovieDetail$ImagesBean -> com.starry.douban.O00000oo.O00oOooO$O000000o:
+com.starry.douban.model.MovieDetail$ImagesBean -> com.starry.douban.model.O0000Oo$O000000o:
     java.lang.String small -> small
     java.lang.String large -> large
     java.lang.String medium -> medium
@@ -24873,7 +24944,7 @@ com.starry.douban.model.MovieDetail$ImagesBean -> com.starry.douban.O00000oo.O00
     370:371:void setLarge(java.lang.String) -> setLarge
     374:374:java.lang.String getMedium() -> getMedium
     378:379:void setMedium(java.lang.String) -> setMedium
-com.starry.douban.model.MovieDetail$PerformerBean -> com.starry.douban.O00000oo.O00oOooO$O00000Oo:
+com.starry.douban.model.MovieDetail$PerformerBean -> com.starry.douban.model.O0000Oo$O00000Oo:
     java.lang.String alt -> alt
     com.starry.douban.model.MovieDetail$PerformerBean$AvatarsBean avatars -> avatars
     java.lang.String name -> name
@@ -24887,7 +24958,7 @@ com.starry.douban.model.MovieDetail$PerformerBean -> com.starry.douban.O00000oo.
     415:416:void setName(java.lang.String) -> setName
     419:419:java.lang.String getId() -> getId
     423:424:void setId(java.lang.String) -> setId
-com.starry.douban.model.MovieDetail$PerformerBean$AvatarsBean -> com.starry.douban.O00000oo.O00oOooO$O00000Oo$O000000o:
+com.starry.douban.model.MovieDetail$PerformerBean$AvatarsBean -> com.starry.douban.model.O0000Oo$O00000Oo$O000000o:
     java.lang.String small -> small
     java.lang.String large -> large
     java.lang.String medium -> medium
@@ -24898,7 +24969,7 @@ com.starry.douban.model.MovieDetail$PerformerBean$AvatarsBean -> com.starry.doub
     444:445:void setLarge(java.lang.String) -> setLarge
     448:448:java.lang.String getMedium() -> getMedium
     452:453:void setMedium(java.lang.String) -> setMedium
-com.starry.douban.model.MovieDetail$RatingBean -> com.starry.douban.O00000oo.O00oOooO$O00000o0:
+com.starry.douban.model.MovieDetail$RatingBean -> com.starry.douban.model.O0000Oo$O00000o0:
     int max -> max
     double average -> average
     java.lang.String stars -> stars
@@ -24912,7 +24983,7 @@ com.starry.douban.model.MovieDetail$RatingBean -> com.starry.douban.O00000oo.O00
     340:341:void setStars(java.lang.String) -> setStars
     344:344:int getMin() -> getMin
     348:349:void setMin(int) -> setMin
-com.starry.douban.model.Movies -> com.starry.douban.O00000oo.O000O00o:
+com.starry.douban.model.Movies -> com.starry.douban.model.O0000o00:
     java.util.List subjects -> subjects
     9:9:void <init>() -> <init>
     14:14:java.util.List getSubjects() -> getSubjects
@@ -24960,7 +25031,7 @@ com.starry.douban.ui.activity.AboutActivity -> com.starry.douban.ui.activity.Abo
     35:35:java.lang.Class getNFCClass() -> O0000o
     40:41:void responseNFCResult(java.lang.String) -> O000000o
     45:45:int getLayoutResID() -> O000000o
-    50:65:void initData() -> e_
+    50:65:void initData() -> g_
 com.starry.douban.ui.activity.AboutActivity_ViewBinding -> com.starry.douban.ui.activity.AboutActivity_ViewBinding:
     com.starry.douban.ui.activity.AboutActivity target -> O00000Oo
     23:32:void <init>(com.starry.douban.ui.activity.AboutActivity,android.view.View) -> <init>
@@ -24975,65 +25046,103 @@ com.starry.douban.ui.activity.AppUpdateActivity -> com.starry.douban.ui.activity
     java.lang.String dirPath -> O0000o0o
     java.lang.String fileName -> O0000o
     java.lang.String versionFull -> O0000oO0
-    java.io.File apkFile -> O0000oO
-    boolean useSystemDownload -> O0000oOO
-    com.starry.douban.util.DownloadHelper downloadHelper -> O0000oOo
     com.starry.douban.util.CommonAnimator$Builder hideAnimator -> O0000o0
     com.starry.douban.util.CommonAnimator$Builder showAnimator -> O0000o0O
-    31:55:void <init>() -> <init>
-    60:60:int getLayoutResID() -> O000000o
-    65:77:void initData() -> e_
-    81:83:void onResume() -> onResume
-    86:95:void checkFile(java.io.File) -> O000000o
-    99:136:void setListener() -> O0000OoO
-    140:159:void onClick(android.view.View) -> onClick
-    164:168:void hide() -> O0000o
-    173:177:void show() -> O0000oO0
-    181:183:void onDestroy() -> onDestroy
-    31:31:com.starry.douban.util.DownloadHelper access$000(com.starry.douban.ui.activity.AppUpdateActivity) -> O000000o
+    30:51:void <init>() -> <init>
+    55:55:int getLayoutResID() -> O000000o
+    60:65:void initData() -> g_
+    69:74:void onResume() -> onResume
+    77:86:void checkFile(java.io.File) -> O000000o
+    90:104:void setListener() -> O0000OoO
+    108:123:void onClick(android.view.View) -> onClick
+    128:132:void hide() -> O0000o
+    137:141:void show() -> O0000oO0
 com.starry.douban.ui.activity.AppUpdateActivity$1 -> com.starry.douban.ui.activity.AppUpdateActivity$1:
     com.starry.douban.ui.activity.AppUpdateActivity this$0 -> O000000o
-    103:103:void <init>(com.starry.douban.ui.activity.AppUpdateActivity) -> <init>
-    106:111:void accept(com.starry.douban.event.AppUpdateEvent) -> O000000o
-    103:103:void accept(java.lang.Object) -> O000000o
-com.starry.douban.ui.activity.AppUpdateActivity$2 -> com.starry.douban.ui.activity.AppUpdateActivity$2:
-    com.starry.douban.ui.activity.AppUpdateActivity this$0 -> O000000o
-    114:114:void <init>(com.starry.douban.ui.activity.AppUpdateActivity) -> <init>
-    117:118:void onStart() -> O000000o
-    122:123:void onProgress(long,long) -> O000000o
-    127:128:void onFinish(java.lang.String,long) -> O000000o
-    132:134:void onFailed() -> O00000Oo
+    94:94:void <init>(com.starry.douban.ui.activity.AppUpdateActivity) -> <init>
+    97:102:void accept(com.starry.douban.event.AppUpdateEvent) -> O000000o
+    94:94:void accept(java.lang.Object) -> O000000o
 com.starry.douban.ui.activity.AppUpdateActivity_ViewBinding -> com.starry.douban.ui.activity.AppUpdateActivity_ViewBinding:
     com.starry.douban.ui.activity.AppUpdateActivity target -> O00000Oo
     25:36:void <init>(com.starry.douban.ui.activity.AppUpdateActivity,android.view.View) -> <init>
 com.starry.douban.ui.activity.BeautyActivity -> com.starry.douban.ui.activity.BeautyActivity:
     com.jcodecraeer.xrecyclerview.XRecyclerView mRecyclerView -> mRecyclerView
     com.starry.douban.adapter.BeautyAdapter mAdapter -> O0000o0
-    java.util.List beautyList -> O0000o0O
+    java.util.ArrayList beautyList -> O0000o0O
     int pageNo -> O0000o0o
     int pageSize -> O0000o
-    28:39:void <init>() -> <init>
-    43:43:int getLayoutResID() -> O000000o
-    48:51:void initData() -> e_
-    54:71:void initRecyclerView() -> O0000o
-    75:97:void loadData() -> O0000Oo
-    101:117:void refreshList(java.util.List) -> O000000o
-    28:28:int access$002(com.starry.douban.ui.activity.BeautyActivity,int) -> O000000o
+    30:41:void <init>() -> <init>
+    45:45:int getLayoutResID() -> O000000o
+    50:53:void initData() -> g_
+    56:80:void initRecyclerView() -> O0000o
+    84:106:void loadData() -> O0000Oo
+    110:126:void refreshList(java.util.List) -> O000000o
+    30:30:java.util.ArrayList access$000(com.starry.douban.ui.activity.BeautyActivity) -> O000000o
+    30:30:int access$102(com.starry.douban.ui.activity.BeautyActivity,int) -> O000000o
 com.starry.douban.ui.activity.BeautyActivity$1 -> com.starry.douban.ui.activity.BeautyActivity$1:
     com.starry.douban.ui.activity.BeautyActivity this$0 -> O000000o
     58:58:void <init>(com.starry.douban.ui.activity.BeautyActivity) -> <init>
-    61:63:void onRefresh() -> O000000o
-    67:68:void onLoadMore() -> O00000Oo
+    61:62:void onItemClick(android.view.View,int,com.starry.douban.model.BeautyModel) -> O000000o
+    58:58:void onItemClick(android.view.View,int,java.lang.Object) -> O000000o
 com.starry.douban.ui.activity.BeautyActivity$2 -> com.starry.douban.ui.activity.BeautyActivity$2:
     com.starry.douban.ui.activity.BeautyActivity this$0 -> O000000o
-    78:78:void <init>(com.starry.douban.ui.activity.BeautyActivity) -> <init>
-    82:83:void onSuccess(com.starry.douban.model.GankBaseModel,java.lang.Object[]) -> O000000o
-    87:88:void onFailure(com.starry.http.error.ErrorModel) -> O000000o
-    92:95:void onAfter(boolean) -> O000000o
-    78:78:void onSuccess(java.lang.Object,java.lang.Object[]) -> O000000o
+    67:67:void <init>(com.starry.douban.ui.activity.BeautyActivity) -> <init>
+    70:72:void onRefresh() -> O000000o
+    76:77:void onLoadMore() -> O00000Oo
+com.starry.douban.ui.activity.BeautyActivity$3 -> com.starry.douban.ui.activity.BeautyActivity$3:
+    com.starry.douban.ui.activity.BeautyActivity this$0 -> O000000o
+    87:87:void <init>(com.starry.douban.ui.activity.BeautyActivity) -> <init>
+    91:92:void onSuccess(com.starry.douban.model.GankBaseModel,java.lang.Object[]) -> O000000o
+    96:97:void onFailure(com.starry.http.error.ErrorModel) -> O000000o
+    101:104:void onAfter(boolean) -> O000000o
+    87:87:void onSuccess(java.lang.Object,java.lang.Object[]) -> O000000o
 com.starry.douban.ui.activity.BeautyActivity_ViewBinding -> com.starry.douban.ui.activity.BeautyActivity_ViewBinding:
     com.starry.douban.ui.activity.BeautyActivity target -> O00000Oo
     23:28:void <init>(com.starry.douban.ui.activity.BeautyActivity,android.view.View) -> <init>
+com.starry.douban.ui.activity.BeautyDetailActivity -> com.starry.douban.ui.activity.BeautyDetailActivity:
+    com.starry.parallaxviewpager.ParallaxViewPager viewPager -> viewPager
+    android.widget.TextView tvPage -> tvPage
+    java.util.ArrayList beautyList -> O0000o0
+    int selectPosition -> O0000o0O
+    37:37:void <init>() -> <init>
+    53:57:void showActivity(android.content.Context,java.util.ArrayList,int) -> O000000o
+    61:61:android.graphics.drawable.Drawable getToolbarBackground() -> O0000Ooo
+    66:66:int getLayoutResID() -> O000000o
+    71:78:void initData() -> g_
+    81:129:void initViewPager() -> O0000o
+    132:134:void setPageAndTitle() -> O0000oO0
+    138:139:boolean onCreateOptionsMenu(android.view.Menu) -> onCreateOptionsMenu
+    144:163:boolean onOptionsItemSelected(android.view.MenuItem) -> onOptionsItemSelected
+    37:37:java.util.ArrayList access$000(com.starry.douban.ui.activity.BeautyDetailActivity) -> O000000o
+    37:37:int access$102(com.starry.douban.ui.activity.BeautyDetailActivity,int) -> O000000o
+    37:37:void access$200(com.starry.douban.ui.activity.BeautyDetailActivity) -> O00000Oo
+    37:37:int access$100(com.starry.douban.ui.activity.BeautyDetailActivity) -> O00000o0
+com.starry.douban.ui.activity.BeautyDetailActivity$1 -> com.starry.douban.ui.activity.BeautyDetailActivity$1:
+    com.starry.douban.ui.activity.BeautyDetailActivity this$0 -> O000000o
+    81:81:void <init>(com.starry.douban.ui.activity.BeautyDetailActivity) -> <init>
+    85:85:boolean isViewFromObject(android.view.View,java.lang.Object) -> O000000o
+    90:91:void destroyItem(android.view.ViewGroup,int,java.lang.Object) -> O000000o
+    95:99:java.lang.Object instantiateItem(android.view.ViewGroup,int) -> O000000o
+    104:104:int getCount() -> O00000Oo
+com.starry.douban.ui.activity.BeautyDetailActivity$2 -> com.starry.douban.ui.activity.BeautyDetailActivity$2:
+    com.starry.douban.ui.activity.BeautyDetailActivity this$0 -> O000000o
+    112:112:void <init>(com.starry.douban.ui.activity.BeautyDetailActivity) -> <init>
+    116:116:void onPageScrolled(int,float,int) -> O000000o
+    120:122:void onPageSelected(int) -> O00000Oo
+    127:127:void onPageScrollStateChanged(int) -> O000000o
+com.starry.douban.ui.activity.BeautyDetailActivity$3 -> com.starry.douban.ui.activity.BeautyDetailActivity$3:
+    com.starry.douban.ui.activity.BeautyDetailActivity this$0 -> O000000o
+    152:152:void <init>(com.starry.douban.ui.activity.BeautyDetailActivity) -> <init>
+    155:157:void accept(java.lang.Boolean) -> O000000o
+    152:152:void accept(java.lang.Object) -> O000000o
+com.starry.douban.ui.activity.BeautyDetailActivity$4 -> com.starry.douban.ui.activity.BeautyDetailActivity$4:
+    com.starry.douban.ui.activity.BeautyDetailActivity this$0 -> O000000o
+    147:147:void <init>(com.starry.douban.ui.activity.BeautyDetailActivity) -> <init>
+    150:150:java.lang.Boolean run() -> O000000o
+    147:147:java.lang.Object run() -> O00000Oo
+com.starry.douban.ui.activity.BeautyDetailActivity_ViewBinding -> com.starry.douban.ui.activity.BeautyDetailActivity_ViewBinding:
+    com.starry.douban.ui.activity.BeautyDetailActivity target -> O00000Oo
+    24:30:void <init>(com.starry.douban.ui.activity.BeautyDetailActivity,android.view.View) -> <init>
 com.starry.douban.ui.activity.BookDetailActivity -> com.starry.douban.ui.activity.BookDetailActivity:
     android.support.v7.widget.Toolbar toolbar -> toolbar
     android.support.design.widget.CollapsingToolbarLayout collapsing_toolbar -> collapsing_toolbar
@@ -25049,7 +25158,7 @@ com.starry.douban.ui.activity.BookDetailActivity -> com.starry.douban.ui.activit
     java.lang.String url -> O0000o0
     28:28:void <init>() -> <init>
     57:57:int getLayoutResID() -> O000000o
-    62:64:void initData() -> e_
+    62:64:void initData() -> g_
     68:89:void loadData() -> O0000Oo
     92:102:void showBookDetail(com.starry.douban.model.BookDetail) -> O000000o
 com.starry.douban.ui.activity.BookDetailActivity$1 -> com.starry.douban.ui.activity.BookDetailActivity$1:
@@ -25076,7 +25185,7 @@ com.starry.douban.ui.activity.MainActivity -> com.starry.douban.ui.activity.Main
     55:56:void responseNFCResult(java.lang.String) -> O000000o
     60:60:int getLayoutResID() -> O000000o
     65:65:boolean displayHomeAsUpEnabled() -> O0000o00
-    70:82:void initData() -> e_
+    70:82:void initData() -> g_
     86:134:void setListener() -> O0000OoO
     143:152:boolean onKeyDown(int,android.view.KeyEvent) -> onKeyDown
     31:31:java.lang.String[] access$000(com.starry.douban.ui.activity.MainActivity) -> O000000o
@@ -25116,7 +25225,7 @@ com.starry.douban.ui.activity.MovieDetailActivity -> com.starry.douban.ui.activi
     33:33:void <init>() -> <init>
     63:63:int getLayoutResID() -> O000000o
     68:68:android.graphics.drawable.Drawable getToolbarBackground() -> O0000Ooo
-    73:76:void initData() -> e_
+    73:76:void initData() -> g_
     79:89:void initRecyclerView(java.util.List) -> O000000o
     93:114:void loadData() -> O0000Oo
     117:117:java.lang.String format(java.lang.String) -> O000000o
@@ -25141,7 +25250,7 @@ com.starry.douban.ui.activity.NFCActivity -> com.starry.douban.ui.activity.NFCAc
     29:29:int getLayoutResID() -> O000000o
     34:34:java.lang.Class getNFCClass() -> O0000o
     38:41:void startPage(android.content.Context,java.lang.String) -> O000000o
-    45:49:void initData() -> e_
+    45:49:void initData() -> g_
     54:54:void loadData() -> O0000Oo
     58:62:void responseNFCResult(java.lang.String) -> O000000o
 com.starry.douban.ui.activity.NFCActivity_ViewBinding -> com.starry.douban.ui.activity.NFCActivity_ViewBinding:
@@ -25151,7 +25260,7 @@ com.starry.douban.ui.activity.UpdateDialogActivity -> com.starry.douban.ui.activ
     android.app.AlertDialog dialog -> O0000o0
     18:18:void <init>() -> <init>
     26:26:int getLayoutResID() -> O000000o
-    31:32:void initData() -> e_
+    31:32:void initData() -> g_
     42:45:void onNewIntent(android.content.Intent) -> onNewIntent
     51:55:void startPage(java.lang.String) -> O000000o
     58:84:void showDialog() -> O0000o
@@ -25170,7 +25279,7 @@ com.starry.douban.ui.activity.WebViewActivity -> com.starry.douban.ui.activity.W
     30:97:void <init>() -> <init>
     37:40:void showActivity(android.app.Activity,java.lang.String) -> O000000o
     44:44:int getLayoutResID() -> O000000o
-    49:50:void initData() -> e_
+    49:50:void initData() -> g_
     53:73:void initWebView() -> O0000o
     77:77:void loadData() -> O0000Oo
     112:116:java.lang.String getHost(java.lang.String) -> O000000o
@@ -25202,7 +25311,7 @@ com.starry.douban.ui.fragment.HomeFragment -> com.starry.douban.ui.fragment.Home
     java.util.List books -> O000Ooo0
     27:39:void <init>() -> <init>
     43:43:int getLayoutResID() -> O000000o
-    48:49:void initData() -> e_
+    48:49:void initData() -> g_
     52:69:void initRecyclerView() -> O000o000
     73:101:void loadData() -> O000Ooo
     105:116:void refreshBookList(com.starry.douban.model.Books) -> O000000o
@@ -25232,7 +25341,7 @@ com.starry.douban.ui.fragment.MovieFragment -> com.starry.douban.ui.fragment.Mov
     java.util.LinkedHashMap params -> O000Ooo
     27:41:void <init>() -> <init>
     45:45:int getLayoutResID() -> O000000o
-    50:73:void initData() -> e_
+    50:73:void initData() -> g_
     76:92:void initRecyclerView() -> O000o000
     96:98:void onLazyLoadingData() -> O000Ooo0
     102:127:void loadData() -> O000Ooo
@@ -25260,7 +25369,7 @@ com.starry.douban.ui.fragment.MovieParentFragment -> com.starry.douban.ui.fragme
     java.lang.String[] tabTitles -> O00O0Oo
     25:34:void <init>() -> <init>
     38:38:int getLayoutResID() -> O000000o
-    43:59:void initData() -> e_
+    43:59:void initData() -> g_
 com.starry.douban.ui.fragment.MovieParentFragment_ViewBinding -> com.starry.douban.ui.fragment.MovieParentFragment_ViewBinding:
     com.starry.douban.ui.fragment.MovieParentFragment target -> O00000Oo
     20:27:void <init>(com.starry.douban.ui.fragment.MovieParentFragment,android.view.View) -> <init>
@@ -25273,18 +25382,18 @@ com.starry.douban.ui.fragment.SettingFragment -> com.starry.douban.ui.fragment.S
     long[] mClicks -> O000OoO
     29:61:void <init>() -> <init>
     44:44:int getLayoutResID() -> O000000o
-    49:51:void initData() -> e_
+    49:51:void initData() -> g_
     55:59:void setListener() -> O000OooO
     67:73:void startAbout() -> O000o000
     77:98:void onClick(android.view.View) -> onClick
 com.starry.douban.ui.fragment.SettingFragment_ViewBinding -> com.starry.douban.ui.fragment.SettingFragment_ViewBinding:
     com.starry.douban.ui.fragment.SettingFragment target -> O00000Oo
     18:26:void <init>(com.starry.douban.ui.fragment.SettingFragment,android.view.View) -> <init>
-com.starry.douban.util.ActivityAnimationUtils -> com.starry.douban.O0000O0o.O000000o:
+com.starry.douban.util.ActivityAnimationUtils -> com.starry.douban.O00000oo.O00000o:
     20:23:void transition(android.app.Activity,android.content.Intent,android.view.View) -> O000000o
-com.starry.douban.util.AppUtil -> com.starry.douban.O0000O0o.O00000Oo:
+com.starry.douban.util.AppUtil -> com.starry.douban.O00000oo.O0000O0o:
     95:102:void installApk(android.content.Context,java.lang.String,java.lang.String) -> O000000o
-com.starry.douban.util.ArgbEvaluatorUtil -> com.starry.douban.O0000O0o.O00000o0:
+com.starry.douban.util.ArgbEvaluatorUtil -> com.starry.douban.O00000oo.O0000OOo:
     com.starry.douban.util.ArgbEvaluatorUtil instance -> O000000o
     java.util.List tabViews -> O00000Oo
     java.util.List tabDrawables -> O00000o0
@@ -25301,7 +25410,7 @@ com.starry.douban.util.ArgbEvaluatorUtil -> com.starry.douban.O0000O0o.O00000o0:
     130:144:void setTabSelect(int) -> O00000Oo
     147:149:android.graphics.drawable.Drawable tintDrawable(android.graphics.drawable.Drawable,android.content.res.ColorStateList) -> O000000o
     24:24:void <clinit>() -> <clinit>
-com.starry.douban.util.CommonAnimator -> com.starry.douban.O0000O0o.O00000o:
+com.starry.douban.util.CommonAnimator -> com.starry.douban.O00000oo.O0000Oo0:
     24:41:android.animation.AnimatorSet baseAnimatorSet(com.starry.douban.util.CommonAnimator$Builder) -> O00000o0
     45:57:void hideWithAnimatorSet(com.starry.douban.util.CommonAnimator$Builder) -> O00000o
     60:70:void showWithAnimatorSet(com.starry.douban.util.CommonAnimator$Builder) -> O00000oO
@@ -25311,22 +25420,22 @@ com.starry.douban.util.CommonAnimator -> com.starry.douban.O0000O0o.O00000o:
     103:114:android.animation.ValueAnimator createIntAnimator(android.view.View,int,int) -> O000000o
     17:17:void access$700(com.starry.douban.util.CommonAnimator$Builder) -> O000000o
     17:17:void access$800(com.starry.douban.util.CommonAnimator$Builder) -> O00000Oo
-com.starry.douban.util.CommonAnimator$1 -> com.starry.douban.O0000O0o.O00000o$1:
+com.starry.douban.util.CommonAnimator$1 -> com.starry.douban.O00000oo.O0000Oo0$1:
     com.starry.douban.util.CommonAnimator$Builder val$builder -> O000000o
     46:46:void <init>(com.starry.douban.util.CommonAnimator$Builder) -> <init>
     49:54:void onAnimationEnd(android.animation.Animator) -> onAnimationEnd
-com.starry.douban.util.CommonAnimator$2 -> com.starry.douban.O0000O0o.O00000o$2:
+com.starry.douban.util.CommonAnimator$2 -> com.starry.douban.O00000oo.O0000Oo0$2:
     com.starry.douban.util.CommonAnimator$Builder val$builder -> O000000o
     61:61:void <init>(com.starry.douban.util.CommonAnimator$Builder) -> <init>
     64:66:void onAnimationEnd(android.animation.Animator) -> onAnimationEnd
-com.starry.douban.util.CommonAnimator$3 -> com.starry.douban.O0000O0o.O00000o$3:
+com.starry.douban.util.CommonAnimator$3 -> com.starry.douban.O00000oo.O0000Oo0$3:
     93:93:void <init>() -> <init>
     97:97:void onAnimationUpdate(android.animation.ValueAnimator) -> onAnimationUpdate
-com.starry.douban.util.CommonAnimator$4 -> com.starry.douban.O0000O0o.O00000o$4:
+com.starry.douban.util.CommonAnimator$4 -> com.starry.douban.O00000oo.O0000Oo0$4:
     android.view.View val$v -> O000000o
     104:104:void <init>(android.view.View) -> <init>
     108:112:void onAnimationUpdate(android.animation.ValueAnimator) -> onAnimationUpdate
-com.starry.douban.util.CommonAnimator$Builder -> com.starry.douban.O0000O0o.O00000o$O000000o:
+com.starry.douban.util.CommonAnimator$Builder -> com.starry.douban.O00000oo.O0000Oo0$O000000o:
     android.view.View target -> O000000o
     int duration -> O00000Oo
     int startValue -> O00000o0
@@ -25349,70 +25458,28 @@ com.starry.douban.util.CommonAnimator$Builder -> com.starry.douban.O0000O0o.O000
     117:117:int access$400(com.starry.douban.util.CommonAnimator$Builder) -> O00000oO
     117:117:boolean access$500(com.starry.douban.util.CommonAnimator$Builder) -> O00000oo
     117:117:com.starry.douban.util.CommonAnimator$Listener access$600(com.starry.douban.util.CommonAnimator$Builder) -> O0000O0o
-com.starry.douban.util.CommonAnimator$Listener -> com.starry.douban.O0000O0o.O00000o$O00000Oo:
+com.starry.douban.util.CommonAnimator$Listener -> com.starry.douban.O00000oo.O0000Oo0$O00000Oo:
     void onAnimationEnd() -> O000000o
-com.starry.douban.util.DownloadHelper -> com.starry.douban.O0000O0o.O0000O0o:
-    boolean debug -> O000000o
-    android.content.Context context -> O00000Oo
-    android.app.DownloadManager mDownloadManager -> O00000o0
-    long mDownloadId -> O00000o
-    java.lang.String fileName -> O00000oO
-    java.lang.String downloadUrl -> O00000oo
-    boolean downloading -> O0000O0o
-    android.content.BroadcastReceiver mDownloadDetailsReceiver -> O0000OOo
-    java.lang.Runnable mQueryProgressRunnable -> O0000Oo0
-    android.os.Handler mHandler -> O0000Oo
-    com.starry.douban.util.DownloadHelper$H5DownloadListener downloadListener -> O0000OoO
-    80:81:void setDownloadListener(com.starry.douban.util.DownloadHelper$H5DownloadListener) -> O000000o
-    26:87:void <init>(android.content.Context,java.lang.String,java.lang.String) -> <init>
-    90:92:com.starry.douban.util.DownloadHelper getInstance(android.content.Context,java.lang.String,java.lang.String) -> O000000o
-    100:110:void registerReceiver() -> O00000oO
-    116:120:void showDownloadList() -> O000000o
-    126:148:void startDownload() -> O00000Oo
-    155:192:void queryProgress() -> O00000oo
-    195:198:void closeCursor(android.database.Cursor) -> O000000o
-    201:204:void logDebug(java.lang.String) -> O000000o
-    210:212:void removeDownload() -> O00000o0
-    218:220:void startQueryProgress() -> O0000O0o
-    226:228:void stopQueryProgress() -> O0000OOo
-    236:241:void onDestroy() -> O00000o
-    22:22:void access$000(com.starry.douban.util.DownloadHelper) -> O000000o
-    22:22:boolean access$100(com.starry.douban.util.DownloadHelper) -> O00000Oo
-    22:22:java.lang.Runnable access$200(com.starry.douban.util.DownloadHelper) -> O00000o0
-    22:22:android.os.Handler access$300(com.starry.douban.util.DownloadHelper) -> O00000o
-com.starry.douban.util.DownloadHelper$1 -> com.starry.douban.O0000O0o.O0000O0o$1:
-    com.starry.douban.util.DownloadHelper this$0 -> O000000o
-    53:53:void <init>(com.starry.douban.util.DownloadHelper) -> <init>
-    57:61:void run() -> run
-com.starry.douban.util.DownloadHelper$2 -> com.starry.douban.O0000O0o.O0000O0o$2:
-    com.starry.douban.util.DownloadHelper this$0 -> O000000o
-    100:100:void <init>(com.starry.douban.util.DownloadHelper) -> <init>
-    103:107:void onReceive(android.content.Context,android.content.Intent) -> onReceive
-com.starry.douban.util.DownloadHelper$H5DownloadListener -> com.starry.douban.O0000O0o.O0000O0o$O000000o:
-    void onStart() -> O000000o
-    void onProgress(long,long) -> O000000o
-    void onFinish(java.lang.String,long) -> O000000o
-    void onFailed() -> O00000Oo
-com.starry.douban.util.FileProviderUtil -> com.starry.douban.O0000O0o.O0000OOo:
+com.starry.douban.util.FileProviderUtil -> com.starry.douban.O00000oo.O0000Oo:
     20:27:android.net.Uri getUriForFile(android.content.Context,java.lang.String,java.io.File,android.content.Intent) -> O000000o
-com.starry.douban.util.FileUtils -> com.starry.douban.O0000O0o.O0000Oo0:
+com.starry.douban.util.FileUtils -> com.starry.douban.O00000oo.O0000o00:
     26:26:java.io.File buildPath(java.lang.String[]) -> O000000o
     30:42:java.io.File buildPath(java.io.File,java.lang.String[]) -> O000000o
     49:88:void saveCrashInfo(java.lang.Throwable,java.io.File,java.lang.String) -> O000000o
     98:98:java.lang.String formatFileSize(long) -> O000000o
-com.starry.douban.util.IOUtils -> com.starry.douban.O0000O0o.O0000Oo:
+com.starry.douban.util.IOUtils -> com.starry.douban.O00000oo.O0000o0:
     14:20:void close(java.io.Closeable) -> O000000o
-com.starry.douban.util.JsonUtil -> com.starry.douban.O0000O0o.O0000o00:
+com.starry.douban.util.JsonUtil -> com.starry.douban.O00000oo.O0000o:
     23:27:java.lang.String toJson(java.lang.Object) -> O000000o
     57:61:java.lang.Object toObject(java.lang.String,java.lang.reflect.Type) -> O000000o
-com.starry.douban.util.NfcUtils -> com.starry.douban.O0000O0o.O0000o0:
+com.starry.douban.util.NfcUtils -> com.starry.douban.O00000oo.O00oOooO:
     27:37:java.lang.String bytesToHexString(byte[]) -> O000000o
     44:66:java.lang.String processIntent(android.content.Intent) -> O000000o
     82:152:java.lang.String readMC(android.nfc.Tag) -> O000000o
     162:180:java.lang.String readMU(android.nfc.Tag) -> O00000Oo
-com.starry.douban.util.PermissionUtils -> com.starry.douban.O0000O0o.O0000o:
+com.starry.douban.util.PermissionUtils -> com.starry.douban.O00000oo.O000O00o:
     17:23:void requestPermission(android.app.Activity) -> O000000o
-com.starry.douban.util.SPUtil -> com.starry.douban.O0000O0o.O00oOooO:
+com.starry.douban.util.SPUtil -> com.starry.douban.O00000oo.O000O0OO:
     29:30:void putString(java.lang.String,java.lang.String) -> O000000o
     39:40:void putInt(java.lang.String,int) -> O000000o
     59:60:void putLong(java.lang.String,long) -> O000000o
@@ -25427,9 +25494,9 @@ com.starry.douban.util.SPUtil -> com.starry.douban.O0000O0o.O00oOooO:
     252:253:int getInt(java.lang.String,java.lang.String) -> O00000o0
     276:277:long getLong(java.lang.String,java.lang.String) -> O00000o
     310:311:java.util.Map getAll(java.lang.String) -> O00000o
-com.starry.douban.util.StringUtils -> com.starry.douban.O0000O0o.O000O00o:
+com.starry.douban.util.StringUtils -> com.starry.douban.O00000oo.O000O0o0:
     11:11:java.lang.String format(java.lang.String,java.lang.Object[]) -> O000000o
-com.starry.douban.util.TimeUtils -> com.starry.douban.O0000O0o.O000O0OO:
+com.starry.douban.util.TimeUtils -> com.starry.douban.O00000oo.O000O0o:
     java.text.DateFormat DEFAULT_FORMAT -> O000000o
     java.text.DateFormat DEFAULT_FORMAT_SIMPLE -> O00000Oo
     java.lang.String[] CHINESE_ZODIAC -> O00000o0
@@ -25438,17 +25505,17 @@ com.starry.douban.util.TimeUtils -> com.starry.douban.O0000O0o.O000O0OO:
     309:309:java.lang.String date2String(java.util.Date) -> O000000o
     321:321:java.lang.String date2String(java.util.Date,java.text.DateFormat) -> O000000o
     208:1564:void <clinit>() -> <clinit>
-com.starry.douban.util.ToastUtil -> com.starry.douban.O0000O0o.O000O0o0:
+com.starry.douban.util.ToastUtil -> com.starry.douban.O00000oo.O000OO00:
     18:18:android.content.Context getContext() -> O000000o
     22:23:void showToast(java.lang.String) -> O000000o
     30:42:void showToast(android.content.Context,java.lang.String,int) -> O000000o
-com.starry.douban.util.ToastUtil$1 -> com.starry.douban.O0000O0o.O000O0o0$1:
+com.starry.douban.util.ToastUtil$1 -> com.starry.douban.O00000oo.O000OO00$1:
     android.content.Context val$context -> O000000o
     java.lang.String val$msg -> O00000Oo
     int val$duration -> O00000o0
     36:36:void <init>(android.content.Context,java.lang.String,int) -> <init>
     39:40:void run() -> run
-com.starry.douban.util.UiUtils -> com.starry.douban.O0000O0o.O000O0o:
+com.starry.douban.util.UiUtils -> com.starry.douban.O00000oo.O000OO0o:
     16:19:void dismissDialog(android.content.DialogInterface) -> O000000o
     22:22:int getColor(int) -> O000000o
 com.starry.douban.widget.CoolIndicatorLayout -> com.starry.douban.widget.CoolIndicatorLayout:
@@ -25706,7 +25773,7 @@ com.starry.http.callback.FileCallback -> com.starry.O000000o.O000000o.O00000Oo:
     java.lang.String destFileName -> O00000o0
     32:35:void <init>(java.lang.String,java.lang.String) -> <init>
     39:39:java.io.File parseResponse(okhttp3.Response) -> O00000Oo
-    47:92:java.io.File saveFile(okhttp3.Response) -> O00000o0
+    47:91:java.io.File saveFile(okhttp3.Response) -> O00000o0
     20:20:java.lang.Object parseResponse(okhttp3.Response) -> O000000o
 com.starry.http.callback.FileCallback$1 -> com.starry.O000000o.O000000o.O00000Oo$1:
     long val$finalSum -> O000000o
@@ -25946,12 +26013,12 @@ com.starry.overscroll.OverScrollDelegate$OverScrollStyle -> com.starry.overscrol
     82:82:int dp2px(int) -> O000000o
     48:48:void <clinit>() -> <clinit>
 com.starry.overscroll.OverScrollDelegate$OverScrollable -> com.starry.overscroll.O000000o$O00000Oo:
-    int superComputeVerticalScrollExtent() -> f_
-    int superComputeVerticalScrollOffset() -> g_
-    int superComputeVerticalScrollRange() -> h_
+    int superComputeVerticalScrollExtent() -> h_
+    int superComputeVerticalScrollOffset() -> i_
+    int superComputeVerticalScrollRange() -> j_
     void superOnTouchEvent(android.view.MotionEvent) -> O000000o
     void superDraw(android.graphics.Canvas) -> O000000o
-    boolean superAwakenScrollBars() -> i_
+    boolean superAwakenScrollBars() -> k_
     boolean superOverScrollBy(int,int,int,int,int,int,int,int,boolean) -> O000000o
     android.view.View getOverScrollableView() -> getOverScrollableView
 com.starry.overscroll.OverScrollGridView -> com.starry.overscroll.OverScrollGridView:
@@ -25963,12 +26030,12 @@ com.starry.overscroll.OverScrollGridView -> com.starry.overscroll.OverScrollGrid
     71:74:boolean onTouchEvent(android.view.MotionEvent) -> onTouchEvent
     79:80:void draw(android.graphics.Canvas) -> draw
     85:85:boolean overScrollBy(int,int,int,int,int,int,int,int,boolean) -> overScrollBy
-    100:100:int superComputeVerticalScrollExtent() -> f_
-    105:105:int superComputeVerticalScrollOffset() -> g_
-    110:110:int superComputeVerticalScrollRange() -> h_
+    100:100:int superComputeVerticalScrollExtent() -> h_
+    105:105:int superComputeVerticalScrollOffset() -> i_
+    110:110:int superComputeVerticalScrollRange() -> j_
     115:116:void superOnTouchEvent(android.view.MotionEvent) -> O000000o
     120:121:void superDraw(android.graphics.Canvas) -> O000000o
-    125:125:boolean superAwakenScrollBars() -> i_
+    125:125:boolean superAwakenScrollBars() -> k_
     131:131:boolean superOverScrollBy(int,int,int,int,int,int,int,int,boolean) -> O000000o
     137:137:android.view.View getOverScrollableView() -> getOverScrollableView
     142:142:com.starry.overscroll.OverScrollDelegate getOverScrollDelegate() -> getOverScrollDelegate
@@ -25981,12 +26048,12 @@ com.starry.overscroll.OverScrollListView -> com.starry.overscroll.OverScrollList
     71:74:boolean onTouchEvent(android.view.MotionEvent) -> onTouchEvent
     79:80:void draw(android.graphics.Canvas) -> draw
     85:85:boolean overScrollBy(int,int,int,int,int,int,int,int,boolean) -> overScrollBy
-    100:100:int superComputeVerticalScrollExtent() -> f_
-    105:105:int superComputeVerticalScrollOffset() -> g_
-    110:110:int superComputeVerticalScrollRange() -> h_
+    100:100:int superComputeVerticalScrollExtent() -> h_
+    105:105:int superComputeVerticalScrollOffset() -> i_
+    110:110:int superComputeVerticalScrollRange() -> j_
     115:116:void superOnTouchEvent(android.view.MotionEvent) -> O000000o
     120:121:void superDraw(android.graphics.Canvas) -> O000000o
-    125:125:boolean superAwakenScrollBars() -> i_
+    125:125:boolean superAwakenScrollBars() -> k_
     131:131:boolean superOverScrollBy(int,int,int,int,int,int,int,int,boolean) -> O000000o
     137:137:android.view.View getOverScrollableView() -> getOverScrollableView
     142:142:com.starry.overscroll.OverScrollDelegate getOverScrollDelegate() -> getOverScrollDelegate
@@ -25999,12 +26066,12 @@ com.starry.overscroll.OverScrollRecyclerView -> com.starry.overscroll.OverScroll
     64:67:boolean onTouchEvent(android.view.MotionEvent) -> onTouchEvent
     73:74:void draw(android.graphics.Canvas) -> draw
     88:89:void absorbGlows(int,int) -> O00000o
-    97:97:int superComputeVerticalScrollExtent() -> f_
-    102:102:int superComputeVerticalScrollOffset() -> g_
-    107:107:int superComputeVerticalScrollRange() -> h_
+    97:97:int superComputeVerticalScrollExtent() -> h_
+    102:102:int superComputeVerticalScrollOffset() -> i_
+    107:107:int superComputeVerticalScrollRange() -> j_
     112:113:void superOnTouchEvent(android.view.MotionEvent) -> O000000o
     117:118:void superDraw(android.graphics.Canvas) -> O000000o
-    122:122:boolean superAwakenScrollBars() -> i_
+    122:122:boolean superAwakenScrollBars() -> k_
     128:128:boolean superOverScrollBy(int,int,int,int,int,int,int,int,boolean) -> O000000o
     134:134:android.view.View getOverScrollableView() -> getOverScrollableView
     139:139:com.starry.overscroll.OverScrollDelegate getOverScrollDelegate() -> getOverScrollDelegate
@@ -26019,12 +26086,12 @@ com.starry.overscroll.OverScrollScrollView -> com.starry.overscroll.OverScrollSc
     68:71:boolean onTouchEvent(android.view.MotionEvent) -> onTouchEvent
     76:77:void draw(android.graphics.Canvas) -> draw
     82:82:boolean overScrollBy(int,int,int,int,int,int,int,int,boolean) -> overScrollBy
-    97:97:int superComputeVerticalScrollExtent() -> f_
-    102:102:int superComputeVerticalScrollOffset() -> g_
-    107:107:int superComputeVerticalScrollRange() -> h_
+    97:97:int superComputeVerticalScrollExtent() -> h_
+    102:102:int superComputeVerticalScrollOffset() -> i_
+    107:107:int superComputeVerticalScrollRange() -> j_
     112:113:void superOnTouchEvent(android.view.MotionEvent) -> O000000o
     117:118:void superDraw(android.graphics.Canvas) -> O000000o
-    122:122:boolean superAwakenScrollBars() -> i_
+    122:122:boolean superAwakenScrollBars() -> k_
     128:128:boolean superOverScrollBy(int,int,int,int,int,int,int,int,boolean) -> O000000o
     134:134:android.view.View getOverScrollableView() -> getOverScrollableView
     139:139:com.starry.overscroll.OverScrollDelegate getOverScrollDelegate() -> getOverScrollDelegate
@@ -26038,12 +26105,12 @@ com.starry.overscroll.OverScrollWebView -> com.starry.overscroll.OverScrollWebVi
     71:74:boolean onTouchEvent(android.view.MotionEvent) -> onTouchEvent
     79:80:void draw(android.graphics.Canvas) -> draw
     85:85:boolean overScrollBy(int,int,int,int,int,int,int,int,boolean) -> overScrollBy
-    100:100:int superComputeVerticalScrollExtent() -> f_
-    105:105:int superComputeVerticalScrollOffset() -> g_
-    110:110:int superComputeVerticalScrollRange() -> h_
+    100:100:int superComputeVerticalScrollExtent() -> h_
+    105:105:int superComputeVerticalScrollOffset() -> i_
+    110:110:int superComputeVerticalScrollRange() -> j_
     115:116:void superOnTouchEvent(android.view.MotionEvent) -> O000000o
     120:121:void superDraw(android.graphics.Canvas) -> O000000o
-    125:125:boolean superAwakenScrollBars() -> i_
+    125:125:boolean superAwakenScrollBars() -> k_
     131:131:boolean superOverScrollBy(int,int,int,int,int,int,int,int,boolean) -> O000000o
     137:137:android.view.View getOverScrollableView() -> getOverScrollableView
     142:142:com.starry.overscroll.OverScrollDelegate getOverScrollDelegate() -> getOverScrollDelegate
@@ -26074,6 +26141,79 @@ com.starry.overscroll.style.WebHostOverScrollStyle -> com.starry.overscroll.O000
     39:54:void drawOverScrollTop(float,android.graphics.Canvas,android.view.View) -> O00000Oo
     58:65:void drawOverScrollBottom(float,android.graphics.Canvas,android.view.View) -> O00000o0
     java.lang.String formatUrlHost(java.lang.String) -> O000000o
+com.starry.parallaxviewpager.Mode -> com.starry.parallaxviewpager.O000000o:
+    com.starry.parallaxviewpager.Mode LEFT_OVERLAY -> O000000o
+    com.starry.parallaxviewpager.Mode RIGHT_OVERLAY -> O00000Oo
+    com.starry.parallaxviewpager.Mode NONE -> O00000o0
+    int value -> O00000o
+    com.starry.parallaxviewpager.Mode[] $VALUES -> O00000oO
+    7:7:com.starry.parallaxviewpager.Mode[] values() -> values
+    7:7:com.starry.parallaxviewpager.Mode valueOf(java.lang.String) -> valueOf
+    12:14:void <init>(java.lang.String,int,int) -> <init>
+    7:9:void <clinit>() -> <clinit>
+com.starry.parallaxviewpager.ParallaxTransformer -> com.starry.parallaxviewpager.O00000Oo:
+    com.starry.parallaxviewpager.Mode mMode -> O000000o
+    android.view.animation.Interpolator mInterpolator -> O00000Oo
+    android.animation.FloatEvaluator mEvaluator -> O00000o0
+    int mOutset -> O00000o
+    float mOutsetFraction -> O00000oO
+    18:25:void <init>() -> <init>
+    32:33:void setMode(com.starry.parallaxviewpager.Mode) -> O000000o
+    40:41:void setInterpolator(android.view.animation.Interpolator) -> O000000o
+    48:49:void setOutset(int) -> O000000o
+    52:53:void setOutsetFraction(float) -> O000000o
+    57:79:void transformPage(android.view.View,float) -> O000000o
+    82:91:void bringViewToFront(android.view.View) -> O000000o
+    96:110:void transform(android.view.View,float) -> O00000Oo
+com.starry.parallaxviewpager.ParallaxTransformer$1 -> com.starry.parallaxviewpager.O00000Oo$1:
+    int[] $SwitchMap$com$starry$parallaxviewpager$Mode -> O000000o
+    61:61:void <clinit>() -> <clinit>
+com.starry.parallaxviewpager.ParallaxViewPager -> com.starry.parallaxviewpager.ParallaxViewPager:
+    com.starry.parallaxviewpager.Mode mMode -> O00000o
+    int mShadowStart -> O00000oO
+    int mShadowMid -> O00000oo
+    int mShadowEnd -> O0000O0o
+    android.graphics.drawable.Drawable mRightShadow -> O0000OOo
+    android.graphics.drawable.Drawable mLeftShadow -> O0000Oo0
+    int mShadowWidth -> O0000Oo
+    com.starry.parallaxviewpager.ParallaxTransformer mParallaxTransformer -> O0000OoO
+    android.view.animation.Interpolator mInterpolator -> O0000Ooo
+    int mOutset -> O0000o00
+    float mOutsetFraction -> O0000o0
+    50:51:void <init>(android.content.Context) -> <init>
+    28:85:void <init>(android.content.Context,android.util.AttributeSet) -> <init>
+    88:88:int getOutset() -> getOutset
+    92:95:void setOutset(int) -> setOutset
+    98:98:float getOutsetFraction() -> getOutsetFraction
+    102:105:void setOutsetFraction(float) -> setOutsetFraction
+    108:109:void setRightShadow(android.graphics.drawable.GradientDrawable) -> setRightShadow
+    112:113:void setLeftShadow(android.graphics.drawable.GradientDrawable) -> setLeftShadow
+    117:119:void dispatchDraw(android.graphics.Canvas) -> dispatchDraw
+    122:122:android.view.animation.Interpolator getInterpolator() -> getInterpolator
+    126:128:void setInterpolator(android.view.animation.Interpolator) -> setInterpolator
+    131:132:void setInterpolator(android.content.Context,int) -> O000000o
+    135:141:void ensureInterpolator() -> O00000oo
+    144:158:void drawShadow(android.graphics.Canvas) -> O000000o
+    161:167:void drawRightShadow(android.graphics.Canvas) -> O00000Oo
+    170:176:void drawLeftShadow(android.graphics.Canvas) -> O00000o0
+    180:181:void setPageMargin(int) -> setPageMargin
+    184:185:float dp2px(int,android.content.Context) -> O000000o
+    190:197:void onPageScrolled(int,float,int) -> O000000o
+    200:200:com.starry.parallaxviewpager.Mode getMode() -> getMode
+    204:211:void setMode(com.starry.parallaxviewpager.Mode) -> setMode
+com.starry.parallaxviewpager.ParallaxViewPager$1 -> com.starry.parallaxviewpager.ParallaxViewPager$1:
+    int[] $SwitchMap$com$starry$parallaxviewpager$Mode -> O000000o
+    150:150:void <clinit>() -> <clinit>
+com.starry.parallaxviewpager.R -> com.starry.parallaxviewpager.O00000o0:
+com.starry.parallaxviewpager.R$styleable -> com.starry.parallaxviewpager.O00000o0$O000000o:
+    int[] ParallaxViewPager -> ParallaxViewPager
+    int ParallaxViewPager_interpolator -> ParallaxViewPager_interpolator
+    int ParallaxViewPager_left_shadow -> ParallaxViewPager_left_shadow
+    int ParallaxViewPager_mode -> ParallaxViewPager_mode
+    int ParallaxViewPager_outset -> ParallaxViewPager_outset
+    int ParallaxViewPager_right_shadow -> ParallaxViewPager_right_shadow
+    int ParallaxViewPager_shadow_width -> ParallaxViewPager_shadow_width
+    27:27:void <clinit>() -> <clinit>
 com.starry.progress.AVLoadingIndicatorView -> com.starry.progress.AVLoadingIndicatorView:
     int mIndicatorId -> O000000o
     int mIndicatorColor -> O00000Oo
@@ -26951,7 +27091,7 @@ io.reactivex.Observer -> O000000o.O000000o.O0000o00:
     void onSubscribe(io.reactivex.disposables.Disposable) -> O000000o
     void onNext(java.lang.Object) -> a_
     void onError(java.lang.Throwable) -> O000000o
-    void onComplete() -> k_
+    void onComplete() -> m_
 io.reactivex.Scheduler -> O000000o.O000000o.O0000o0:
     long CLOCK_DRIFT_TOLERANCE_NANOSECONDS -> O000000o
     32:32:void <init>() -> <init>
@@ -27105,7 +27245,7 @@ io.reactivex.internal.disposables.EmptyDisposable -> O000000o.O000000o.O00000oO.
     44:44:void dispose() -> O000000o
     89:89:boolean offer(java.lang.Object) -> O000000o
     100:100:java.lang.Object poll() -> O00000Oo
-    105:105:boolean isEmpty() -> j_
+    105:105:boolean isEmpty() -> l_
     111:111:void clear() -> O00000o
     115:115:int requestFusion(int) -> O000000o
     28:38:void <clinit>() -> <clinit>
@@ -27209,7 +27349,7 @@ io.reactivex.internal.fuseable.SimplePlainQueue -> O000000o.O000000o.O00000oO.O0
 io.reactivex.internal.fuseable.SimpleQueue -> O000000o.O000000o.O00000oO.O00000o0.O0000OOo:
     boolean offer(java.lang.Object) -> O000000o
     java.lang.Object poll() -> O00000Oo
-    boolean isEmpty() -> j_
+    boolean isEmpty() -> l_
     void clear() -> O00000o
 io.reactivex.internal.observers.BasicFuseableObserver -> O000000o.O000000o.O00000oO.O00000o.O000000o:
     io.reactivex.Observer actual -> O000000o
@@ -27223,10 +27363,10 @@ io.reactivex.internal.observers.BasicFuseableObserver -> O000000o.O000000o.O0000
     87:87:void afterDownstream() -> O00000oo
     95:101:void onError(java.lang.Throwable) -> O000000o
     108:111:void fail(java.lang.Throwable) -> O00000Oo
-    115:120:void onComplete() -> k_
+    115:120:void onComplete() -> m_
     133:143:int transitiveBoundaryFusion(int) -> O00000Oo
     152:153:void dispose() -> O000000o
-    162:162:boolean isEmpty() -> j_
+    162:162:boolean isEmpty() -> l_
     167:168:void clear() -> O00000o
     176:176:boolean offer(java.lang.Object) -> O000000o
 io.reactivex.internal.observers.BasicIntQueueDisposable -> O000000o.O000000o.O00000oO.O00000o.O00000Oo:
@@ -27241,7 +27381,7 @@ io.reactivex.internal.observers.LambdaObserver -> O000000o.O000000o.O00000oO.O00
     48:57:void onSubscribe(io.reactivex.disposables.Disposable) -> O000000o
     61:70:void onNext(java.lang.Object) -> a_
     74:83:void onError(java.lang.Throwable) -> O000000o
-    87:96:void onComplete() -> k_
+    87:96:void onComplete() -> m_
     100:101:void dispose() -> O000000o
     105:105:boolean isDisposed() -> O00000Oo
 io.reactivex.internal.operators.flowable.AbstractFlowableWithUpstream -> O000000o.O000000o.O00000oO.O00000oO.O000000o.O000000o:
@@ -27339,7 +27479,7 @@ io.reactivex.internal.operators.flowable.FlowableObserveOn$BaseObserveOnSubscrib
     94:100:void <init>(io.reactivex.Scheduler$Worker,boolean,int) -> <init>
     104:118:void onNext(java.lang.Object) -> O00000Oo
     122:129:void onError(java.lang.Throwable) -> O000000o
-    133:137:void onComplete() -> l_
+    133:137:void onComplete() -> n_
     141:145:void request(long) -> O000000o
     149:160:void cancel() -> O00000o0
     163:167:void trySchedule() -> O00000oO
@@ -27350,7 +27490,7 @@ io.reactivex.internal.operators.flowable.FlowableObserveOn$BaseObserveOnSubscrib
     187:219:boolean checkTerminated(boolean,boolean,org.reactivestreams.Subscriber) -> O000000o
     224:228:int requestFusion(int) -> O000000o
     233:234:void clear() -> O00000o
-    238:238:boolean isEmpty() -> j_
+    238:238:boolean isEmpty() -> l_
 io.reactivex.internal.operators.flowable.FlowableObserveOn$ObserveOnConditionalSubscriber -> O000000o.O000000o.O00000oO.O00000oO.O000000o.O00000o$O00000Oo:
     io.reactivex.internal.fuseable.ConditionalSubscriber actual -> O0000o0
     long consumed -> O0000o0O
@@ -27385,7 +27525,7 @@ io.reactivex.internal.operators.flowable.FlowableSubscribeOn$SubscribeOnSubscrib
     87:93:void onSubscribe(org.reactivestreams.Subscription) -> O000000o
     97:98:void onNext(java.lang.Object) -> O00000Oo
     102:104:void onError(java.lang.Throwable) -> O000000o
-    108:110:void onComplete() -> l_
+    108:110:void onComplete() -> n_
     114:129:void request(long) -> O000000o
     132:137:void requestUpstream(long,org.reactivestreams.Subscription) -> O000000o
     141:143:void cancel() -> O00000o0
@@ -27439,7 +27579,7 @@ io.reactivex.internal.operators.observable.ObservableObserveOn$ObserveOnObserver
     80:108:void onSubscribe(io.reactivex.disposables.Disposable) -> O000000o
     112:120:void onNext(java.lang.Object) -> a_
     124:131:void onError(java.lang.Throwable) -> O000000o
-    135:140:void onComplete() -> k_
+    135:140:void onComplete() -> m_
     144:152:void dispose() -> O000000o
     160:163:void schedule() -> O00000oO
     166:208:void drainNormal() -> O00000oo
@@ -27449,7 +27589,7 @@ io.reactivex.internal.operators.observable.ObservableObserveOn$ObserveOnObserver
     292:296:int requestFusion(int) -> O000000o
     302:302:java.lang.Object poll() -> O00000Oo
     307:308:void clear() -> O00000o
-    312:312:boolean isEmpty() -> j_
+    312:312:boolean isEmpty() -> l_
 io.reactivex.internal.queue.SpscArrayQueue -> O000000o.O000000o.O00000oO.O00000oo.O00000o0:
     java.lang.Integer MAX_LOOK_AHEAD_STEP -> O00000oo
     int mask -> O000000o
@@ -27460,7 +27600,7 @@ io.reactivex.internal.queue.SpscArrayQueue -> O000000o.O000000o.O00000oO.O00000o
     51:56:void <init>(int) -> <init>
     60:77:boolean offer(java.lang.Object) -> O000000o
     89:98:java.lang.Object poll() -> O00000Oo
-    103:103:boolean isEmpty() -> j_
+    103:103:boolean isEmpty() -> l_
     107:108:void soProducerIndex(long) -> O000000o
     111:112:void soConsumerIndex(long) -> O00000Oo
     117:118:void clear() -> O00000o
@@ -27489,7 +27629,7 @@ io.reactivex.internal.queue.SpscLinkedArrayQueue -> O000000o.O000000o.O00000oO.O
     133:147:java.lang.Object poll() -> O00000Oo
     152:159:java.lang.Object newBufferPoll(java.util.concurrent.atomic.AtomicReferenceArray,long,int) -> O000000o
     184:185:void clear() -> O00000o
-    207:207:boolean isEmpty() -> j_
+    207:207:boolean isEmpty() -> l_
     211:212:void adjustLookAheadStep(int) -> O000000o
     215:215:long lvProducerIndex() -> O000000o
     219:219:long lvConsumerIndex() -> O00000oO
@@ -27683,7 +27823,7 @@ io.reactivex.internal.subscribers.LambdaSubscriber -> O000000o.O000000o.O00000oO
     50:59:void onSubscribe(org.reactivestreams.Subscription) -> O000000o
     63:72:void onNext(java.lang.Object) -> O00000Oo
     76:87:void onError(java.lang.Throwable) -> O000000o
-    91:100:void onComplete() -> l_
+    91:100:void onComplete() -> n_
     104:105:void dispose() -> O000000o
     109:109:boolean isDisposed() -> O00000Oo
     114:115:void request(long) -> O000000o
@@ -27701,7 +27841,7 @@ io.reactivex.internal.subscribers.StrictSubscriber -> O000000o.O000000o.O00000oO
     83:93:void onSubscribe(org.reactivestreams.Subscription) -> O000000o
     97:98:void onNext(java.lang.Object) -> O00000Oo
     102:104:void onError(java.lang.Throwable) -> O000000o
-    108:110:void onComplete() -> l_
+    108:110:void onComplete() -> n_
 io.reactivex.internal.subscriptions.BasicIntQueueSubscription -> O000000o.O000000o.O00000oO.O0000Oo0.O000000o:
     25:25:void <init>() -> <init>
     32:32:boolean offer(java.lang.Object) -> O000000o
@@ -27870,7 +28010,7 @@ io.reactivex.subjects.PublishSubject -> O000000o.O000000o.O0000OOo.O000000o:
     168:171:void onSubscribe(io.reactivex.disposables.Disposable) -> O000000o
     175:185:void onNext(java.lang.Object) -> a_
     190:202:void onError(java.lang.Throwable) -> O000000o
-    207:213:void onComplete() -> k_
+    207:213:void onComplete() -> m_
     50:53:void <clinit>() -> <clinit>
 io.reactivex.subjects.PublishSubject$PublishDisposable -> O000000o.O000000o.O0000OOo.O000000o$O000000o:
     io.reactivex.Observer actual -> O000000o
@@ -27891,7 +28031,7 @@ io.reactivex.subjects.SerializedSubject -> O000000o.O000000o.O0000OOo.O00000Oo:
     55:82:void onSubscribe(io.reactivex.disposables.Disposable) -> O000000o
     86:106:void onNext(java.lang.Object) -> a_
     110:138:void onError(java.lang.Throwable) -> O000000o
-    142:162:void onComplete() -> k_
+    142:162:void onComplete() -> m_
     168:177:void emitLoop() -> O00000Oo
     182:182:boolean test(java.lang.Object) -> O00000Oo
 io.reactivex.subjects.Subject -> O000000o.O000000o.O0000OOo.O00000o0:
@@ -31552,7 +31692,7 @@ org.reactivestreams.Subscriber -> org.O000000o.O00000Oo:
     void onSubscribe(org.reactivestreams.Subscription) -> O000000o
     void onNext(java.lang.Object) -> O00000Oo
     void onError(java.lang.Throwable) -> O000000o
-    void onComplete() -> l_
+    void onComplete() -> n_
 org.reactivestreams.Subscription -> org.O000000o.O00000o0:
     void request(long) -> O000000o
     void cancel() -> O00000o0
