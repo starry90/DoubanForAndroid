@@ -1,0 +1,9 @@
+apply plugin: 'com.android.library'
+apply from: rootProject.file('gradle/base.gradle')
+
+// https://github.com/ybq/ParallaxViewPager
+
+dependencies {
+    //android support
+    compileOnly deps.appcompat
+}

@@ -42,6 +42,28 @@
         <item name="android:background">@color/divider_color</item>
     </style>
 
+    <!-- 水平虚线-->
+    <style name="GapHorizontalDivideLine">
+        <!-- 虚线不显示原因在于设置的 view 的高度与 shape 虚线的高度相同。
+        只需要将 view 中的 高度设置的比 shape 虚线的高度大就可以。 -->
+        <item name="android:layout_height">1dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <!-- 增加此属性防止 3.0以上设备虚线会变实线的问题 -->
+        <item name="android:layerType">software</item>
+        <item name="android:background">@drawable/shape_gap_line</item>
+    </style>
+
+    <!-- 垂直虚线-->
+    <style name="GapVerticalDivideLine">
+        <item name="android:layout_height">match_parent</item>
+        <!-- 虚线不显示原因在于设置的 view 的高度与 shape 虚线的高度相同。
+       只需要将 view 中的 宽度设置的比 shape 虚线的高度大就可以。 -->
+        <item name="android:layout_width">1dp</item>
+        <!-- 增加此属性防止 3.0以上设备虚线会变实线的问题 -->
+        <item name="android:layerType">software</item>
+        <item name="android:background">@drawable/shape_gap_line</item>
+    </style>
+
     <!--透明Activity-->
     <style name="ActivityTranslucentTheme" parent="AppTheme">
         <item name="android:windowBackground">@android:color/transparent</item>

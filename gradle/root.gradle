@@ -7,8 +7,8 @@ ext {
     gits = [
             // 2018-12-29 20:21:59 +0800
             "gitCommitTime"  : 'git log -1 --pretty=%ci'.execute([], project.rootDir).text.trim(),
-            // * develop 286f78e [origin/develop] Add...
-            "gitCommitBranch": 'git branch -vv'.execute([], project.rootDir).text.trim().split()[3],
+            // develop
+            "gitCommitBranch": 'git symbolic-ref --short -q HEAD'.execute([], project.rootDir).text.trim(),
             // 129
             "gitCommitCount" : Integer.parseInt('git rev-list HEAD --count'.execute([], project.rootDir).text.trim()),
     ]

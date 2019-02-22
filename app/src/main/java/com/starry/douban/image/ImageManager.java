@@ -2,7 +2,10 @@ package com.starry.douban.image;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -15,6 +18,8 @@ import com.starry.douban.R;
 import com.starry.douban.base.BaseApp;
 import com.starry.rx.RxManager;
 import com.starry.rx.RxTask;
+
+import java.io.File;
 
 import io.reactivex.functions.Consumer;
 
@@ -81,6 +86,28 @@ public class ImageManager {
                 .placeholder(R.drawable.image_bg_default)
                 .crossFade()
                 .into(imageView);
+    }
+
+    /**
+     * 保存图片至系统相册
+     *
+     * @param url 图片url
+     * @return 保存成功返回true
+     */
+    public static boolean downloadImage(String url) {
+        try {
+            File file = Glide.with(getContext())
+                    .load(url)
+                    .downloadOnly(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+                    .get();
+            Context context = getContext();
+            MediaStore.Images.Media.insertImage(context.getContentResolver(), file.getAbsolutePath(), file.getName(), "beauty");
+            context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file)));
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     /**

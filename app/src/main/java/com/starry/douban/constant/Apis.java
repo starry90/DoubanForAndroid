@@ -7,7 +7,7 @@ package com.starry.douban.constant;
  */
 public class Apis {
 
-    public static final String GITHUB_AUTHOR_HOME = "https://github.com/starry90";
+    public static final String GITHUB_AUTHOR_HOME = "https://starry90.github.io/Blog/";
 
     public static final String APP_UPDATE = "https://github.com/starry90/DoubanForAndroid/raw/master/data/update.txt";
 
