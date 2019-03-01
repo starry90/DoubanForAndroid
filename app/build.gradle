@@ -73,6 +73,7 @@ dependencies {
     androidTestImplementation deps.espresso
     //others
     implementation deps.glide
+    annotationProcessor deps.glideCompiler
     implementation deps.gson
     implementation deps.okhttp3
     implementation deps.agentweb

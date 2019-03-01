@@ -14,7 +14,7 @@ ext {
     ]
 
     versions = [
-            "compileSdkVersion": 26,
+            "compileSdkVersion": 27,
             "minSdkVersion"    : 21,
             "targetSdkVersion" : 26,
 
@@ -23,7 +23,7 @@ ext {
             "httpVersion"      : 6
     ]
 
-    def supportVersion = "26.0.2"
+    def supportVersion = "27.1.0"
 
     deps = [
             "appcompat"          : "com.android.support:appcompat-v7:${supportVersion}",
@@ -37,7 +37,8 @@ ext {
             "espresso"           : "com.android.support.test.espresso:espresso-core:3.0.2",
             "androidRunner"      : "android.support.test.runner.AndroidJUnitRunner",
 
-            "glide"              : "com.github.bumptech.glide:glide:3.7.0",
+            "glide"              : "com.github.bumptech.glide:glide:4.9.0",
+            "glideCompiler"      : "com.github.bumptech.glide:compiler:4.9.0",
             "gson"               : "com.google.code.gson:gson:2.8.2",
             "okhttp3"            : "com.squareup.okhttp3:okhttp:3.11.0",
             "agentweb"           : "com.just.agentweb:agentweb:4.0.2",
