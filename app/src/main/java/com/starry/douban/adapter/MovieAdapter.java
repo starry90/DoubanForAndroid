@@ -1,12 +1,8 @@
 package com.starry.douban.adapter;
 
-import android.content.Intent;
-import android.view.View;
-
 import com.starry.douban.R;
 import com.starry.douban.base.BaseRecyclerAdapter;
 import com.starry.douban.model.MovieBean;
-import com.starry.douban.ui.activity.MovieDetailActivity;
 
 import java.util.List;
 
@@ -28,13 +24,6 @@ public class MovieAdapter extends BaseRecyclerAdapter<MovieBean> {
     @Override
     public int getHeaderLayoutCount() {
         return 1;
-    }
-
-    @Override
-    protected void onItemClick(View itemView, int position) {
-        Intent intent = new Intent(mContext, MovieDetailActivity.class);
-        intent.putExtra("movieId", dataSet.get(position).getId());
-        mContext.startActivity(intent);
     }
 
     @Override

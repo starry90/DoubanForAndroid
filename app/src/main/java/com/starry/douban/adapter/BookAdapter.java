@@ -1,12 +1,8 @@
 package com.starry.douban.adapter;
 
-import android.content.Intent;
-import android.view.View;
-
 import com.starry.douban.R;
 import com.starry.douban.base.BaseRecyclerAdapter;
 import com.starry.douban.model.BookBean;
-import com.starry.douban.ui.activity.BookDetailActivity;
 
 import java.util.List;
 
@@ -28,13 +24,6 @@ public class BookAdapter extends BaseRecyclerAdapter<BookBean> {
     @Override
     public int getHeaderLayoutCount() {
         return 1;
-    }
-
-    @Override
-    protected void onItemClick(View itemView, int position) {
-        Intent intent = new Intent(mContext, BookDetailActivity.class);
-        intent.putExtra("bookId", dataSet.get(position).getId());
-        mContext.startActivity(intent);
     }
 
     @Override

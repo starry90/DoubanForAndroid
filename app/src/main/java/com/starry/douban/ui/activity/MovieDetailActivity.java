@@ -32,6 +32,8 @@ import butterknife.BindView;
  */
 public class MovieDetailActivity extends BaseActivity {
 
+    public static final String EXTRA_MOVIE_ID = "extra_movie_id";
+
     @BindView(R.id.iv_movie_detail_bg)
     ImageView iv_movie_detail_bg;
     @BindView(R.id.iv_movie_detail)
@@ -70,7 +72,7 @@ public class MovieDetailActivity extends BaseActivity {
 
     @Override
     public void initData() {
-        url = Apis.MovieDetail + getIntent().getStringExtra("movieId");
+        url = Apis.MovieDetail + getIntent().getStringExtra(EXTRA_MOVIE_ID);
 
         loadData();
     }

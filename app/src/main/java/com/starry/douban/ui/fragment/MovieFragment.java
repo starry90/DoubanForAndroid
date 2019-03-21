@@ -1,14 +1,18 @@
 package com.starry.douban.ui.fragment;
 
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
+import android.view.View;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.starry.douban.R;
 import com.starry.douban.adapter.MovieAdapter;
 import com.starry.douban.base.BaseFragment;
+import com.starry.douban.base.BaseRecyclerAdapter;
 import com.starry.douban.constant.Apis;
 import com.starry.douban.model.MovieBean;
 import com.starry.douban.model.Movies;
+import com.starry.douban.ui.activity.MovieDetailActivity;
 import com.starry.douban.util.ToastUtil;
 import com.starry.http.HttpManager;
 import com.starry.http.callback.StringCallback;
@@ -75,6 +79,15 @@ public class MovieFragment extends BaseFragment {
     private void initRecyclerView() {
         mAdapter = new MovieAdapter(books);
         mAdapter.addOnScrollListener(mRecyclerView);
+        mAdapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Intent intent = new Intent(mActivity, MovieDetailActivity.class);
+                intent.putExtra(MovieDetailActivity.EXTRA_MOVIE_ID, mAdapter.getItem(position).getId());
+                startActivity(intent);
+            }
+        });
+
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {

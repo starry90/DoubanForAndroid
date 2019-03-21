@@ -55,9 +55,9 @@ public class BeautyActivity extends BaseActivity {
     private void initRecyclerView() {
         mAdapter = new BeautyAdapter(beautyList);
         mAdapter.addOnScrollListener(mRecyclerView);
-        mAdapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener<BeautyModel>() {
+        mAdapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(View itemView, int position, BeautyModel beautyModel) {
+            public void onItemClick(View itemView, int position) {
                 BeautyDetailActivity.showActivity(BeautyActivity.this, beautyList, position);
             }
         });

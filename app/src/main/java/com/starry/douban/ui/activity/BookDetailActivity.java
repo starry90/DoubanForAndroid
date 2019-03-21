@@ -27,6 +27,8 @@ import butterknife.BindView;
  */
 public class BookDetailActivity extends BaseActivity {
 
+    public static final String EXTRA_BOOK_ID = "extra_book_id";
+
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.collapsing_toolbar)
@@ -59,7 +61,7 @@ public class BookDetailActivity extends BaseActivity {
 
     @Override
     public void initData() {
-        url = Apis.BookDetail + getIntent().getStringExtra("bookId");
+        url = Apis.BookDetail + getIntent().getStringExtra(EXTRA_BOOK_ID);
         loadData();
     }
 
