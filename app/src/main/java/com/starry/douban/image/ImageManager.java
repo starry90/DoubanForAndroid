@@ -10,7 +10,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
@@ -18,12 +17,14 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.target.Target;
+import com.bumptech.glide.request.transition.DrawableCrossFadeFactory;
 import com.bumptech.glide.request.transition.Transition;
 import com.starry.douban.R;
 import com.starry.douban.base.BaseApp;
 import com.starry.log.Logger;
 import com.starry.rx.RxManager;
 import com.starry.rx.RxTask;
+import com.starry.douban.image.okhttp.GlideApp;
 
 import java.io.File;
 
@@ -45,6 +46,21 @@ public class ImageManager {
     private static final RequestOptions requestOptions = new RequestOptions()
             .error(R.drawable.image_bg_default)
             .placeholder(R.drawable.image_bg_default);
+
+    /**
+     * https://muyangmin.github.io/glide-docs-cn/doc/transitions.html
+     * Glide 的默认交叉淡入(cross fade)效果使用了 TransitionDrawable 。它提供两种动画模式，由 setCrossFadeEnabled() 控制。
+     * <p>
+     * 当交叉淡入被禁用时，正在过渡的图片会在原先显示的图像上面淡入。当交叉淡入被启用时，原先显示的图片会从不透明过渡到透明，而正在过渡的图片则会从透明变为不透明。
+     * <p>
+     * 在 Glide 中，我们默认禁用了交叉淡入，这样通常看起来要好看一些。实际的交叉淡入，如上所述对两个图片同时改变 alpha 值，通常会在过渡的中间造成一个短暂的白色闪屏，这个时候两个图片都是部分不透明的。
+     * 当占位符比实际加载的图片要大，或者图片部分为透明时，禁用交叉淡入会导致动画完成后占位符在图片后面仍然可见。
+     * 如果你在加载透明图片时使用了占位符，你可以启用交叉淡入(setCrossFadeEnabled(true))。
+     */
+    private static final DrawableCrossFadeFactory crossFadeFactory = new DrawableCrossFadeFactory
+            .Builder(300)
+            .setCrossFadeEnabled(true)
+            .build();
 
     private static final RequestListener requestListener = new RequestListener<Drawable>() {
         @Override
@@ -99,7 +115,7 @@ public class ImageManager {
         GlideApp.with(getContext())
                 .load(url)
                 .apply(requestOptions)
-                .transition(DrawableTransitionOptions.withCrossFade())
+                .transition(DrawableTransitionOptions.withCrossFade(crossFadeFactory))
                 .listener(requestListener)
                 .into(imageView);
     }
