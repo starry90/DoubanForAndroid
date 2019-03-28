@@ -65,24 +65,20 @@ public class GsonConverter implements HttpConverter {
     @Override
     public <T> T convert(Class<?> cbClass, Response response) throws Exception {
         T result;
-        try {
-            // 1. get string
-            String json = response.body().string();
-            // 2. string to T
-            Type tType = getType(cbClass);
-            if (tType == new TypeToken<String>() {
-            }.getType()) {
-                result = (T) json;
-            } else {
-                result = gson.fromJson(json, tType);
-            }
-            // 3. check result code
-            if (result instanceof BaseModel) {
-                BaseModel baseModel = (BaseModel) result;
-                checkResultCode(baseModel.getCode(), baseModel.getMsg(), json);
-            }
-        } finally {
-            response.close(); //To avoid leaking resources
+        // 1. get string
+        String json = response.body().string();
+        // 2. string to T
+        Type tType = getType(cbClass);
+        if (tType == new TypeToken<String>() {
+        }.getType()) {
+            result = (T) json;
+        } else {
+            result = gson.fromJson(json, tType);
+        }
+        // 3. check result code
+        if (result instanceof BaseModel) {
+            BaseModel baseModel = (BaseModel) result;
+            checkResultCode(baseModel.getCode(), baseModel.getMsg(), json);
         }
         return result;
     }

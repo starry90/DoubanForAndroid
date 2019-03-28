@@ -116,12 +116,12 @@ public class RealRequest {
     }
 
     private <T> T onResponseResult(Response response, CommonCallback<T> callback) {
+        Response cloneResponse = null;
         try {
             // 1. check http code
             checkHttpCode(response.code());
 
             // 2. log response
-            Response cloneResponse;
             if (callback instanceof StringCallback) {
                 cloneResponse = httpInterceptor.logResponse(response);
             } else {
@@ -146,6 +146,7 @@ public class RealRequest {
             sendFailureCallback(errorModel, callback);
         } finally {
             Util.closeQuietly(response);
+            Util.closeQuietly(cloneResponse);
         }
         return null;
     }
