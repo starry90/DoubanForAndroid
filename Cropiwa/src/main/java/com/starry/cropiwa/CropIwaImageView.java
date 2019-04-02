@@ -266,8 +266,9 @@ class CropIwaImageView extends ImageView implements OnNewBoundsListener, ConfigC
         }
 
         private boolean isValidScale(float newScale) {
-            return newScale >= config.getMinScale()
-                    && newScale <= (config.getMinScale() + config.getMaxScale());
+            // 不对缩小手势限制
+            return /*newScale >= config.getMinScale()
+                    &&*/ newScale <= (config.getMinScale() + config.getMaxScale());
         }
     }
 
