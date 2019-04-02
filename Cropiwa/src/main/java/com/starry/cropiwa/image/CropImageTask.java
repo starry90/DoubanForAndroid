@@ -36,6 +36,12 @@ class CropImageTask extends AsyncTask<Void, Void, Throwable> {
     }
 
     @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        CropIwaResultReceiver.onCropStart(context);
+    }
+
+    @Override
     protected Throwable doInBackground(Void... params) {
         try {
             Bitmap bitmap = CropIwaBitmapManager.get().loadToMemory(

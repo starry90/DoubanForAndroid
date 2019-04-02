@@ -228,6 +228,11 @@ public class CropIwaView extends FrameLayout {
     private class CropResultRouter implements CropIwaResultReceiver.Listener {
 
         @Override
+        public void onCropStart() {
+
+        }
+
+        @Override
         public void onCropSuccess(Uri croppedUri) {
             if (cropSaveCompleteListener != null) {
                 cropSaveCompleteListener.onCroppedRegionSaved(croppedUri);

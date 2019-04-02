@@ -14,8 +14,18 @@ import android.os.Bundle;
 public class CropIwaResultReceiver extends BroadcastReceiver {
 
     private static final String ACTION_CROP_COMPLETED = "cropIwa_action_crop_completed";
+    private static final String EXTRA_START = "extra_start";
     private static final String EXTRA_ERROR = "extra_error";
     private static final String EXTRA_URI = "extra_uri";
+
+    /**
+     * 点击裁剪时回调
+     */
+    public static void onCropStart(Context context) {
+        Intent intent = new Intent(ACTION_CROP_COMPLETED);
+        intent.putExtra(EXTRA_START, true);
+        context.sendBroadcast(intent);
+    }
 
     public static void onCropCompleted(Context context, Uri croppedImageUri) {
         Intent intent = new Intent(ACTION_CROP_COMPLETED);
@@ -34,8 +44,10 @@ public class CropIwaResultReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Bundle extras = intent.getExtras();
-        if (listener != null) {
-            if (extras.containsKey(EXTRA_ERROR)) {
+        if (extras != null && listener != null) {
+            if (extras.containsKey(EXTRA_START)) {
+                listener.onCropStart();
+            } else if (extras.containsKey(EXTRA_ERROR)) {
                 listener.onCropFailed((Throwable) extras.getSerializable(EXTRA_ERROR));
             } else if (extras.containsKey(EXTRA_URI)) {
                 listener.onCropSuccess((Uri) extras.getParcelable(EXTRA_URI));
@@ -57,6 +69,9 @@ public class CropIwaResultReceiver extends BroadcastReceiver {
     }
 
     public interface Listener {
+
+        void onCropStart();
+
         void onCropSuccess(Uri croppedUri);
 
         void onCropFailed(Throwable e);
