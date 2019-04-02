@@ -17,10 +17,20 @@ import com.starry.cropiwa.config.CropIwaOverlayConfig;
 public class CropIwaOvalShape extends CropIwaShape {
 
     private Path clipPath;
+    /**
+     * 是否裁剪成圆形图片，默认裁剪成方形图片
+     */
+    private boolean clipOval;
 
     public CropIwaOvalShape(CropIwaOverlayConfig config) {
         super(config);
         clipPath = new Path();
+    }
+
+    public CropIwaOvalShape(CropIwaOverlayConfig config, boolean clipOval) {
+        super(config);
+        clipPath = new Path();
+        this.clipOval = clipOval;
     }
 
     @Override
@@ -50,12 +60,21 @@ public class CropIwaOvalShape extends CropIwaShape {
 
     @Override
     public CropIwaShapeMask getMask() {
-        return new OvalShapeMask();
+        return new OvalShapeMask(clipOval);
     }
 
     private static class OvalShapeMask implements CropIwaShapeMask {
+
+        private boolean clipOval;
+
+        public OvalShapeMask(boolean clipOval) {
+            this.clipOval = clipOval;
+        }
+
         @Override
         public Bitmap applyMaskTo(Bitmap croppedRegion) {
+            if (!clipOval) return croppedRegion;
+
             croppedRegion.setHasAlpha(true);
 
             Paint maskPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
