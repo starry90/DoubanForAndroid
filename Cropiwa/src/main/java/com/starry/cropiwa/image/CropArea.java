@@ -32,11 +32,43 @@ public class CropArea {
     }
 
     public Bitmap applyCropTo(Bitmap bitmap) {
-        Bitmap immutableCropped = Bitmap.createBitmap(bitmap,
-                findRealCoordinate(bitmap.getWidth(), cropRect.left, imageRect.width()),
-                findRealCoordinate(bitmap.getHeight(), cropRect.top, imageRect.height()),
-                findRealCoordinate(bitmap.getWidth(), cropRect.width(), imageRect.width()),
-                findRealCoordinate(bitmap.getHeight(), cropRect.height(), imageRect.height()));
+        int imageWidth = imageRect.width();
+        int imageHeight = imageRect.height();
+
+        int cropWidth = cropRect.width();
+        int cropHeight = cropRect.height();
+
+        //throw new IllegalArgumentException("x must be >= 0");
+        int left = cropRect.left > 0 ? cropRect.left : 0;
+        //throw new IllegalArgumentException("y must be >= 0");
+        int top = cropRect.top > 0 ? cropRect.top : 0;
+
+        int x = findRealCoordinate(bitmap.getWidth(), left, imageWidth);
+        int y = findRealCoordinate(bitmap.getHeight(), top, imageHeight);
+        int width = findRealCoordinate(bitmap.getWidth(), cropWidth, imageWidth);
+        int height = findRealCoordinate(bitmap.getHeight(), cropHeight, imageHeight);
+
+        //用户把图片拖动到裁剪区域外时点击裁剪会产生以下错误
+        // throw new IllegalArgumentException("x + width must be <= bitmap.width()");
+        // throw new IllegalArgumentException("y + height must be <= bitmap.height()");
+        if (cropRect.left < 0 || cropRect.top < 0
+                || x + width > bitmap.getWidth() || y + height > bitmap.getHeight()) {
+            // 此时默认截取屏幕正中间的内容
+            x = bitmap.getWidth() / 4;
+            width = bitmap.getWidth() / 2;
+            y = bitmap.getHeight() / 4;
+            height = bitmap.getHeight() / 2;
+            //比较XY轴大小，按小的一方裁剪成正方形
+            if (x > y) {
+                x = bitmap.getWidth() / 2 - height / 2;
+                width = height;
+            } else {
+                y = bitmap.getHeight() / 2 - width / 2;
+                height = width;
+            }
+        }
+
+        Bitmap immutableCropped = Bitmap.createBitmap(bitmap, x, y, width, height);
         return immutableCropped.copy(immutableCropped.getConfig(), true);
     }
 
