@@ -20,7 +20,7 @@ import java.lang.reflect.Field;
  * @since 18-5-10.
  */
 
-public class FileUtils {
+public class CommonUtils {
 
     public static File buildPath(String... segments) {
         return buildPath(Environment.getExternalStorageDirectory(), segments);

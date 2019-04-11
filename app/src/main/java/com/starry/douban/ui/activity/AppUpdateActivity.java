@@ -12,7 +12,7 @@ import com.starry.douban.constant.PreferencesName;
 import com.starry.douban.event.AppUpdateEvent;
 import com.starry.douban.service.WorkService;
 import com.starry.douban.util.CommonAnimator;
-import com.starry.douban.util.FileUtils;
+import com.starry.douban.util.CommonUtils;
 import com.starry.douban.util.SPUtil;
 import com.starry.rx.RxBus;
 
@@ -80,7 +80,7 @@ public class AppUpdateActivity extends BaseActivity implements View.OnClickListe
             pbAppUpdate.setVisibility(View.GONE);
             pbAppUpdate.setProgress(0);
         } else {
-            tvAppUpdateSize.setText(FileUtils.formatFileSize(SPUtil.getLong(PreferencesName.APP_UPDATE_CONTENT_LENGTH)));
+            tvAppUpdateSize.setText(CommonUtils.formatFileSize(SPUtil.getLong(PreferencesName.APP_UPDATE_CONTENT_LENGTH)));
             tvAppUpdateInstall.setText("下载并安装");
         }
     }

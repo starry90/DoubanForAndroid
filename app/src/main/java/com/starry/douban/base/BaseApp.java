@@ -13,7 +13,7 @@ import com.starry.douban.env.GsonConverter;
 import com.starry.douban.env.InterceptorImpl;
 import com.starry.douban.service.WorkService;
 import com.starry.douban.util.AppUtil;
-import com.starry.douban.util.FileUtils;
+import com.starry.douban.util.CommonUtils;
 import com.starry.douban.util.TimeUtils;
 import com.starry.http.HttpManager;
 
@@ -59,11 +59,11 @@ public class BaseApp {
     }
 
     public static File getCrashDir() {
-        return FileUtils.buildPath(Common.DIR_ROOT, Common.DIR_CRASH);
+        return CommonUtils.buildPath(Common.DIR_ROOT, Common.DIR_CRASH);
     }
 
     public static File getDownloadDir() {
-        return FileUtils.buildPath(getContext().getExternalFilesDir(""), Common.DIR_DOWNLOAD);
+        return CommonUtils.buildPath(getContext().getExternalFilesDir(""), Common.DIR_DOWNLOAD);
     }
 
     public static void installApp(File file) {
@@ -89,7 +89,7 @@ public class BaseApp {
             public void uncaughtException(Thread thread, Throwable ex) {
                 ex.printStackTrace();
                 String crashFile = String.format("%s.txt", TimeUtils.date2String(new Date()));
-                FileUtils.saveCrashInfo(ex, getCrashDir(), crashFile);
+                CommonUtils.saveCrashInfo(ex, getCrashDir(), crashFile);
                 android.os.Process.killProcess(android.os.Process.myPid());
             }
         });
