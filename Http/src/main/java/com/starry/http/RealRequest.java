@@ -1,8 +1,6 @@
 package com.starry.http;
 
 
-import android.support.annotation.NonNull;
-
 import com.starry.http.callback.CommonCallback;
 import com.starry.http.callback.StringCallback;
 import com.starry.http.error.ErrorModel;
@@ -90,13 +88,13 @@ public class RealRequest {
         callback.onBefore();
         call.enqueue(new Callback() {
             @Override
-            public void onFailure(@NonNull Call call, @NonNull IOException ex) {
+            public void onFailure(Call call, IOException ex) {
                 ex.printStackTrace();
                 onFailureResult(call, ex, callback);
             }
 
             @Override
-            public void onResponse(@NonNull Call call, @NonNull Response response) {
+            public void onResponse(Call call, Response response) {
                 onResponseResult(response, callback);
             }
         });

@@ -20,7 +20,6 @@ ext {
 
             "versionCode"      : gits.gitCommitCount,
             "versionName"      : "1.2.8",
-            "httpVersion"      : 6
     ]
 
     def supportVersion = "27.1.0"

@@ -1,16 +1,22 @@
 apply plugin: 'com.android.library'
 apply from: rootProject.file('gradle/base.gradle')
 
+android {
+    defaultConfig {
+        versionCode 107
+        versionName "1.0.7"
+    }
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     compileOnly deps.okhttp3
-    compileOnly deps.support
 }
 
 task makeJar(type: Copy) {
-    delete "../outputs/http-${versions.httpVersion}.jar"
+    delete "../outputs/http.jar"
     from('build/intermediates/bundles/debug/')
     into('../outputs/')
     include('classes.jar')
-    rename('classes.jar', "http-${versions.httpVersion}.jar")
+    rename('classes.jar', "http.jar")
 }
