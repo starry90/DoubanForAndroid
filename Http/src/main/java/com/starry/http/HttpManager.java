@@ -1,5 +1,6 @@
 package com.starry.http;
 
+import com.starry.http.callback.CommonCallback;
 import com.starry.http.cookie.OkHttpCookie;
 import com.starry.http.interfaces.HttpConverter;
 import com.starry.http.interfaces.HttpInterceptor;
@@ -10,6 +11,7 @@ import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
 
 /**
  * HTTP请求管理者
@@ -67,7 +69,6 @@ public class HttpManager {
 
     private HttpManager() {
         okHttpClientBuilder = new OkHttpClient.Builder();
-        interceptor = HttpInterceptor.NO_INTERCEPTOR;
         timeOut(TIME_OUT);
     }
 
@@ -196,6 +197,33 @@ public class HttpManager {
                 call.cancel();
             }
         }
+    }
+
+    /**
+     * 自定义OkHttp请求体時可调用此方法
+     * <p>
+     * 同步请求
+     *
+     * @param request  {@linkplain Request}
+     * @param callback {@linkplain CommonCallback}
+     * @param <T>      the type of the desired object
+     * @return an object of type T from the string.
+     */
+    public <T> T execute(Request request, final CommonCallback<T> callback) {
+        return RealRequest.execute(request, callback);
+    }
+
+    /**
+     * 自定义OkHttp请求体時可调用此方法
+     * <p>
+     * 异步请求
+     *
+     * @param request  {@linkplain Request}
+     * @param callback {@linkplain CommonCallback}
+     * @param <T>      the type of the desired object
+     */
+    public <T> void enqueue(Request request, final CommonCallback<T> callback) {
+        RealRequest.enqueue(request, callback);
     }
 
 }

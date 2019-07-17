@@ -2,6 +2,8 @@ package com.starry.douban.base;
 
 import android.app.Application;
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 
 import com.github.moduth.blockcanary.BlockCanary;
 import com.squareup.leakcanary.LeakCanary;
@@ -103,6 +105,26 @@ public class BaseApp {
                 .setInterceptor(new InterceptorImpl())
                 .setCertificates()
                 .build();
+    }
+
+    /**
+     * 获取网络是否已连接
+     *
+     * @return {@code true} if the network is available, {@code false} otherwise
+     */
+    public boolean networkAvailable() {
+        ConnectivityManager manager = (ConnectivityManager) context.getSystemService(
+                Context.CONNECTIVITY_SERVICE);
+        if (null == manager) {
+            return false;
+        }
+
+        NetworkInfo networkInfo = manager.getActiveNetworkInfo();
+        if (null == networkInfo || !networkInfo.isAvailable() || !networkInfo.isConnected()) {
+            return false;
+        }
+
+        return true;
     }
 
 }

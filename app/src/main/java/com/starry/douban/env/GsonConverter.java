@@ -12,7 +12,6 @@ import java.lang.reflect.Type;
 
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
-import okhttp3.Response;
 
 /**
  * @author Starry Jerry
@@ -63,22 +62,20 @@ public class GsonConverter implements HttpConverter {
     }
 
     @Override
-    public <T> T convert(Class<?> cbClass, Response response) throws Exception {
+    public <T> T convert(Class<?> cbClass, String bodyString) throws Exception {
         T result;
-        // 1. get string
-        String json = response.body().string();
-        // 2. string to T
+        // string to T
         Type tType = getType(cbClass);
         if (tType == new TypeToken<String>() {
         }.getType()) {
-            result = (T) json;
+            result = (T) bodyString;
         } else {
-            result = gson.fromJson(json, tType);
+            result = gson.fromJson(bodyString, tType);
         }
-        // 3. check result code
+        // check result code
         if (result instanceof BaseModel) {
             BaseModel baseModel = (BaseModel) result;
-            checkResultCode(baseModel.getCode(), baseModel.getMsg(), json);
+            checkResultCode(baseModel.getCode(), baseModel.getMsg(), bodyString);
         }
         return result;
     }

@@ -1,6 +1,7 @@
 package com.starry.http.callback;
 
 
+import com.starry.http.HttpResponse;
 import com.starry.http.error.ErrorModel;
 
 import okhttp3.Response;
@@ -41,10 +42,10 @@ public abstract class CommonCallback<T> {
     /**
      * parse {@link Response}
      *
-     * @param response {@link Response}
+     * @param response {@link HttpResponse}
      * @throws Exception
      */
-    public abstract T parseResponse(Response response) throws Exception;
+    public abstract T parseResponse(HttpResponse response ) throws Exception;
 
     /**
      * @param response 返回的对象

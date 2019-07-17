@@ -4,10 +4,8 @@ package com.starry.http;
 import com.starry.http.callback.CommonCallback;
 import com.starry.http.callback.StringCallback;
 import com.starry.http.error.ErrorModel;
-import com.starry.http.error.HttpStatusException;
 import com.starry.http.interfaces.HttpInterceptor;
 import com.starry.http.request.OKHttpRequest;
-import com.starry.http.utils.MainHandler;
 import com.starry.http.utils.Util;
 
 import java.io.IOException;
@@ -16,6 +14,7 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 /**
  * @author Starry Jerry
@@ -27,12 +26,10 @@ public class RealRequest {
 
     private CommonParams commonParams;
 
-    private HttpInterceptor httpInterceptor;
 
     public RealRequest(OKHttpRequest okHttpRequest, CommonParams commonParams) {
         this.okHttpRequest = okHttpRequest;
         this.commonParams = commonParams;
-        this.httpInterceptor = HttpManager.getInstance().getInterceptor();
     }
 
     /**
@@ -43,10 +40,7 @@ public class RealRequest {
      * @return 返回结果
      */
     public <T> T execute(CommonCallback<T> callback) {
-        commonParams = httpInterceptor.logRequest(commonParams);
-        Request request = okHttpRequest.build(commonParams, callback);
-        Call call = HttpManager.getInstance().getOkHttpClient().newCall(request);
-        return execute(call, callback);
+        return execute(getRequest(callback), callback);
     }
 
     /**
@@ -56,10 +50,24 @@ public class RealRequest {
      * @param callback 回调对象
      */
     public <T> void enqueue(CommonCallback<T> callback) {
-        commonParams = httpInterceptor.logRequest(commonParams);
-        Request request = okHttpRequest.build(commonParams, callback);
-        Call call = HttpManager.getInstance().getOkHttpClient().newCall(request);
-        enqueue(call, callback);
+        enqueue(getRequest(callback), callback);
+    }
+
+    private <T> Request getRequest(CommonCallback<T> callback) {
+        HttpManager.getInstance().getInterceptor().logRequest(commonParams);
+        return okHttpRequest.build(commonParams, callback);
+    }
+
+    private static Call getCall(Request request) {
+        return HttpManager.getInstance().getOkHttpClient().newCall(request);
+    }
+
+    static <T> T execute(Request request, final CommonCallback<T> callback) {
+        return execute(getCall(request), callback);
+    }
+
+    static <T> void enqueue(Request request, final CommonCallback<T> callback) {
+        enqueue(getCall(request), callback);
     }
 
     /**
@@ -67,11 +75,11 @@ public class RealRequest {
      * @param callback 回调对象
      * @param <T>      对象的泛型
      */
-    private <T> T execute(Call call, final CommonCallback<T> callback) {
+    private static <T> T execute(Call call, final CommonCallback<T> callback) {
         callback.onBefore();
         try {
             Response response = call.execute();
-            return onResponseResult(response, callback);
+            return onResponseResult(call, response, callback);
         } catch (IOException ex) {
             ex.printStackTrace();
             onFailureResult(call, ex, callback);
@@ -84,7 +92,7 @@ public class RealRequest {
      * @param callback 回调对象
      * @param <T>      对象的泛型
      */
-    private <T> void enqueue(Call call, final CommonCallback<T> callback) {
+    private static <T> void enqueue(Call call, final CommonCallback<T> callback) {
         callback.onBefore();
         call.enqueue(new Callback() {
             @Override
@@ -95,41 +103,48 @@ public class RealRequest {
 
             @Override
             public void onResponse(Call call, Response response) {
-                onResponseResult(response, callback);
+                onResponseResult(call, response, callback);
             }
         });
     }
 
-    private <T> void onFailureResult(Call call, IOException ex, CommonCallback<T> callback) {
+    private static <T> void onFailureResult(Call call, IOException ex, CommonCallback<T> callback) {
         //{@linkplain okhttp3.RealCall#isCanceled()}
         if (call.isCanceled()) {
-            sendCanceledCallback(callback);
+            Util.sendCanceledCallback(callback);
         } else {
             // handle failure exception
             ErrorModel errorModel = new ErrorModel(0, "");
-            errorModel.setUrl(commonParams.url());
-            httpInterceptor.handleFailure(ex, errorModel);
-            sendFailureCallback(errorModel, callback);
+            errorModel.setUrl(call.request().url().toString());
+            HttpManager.getInstance().getInterceptor().handleFailure(ex, errorModel);
+            Util.sendFailureCallback(errorModel, callback);
         }
     }
 
-    private <T> T onResponseResult(Response response, CommonCallback<T> callback) {
-        Response cloneResponse = null;
+    private static <T> T onResponseResult(Call call, Response response, CommonCallback<T> callback) {
+        String url = call.request().url().toString();
+        HttpInterceptor httpInterceptor = HttpManager.getInstance().getInterceptor();
         try {
             // 1. check http code
-            checkHttpCode(response.code());
+            Util.checkHttpCode(response.code());
 
             // 2. log response
+            HttpResponse httpResponse;
+            ResponseBody responseBody = response.body();
+            Util.checkNotNull(responseBody);
             if (callback instanceof StringCallback) {
-                cloneResponse = httpInterceptor.logResponse(response);
+                String bodyString = responseBody.string();
+                httpResponse = new HttpResponse(url, bodyString);
             } else {
-                cloneResponse = response;
+                httpResponse = new HttpResponse(url, responseBody.byteStream(), responseBody.contentLength());
             }
+            httpInterceptor.logResponse(httpResponse);
+
             // 3. parse response
-            T result = callback.parseResponse(cloneResponse);
+            T result = callback.parseResponse(httpResponse);
 
             // 4. call success method
-            sendSuccessCallback(result, callback);
+            Util.sendSuccessCallback(result, callback);
             return result;
         } catch (Exception ex) {
             // 1. print stack trace
@@ -137,61 +152,17 @@ public class RealRequest {
 
             // 2. handle response exception
             ErrorModel errorModel = new ErrorModel(0, "");
-            errorModel.setUrl(commonParams.url());
-            httpInterceptor.handleResponse(ex, errorModel);
+            errorModel.setUrl(url);
+            httpInterceptor.handleFailure(ex, errorModel);
 
             // 3. call fail method
-            sendFailureCallback(errorModel, callback);
+            Util.sendFailureCallback(errorModel, callback);
         } finally {
+            // A connection to https://xxxxx was leaked. Did you forget to close a response body?
+            // To avoid leaking resources
             Util.closeQuietly(response);
-            Util.closeQuietly(cloneResponse);
         }
         return null;
-    }
-
-    /**
-     * 检查http code
-     *
-     * @param code 错误码
-     * @throws Exception 自定义网络异常
-     */
-    private void checkHttpCode(int code) throws Exception {
-        if (code < 200 || code >= 300) {// 不是2开头code统一以服务器错误处理
-            throw new HttpStatusException(code);
-        }
-    }
-
-    private void sendFailureCallback(final ErrorModel errorModel, final CommonCallback callback) {
-        if (errorModel.isProcessed()) { //处理过错误信息，不再回调
-            return;
-        }
-
-        MainHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                callback.onAfter(false);
-                callback.onFailure(errorModel);
-            }
-        });
-    }
-
-    private <T> void sendSuccessCallback(final T object, final CommonCallback<T> callback) {
-        MainHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                callback.onAfter(true);
-                callback.onSuccess(object);
-            }
-        });
-    }
-
-    private <T> void sendCanceledCallback(final CommonCallback<T> callback) {
-        MainHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                callback.onAfter(false);
-            }
-        });
     }
 
 }
