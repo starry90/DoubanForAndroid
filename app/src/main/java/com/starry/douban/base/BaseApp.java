@@ -2,6 +2,8 @@ package com.starry.douban.base;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
@@ -13,6 +15,7 @@ import com.starry.douban.env.AppBlockCanaryContext;
 import com.starry.douban.env.CookieImpl;
 import com.starry.douban.env.GsonConverter;
 import com.starry.douban.env.InterceptorImpl;
+import com.starry.douban.receiver.CommonReceiver;
 import com.starry.douban.service.WorkService;
 import com.starry.douban.util.AppUtil;
 import com.starry.douban.util.CommonUtils;
@@ -85,6 +88,7 @@ public class BaseApp {
         lifeCallback = new ActivityCallback();
         application.registerActivityLifecycleCallbacks(lifeCallback);
         initOkHttp();
+        registerCommonReceiver(application);
 
         Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
             @Override
@@ -105,6 +109,15 @@ public class BaseApp {
                 .setInterceptor(new InterceptorImpl())
                 .setCertificates()
                 .build();
+    }
+
+    private void registerCommonReceiver(Application application) {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Intent.ACTION_SCREEN_ON); //开屏
+        filter.addAction(Intent.ACTION_SCREEN_OFF); //锁屏
+        filter.addAction(Intent.ACTION_USER_PRESENT); //解屏
+        filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION); //网络变化
+        application.registerReceiver(new CommonReceiver(), filter);
     }
 
     /**
