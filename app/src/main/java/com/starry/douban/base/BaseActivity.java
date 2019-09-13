@@ -11,8 +11,8 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.starry.douban.R;
-import com.starry.http.HttpManager;
 import com.starry.douban.widget.LoadingDataLayout;
+import com.starry.http.HttpManager;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -57,16 +57,8 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseUI 
 
         initToolBar();
         initLoadingDataLayout();
-
-        //保证onCreate方法第一时间执行完，显示UI界面
-        //如果加载数据的方法直接在onCreate里执行，可能会导致UI界面不能及时显示
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                initData();
-                setListener();
-            }
-        });
+        initData();
+        setListener();
     }
 
     private void initLoadingDataLayout() {

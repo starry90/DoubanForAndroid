@@ -3,7 +3,6 @@ package com.starry.douban.base;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -66,17 +65,10 @@ public abstract class BaseFragment extends Fragment implements IBaseUI {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initLoadingDataLayout();
-
-        //保证onCreate方法第一时间执行完，显示UI界面
-        new Handler().post(new Runnable() {
-            @Override
-            public void run() {
-                initData();
-                setListener();
-                //Fragment初始化时setUserVisibleHint方法会先于onCreateView执行
-                prepareLazyLoading(getUserVisibleHint(), isViewCreated);
-            }
-        });
+        initData();
+        setListener();
+        //Fragment初始化时setUserVisibleHint方法会先于onCreateView执行
+        prepareLazyLoading(getUserVisibleHint(), isViewCreated);
     }
 
     @Override
