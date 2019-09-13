@@ -6,7 +6,7 @@ import android.content.SharedPreferences.Editor;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import com.starry.douban.base.BaseApp;
+import com.starry.douban.env.AppWrapper;
 
 import java.util.Map;
 
@@ -128,7 +128,7 @@ public class SPUtil {
      * @return SharedPreferences
      */
     private static SharedPreferences getSharedPreferences(String fileName) {
-        return BaseApp.getContext().getSharedPreferences(fileName, Context.MODE_PRIVATE);
+        return AppWrapper.getContext().getSharedPreferences(fileName, Context.MODE_PRIVATE);
     }
 
     /**

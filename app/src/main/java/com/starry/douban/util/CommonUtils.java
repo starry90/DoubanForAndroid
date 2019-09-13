@@ -5,7 +5,7 @@ import android.os.Environment;
 import android.text.format.Formatter;
 
 import com.starry.douban.BuildConfig;
-import com.starry.douban.base.BaseApp;
+import com.starry.douban.env.AppWrapper;
 import com.starry.log.Logger;
 
 import java.io.File;
@@ -95,6 +95,6 @@ public class CommonUtils {
      * @return 12.99 MB
      */
     public static String formatFileSize(long sizeBytes) {
-        return Formatter.formatFileSize(BaseApp.getContext(), sizeBytes);
+        return Formatter.formatFileSize(AppWrapper.getContext(), sizeBytes);
     }
 }

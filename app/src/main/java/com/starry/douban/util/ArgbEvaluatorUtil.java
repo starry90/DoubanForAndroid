@@ -8,7 +8,7 @@ import android.support.v4.graphics.drawable.DrawableCompat;
 import android.widget.RadioButton;
 
 import com.starry.douban.R;
-import com.starry.douban.base.BaseApp;
+import com.starry.douban.env.AppWrapper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,8 +42,8 @@ public class ArgbEvaluatorUtil {
      * 渐变效果
      */
     private ArgbEvaluator mArgbEvaluator = new ArgbEvaluator();
-    private int colorSelect = ContextCompat.getColor(BaseApp.getContext(), R.color.colorPrimary);
-    private int colorUnSelect = ContextCompat.getColor(BaseApp.getContext(), R.color.darker_gray);
+    private int colorSelect = ContextCompat.getColor(AppWrapper.getContext(), R.color.colorPrimary);
+    private int colorUnSelect = ContextCompat.getColor(AppWrapper.getContext(), R.color.darker_gray);
 
     /**
      * 添加tab
@@ -67,7 +67,7 @@ public class ArgbEvaluatorUtil {
 
         tabDrawables.clear();
         for (int drawableId : drawableIds) {
-            tabDrawables.add(ContextCompat.getDrawable(BaseApp.getContext(), drawableId).mutate());
+            tabDrawables.add(ContextCompat.getDrawable(AppWrapper.getContext(), drawableId).mutate());
         }
     }
 

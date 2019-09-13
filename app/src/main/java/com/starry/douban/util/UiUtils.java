@@ -3,7 +3,7 @@ package com.starry.douban.util;
 import android.content.DialogInterface;
 import android.support.v4.content.ContextCompat;
 
-import com.starry.douban.base.BaseApp;
+import com.starry.douban.env.AppWrapper;
 
 /**
  * @author Starry Jerry
@@ -19,6 +19,6 @@ public class UiUtils {
     }
 
     public static int getColor(int colorResId) {
-        return ContextCompat.getColor(BaseApp.getContext(), colorResId);
+        return ContextCompat.getColor(AppWrapper.getContext(), colorResId);
     }
 }

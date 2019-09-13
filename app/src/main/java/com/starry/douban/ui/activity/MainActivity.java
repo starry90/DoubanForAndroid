@@ -8,9 +8,9 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.starry.douban.R;
-import com.starry.douban.base.BaseApp;
 import com.starry.douban.base.BaseFragmentPagerAdapter;
 import com.starry.douban.base.BaseNFCActivity;
+import com.starry.douban.env.AppWrapper;
 import com.starry.douban.ui.fragment.HomeFragment;
 import com.starry.douban.ui.fragment.MovieParentFragment;
 import com.starry.douban.ui.fragment.SettingFragment;
@@ -145,7 +145,7 @@ public class MainActivity extends BaseNFCActivity {
                 ToastUtil.showToast("再按一次退出应用");
                 exitTime = System.currentTimeMillis();
             } else {
-                BaseApp.getInstance().exitApp();
+                AppWrapper.getInstance().exitApp();
             }
             return true;
         }

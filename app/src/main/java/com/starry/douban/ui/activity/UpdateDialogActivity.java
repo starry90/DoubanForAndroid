@@ -5,7 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 
 import com.starry.douban.base.BaseActivity;
-import com.starry.douban.base.BaseApp;
+import com.starry.douban.env.AppWrapper;
 import com.starry.douban.util.UiUtils;
 
 /**
@@ -48,10 +48,10 @@ public class UpdateDialogActivity extends BaseActivity {
      * @param message 提示内容
      */
     public static void startPage(String message) {
-        Intent intent = new Intent(BaseApp.getContext(), UpdateDialogActivity.class);
+        Intent intent = new Intent(AppWrapper.getContext(), UpdateDialogActivity.class);
         intent.putExtra(DIALOG_MESSAGE, message);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        BaseApp.getContext().startActivity(intent);
+        AppWrapper.getContext().startActivity(intent);
     }
 
     private void showDialog() {

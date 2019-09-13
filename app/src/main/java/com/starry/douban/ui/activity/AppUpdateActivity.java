@@ -7,8 +7,8 @@ import android.widget.TextView;
 
 import com.starry.douban.R;
 import com.starry.douban.base.BaseActivity;
-import com.starry.douban.base.BaseApp;
 import com.starry.douban.constant.PreferencesName;
+import com.starry.douban.env.AppWrapper;
 import com.starry.douban.event.AppUpdateEvent;
 import com.starry.douban.service.WorkService;
 import com.starry.douban.util.CommonAnimator;
@@ -67,7 +67,7 @@ public class AppUpdateActivity extends BaseActivity implements View.OnClickListe
     @Override
     protected void onResume() {
         super.onResume();
-        dirPath = BaseApp.getDownloadDir().getAbsolutePath();
+        dirPath = AppWrapper.getDownloadDir().getAbsolutePath();
         fileName = String.format("db-%s-release.apk", versionFull);
         File file = new File(dirPath, fileName);
         checkFile(file);

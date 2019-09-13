@@ -1,7 +1,6 @@
 package com.starry.douban.env;
 
 import com.google.gson.JsonParseException;
-import com.starry.douban.base.BaseApp;
 import com.starry.http.CommonParams;
 import com.starry.http.HttpResponse;
 import com.starry.http.error.BIZException;
@@ -78,7 +77,7 @@ public final class InterceptorImpl implements HttpInterceptor {
             return errorModel.setCode(10002).setMessage("JSON报文错误");
         } else if (why instanceof SocketTimeoutException) { //超时提示
             return errorModel.setCode(10003).setMessage("超时提示");
-        } else if (!BaseApp.getInstance().networkAvailable()) { //无网提示
+        } else if (!AppWrapper.getInstance().networkAvailable()) { //无网提示
             return errorModel.setCode(10004).setMessage("无网提示");
         } else { //其它错误提示
             return errorModel.setCode(10005).setMessage("未知错误");

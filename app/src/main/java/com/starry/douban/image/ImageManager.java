@@ -20,11 +20,11 @@ import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.transition.DrawableCrossFadeFactory;
 import com.bumptech.glide.request.transition.Transition;
 import com.starry.douban.R;
-import com.starry.douban.base.BaseApp;
+import com.starry.douban.env.AppWrapper;
+import com.starry.douban.image.okhttp.GlideApp;
 import com.starry.log.Logger;
 import com.starry.rx.RxManager;
 import com.starry.rx.RxTask;
-import com.starry.douban.image.okhttp.GlideApp;
 
 import java.io.File;
 
@@ -40,7 +40,7 @@ import io.reactivex.functions.Consumer;
 public class ImageManager {
 
     public static Context getContext() {
-        return BaseApp.getContext();
+        return AppWrapper.getContext();
     }
 
     private static final RequestOptions requestOptions = new RequestOptions()

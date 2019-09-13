@@ -1,4 +1,4 @@
-package com.starry.douban.base;
+package com.starry.douban.env;
 
 import android.app.Application;
 import android.content.Context;
@@ -10,11 +10,6 @@ import android.net.NetworkInfo;
 import com.github.moduth.blockcanary.BlockCanary;
 import com.squareup.leakcanary.LeakCanary;
 import com.starry.douban.constant.Common;
-import com.starry.douban.env.ActivityCallback;
-import com.starry.douban.env.AppBlockCanaryContext;
-import com.starry.douban.env.CookieImpl;
-import com.starry.douban.env.GsonConverter;
-import com.starry.douban.env.InterceptorImpl;
 import com.starry.douban.receiver.CommonReceiver;
 import com.starry.douban.service.WorkService;
 import com.starry.douban.util.AppUtil;
@@ -30,21 +25,21 @@ import java.util.Date;
  * @since 18-3-6.
  */
 
-public class BaseApp {
+public class AppWrapper {
 
     private Context context;
 
     private ActivityCallback lifeCallback;
 
-    private BaseApp() {
+    private AppWrapper() {
     }
 
-    public static BaseApp getInstance() {
+    public static AppWrapper getInstance() {
         return Holder.INSTANCE;
     }
 
     private static class Holder {
-        private final static BaseApp INSTANCE = new BaseApp();
+        private final static AppWrapper INSTANCE = new AppWrapper();
     }
 
     public static Context getContext() {
@@ -133,11 +128,7 @@ public class BaseApp {
         }
 
         NetworkInfo networkInfo = manager.getActiveNetworkInfo();
-        if (null == networkInfo || !networkInfo.isAvailable() || !networkInfo.isConnected()) {
-            return false;
-        }
-
-        return true;
+        return null != networkInfo && networkInfo.isAvailable() && networkInfo.isConnected();
     }
 
 }
