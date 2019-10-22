@@ -30,6 +30,7 @@ cd $out_path
 du -b *.apk *.jar >> build-info.txt
 echo "" >> build-info.txt
 md5sum *.apk *.jar >> build-info.txt
+git log -n 10 --stat >> git-log.txt
 
 git_branch=`git symbolic-ref --short -q HEAD`
 git_version=`git rev-list HEAD --count`
