@@ -121,6 +121,21 @@ public class ImageManager {
     }
 
     /**
+     * 加载图片
+     *
+     * @param imageView 要设置图片的ImageView
+     * @param uri       图片URI
+     */
+    public static void loadImage(ImageView imageView, Uri uri) {
+        GlideApp.with(getContext())
+                .load(uri)
+                .apply(requestOptions)
+                .transition(DrawableTransitionOptions.withCrossFade(crossFadeFactory))
+                .listener(requestListener)
+                .into(imageView);
+    }
+
+    /**
      * 保存图片至系统相册
      *
      * @param url 图片url

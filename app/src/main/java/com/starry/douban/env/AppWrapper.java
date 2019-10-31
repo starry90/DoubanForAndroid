@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Environment;
 
 import com.github.moduth.blockcanary.BlockCanary;
 import com.squareup.leakcanary.LeakCanary;
@@ -14,6 +15,7 @@ import com.starry.douban.receiver.CommonReceiver;
 import com.starry.douban.service.WorkService;
 import com.starry.douban.util.AppUtil;
 import com.starry.douban.util.CommonUtils;
+import com.starry.douban.util.FileUtils;
 import com.starry.douban.util.TimeUtils;
 import com.starry.http.HttpManager;
 
@@ -58,12 +60,16 @@ public class AppWrapper {
         WorkService.stopWorkService(context);
     }
 
+    public static File getPictureDir() {
+        return FileUtils.buildPath(getContext().getExternalFilesDir(""), Common.DIR_PICTURE);
+    }
+
     public static File getCrashDir() {
-        return CommonUtils.buildPath(Common.DIR_ROOT, Common.DIR_CRASH);
+        return FileUtils.buildPath(Environment.getExternalStorageDirectory(), Common.DIR_ROOT, Common.DIR_CRASH);
     }
 
     public static File getDownloadDir() {
-        return CommonUtils.buildPath(getContext().getExternalFilesDir(""), Common.DIR_DOWNLOAD);
+        return FileUtils.buildPath(getContext().getExternalFilesDir(""), Common.DIR_DOWNLOAD);
     }
 
     public static void installApp(File file) {

@@ -50,6 +50,9 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
+            android:name="com.starry.douban.ui.activity.CropActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name="com.starry.douban.ui.activity.AppUpdateActivity"
             android:screenOrientation="portrait" />
         <activity

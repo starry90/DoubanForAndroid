@@ -2,10 +2,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ImageView
+        android:id="@+id/iv_setting_header"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="@dimen/common_margin_level_1"
+        android:src="@drawable/image_bg_default" />
+
+
     <TextClock
         android:id="@+id/tv_setting_hour"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/iv_setting_header"
         android:layout_centerHorizontal="true"
         android:fontFamily="sans-serif-thin"
         android:format12Hour="H:mm"

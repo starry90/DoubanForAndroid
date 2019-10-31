@@ -104,7 +104,7 @@
         <item name="android:layout_centerVertical">true</item>
     </style>
 
-    <style name="UuMosItemTextWrapStyle">
+    <style name="ItemTextWrapStyle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">14sp</item>

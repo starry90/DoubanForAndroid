@@ -1,12 +1,10 @@
 package com.starry.douban.util;
 
 import android.os.Build;
-import android.os.Environment;
 import android.text.format.Formatter;
 
 import com.starry.douban.BuildConfig;
 import com.starry.douban.env.AppWrapper;
-import com.starry.log.Logger;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -21,26 +19,6 @@ import java.lang.reflect.Field;
  */
 
 public class CommonUtils {
-
-    public static File buildPath(String... segments) {
-        return buildPath(Environment.getExternalStorageDirectory(), segments);
-    }
-
-    public static File buildPath(File base, String... segments) {
-        File cur = base;
-        for (String segment : segments) {
-            if (cur == null) {
-                cur = new File(segment);
-            } else {
-                cur = new File(cur, segment);
-            }
-        }
-        if (!cur.exists()) {
-            boolean mkdirs = cur.mkdirs();
-            Logger.e("create dirs is " + mkdirs);
-        }
-        return cur;
-    }
 
     /**
      * 保存崩溃信息
