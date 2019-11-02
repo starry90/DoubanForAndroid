@@ -51,7 +51,12 @@ public class MovieParentFragment extends BaseFragment {
             movieFragment.setArguments(bundle);
             pages.add(movieFragment);
         }
-        BaseFragmentPagerAdapter adapter = new BaseFragmentPagerAdapter(getActivity().getSupportFragmentManager(), pages);
+        //https://stackoverflow.com/questions/38722325/fragmentmanager-is-already-executing-transactions-when-is-it-safe-to-initialise/40829361#40829361
+        //java.lang.IllegalStateException: FragmentManager is already executing transactions
+        //第一次getFragmentManager()获取到的FragmentManager，只提供给activity那一层使用。
+        //在viewPager那一层只能使用getChildFragmentManager()获取FragmentManager来处理子fragment
+        //https://www.jianshu.com/p/6d102b9332be
+        BaseFragmentPagerAdapter adapter = new BaseFragmentPagerAdapter(getChildFragmentManager(), pages);
         adapter.setPageTitles(Arrays.asList(tabTitles));
         viewPager.setAdapter(adapter);
         viewPager.setOffscreenPageLimit(5);
