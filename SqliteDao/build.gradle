@@ -1,0 +1,5 @@
+apply plugin: 'com.android.library'
+apply from: rootProject.file('gradle/base.gradle')
+
+//参考https://github.com/greenrobot/greenDAO
+//用于操作ContentProvider
