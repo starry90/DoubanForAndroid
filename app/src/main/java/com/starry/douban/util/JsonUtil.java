@@ -12,6 +12,18 @@ import java.lang.reflect.Type;
  */
 public class JsonUtil {
 
+    private static class SingletonHolder {
+        /**
+         * The Gson instance does not maintain any state while invoking Json operations.
+         * So, you are free to reuse the same object for multiple Json serialization and deserialization operations.
+         */
+        private final static Gson INSTANCE = new Gson();
+    }
+
+    private static Gson getGson() {
+        return SingletonHolder.INSTANCE;
+    }
+
     /**
      * object to json string
      *
@@ -20,7 +32,7 @@ public class JsonUtil {
      */
     public static String toJson(Object src) {
         try {
-            return new Gson().toJson(src);
+            return getGson().toJson(src);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -37,7 +49,7 @@ public class JsonUtil {
      */
     public static <T> T toObject(String json, Class<T> classOfT) {
         try {
-            return new Gson().fromJson(json, classOfT);
+            return getGson().fromJson(json, classOfT);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -54,7 +66,7 @@ public class JsonUtil {
      */
     public static <T> T toObject(String json, Type typeOfT) {
         try {
-            return new Gson().fromJson(json, typeOfT);
+            return getGson().fromJson(json, typeOfT);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
