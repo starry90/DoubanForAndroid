@@ -27,11 +27,13 @@ import com.starry.douban.ui.activity.BeautyActivity;
 import com.starry.douban.ui.activity.CropActivity;
 import com.starry.douban.ui.activity.WebViewActivity;
 import com.starry.douban.util.ActivityAnimationUtils;
+import com.starry.douban.util.AppOpsManagerUtils;
 import com.starry.douban.util.FileProviderUtil;
 import com.starry.douban.util.FileUtils;
 import com.starry.douban.util.SPUtil;
 import com.starry.douban.util.ToastUtil;
 import com.starry.douban.util.UiUtils;
+import com.starry.log.Logger;
 
 import java.io.File;
 
@@ -61,6 +63,8 @@ public class SettingFragment extends BaseFragment implements View.OnClickListene
     TextView tvGithub;
     @BindView(R.id.tv_setting_about)
     TextView tvAbout;
+    @BindView(R.id.tv_setting_check_permission)
+    TextView checkPermission;
 
     private boolean latestVersion;
 
@@ -86,6 +90,7 @@ public class SettingFragment extends BaseFragment implements View.OnClickListene
         tvAbout.setOnClickListener(this);
         tvVersionUpdate.setOnClickListener(this);
         tvGithub.setOnClickListener(this);
+        checkPermission.setOnClickListener(this);
     }
 
     private long[] mClicks = new long[5];
@@ -127,6 +132,11 @@ public class SettingFragment extends BaseFragment implements View.OnClickListene
 
             case R.id.tv_setting_github:
                 WebViewActivity.showActivity(mActivity, Apis.GITHUB_AUTHOR_HOME);
+                break;
+
+            case R.id.tv_setting_check_permission:
+                boolean b = AppOpsManagerUtils.checkCallPhonePermission(getActivity());
+                Logger.e("权限电话检查：" + b);
                 break;
         }
     }
