@@ -14,7 +14,7 @@ ext {
     ]
 
     versions = [
-            "compileSdkVersion": 27,
+            "compileSdkVersion": 28,
             "minSdkVersion"    : 21,
             "targetSdkVersion" : 26,
 

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Environment;
 
 import com.github.moduth.blockcanary.BlockCanary;
@@ -20,6 +21,7 @@ import com.starry.douban.util.TimeUtils;
 import com.starry.http.HttpManager;
 
 import java.io.File;
+import java.lang.reflect.Method;
 import java.util.Date;
 
 /**
@@ -50,6 +52,42 @@ public class AppWrapper {
 
     public void attachBaseContext(Context base) {
         context = base;
+        setHiddenApiExemptions();
+    }
+
+    /**
+     * 参考 https://blog.csdn.net/qq_27512671/article/details/105580036
+     *
+     * 设置豁免所有hide api
+     * http://androidxref.com/9.0.0_r3/xref/art/test/674-hiddenapi/src-art/Main.java#100
+     * VMRuntime.getRuntime().setHiddenApiExemptions(new String[]{"L"});
+     * <p>
+     * 元反射基础上，本进程将所有灰黑api加入白名单（能避免弹窗，logcat打印，后续即使不使用元反射也能达到效果）
+     * <p>
+     * 优点：
+     * <p>
+     * 1能避免弹窗
+     * 2能避免代码扫描，logcat打印
+     * 3某些用getMethod无法发现的方法，可以被发现了了，也可以反射了
+     * 4对于正常反射的代码，仍然不会弹窗，打印logcat
+     */
+    private void setHiddenApiExemptions() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
+            return;
+        }
+
+        try {
+            Method forName = Class.class.getDeclaredMethod("forName", String.class);
+            Method getDeclaredMethod = Class.class.getDeclaredMethod("getDeclaredMethod", String.class, Class[].class);
+
+            Class<?> vmRuntimeClass = (Class<?>) forName.invoke(null, "dalvik.system.VMRuntime");
+            Method getRuntime = (Method) getDeclaredMethod.invoke(vmRuntimeClass, "getRuntime", null);
+            Method setHiddenApiExemptions = (Method) getDeclaredMethod.invoke(vmRuntimeClass, "setHiddenApiExemptions", new Class[]{String[].class});
+            Object sVmRuntime = getRuntime.invoke(null);
+            setHiddenApiExemptions.invoke(sVmRuntime, new Object[]{new String[]{"L"}});
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
