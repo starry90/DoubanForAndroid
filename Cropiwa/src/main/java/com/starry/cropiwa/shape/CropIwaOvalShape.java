@@ -52,7 +52,14 @@ public class CropIwaOvalShape extends CropIwaShape {
         clipPath.rewind();
         clipPath.addOval(cropBounds, Path.Direction.CW);
 
-        canvas.save(Canvas.CLIP_SAVE_FLAG);
+        //    @Deprecated
+        //    Use the flagless version of save(), saveLayer(RectF, Paint) or saveLayerAlpha(RectF, int).
+        //    For saveLayer() calls the clip was always restored for Hardware accelerated canvases and
+        //    as of API level 26 that is the default behavior for all canvas types.
+        //    使用save（）、saveLayer（RectF，Paint）或saveLayerAlpha（RectF，int）的无标志版本。
+        //    对于saveLayer（）调用，对于硬件加速的画布，始终会恢复剪辑，并且从API级别26开始，这是所有画布类型的默认行为。
+        //    public static final int CLIP_SAVE_FLAG = 2;
+        canvas.save();
         canvas.clipPath(clipPath);
         super.drawGrid(canvas, cropBounds, paint);
         canvas.restore();
