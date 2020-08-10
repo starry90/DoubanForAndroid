@@ -53,7 +53,12 @@ public class PortraitsSettingsActivity extends BaseActivity {
         setTitle("设置个人头像");
 
         registerCropReceiver();
-        ImageManager.loadImage(ivSettingPortraits, Uri.fromFile(CropActivity.getCropFile()));
+        loadPortraits();
+    }
+
+    private void loadPortraits() {
+        File cropFile = CropActivity.getCropFile();
+        ImageManager.loadImage(ivSettingPortraits, Uri.fromFile(cropFile), CropActivity.getCropFileMimeType(), cropFile.lastModified());
     }
 
     @Override
@@ -82,7 +87,7 @@ public class PortraitsSettingsActivity extends BaseActivity {
             @Override
             public void onCropSuccess(Uri croppedUri) {
                 ToastUtil.showToast("裁剪成功");
-                ImageManager.loadImage(ivSettingPortraits, Uri.fromFile(CropActivity.getCropFile()));
+                loadPortraits();
             }
 
             @Override

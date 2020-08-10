@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.webkit.MimeTypeMap;
 
 import com.starry.cropiwa.AspectRatio;
 import com.starry.cropiwa.CropIwaView;
@@ -81,6 +82,15 @@ public class CropActivity extends BaseActivity {
      */
     public static File getCropFile() {
         return new File(AppWrapper.getPictureDir(), CROP_PHOTO_NAME);
+    }
+
+    /**
+     * 获取裁剪后的文件Mime Type
+     *
+     * @return Mime Type
+     */
+    public static String getCropFileMimeType() {
+        return MimeTypeMap.getSingleton().getMimeTypeFromExtension(CROP_FORMAT);
     }
 
     @Override

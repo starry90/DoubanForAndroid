@@ -19,6 +19,7 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.transition.DrawableCrossFadeFactory;
 import com.bumptech.glide.request.transition.Transition;
+import com.bumptech.glide.signature.MediaStoreSignature;
 import com.starry.douban.R;
 import com.starry.douban.env.AppWrapper;
 import com.starry.douban.image.okhttp.GlideApp;
@@ -129,6 +130,27 @@ public class ImageManager {
     public static void loadImage(ImageView imageView, Uri uri) {
         GlideApp.with(getContext())
                 .load(uri)
+                .apply(requestOptions)
+                .transition(DrawableTransitionOptions.withCrossFade(crossFadeFactory))
+                .listener(requestListener)
+                .into(imageView);
+    }
+
+    /**
+     * 加载图片,
+     * Glide官方api中没有提供删除图片缓存的函数，
+     * 修复图片被修改后，文件名称未变，加载图片仍显示缓存的问题，使用signature方法
+     *
+     * @param imageView    要设置图片的ImageView
+     * @param uri          图片URI
+     * @param mimeType     文件mime Type
+     * @param dateModified 文件最后修改时间
+     */
+    public static void loadImage(ImageView imageView, Uri uri, String mimeType, long dateModified) {
+        MediaStoreSignature mediaStoreSignature = new MediaStoreSignature(mimeType, dateModified, 0);
+        GlideApp.with(getContext())
+                .load(uri)
+                .signature(mediaStoreSignature)
                 .apply(requestOptions)
                 .transition(DrawableTransitionOptions.withCrossFade(crossFadeFactory))
                 .listener(requestListener)
