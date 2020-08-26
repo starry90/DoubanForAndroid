@@ -7,7 +7,6 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
-import android.os.Environment;
 
 import com.github.moduth.blockcanary.BlockCanary;
 import com.squareup.leakcanary.LeakCanary;
@@ -103,7 +102,7 @@ public class AppWrapper {
     }
 
     public static File getCrashDir() {
-        return FileUtils.buildPath(Environment.getExternalStorageDirectory(), Common.DIR_ROOT, Common.DIR_CRASH);
+        return FileUtils.buildPath(getContext().getExternalFilesDir(""),  Common.DIR_CRASH);
     }
 
     public static File getDownloadDir() {

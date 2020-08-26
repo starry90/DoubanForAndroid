@@ -14,9 +14,9 @@ ext {
     ]
 
     versions = [
-            "compileSdkVersion": 28,
+            "compileSdkVersion": 29,
             "minSdkVersion"    : 21,
-            "targetSdkVersion" : 26,
+            "targetSdkVersion" : 29,
 
             "versionCode"      : gits.gitCommitCount,
             "versionName"      : "1.2.8",
