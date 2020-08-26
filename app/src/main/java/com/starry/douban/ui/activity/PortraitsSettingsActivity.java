@@ -43,6 +43,8 @@ public class PortraitsSettingsActivity extends BaseActivity {
     @BindView(R.id.iv_setting_portraits)
     ImageView ivSettingPortraits;
 
+    private CropIwaResultReceiver cropResultReceiver;
+
     @Override
     public int getLayoutResID() {
         return R.layout.activity_portraits_settings;
@@ -75,7 +77,7 @@ public class PortraitsSettingsActivity extends BaseActivity {
      * 注册裁剪广播
      */
     private void registerCropReceiver() {
-        CropIwaResultReceiver cropResultReceiver = new CropIwaResultReceiver();
+        cropResultReceiver = new CropIwaResultReceiver();
         cropResultReceiver.register(this);
         cropResultReceiver.setListener(new CropIwaResultReceiver.Listener() {
 
@@ -95,6 +97,12 @@ public class PortraitsSettingsActivity extends BaseActivity {
                 ToastUtil.showToast("裁剪失败");
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(cropResultReceiver);
     }
 
     private AlertDialog selectDialog;
