@@ -158,6 +158,23 @@ public class ImageManager {
     }
 
     /**
+     * 加载圆形图片
+     * <p>
+     * 不能用动画效果
+     *
+     * @param imageView 要设置图片的ImageView
+     * @param url       图片Url
+     */
+    public static void loadCircleImage(ImageView imageView, String url) {
+        GlideApp.with(getContext())
+                .load(url)
+                .apply(requestOptions)
+//                .transition(DrawableTransitionOptions.withCrossFade()) //加载圆形图片不能用动画效果
+                .listener(requestListener)
+                .into(imageView);
+    }
+
+    /**
      * 保存图片至系统相册
      *
      * @param url 图片url
