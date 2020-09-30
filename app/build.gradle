@@ -54,6 +54,20 @@ android {
     }
 }
 
+//Program type already present: javax.annotation.xxx 依赖冲突解决办法
+//查看依赖关系： ./gradlew app:dependencies
+//以 javax.annotation:javax.annotation-api:1.3.2 冲突为例
+//第一种办法简单粗暴排除所有
+//configurations {
+//    all*.exclude module: 'javax.annotation-api'
+//}
+//第二种办法在引用冲突依赖的时候排除
+//dependencies{
+//    testImplementation('org.robolectric:robolectric:4.4'){
+//        exclude module: 'javax.annotation-api'
+//    }
+//}
+
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     configurations.all {
