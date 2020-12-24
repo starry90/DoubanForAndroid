@@ -22,7 +22,9 @@ ext {
             "versionName"      : "1.2.8",
     ]
 
-    def supportVersion = "27.1.0"
+    //Cannot find a version of 'com.android.support:support-annotations' that satisfies the version constraints:
+    //Dependency path 'DoubanForAndroid:Cropiwa:unspecified' --> 'com.android.support.test:runner:1.0.2' --> 'com.android.support:support-annotations:27.1.1'
+    def supportVersion = "27.1.1"
 
     deps = [
             "appcompat"          : "com.android.support:appcompat-v7:${supportVersion}",
