@@ -4,16 +4,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.MimeTypeMap;
 
 import com.starry.cropiwa.AspectRatio;
-import com.starry.cropiwa.CropIwaView;
 import com.starry.cropiwa.config.CropIwaSaveConfig;
 import com.starry.cropiwa.shape.CropIwaOvalShape;
 import com.starry.douban.R;
 import com.starry.douban.base.BaseActivity;
+import com.starry.douban.databinding.ActivityCropBinding;
 import com.starry.douban.env.AppWrapper;
 import com.starry.douban.util.FileUtils;
 
@@ -25,7 +26,7 @@ import java.io.File;
  * @author Starry Jerry
  * @since 2019-04-11.
  */
-public class CropActivity extends BaseActivity {
+public class CropActivity extends BaseActivity<ActivityCropBinding> {
 
     public static final String EXTRA_IMAGE_URI = "extra_image_uri";
 
@@ -38,8 +39,6 @@ public class CropActivity extends BaseActivity {
     public static final String CROP_PHOTO_NAME = "crop_photo." + CROP_FORMAT;
 
 
-    CropIwaView cropView;
-
     private CropIwaSaveConfig.Builder saveConfig;
 
     public static void showActivity(Context context, Uri uri) {
@@ -49,26 +48,25 @@ public class CropActivity extends BaseActivity {
     }
 
     @Override
-    public int getLayoutResID() {
-        return R.layout.activity_crop;
+    public ActivityCropBinding getViewBinding(LayoutInflater layoutInflater) {
+        return ActivityCropBinding.inflate(layoutInflater);
     }
 
     @Override
     public void initData() {
         Uri uri = getIntent().getParcelableExtra(EXTRA_IMAGE_URI);
-        cropView = findViewById(R.id.crop_view);
-        cropView.setImageUri(uri);
+        viewBinding.cropView.setImageUri(uri);
 
         initCropView();
     }
 
     private void initCropView() {
-        cropView.configureOverlay().setCropShape(new CropIwaOvalShape(cropView.configureOverlay())).apply();//圆形切割
-        cropView.configureOverlay().setShouldDrawGrid(false).apply(); //不显示网格线
-//        cropView.configureImage().setScale(10 / 100f).apply(); //设置缩放比
-        cropView.configureImage().setImageScaleEnabled(true); //允许缩放
-        cropView.configureImage().setImageTranslationEnabled(true); //允许移动
-        cropView.configureOverlay().setAspectRatio(new AspectRatio(1, 1)).apply(); //比例 1：1
+        viewBinding.cropView.configureOverlay().setCropShape(new CropIwaOvalShape(viewBinding.cropView.configureOverlay())).apply();//圆形切割
+        viewBinding.cropView.configureOverlay().setShouldDrawGrid(false).apply(); //不显示网格线
+//        viewBinding.cropView.configureImage().setScale(10 / 100f).apply(); //设置缩放比
+        viewBinding.cropView.configureImage().setImageScaleEnabled(true); //允许缩放
+        viewBinding.cropView.configureImage().setImageTranslationEnabled(true); //允许移动
+        viewBinding.cropView.configureOverlay().setAspectRatio(new AspectRatio(1, 1)).apply(); //比例 1：1
 
         File cropFile = getCropFile();
         FileUtils.deleteQuietly(cropFile); //先删除旧照片
@@ -102,7 +100,7 @@ public class CropActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.menu_done) {
-            cropView.crop(saveConfig.build());
+            viewBinding.cropView.crop(saveConfig.build());
             finish();
             return true;
         }

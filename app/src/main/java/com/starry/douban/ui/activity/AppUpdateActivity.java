@@ -1,13 +1,12 @@
 package com.starry.douban.ui.activity;
 
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.starry.douban.R;
 import com.starry.douban.base.BaseActivity;
 import com.starry.douban.constant.PreferencesName;
+import com.starry.douban.databinding.ActivityAppUpdateBinding;
 import com.starry.douban.env.AppWrapper;
 import com.starry.douban.event.AppUpdateEvent;
 import com.starry.douban.service.WorkService;
@@ -18,7 +17,6 @@ import com.starry.rx.RxBus;
 
 import java.io.File;
 
-import butterknife.BindView;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 
@@ -27,22 +25,7 @@ import io.reactivex.functions.Consumer;
  * @since 2018/7/7.
  */
 
-public class AppUpdateActivity extends BaseActivity implements View.OnClickListener {
-
-    @BindView(R.id.iv_app_update)
-    ImageView ivAppUpdate;
-    @BindView(R.id.tv_app_update_version)
-    TextView tvAppUpdateVersion;
-    @BindView(R.id.tv_app_update_size)
-    TextView tvAppUpdateSize;
-    @BindView(R.id.pb_app_update)
-    ProgressBar pbAppUpdate;
-    @BindView(R.id.tv_app_update_message)
-    TextView tvAppUpdateMessage;
-    @BindView(R.id.tv_app_update_other)
-    TextView tvAppUpdateOther;
-    @BindView(R.id.tv_app_update_install)
-    TextView tvAppUpdateInstall;
+public class AppUpdateActivity extends BaseActivity<ActivityAppUpdateBinding> implements View.OnClickListener {
 
     private String dirPath;
     private String fileName;
@@ -51,17 +34,17 @@ public class AppUpdateActivity extends BaseActivity implements View.OnClickListe
             String.valueOf(SPUtil.getInt(PreferencesName.APP_UPDATE_VERSION_CODE)));
 
     @Override
-    public int getLayoutResID() {
-        return R.layout.activity_app_update;
+    public ActivityAppUpdateBinding getViewBinding(LayoutInflater layoutInflater) {
+        return ActivityAppUpdateBinding.inflate(layoutInflater);
     }
 
     @Override
     public void initData() {
         setTitle("版本更新");
 
-        tvAppUpdateVersion.setText(String.format("App %s", versionFull));
-        tvAppUpdateMessage.setText(SPUtil.getString(PreferencesName.APP_UPDATE_MESSAGE));
-        tvAppUpdateOther.setText(SPUtil.getString(PreferencesName.APP_UPDATE_OTHER));
+        viewBinding.tvAppUpdateVersion.setText(String.format("App %s", versionFull));
+        viewBinding.tvAppUpdateMessage.setText(SPUtil.getString(PreferencesName.APP_UPDATE_MESSAGE));
+        viewBinding.tvAppUpdateOther.setText(SPUtil.getString(PreferencesName.APP_UPDATE_OTHER));
     }
 
     @Override
@@ -75,29 +58,29 @@ public class AppUpdateActivity extends BaseActivity implements View.OnClickListe
 
     private void checkFile(File file) {
         if (file.exists()) {
-            tvAppUpdateSize.setText("已下载");
-            tvAppUpdateInstall.setText("安装应用");
-            pbAppUpdate.setVisibility(View.GONE);
-            pbAppUpdate.setProgress(0);
+            viewBinding.tvAppUpdateSize.setText("已下载");
+            viewBinding.tvAppUpdateInstall.setText("安装应用");
+            viewBinding.pbAppUpdate.setVisibility(View.GONE);
+            viewBinding.pbAppUpdate.setProgress(0);
         } else {
-            tvAppUpdateSize.setText(CommonUtils.formatFileSize(SPUtil.getLong(PreferencesName.APP_UPDATE_CONTENT_LENGTH)));
-            tvAppUpdateInstall.setText("下载并安装");
+            viewBinding.tvAppUpdateSize.setText(CommonUtils.formatFileSize(SPUtil.getLong(PreferencesName.APP_UPDATE_CONTENT_LENGTH)));
+            viewBinding.tvAppUpdateInstall.setText("下载并安装");
         }
     }
 
     @Override
     public void setListener() {
         super.setListener();
-        tvAppUpdateInstall.setOnClickListener(this);
-        tvAppUpdateMessage.setOnClickListener(this);
+        viewBinding.tvAppUpdateInstall.setOnClickListener(this);
+        viewBinding.tvAppUpdateMessage.setOnClickListener(this);
 
         RxBus.getDefault().register(AppUpdateEvent.class, new Consumer<AppUpdateEvent>() {
             @Override
             public void accept(AppUpdateEvent appUpdateEvent) throws Exception {
                 if (appUpdateEvent.type == 1) {
-                    pbAppUpdate.setVisibility(View.VISIBLE);
+                    viewBinding.pbAppUpdate.setVisibility(View.VISIBLE);
                 } else if (appUpdateEvent.type == 2) {
-                    pbAppUpdate.setProgress((int) (appUpdateEvent.progress * 100));
+                    viewBinding.pbAppUpdate.setProgress((int) (appUpdateEvent.progress * 100));
                 }
             }
         }, AndroidSchedulers.mainThread());
@@ -111,7 +94,7 @@ public class AppUpdateActivity extends BaseActivity implements View.OnClickListe
                 break;
 
             case R.id.tv_app_update_message:
-                boolean visible = tvAppUpdateOther.getVisibility() == View.VISIBLE;
+                boolean visible = viewBinding.tvAppUpdateOther.getVisibility() == View.VISIBLE;
                 if (visible) {
                     hide();
                 } else {
@@ -126,7 +109,7 @@ public class AppUpdateActivity extends BaseActivity implements View.OnClickListe
 
     private void hide() {
         if (hideAnimator == null) {
-            hideAnimator = new CommonAnimator.Builder(tvAppUpdateOther).defaultHideAnimator();
+            hideAnimator = new CommonAnimator.Builder(viewBinding.tvAppUpdateOther).defaultHideAnimator();
         }
         hideAnimator.hide();
     }
@@ -135,7 +118,7 @@ public class AppUpdateActivity extends BaseActivity implements View.OnClickListe
 
     private void show() {
         if (showAnimator == null) {
-            showAnimator = new CommonAnimator.Builder(tvAppUpdateOther).defaultShowAnimator();
+            showAnimator = new CommonAnimator.Builder(viewBinding.tvAppUpdateOther).defaultShowAnimator();
         }
         showAnimator.show();
     }

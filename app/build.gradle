@@ -25,6 +25,10 @@ android {
         testInstrumentationRunner deps.androidRunner
     }
 
+    viewBinding {
+        enabled = true
+    }
+
     // keystore文件
     signingConfigs {
         douban {
@@ -92,8 +96,6 @@ dependencies {
     implementation deps.okhttp3
     implementation deps.agentweb
 
-    annotationProcessor deps.butterknifeCompiler
-    implementation deps.butterknife
     debugImplementation deps.leakcanaryDebug
     releaseImplementation deps.leakcanaryRelease
     debugImplementation deps.anrDebug

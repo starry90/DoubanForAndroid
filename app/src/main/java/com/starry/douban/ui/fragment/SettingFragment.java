@@ -3,14 +3,15 @@ package com.starry.douban.ui.fragment;
 import android.content.Intent;
 import android.os.SystemClock;
 import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.TextView;
 
 import com.starry.douban.BuildConfig;
 import com.starry.douban.R;
 import com.starry.douban.base.BaseFragment;
 import com.starry.douban.constant.Apis;
 import com.starry.douban.constant.PreferencesName;
+import com.starry.douban.databinding.FragmentSettingBinding;
 import com.starry.douban.service.WorkService;
 import com.starry.douban.ui.activity.AboutActivity;
 import com.starry.douban.ui.activity.AppUpdateActivity;
@@ -23,32 +24,17 @@ import com.starry.douban.util.SPUtil;
 import com.starry.douban.util.ToastUtil;
 import com.starry.log.Logger;
 
-import butterknife.BindView;
-
 /**
  * A simple {@link Fragment} subclass.
  * create an instance of this fragment.
  */
-public class SettingFragment extends BaseFragment implements View.OnClickListener {
-
-    @BindView(R.id.tv_setting_portraits)
-    TextView tvPortraits;
-    @BindView(R.id.tv_setting_beauty)
-    TextView tvBeauty;
-    @BindView(R.id.tv_setting_version_update)
-    TextView tvVersionUpdate;
-    @BindView(R.id.tv_setting_github)
-    TextView tvGithub;
-    @BindView(R.id.tv_setting_about)
-    TextView tvAbout;
-    @BindView(R.id.tv_setting_check_permission)
-    TextView checkPermission;
+public class SettingFragment extends BaseFragment<FragmentSettingBinding> implements View.OnClickListener {
 
     private boolean latestVersion;
 
     @Override
-    public int getLayoutResID() {
-        return R.layout.fragment_setting;
+    public FragmentSettingBinding getViewBinding(LayoutInflater layoutInflater) {
+        return FragmentSettingBinding.inflate(layoutInflater);
     }
 
     @Override
@@ -59,12 +45,12 @@ public class SettingFragment extends BaseFragment implements View.OnClickListene
 
     @Override
     public void setListener() {
-        tvPortraits.setOnClickListener(this);
-        tvBeauty.setOnClickListener(this);
-        tvAbout.setOnClickListener(this);
-        tvVersionUpdate.setOnClickListener(this);
-        tvGithub.setOnClickListener(this);
-        checkPermission.setOnClickListener(this);
+        viewBinding.tvSettingPortraits.setOnClickListener(this);
+        viewBinding.tvSettingBeauty.setOnClickListener(this);
+        viewBinding.tvSettingAbout.setOnClickListener(this);
+        viewBinding.tvSettingVersionUpdate.setOnClickListener(this);
+        viewBinding.tvSettingGithub.setOnClickListener(this);
+        viewBinding.tvSettingCheckPermission.setOnClickListener(this);
     }
 
     private long[] mClicks = new long[5];
@@ -77,7 +63,7 @@ public class SettingFragment extends BaseFragment implements View.OnClickListene
         mClicks[mClicks.length - 1] = SystemClock.uptimeMillis();
         if (mClicks[0] >= (SystemClock.uptimeMillis() - 2000)) {
             Intent intent = new Intent(mActivity, AboutActivity.class);
-            ActivityAnimationUtils.transition(mActivity, intent, tvAbout);
+            ActivityAnimationUtils.transition(mActivity, intent, viewBinding.tvSettingAbout);
         }
     }
 

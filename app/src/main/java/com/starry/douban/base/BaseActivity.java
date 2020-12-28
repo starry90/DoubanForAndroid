@@ -7,15 +7,14 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.viewbinding.ViewBinding;
 import android.widget.TextView;
 
 import com.starry.douban.R;
 import com.starry.douban.widget.LoadingDataLayout;
 import com.starry.http.HttpManager;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 
 /**
@@ -26,7 +25,7 @@ import butterknife.ButterKnife;
  * <p>
  */
 
-public abstract class BaseActivity extends AppCompatActivity implements IBaseUI {
+public abstract class BaseActivity<T extends ViewBinding> extends AppCompatActivity implements IBaseUI {
 
     protected final String TAG = getClass().getSimpleName();
 
@@ -35,26 +34,28 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseUI 
      * <p>Required view 'view_loading_container' with ID 2131427348 for field 'mLoadingDataLayout' was not found. If this view is optional add '@Nullable' (fields) or '@Optional' (methods) annotation.
      */
     @Nullable
-    @BindView(R.id.view_loading_container)
     protected LoadingDataLayout mLoadingDataLayout;
 
     @Nullable
-    @BindView(R.id.tv_toolbar_title)
     protected TextView tvToolbarTitle;
 
     @Nullable
-    @BindView(R.id.toolbar)
     protected Toolbar toolbar;
+
+    protected T viewBinding;
+
+    public abstract T getViewBinding(LayoutInflater layoutInflater);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        int layoutResID = getLayoutResID();
-        if (layoutResID != 0) {
-            setContentView(layoutResID);
+        viewBinding = getViewBinding(LayoutInflater.from(this));
+        if (viewBinding != null) {
+            setContentView(viewBinding.getRoot());
         }
-        ButterKnife.bind(this);//必须在setContentView()之后调用
 
+        tvToolbarTitle = findViewById(R.id.tv_toolbar_title);
+        mLoadingDataLayout = findViewById(R.id.view_loading_container);
         initToolBar();
         initLoadingDataLayout();
         initData();
@@ -85,6 +86,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseUI 
     }
 
     private void initToolBar() {
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setTitle("");//标题内容
         ActionBar ab = getSupportActionBar();

@@ -2,46 +2,35 @@ package com.starry.douban.ui.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
 import com.starry.douban.R;
 import com.starry.douban.base.BaseFragment;
 import com.starry.douban.base.BaseFragmentPagerAdapter;
+import com.starry.douban.databinding.FragmentMovieParentBinding;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import butterknife.BindView;
-
 /**
  * @author Starry Jerry
  * @since 2016/12/15.
  */
-public class MovieParentFragment extends BaseFragment {
-
-    @BindView(R.id.tab)
-    FrameLayout tab;
-    @BindView(R.id.header)
-    LinearLayout header;
-    @BindView(R.id.viewpager)
-    ViewPager viewPager;
+public class MovieParentFragment extends BaseFragment<FragmentMovieParentBinding> {
 
     private String[] tabTitles = new String[]{"正在热映", "即将上映", "Top250", "科幻", "喜剧"};
 
     @Override
-    public int getLayoutResID() {
-        return R.layout.fragment_movie_parent;
+    public FragmentMovieParentBinding getViewBinding(LayoutInflater layoutInflater) {
+        return FragmentMovieParentBinding.inflate(layoutInflater);
     }
 
     @Override
     public void initData() {
-        tab.addView(LayoutInflater.from(getActivity()).inflate(R.layout.tab_smart_indicator, tab, false));
-        SmartTabLayout viewPagerTab = (SmartTabLayout) tab.findViewById(R.id.viewpager_tab);
+        viewBinding.tab.addView(LayoutInflater.from(getActivity()).inflate(R.layout.tab_smart_indicator, viewBinding.tab, false));
+        SmartTabLayout viewPagerTab = (SmartTabLayout) viewBinding.tab.findViewById(R.id.viewpager_tab);
 
         List<Fragment> pages = new ArrayList<>();
         for (int i = 0; i < tabTitles.length; i++) {
@@ -58,8 +47,8 @@ public class MovieParentFragment extends BaseFragment {
         //https://www.jianshu.com/p/6d102b9332be
         BaseFragmentPagerAdapter adapter = new BaseFragmentPagerAdapter(getChildFragmentManager(), pages);
         adapter.setPageTitles(Arrays.asList(tabTitles));
-        viewPager.setAdapter(adapter);
-        viewPager.setOffscreenPageLimit(5);
-        viewPagerTab.setViewPager(viewPager);
+        viewBinding.viewpager.setAdapter(adapter);
+        viewBinding.viewpager.setOffscreenPageLimit(5);
+        viewPagerTab.setViewPager(viewBinding.viewpager);
     }
 }

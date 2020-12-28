@@ -13,9 +13,6 @@ import com.starry.douban.util.CommonAnimator;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 /**
  * Loading Data View
  *
@@ -57,27 +54,22 @@ public class LoadingDataLayout extends RelativeLayout {
     /**
      * 网络加载中
      */
-    @BindView(R.id.view_network_loading)
     View view_network_loading;
     /**
      * 加载成功，数据为空
      */
-    @BindView(R.id.view_empty_data)
     View view_empty_data;
     /**
      * 加载失败
      */
-    @BindView(R.id.view_network_error)
     View view_network_error;
     /**
      * 网络错误提示信息
      */
-    @BindView(R.id.tv_network_error)
     TextView tv_network_error;
     /**
      * 内容为空提示信息
      */
-    @BindView(R.id.tv_empty_data)
     TextView tv_empty_data;
 
     public LoadingDataLayout(Context context) {
@@ -94,7 +86,11 @@ public class LoadingDataLayout extends RelativeLayout {
      */
     private void init(Context context) {
         container = View.inflate(context, R.layout.view_network_status, this);
-        ButterKnife.bind(this);
+        view_network_loading = container.findViewById(R.id.view_network_loading);
+        view_empty_data = container.findViewById(R.id.view_empty_data);
+        view_network_error = container.findViewById(R.id.view_network_error);
+        tv_network_error = container.findViewById(R.id.tv_network_error);
+        tv_empty_data = container.findViewById(R.id.tv_empty_data);
 
         view_network_error.setOnClickListener(new View.OnClickListener() {
             @Override

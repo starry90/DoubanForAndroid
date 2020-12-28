@@ -6,12 +6,7 @@ package com.starry.douban.base;
 public interface IBaseUI {
 
     /**
-     * 获取视图
-     */
-    int getLayoutResID();
-
-    /**
-     * 初始化数据 在{@link #getLayoutResID()} 之后
+     * 初始化数据
      */
     void initData();
 

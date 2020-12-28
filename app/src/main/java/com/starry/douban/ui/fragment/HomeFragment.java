@@ -2,14 +2,15 @@ package com.starry.douban.ui.fragment;
 
 import android.content.Intent;
 import android.support.v7.widget.GridLayoutManager;
+import android.view.LayoutInflater;
 import android.view.View;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
-import com.starry.douban.R;
 import com.starry.douban.adapter.BookAdapter;
 import com.starry.douban.base.BaseFragment;
 import com.starry.douban.base.BaseRecyclerAdapter;
 import com.starry.douban.constant.Apis;
+import com.starry.douban.databinding.FragmentHomeBinding;
 import com.starry.douban.model.BookBean;
 import com.starry.douban.model.Books;
 import com.starry.douban.ui.activity.BookDetailActivity;
@@ -22,16 +23,11 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import butterknife.BindView;
-
 /**
  * @author Starry Jerry
  * @since 2016/12/4.
  */
-public class HomeFragment extends BaseFragment {
-
-    @BindView(R.id.XRecyclerView_home)
-    XRecyclerView mRecyclerView;
+public class HomeFragment extends BaseFragment<FragmentHomeBinding> {
 
     private int start = 0;
     private int count = 20;
@@ -43,8 +39,8 @@ public class HomeFragment extends BaseFragment {
     private List<BookBean> books = new ArrayList<>();
 
     @Override
-    public int getLayoutResID() {
-        return R.layout.fragment_home;
+    public FragmentHomeBinding getViewBinding(LayoutInflater layoutInflater) {
+        return FragmentHomeBinding.inflate(layoutInflater);
     }
 
     @Override
@@ -54,7 +50,7 @@ public class HomeFragment extends BaseFragment {
 
     private void initRecyclerView() {
         mAdapter = new BookAdapter(books);
-        mAdapter.addOnScrollListener(mRecyclerView);
+        mAdapter.addOnScrollListener(viewBinding.XRecyclerViewHome);
         mAdapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View itemView, int position) {
@@ -64,9 +60,9 @@ public class HomeFragment extends BaseFragment {
             }
         });
 
-        mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
-        mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
+        viewBinding.XRecyclerViewHome.setLayoutManager(new GridLayoutManager(getActivity(), 3));
+        viewBinding.XRecyclerViewHome.setAdapter(mAdapter);
+        viewBinding.XRecyclerViewHome.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
                 start = 0;
@@ -78,7 +74,7 @@ public class HomeFragment extends BaseFragment {
                 loadData();
             }
         });
-        mRecyclerView.setRefreshing(true);
+        viewBinding.XRecyclerViewHome.setRefreshing(true);
     }
 
     @Override
@@ -106,8 +102,8 @@ public class HomeFragment extends BaseFragment {
 
                     @Override
                     public void onAfter(boolean success) {
-                        mRecyclerView.refreshComplete();
-                        mRecyclerView.loadMoreComplete();
+                        viewBinding.XRecyclerViewHome.refreshComplete();
+                        viewBinding.XRecyclerViewHome.loadMoreComplete();
                         hideLoading(success);
                     }
                 });
@@ -125,7 +121,7 @@ public class HomeFragment extends BaseFragment {
         //4、页码自增
         start += count;
         //5、如果没有数据了，禁用加载更多功能
-        mRecyclerView.setLoadingMoreEnabled(start < response.getTotal());
+        viewBinding.XRecyclerViewHome.setLoadingMoreEnabled(start < response.getTotal());
     }
 
 }

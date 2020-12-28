@@ -3,6 +3,8 @@ package com.starry.douban.ui.activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.view.LayoutInflater;
+import android.viewbinding.ViewBinding;
 
 import com.starry.douban.base.BaseActivity;
 import com.starry.douban.env.AppWrapper;
@@ -22,8 +24,8 @@ public class UpdateDialogActivity extends BaseActivity {
     private AlertDialog dialog;
 
     @Override
-    public int getLayoutResID() {
-        return 0;
+    public ViewBinding getViewBinding(LayoutInflater layoutInflater) {
+        return null;
     }
 
     @Override

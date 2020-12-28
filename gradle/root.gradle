@@ -44,8 +44,6 @@ ext {
             "okhttp3"            : "com.squareup.okhttp3:okhttp:3.11.0",
             "agentweb"           : "com.just.agentweb:agentweb:4.0.2",
 
-            "butterknife"        : "com.jakewharton:butterknife:8.8.1",
-            "butterknifeCompiler": "com.jakewharton:butterknife-compiler:8.8.1",
             "leakcanaryDebug"    : "com.squareup.leakcanary:leakcanary-android:1.5.4",
             "leakcanaryRelease"  : "com.squareup.leakcanary:leakcanary-android-no-op:1.5.4",
             "anrDebug"           : "com.github.markzhai:blockcanary-android:1.5.0",

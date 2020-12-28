@@ -6,27 +6,26 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.starry.douban.R;
 import com.starry.douban.base.BaseActivity;
+import com.starry.douban.databinding.ActivityBeautyDetailBinding;
 import com.starry.douban.image.ImageManager;
 import com.starry.douban.model.BeautyModel;
 import com.starry.douban.util.StringUtils;
 import com.starry.douban.util.ToastUtil;
 import com.starry.parallaxviewpager.Mode;
-import com.starry.parallaxviewpager.ParallaxViewPager;
 import com.starry.rx.RxManager;
 import com.starry.rx.RxTask;
 
 import java.util.ArrayList;
 
-import butterknife.BindView;
 import io.reactivex.functions.Consumer;
 
 /**
@@ -34,16 +33,10 @@ import io.reactivex.functions.Consumer;
  * @since 2019/1/1.
  */
 
-public class BeautyDetailActivity extends BaseActivity {
+public class BeautyDetailActivity extends BaseActivity<ActivityBeautyDetailBinding> {
 
     private static final String EXTRA_BEAUTY_LIST = "extra_beauty_list";
     private static final String EXTRA_POSITION = "extra_position";
-
-    @BindView(R.id.vp_beauty_detail)
-    ParallaxViewPager viewPager;
-
-    @BindView(R.id.tv_beauty_detail_page)
-    TextView tvPage;
 
     private ArrayList<BeautyModel> beautyList;
 
@@ -62,8 +55,8 @@ public class BeautyDetailActivity extends BaseActivity {
     }
 
     @Override
-    public int getLayoutResID() {
-        return R.layout.activity_beauty_detail;
+    public ActivityBeautyDetailBinding getViewBinding(LayoutInflater layoutInflater) {
+        return ActivityBeautyDetailBinding.inflate(layoutInflater);
     }
 
     @Override
@@ -74,7 +67,7 @@ public class BeautyDetailActivity extends BaseActivity {
 
         setPageAndTitle();
         initViewPager();
-        viewPager.setCurrentItem(selectPosition, false);
+        viewBinding.vpBeautyDetail.setCurrentItem(selectPosition, false);
     }
 
     private void initViewPager() {
@@ -104,12 +97,12 @@ public class BeautyDetailActivity extends BaseActivity {
                 return beautyList.size();
             }
         };
-        viewPager.setAdapter(adapter);
-        viewPager.setMode(Mode.LEFT_OVERLAY);
+        viewBinding.vpBeautyDetail.setAdapter(adapter);
+        viewBinding.vpBeautyDetail.setMode(Mode.LEFT_OVERLAY);
 //        viewPager.setMode(Mode.RIGHT_OVERLAY);
 //        viewPager.setMode(Mode.NONE);
 
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        viewBinding.vpBeautyDetail.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -129,7 +122,7 @@ public class BeautyDetailActivity extends BaseActivity {
     }
 
     private void setPageAndTitle() {
-        tvPage.setText(StringUtils.format("%d/%d", selectPosition + 1, beautyList.size()));
+        viewBinding.tvBeautyDetailPage.setText(StringUtils.format("%d/%d", selectPosition + 1, beautyList.size()));
         setTitle(beautyList.get(selectPosition).getDesc());
     }
 

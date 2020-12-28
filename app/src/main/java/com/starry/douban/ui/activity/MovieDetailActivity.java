@@ -3,16 +3,14 @@ package com.starry.douban.ui.activity;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.starry.douban.R;
 import com.starry.douban.adapter.MoviePhotoAdapter;
 import com.starry.douban.base.BaseActivity;
 import com.starry.douban.constant.Apis;
+import com.starry.douban.databinding.ActivityMovieDetailBinding;
 import com.starry.douban.image.ImageManager;
 import com.starry.douban.model.MovieDetail;
 import com.starry.douban.util.ToastUtil;
@@ -22,47 +20,21 @@ import com.starry.http.error.ErrorModel;
 
 import java.util.List;
 
-import butterknife.BindView;
-
 /**
  * 电影详情页
  *
  * @author Starry Jerry
  * @since 2016/12/31.
  */
-public class MovieDetailActivity extends BaseActivity {
+public class MovieDetailActivity extends BaseActivity<ActivityMovieDetailBinding> {
 
     public static final String EXTRA_MOVIE_ID = "extra_movie_id";
-
-    @BindView(R.id.iv_movie_detail_bg)
-    ImageView iv_movie_detail_bg;
-    @BindView(R.id.iv_movie_detail)
-    ImageView ivMovieDetail;
-    @BindView(R.id.tv_movie_detail_title)
-    TextView tvMovieDetailTitle;
-    @BindView(R.id.tv_movie_detail_original_title)
-    TextView tvMovieDetailOriginalTitle;
-    @BindView(R.id.tv_movie_detail_rating)
-    TextView tvMovieDetailRating;
-    /**
-     * 评分人数
-     */
-    @BindView(R.id.tv_movie_detail_rating_count)
-    TextView tv_movie_detail_rating_count;
-    @BindView(R.id.tv_movie_detail_genres)
-    TextView tvMovieDetailGenres;
-    @BindView(R.id.tv_movie_detail_countries)
-    TextView tvMovieDetailCountries;
-    @BindView(R.id.tv_movie_detail_summary)
-    TextView tv_movie_detail_summary;
-    @BindView(R.id.recycler_view)
-    RecyclerView recyclerView;
 
     private String url;
 
     @Override
-    public int getLayoutResID() {
-        return R.layout.activity_movie_detail;
+    public ActivityMovieDetailBinding getViewBinding(LayoutInflater layoutInflater) {
+        return ActivityMovieDetailBinding.inflate(layoutInflater);
     }
 
     @Override
@@ -79,12 +51,12 @@ public class MovieDetailActivity extends BaseActivity {
 
     private void initRecyclerView(List<MovieDetail.PerformerBean> performerBeanList) {
         MoviePhotoAdapter mAdapter = new MoviePhotoAdapter(performerBeanList);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-        recyclerView.setAdapter(mAdapter);
-        recyclerView.setOnTouchListener(new View.OnTouchListener() {
+        viewBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        viewBinding.recyclerView.setAdapter(mAdapter);
+        viewBinding.recyclerView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                recyclerView.getParent().requestDisallowInterceptTouchEvent(true);
+                viewBinding.recyclerView.getParent().requestDisallowInterceptTouchEvent(true);
                 return false;
             }
         });
@@ -120,14 +92,14 @@ public class MovieDetailActivity extends BaseActivity {
     }
 
     public void showMovieDetail(MovieDetail response) {
-        ImageManager.getBitmap(ivMovieDetail, response.getImages().getLarge(), iv_movie_detail_bg);
-        tvMovieDetailTitle.setText(response.getTitle());
-        tvMovieDetailOriginalTitle.setText(response.getOriginal_title());
-        tvMovieDetailRating.setText(String.valueOf(response.getRating().getAverage()));
-        tv_movie_detail_rating_count.setText("（" + response.getRatings_count() + "人评）");
-        tvMovieDetailGenres.setText(format(response.getGenres().toString()));
-        tvMovieDetailCountries.setText(format(response.getCountries().toString()) + " / " + response.getYear());
-        tv_movie_detail_summary.setText(response.getSummary());
+        ImageManager.getBitmap(viewBinding.ivMovieDetail, response.getImages().getLarge(), viewBinding.ivMovieDetailBg);
+        viewBinding.tvMovieDetailTitle.setText(response.getTitle());
+        viewBinding.tvMovieDetailOriginalTitle.setText(response.getOriginal_title());
+        viewBinding.tvMovieDetailRating.setText(String.valueOf(response.getRating().getAverage()));
+        viewBinding.tvMovieDetailRatingCount.setText("（" + response.getRatings_count() + "人评）");
+        viewBinding.tvMovieDetailGenres.setText(format(response.getGenres().toString()));
+        viewBinding.tvMovieDetailCountries.setText(format(response.getCountries().toString()) + " / " + response.getYear());
+        viewBinding.tvMovieDetailSummary.setText(response.getSummary());
 
         List<MovieDetail.PerformerBean> directors = response.getDirectors();
         directors.addAll(response.getCasts());

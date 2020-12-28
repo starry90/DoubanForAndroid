@@ -5,13 +5,14 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
 
 import com.starry.cropiwa.image.CropIwaResultReceiver;
 import com.starry.douban.R;
 import com.starry.douban.base.BaseActivity;
 import com.starry.douban.constant.Common;
+import com.starry.douban.databinding.ActivityPortraitsSettingsBinding;
 import com.starry.douban.env.AppWrapper;
 import com.starry.douban.image.ImageManager;
 import com.starry.douban.util.FileProviderUtil;
@@ -21,8 +22,6 @@ import com.starry.douban.util.UiUtils;
 
 import java.io.File;
 
-import butterknife.BindView;
-
 /**
  * 个人头像设置
  *
@@ -30,7 +29,7 @@ import butterknife.BindView;
  * @since 2020/08/09.
  */
 
-public class PortraitsSettingsActivity extends BaseActivity {
+public class PortraitsSettingsActivity extends BaseActivity<ActivityPortraitsSettingsBinding> {
 
     public static final int REQUEST_CODE_PICK_PHOTO = 10001;
     public static final int REQUEST_CODE_TAKE_PHOTO = 10002;
@@ -40,14 +39,11 @@ public class PortraitsSettingsActivity extends BaseActivity {
      */
     public static final String TAKE_PHOTO_NAME = "take_photo.png";
 
-    @BindView(R.id.iv_setting_portraits)
-    ImageView ivSettingPortraits;
-
     private CropIwaResultReceiver cropResultReceiver;
 
     @Override
-    public int getLayoutResID() {
-        return R.layout.activity_portraits_settings;
+    public ActivityPortraitsSettingsBinding getViewBinding(LayoutInflater layoutInflater) {
+        return ActivityPortraitsSettingsBinding.inflate(layoutInflater);
     }
 
     @Override
@@ -60,12 +56,12 @@ public class PortraitsSettingsActivity extends BaseActivity {
 
     private void loadPortraits() {
         File cropFile = CropActivity.getCropFile();
-        ImageManager.loadImage(ivSettingPortraits, Uri.fromFile(cropFile), CropActivity.getCropFileMimeType(), cropFile.lastModified());
+        ImageManager.loadImage(viewBinding.ivSettingPortraits, Uri.fromFile(cropFile), CropActivity.getCropFileMimeType(), cropFile.lastModified());
     }
 
     @Override
     public void setListener() {
-        ivSettingPortraits.setOnClickListener(new View.OnClickListener() {
+        viewBinding.ivSettingPortraits.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showSelectDialog();

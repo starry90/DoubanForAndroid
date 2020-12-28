@@ -4,12 +4,13 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
-import android.widget.RadioButton;
+import android.view.LayoutInflater;
 import android.widget.RadioGroup;
 
 import com.starry.douban.R;
 import com.starry.douban.base.BaseFragmentPagerAdapter;
 import com.starry.douban.base.BaseNFCActivity;
+import com.starry.douban.databinding.ActivityMainBinding;
 import com.starry.douban.env.AppWrapper;
 import com.starry.douban.ui.fragment.HomeFragment;
 import com.starry.douban.ui.fragment.MovieParentFragment;
@@ -21,25 +22,12 @@ import com.starry.douban.util.ToastUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-
 
 /**
  * Main
  * Created by Starry Jerry on 2016/12/1.
  */
-public class MainActivity extends BaseNFCActivity {
-
-    @BindView(R.id.viewpager_main)
-    ViewPager viewpagerMain;
-    @BindView(R.id.rbtn_main_home)
-    RadioButton rbMainHome;
-    @BindView(R.id.rbtn_main_book)
-    RadioButton rbtnMainBook;
-    @BindView(R.id.rbtn_main_setting)
-    RadioButton rbtnMainSetting;
-    @BindView(R.id.radioGroup_main)
-    RadioGroup radioGroupMain;
+public class MainActivity extends BaseNFCActivity<ActivityMainBinding> {
 
     private String[] titles = new String[]{"首页", "电影", "设置"};
 
@@ -56,8 +44,8 @@ public class MainActivity extends BaseNFCActivity {
     }
 
     @Override
-    public int getLayoutResID() {
-        return R.layout.activity_main;
+    public ActivityMainBinding getViewBinding(LayoutInflater layoutInflater) {
+        return ActivityMainBinding.inflate(layoutInflater);
     }
 
     @Override
@@ -74,37 +62,37 @@ public class MainActivity extends BaseNFCActivity {
         pages.add(new HomeFragment());
         pages.add(new MovieParentFragment());
         pages.add(new SettingFragment());
-        viewpagerMain.setAdapter(new BaseFragmentPagerAdapter(getSupportFragmentManager(), pages));
-        viewpagerMain.setOffscreenPageLimit(3);
+        viewBinding.viewpagerMain.setAdapter(new BaseFragmentPagerAdapter(getSupportFragmentManager(), pages));
+        viewBinding.viewpagerMain.setOffscreenPageLimit(3);
 
-        argbEvaluatorUtil.addTab(rbMainHome, rbtnMainBook, rbtnMainSetting);
+        argbEvaluatorUtil.addTab(viewBinding.rbtnMainHome, viewBinding.rbtnMainBook, viewBinding.rbtnMainSetting);
         argbEvaluatorUtil.addTabDrawable(R.drawable.selector_main_home, R.drawable.selector_main_movie, R.drawable.selector_main_setting);
     }
 
     @Override
     public void setListener() {
-        radioGroupMain.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        viewBinding.radioGroupMain.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId) {
                     case R.id.rbtn_main_home:
                         setTitle(titles[0]);
-                        viewpagerMain.setCurrentItem(0, false);
+                        viewBinding.viewpagerMain.setCurrentItem(0, false);
                         break;
                     case R.id.rbtn_main_book:
                         setTitle(titles[1]);
-                        viewpagerMain.setCurrentItem(1, false);
+                        viewBinding.viewpagerMain.setCurrentItem(1, false);
                         break;
                     case R.id.rbtn_main_setting:
                         setTitle(titles[2]);
-                        viewpagerMain.setCurrentItem(2, false);
+                        viewBinding.viewpagerMain.setCurrentItem(2, false);
                         break;
 
                 }
             }
         });
 
-        viewpagerMain.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        viewBinding.viewpagerMain.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
             private final int DELAY_TIME = 100;
             private Handler handler = new Handler();
