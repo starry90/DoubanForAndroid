@@ -85,6 +85,7 @@ dependencies {
     implementation deps.recyclerview
     implementation deps.design
     implementation deps.cardview
+    implementation deps.lifecycleExtensions
     //test
     testImplementation deps.junit
     androidTestImplementation deps.runner

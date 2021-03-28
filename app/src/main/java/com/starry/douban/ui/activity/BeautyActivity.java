@@ -1,5 +1,8 @@
 package com.starry.douban.ui.activity;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,15 +11,12 @@ import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.starry.douban.adapter.BeautyAdapter;
 import com.starry.douban.base.BaseActivity;
 import com.starry.douban.base.BaseRecyclerAdapter;
-import com.starry.douban.constant.Apis;
 import com.starry.douban.databinding.ActivityBeautyBinding;
+import com.starry.douban.jetpack.httpstatuslivedata.HttpStatusData;
+import com.starry.douban.jetpack.viewmodel.BeautyViewModel;
 import com.starry.douban.model.BeautyModel;
 import com.starry.douban.model.GankBaseModel;
-import com.starry.douban.util.StringUtils;
 import com.starry.douban.util.ToastUtil;
-import com.starry.http.HttpManager;
-import com.starry.http.callback.FinalCallback;
-import com.starry.http.error.ErrorModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +36,8 @@ public class BeautyActivity extends BaseActivity<ActivityBeautyBinding> {
 
     private final int pageSize = 20;
 
+    private BeautyViewModel beautyViewModel;
+
     @Override
     public ActivityBeautyBinding getViewBinding(LayoutInflater layoutInflater) {
         return ActivityBeautyBinding.inflate(layoutInflater);
@@ -44,6 +46,26 @@ public class BeautyActivity extends BaseActivity<ActivityBeautyBinding> {
     @Override
     public void initData() {
         setTitle("Beauty");
+
+        beautyViewModel = ViewModelProviders.of(this).get(BeautyViewModel.class);
+        beautyViewModel.beautyLiveData.observe(this, new Observer<HttpStatusData<GankBaseModel<BeautyModel>>>() {
+            @Override
+            public void onChanged(@Nullable HttpStatusData<GankBaseModel<BeautyModel>> gankBaseModelHttpStatusData) {
+                viewBinding.rvBeauty.refreshComplete();
+                viewBinding.rvBeauty.loadMoreComplete();
+                switch (gankBaseModelHttpStatusData.getStatus()) {
+                    case DATA_ERROR:
+                        hideLoading(false);
+                        ToastUtil.showToast(gankBaseModelHttpStatusData.getErrorModel().getMessage());
+                        break;
+
+                    case DATA_SUCCESS:
+                        hideLoading(true);
+                        refreshList(gankBaseModelHttpStatusData.getData().getResults());
+                        break;
+                }
+            }
+        });
 
         initRecyclerView();
     }
@@ -77,31 +99,10 @@ public class BeautyActivity extends BaseActivity<ActivityBeautyBinding> {
 
     @Override
     public void loadData() {
-        String url = StringUtils.format(Apis.GANK_BEAUTY, pageSize, pageNo);
-        HttpManager.get(url)
-                .build()
-                .enqueue(new FinalCallback<GankBaseModel<BeautyModel>>() {
-
-                    @Override
-                    public void onSuccess(GankBaseModel<BeautyModel> response, Object... obj) {
-                        refreshList(response.getResults());
-                    }
-
-                    @Override
-                    public void onFailure(ErrorModel errorModel) {
-                        ToastUtil.showToast(errorModel.getMessage());
-                    }
-
-                    @Override
-                    public void onAfter(boolean success) {
-                        viewBinding.rvBeauty.refreshComplete();
-                        viewBinding.rvBeauty.loadMoreComplete();
-                        hideLoading(success);
-                    }
-                });
+        beautyViewModel.loadBeauty(pageSize, pageNo);
     }
 
-    public void refreshList(List<BeautyModel> results) {
+    private void refreshList(List<BeautyModel> results) {
         //1、如果是第一页先清空数据 books不用做非空判断，不可能为空
         if (pageNo++ == 1) {
             beautyList.clear();
