@@ -1,5 +1,10 @@
 package com.starry.log;
 
+import android.os.Environment;
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.Looper;
+import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -7,8 +12,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileFilter;
+import java.io.RandomAccessFile;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Source;
@@ -195,6 +208,17 @@ final class LoggerPrinter {
             return;
         }
         log(ASSERT, message, args);
+    }
+
+    public void f(String tag, String message) {
+        if (tag != null) {
+            localTag.set(tag);
+        }
+        log(INFO, tag, message);
+
+        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED) || !Environment.isExternalStorageRemovable()) {
+            DiskLogger.get().log(tag + ": " + message);
+        }
     }
 
     /**
@@ -403,6 +427,84 @@ final class LoggerPrinter {
             }
         }
         return -1;
+    }
+
+    private static String logFolderPath;
+
+    public void setLogFolderPath(String logFolderPath) {
+        LoggerPrinter.logFolderPath = logFolderPath;
+    }
+
+    // 日志写sd卡
+    private static class DiskLogger {
+        private final Handler mHandler;
+
+        private static class Holder {
+            private static final DiskLogger DISK_LOGGER = new DiskLogger();
+        }
+
+        public static DiskLogger get() {
+            return Holder.DISK_LOGGER;
+        }
+
+        public void log(String msg) {
+            Message message = mHandler.obtainMessage(0, msg);
+            mHandler.sendMessage(message);
+        }
+
+        private DiskLogger() {
+            HandlerThread mHandlerThread = new HandlerThread("Logger");
+            mHandlerThread.start();
+            mHandler = new WorkHandler(mHandlerThread.getLooper(), new File(logFolderPath));
+        }
+
+        private static class WorkHandler extends Handler {
+
+            private final File logFolder;
+
+            private static final DateFormat LOG_FILE_NAME = new SimpleDateFormat("yyyyMMdd", Locale.US);
+
+            private static final SimpleDateFormat LOG_FILE_CONTENT = new SimpleDateFormat("MM-dd HH:mm:ss", Locale.US);
+
+            WorkHandler(Looper looper, File logFolder) {
+                super(looper);
+                this.logFolder = logFolder;
+            }
+
+            @Override
+            public void handleMessage(Message msg) {
+                try {
+                    // 创建日志文件 yyyymmdd.log
+                    final String logFile = LOG_FILE_NAME.format(new Date(System.currentTimeMillis()));
+                    File f = new File(logFolder, String.format(Locale.US, "%s.log", logFile));
+                    RandomAccessFile fileWriter = new RandomAccessFile(f, "rw");
+                    fileWriter.seek(f.length());
+
+                    // 日志内容
+                    String ctLog = LOG_FILE_CONTENT.format(new Date(System.currentTimeMillis()));
+                    String content = ctLog + " " + android.os.Process.myPid() + " " + msg.obj + "\n";
+                    fileWriter.write(content.getBytes(StandardCharsets.UTF_8));
+                } catch (Throwable e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    private static class LogFileFilter implements FileFilter {
+        static final long ONE_DAY = 24 * 3600 * 1000;
+        static final int ONE_WEEK = 7;
+
+        @Override
+        public boolean accept(File pathname) {
+            String filename = pathname.getName().toLowerCase();
+            if (pathname.isFile() && filename.endsWith(".log")) {
+                long lastTime = pathname.lastModified();
+                long now = System.currentTimeMillis();
+                return (now - lastTime) / ONE_DAY >= ONE_WEEK;
+            }
+            return false;
+        }
     }
 
 }

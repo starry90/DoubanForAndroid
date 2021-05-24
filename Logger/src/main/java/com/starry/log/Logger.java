@@ -13,12 +13,22 @@ public final class Logger {
 
     /**
      * 初始化
-     * @param methodCount 打印方法堆栈层数
+     *
+     * @param methodCount    打印方法堆栈层数
      * @param showThreadInfo 是否显示线程信息
-     * @param methodOffset 方法堆栈偏移量
+     * @param methodOffset   方法堆栈偏移量
      */
     public static void initSettings(int methodCount, boolean showThreadInfo, int methodOffset) {
         printer.getSettings().initSettings(methodCount, showThreadInfo, methodOffset);
+    }
+
+    /**
+     * 设置日志文件根目录
+     *
+     * @param logFolderPath 日志文件根目录
+     */
+    public void setLogFolderPath(String logFolderPath) {
+        printer.setLogFolderPath(logFolderPath);
     }
 
     public static void clear() {
