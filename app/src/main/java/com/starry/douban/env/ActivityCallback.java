@@ -4,8 +4,8 @@ import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Starry Jerry
@@ -16,23 +16,39 @@ public class ActivityCallback implements Application.ActivityLifecycleCallbacks 
     /***
      * 寄存整个应用Activity
      **/
-    private final List<Activity> activityList = new LinkedList<>();
+    private final Set<Activity> activitySet = new HashSet<>();
 
     /**
      * finish所有的Activity（用于整个应用退出）
      */
     public void finishAll() {
-        synchronized (activityList) {
-            for (Activity activity : activityList) {
+        synchronized (activitySet) {
+            for (Activity activity : activitySet) {
                 activity.finish();
             }
-            activityList.clear();
+            activitySet.clear();
+        }
+    }
+
+    /**
+     * 关闭除了某一类型class之外的所有的Activity
+     *
+     * @param cls 例外的不关闭的Activity类
+     */
+    public void finishAllExcept(Class<Activity> cls) {
+        synchronized (activitySet) {
+            for (Activity activity : activitySet) {
+                if (!cls.isInstance(activity)) {
+                    activity.finish();
+                }
+            }
+            activitySet.clear();
         }
     }
 
     @Override
     public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
-        activityList.add(activity);
+        activitySet.add(activity);
     }
 
     @Override
@@ -62,6 +78,6 @@ public class ActivityCallback implements Application.ActivityLifecycleCallbacks 
 
     @Override
     public void onActivityDestroyed(Activity activity) {
-        activityList.remove(activity);
+        activitySet.remove(activity);
     }
 }
