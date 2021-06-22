@@ -8,7 +8,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
+import android.view.View;
 import android.viewbinding.ViewBinding;
 import android.widget.TextView;
 
@@ -21,7 +21,7 @@ import com.starry.http.HttpManager;
  * Activity基类
  * <p>
  * 方法执行顺序
- * {@link #getLayoutResID()} —> {@link #initData()} —> {@link #setListener()}
+ * {@link #initData()} —> {@link #setListener()}
  * <p>
  */
 
@@ -54,8 +54,6 @@ public abstract class BaseActivity<T extends ViewBinding> extends AppCompatActiv
             setContentView(viewBinding.getRoot());
         }
 
-        tvToolbarTitle = findViewById(R.id.tv_toolbar_title);
-        mLoadingDataLayout = findViewById(R.id.view_loading_container);
         initToolBar();
         initLoadingDataLayout();
         initData();
@@ -63,6 +61,7 @@ public abstract class BaseActivity<T extends ViewBinding> extends AppCompatActiv
     }
 
     private void initLoadingDataLayout() {
+        mLoadingDataLayout = findViewById(R.id.view_loading_container);
         if (mLoadingDataLayout != null) {
             showLoading();
             mLoadingDataLayout.setRetryListener(new LoadingDataLayout.OnRetryListener() {
@@ -87,28 +86,37 @@ public abstract class BaseActivity<T extends ViewBinding> extends AppCompatActiv
 
     private void initToolBar() {
         toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        setTitle("");//标题内容
-        ActionBar ab = getSupportActionBar();
-        if (ab != null) {
-            Drawable drawable = getToolbarBackground();
-            if (drawable != null) {
-                ab.setBackgroundDrawable(drawable);
+        if (toolbar != null) {
+            tvToolbarTitle = findViewById(R.id.tv_toolbar_title);
+            setSupportActionBar(toolbar);
+            ActionBar ab = getSupportActionBar();
+            if (ab != null) {
+                Drawable drawable = getToolbarBackground();
+                if (drawable != null) {
+                    ab.setBackgroundDrawable(drawable);
+                }
+                ab.setDisplayShowTitleEnabled(false);//自定义标题居中需要关闭
+                ab.setDisplayHomeAsUpEnabled(displayHomeAsUpEnabled());//显示返回键
             }
-            ab.setDisplayShowTitleEnabled(false);//自定义标题居中需要关闭
-            ab.setDisplayHomeAsUpEnabled(displayHomeAsUpEnabled());//显示返回键
+
+            if (displayHomeAsUpEnabled()) {
+                int toolbarNavigationIconRes = getToolbarNavigationIconRes();
+                //设置图片时会显示返回键
+                if (toolbarNavigationIconRes != 0) {
+                    toolbar.setNavigationIcon(toolbarNavigationIconRes);
+                }
+            }
+            toolbar.setNavigationOnClickListener(getToolbarNavigationOnClickListener());
         }
     }
 
     @Override
     public void setTitle(int titleId) {
-        super.setTitle(titleId);
         if (tvToolbarTitle != null) tvToolbarTitle.setText(titleId);
     }
 
     @Override
     public void setTitle(CharSequence title) {
-        super.setTitle(title);
         if (tvToolbarTitle != null) tvToolbarTitle.setText(title);
     }
 
@@ -122,21 +130,35 @@ public abstract class BaseActivity<T extends ViewBinding> extends AppCompatActiv
     }
 
     /**
+     * 返回键图片
+     *
+     * @return 返回键图片资源
+     */
+    protected int getToolbarNavigationIconRes() {
+        return 0;
+    }
+
+    /**
+     * 返回键点击事件监听
+     *
+     * @return 返回键点击事件监听
+     */
+    protected View.OnClickListener getToolbarNavigationOnClickListener() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        };
+    }
+
+    /**
      * 显示返回键
      *
      * @return true为显示左上角返回键，反之为false
      */
     protected boolean displayHomeAsUpEnabled() {
         return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {//Toolbar返回键
-            finish();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
