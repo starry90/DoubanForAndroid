@@ -12,7 +12,6 @@
 
     <dimen name="card_margin">16dp</dimen>
 
-    <dimen name="toolbar_padding_top">0dp</dimen>
     <!-- 查源码得知toolbar标题margin为12dp -->
     <dimen name="toolbar_title_margin">12dp</dimen>
 
