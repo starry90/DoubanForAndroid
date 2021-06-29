@@ -8,13 +8,13 @@ import java.util.List;
  */
 public class Movies extends BaseModel {
 
-    private List<MovieBean> subjects;
+    private List<MovieItemBean> subjects;
 
-    public List<MovieBean> getSubjects() {
+    public List<MovieItemBean> getSubjects() {
         return subjects;
     }
 
-    public Movies setSubjects(List<MovieBean> subjects) {
+    public Movies setSubjects(List<MovieItemBean> subjects) {
         this.subjects = subjects;
         return this;
     }

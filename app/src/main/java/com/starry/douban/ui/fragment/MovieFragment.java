@@ -11,7 +11,7 @@ import com.starry.douban.base.BaseFragment;
 import com.starry.douban.base.BaseRecyclerAdapter;
 import com.starry.douban.constant.Apis;
 import com.starry.douban.databinding.FragmentHomeBinding;
-import com.starry.douban.model.MovieBean;
+import com.starry.douban.model.MovieItemBean;
 import com.starry.douban.model.Movies;
 import com.starry.douban.ui.activity.MovieDetailActivity;
 import com.starry.douban.util.ToastUtil;
@@ -30,15 +30,13 @@ import java.util.List;
 public class MovieFragment extends BaseFragment<FragmentHomeBinding> {
 
     private int start = 0;
-    private int count = 20;
+    private final int count = 20;
 
     private MovieAdapter mAdapter;
 
-    private List<MovieBean> books = new ArrayList<>();
+    private final List<MovieItemBean> books = new ArrayList<>();
 
-    private String url = Apis.MovieInTheaters;
-
-    private LinkedHashMap<String, Object> params = new LinkedHashMap<>();
+    private final LinkedHashMap<String, Object> params = new LinkedHashMap<>();
 
     @Override
     public FragmentHomeBinding getViewBinding(LayoutInflater layoutInflater) {
@@ -47,28 +45,7 @@ public class MovieFragment extends BaseFragment<FragmentHomeBinding> {
 
     @Override
     public void initData() {
-        int type = getArguments().getInt("type");
-        //0."正在热映", 1."即将上映", 2."Top250",3. "科幻电影",4. "喜剧电影"
-        switch (type) {
-            case 0:
-                url = Apis.MovieInTheaters;
-                break;
-            case 1:
-                url = Apis.MovieComingSoon;
-                break;
-            case 2:
-                url = Apis.MovieTop250;
-                break;
-            case 3:
-                url = Apis.MovieSearch;
-                params.put("tag", "科幻");
-                break;
-            case 4:
-                url = Apis.MovieSearch;
-                params.put("tag", "喜剧");
-                break;
-        }
-
+        params.put("tag", getArguments().getString("tag"));
         initRecyclerView();
     }
 
@@ -108,9 +85,11 @@ public class MovieFragment extends BaseFragment<FragmentHomeBinding> {
 
     @Override
     public void loadData() {
-        params.put("start", start);
-        params.put("count", count);
-        HttpManager.get(url)
+        params.put("type", "movie");
+        params.put("sort", "recommend");
+        params.put("page_start", start);
+        params.put("page_limit", count);
+        HttpManager.get(Apis.Movie)
                 .tag(this)
                 .params(params)
                 .build()

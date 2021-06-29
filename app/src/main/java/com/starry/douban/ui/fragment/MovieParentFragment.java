@@ -20,7 +20,10 @@ import java.util.List;
  */
 public class MovieParentFragment extends BaseFragment<FragmentMovieParentBinding> {
 
-    private String[] tabTitles = new String[]{"正在热映", "即将上映", "Top250", "科幻", "喜剧"};
+    /**
+     * {"tags":["热门","最新","经典","可播放","豆瓣高分","冷门佳片","华语","欧美","韩国","日本","动作","喜剧","爱情","科幻","悬疑","恐怖","成长"]}
+     */
+    private String[] tabTitles = new String[]{"热门", "最新", "经典", "可播放", "豆瓣高分", "冷门佳片", "华语", "欧美", "韩国", "日本", "动作", "喜剧", "爱情", "科幻", "悬疑", "恐怖", "成长"};
 
     @Override
     public FragmentMovieParentBinding getViewBinding(LayoutInflater layoutInflater) {
@@ -35,7 +38,7 @@ public class MovieParentFragment extends BaseFragment<FragmentMovieParentBinding
         List<Fragment> pages = new ArrayList<>();
         for (int i = 0; i < tabTitles.length; i++) {
             Bundle bundle = new Bundle();
-            bundle.putInt("type", i);
+            bundle.putString("tag", tabTitles[i]);
             MovieFragment movieFragment = new MovieFragment();
             movieFragment.setArguments(bundle);
             pages.add(movieFragment);
@@ -48,7 +51,7 @@ public class MovieParentFragment extends BaseFragment<FragmentMovieParentBinding
         BaseFragmentPagerAdapter adapter = new BaseFragmentPagerAdapter(getChildFragmentManager(), pages);
         adapter.setPageTitles(Arrays.asList(tabTitles));
         viewBinding.viewpager.setAdapter(adapter);
-        viewBinding.viewpager.setOffscreenPageLimit(5);
+        viewBinding.viewpager.setOffscreenPageLimit(tabTitles.length);
         viewPagerTab.setViewPager(viewBinding.viewpager);
     }
 }

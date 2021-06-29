@@ -18,6 +18,13 @@ public class Apis {
     public static final String HOST_DOUBAN = "https://api.douban.com/";
 
     /**
+     * 电影
+     * <p>
+     * https://movie.douban.com/j/search_subjects?type=movie&tag=热门&sort=recommend&page_limit=100&page_start=0
+     */
+    public static String Movie = "https://movie.douban.com/j/search_subjects";
+
+    /**
      * 图书搜索
      */
     public static String BookSearch = HOST_DOUBAN + "/v2/book/search";
