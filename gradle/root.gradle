@@ -18,8 +18,8 @@ ext {
             "minSdkVersion"    : 21,
             "targetSdkVersion" : 29,
 
-            "versionCode"      : gits.gitCommitCount,
-            "versionName"      : "1.2.8",
+            "versionCode"      : 20210630,
+            "versionName"      : "2.1.0",
             "httpVersion"      : 6
     ]
 
