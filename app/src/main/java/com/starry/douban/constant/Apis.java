@@ -25,6 +25,11 @@ public class Apis {
     public static String Movie = "https://movie.douban.com/j/search_subjects";
 
     /**
+     * 电影详情
+     */
+    public static final String MOVIE_DETAIL = "https://movie.douban.com/subject/";
+
+    /**
      * 图书搜索
      */
     public static String BookSearch = HOST_DOUBAN + "/v2/book/search";

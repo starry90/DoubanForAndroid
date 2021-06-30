@@ -2,7 +2,7 @@ package com.starry.douban.adapter;
 
 import com.starry.douban.R;
 import com.starry.douban.base.BaseRecyclerAdapter;
-import com.starry.douban.model.MovieDetail;
+import com.starry.douban.model.MovieItemDetailBean;
 
 import java.util.List;
 
@@ -10,9 +10,9 @@ import java.util.List;
  * @author Starry Jerry
  * @since 2016/12/10.
  */
-public class MoviePhotoAdapter extends BaseRecyclerAdapter<MovieDetail.PerformerBean> {
+public class MoviePhotoAdapter extends BaseRecyclerAdapter<MovieItemDetailBean.PersonBean> {
 
-    public MoviePhotoAdapter(List<MovieDetail.PerformerBean> beans) {
+    public MoviePhotoAdapter(List<MovieItemDetailBean.PersonBean> beans) {
         super(beans);
     }
 
@@ -22,9 +22,9 @@ public class MoviePhotoAdapter extends BaseRecyclerAdapter<MovieDetail.Performer
     }
 
     @Override
-    public void onBindData(BaseRecyclerAdapter.RecyclerViewHolder holder, MovieDetail.PerformerBean itemData, int position) {
-        if (itemData.getAvatars() != null)
-            holder.setImageFromInternet(R.id.iv_movie_photo, itemData.getAvatars().getMedium());
+    public void onBindData(BaseRecyclerAdapter.RecyclerViewHolder holder, MovieItemDetailBean.PersonBean itemData, int position) {
+//        if (itemData.getUrl() != null)
+//            holder.setImageFromInternet(R.id.iv_movie_photo, itemData.getUrl());
         holder.setText(R.id.tv_movie_photo, itemData.getName());
         if (position == 0) {
             holder.setText(R.id.tv_movie_photo_type, "导演");

@@ -44,6 +44,7 @@ ext {
             "gson"               : "com.google.code.gson:gson:2.8.2",
             "okhttp3"            : "com.squareup.okhttp3:okhttp:3.11.0",
             "agentweb"           : "com.just.agentweb:agentweb:4.0.2",
+            "jsoup"              : "org.jsoup:jsoup:1.13.1",
 
             "leakcanaryDebug"    : "com.squareup.leakcanary:leakcanary-android:1.5.4",
             "leakcanaryRelease"  : "com.squareup.leakcanary:leakcanary-android-no-op:1.5.4",
