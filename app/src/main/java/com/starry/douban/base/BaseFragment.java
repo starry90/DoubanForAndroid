@@ -3,25 +3,22 @@ package com.starry.douban.base;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.viewbinding.ViewBinding;
 
 import com.starry.douban.R;
 import com.starry.douban.widget.LoadingDataLayout;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 
 /**
  * 正常的Framgent
  * Fragment基类
  */
-public abstract class BaseFragment extends Fragment implements IBaseUI {
+public abstract class BaseFragment<T extends ViewBinding> extends Fragment implements IBaseUI {
 
     protected final String TAG = getClass().getSimpleName();
 
@@ -36,7 +33,6 @@ public abstract class BaseFragment extends Fragment implements IBaseUI {
      * <p>Required view 'view_loading_container' with ID 2131427348 for field 'mLoadingDataLayout' was not found. If this view is optional add '@Nullable' (fields) or '@Optional' (methods) annotation.
      */
     @Nullable
-    @BindView(R.id.view_loading_container)
     protected LoadingDataLayout mLoadingDataLayout;
 
     /**
@@ -48,6 +44,10 @@ public abstract class BaseFragment extends Fragment implements IBaseUI {
      */
     private boolean isViewCreated = false;
 
+    protected T viewBinding;
+
+    public abstract T getViewBinding(LayoutInflater layoutInflater);
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -57,26 +57,19 @@ public abstract class BaseFragment extends Fragment implements IBaseUI {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         isViewCreated = true;
-        View view = inflater.inflate(getLayoutResID(), container, false);
-        ButterKnife.bind(this, view);
-        return view;
+        viewBinding = getViewBinding(inflater);
+        return viewBinding.getRoot();
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        mLoadingDataLayout = view.findViewById(R.id.view_loading_container);
         initLoadingDataLayout();
-
-        //保证onCreate方法第一时间执行完，显示UI界面
-        new Handler().post(new Runnable() {
-            @Override
-            public void run() {
-                initData();
-                setListener();
-                //Fragment初始化时setUserVisibleHint方法会先于onCreateView执行
-                prepareLazyLoading(getUserVisibleHint(), isViewCreated);
-            }
-        });
+        initData();
+        setListener();
+        //Fragment初始化时setUserVisibleHint方法会先于onCreateView执行
+        prepareLazyLoading(getUserVisibleHint(), isViewCreated);
     }
 
     @Override

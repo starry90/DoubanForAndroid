@@ -12,6 +12,7 @@ import android.nfc.tech.NfcF;
 import android.nfc.tech.NfcV;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.viewbinding.ViewBinding;
 
 import com.starry.douban.util.NfcUtils;
 import com.starry.douban.util.ToastUtil;
@@ -23,7 +24,7 @@ import com.starry.log.Logger;
  * @author Starry Jerry
  * @since 18-8-26
  */
-public abstract class BaseNFCActivity extends BaseActivity {
+public abstract class BaseNFCActivity<T extends ViewBinding> extends BaseActivity<T> {
 
     private NfcAdapter mNfcAdapter;
 

@@ -1,70 +1,88 @@
 package com.starry.douban.ui.activity;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
+import android.view.LayoutInflater;
 import android.view.View;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
-import com.starry.douban.R;
 import com.starry.douban.adapter.BeautyAdapter;
 import com.starry.douban.base.BaseActivity;
 import com.starry.douban.base.BaseRecyclerAdapter;
-import com.starry.douban.constant.Apis;
+import com.starry.douban.databinding.ActivityBeautyBinding;
+import com.starry.douban.jetpack.httpstatuslivedata.HttpStatusData;
+import com.starry.douban.jetpack.viewmodel.BeautyViewModel;
 import com.starry.douban.model.BeautyModel;
 import com.starry.douban.model.GankBaseModel;
-import com.starry.douban.util.StringUtils;
 import com.starry.douban.util.ToastUtil;
-import com.starry.http.HttpManager;
-import com.starry.http.callback.FinalCallback;
-import com.starry.http.error.ErrorModel;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import butterknife.BindView;
 
 /**
  * @author Starry Jerry
  * @since 2018/12/30.
  */
 
-public class BeautyActivity extends BaseActivity {
-
-    @BindView(R.id.rv_beauty)
-    XRecyclerView mRecyclerView;
+public class BeautyActivity extends BaseActivity<ActivityBeautyBinding> {
 
     private BeautyAdapter mAdapter;
 
-    private ArrayList<BeautyModel> beautyList = new ArrayList<>();
+    private final ArrayList<BeautyModel> beautyList = new ArrayList<>();
 
     private int pageNo = 1;
 
-    private int pageSize = 20;
+    private final int pageSize = 20;
+
+    private BeautyViewModel beautyViewModel;
 
     @Override
-    public int getLayoutResID() {
-        return R.layout.activity_beauty;
+    public ActivityBeautyBinding getViewBinding(LayoutInflater layoutInflater) {
+        return ActivityBeautyBinding.inflate(layoutInflater);
     }
 
     @Override
     public void initData() {
         setTitle("Beauty");
 
+        beautyViewModel = ViewModelProviders.of(this).get(BeautyViewModel.class);
+        beautyViewModel.beautyLiveData.observe(this, new Observer<HttpStatusData<GankBaseModel<BeautyModel>>>() {
+            @Override
+            public void onChanged(@Nullable HttpStatusData<GankBaseModel<BeautyModel>> gankBaseModelHttpStatusData) {
+                viewBinding.rvBeauty.refreshComplete();
+                viewBinding.rvBeauty.loadMoreComplete();
+                switch (gankBaseModelHttpStatusData.getStatus()) {
+                    case DATA_ERROR:
+                        hideLoading(false);
+                        ToastUtil.showToast(gankBaseModelHttpStatusData.getErrorModel().getMessage());
+                        break;
+
+                    case DATA_SUCCESS:
+                        hideLoading(true);
+                        refreshList(gankBaseModelHttpStatusData.getData().getResults());
+                        break;
+                }
+            }
+        });
+
         initRecyclerView();
     }
 
     private void initRecyclerView() {
         mAdapter = new BeautyAdapter(beautyList);
-        mAdapter.addOnScrollListener(mRecyclerView);
-        mAdapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener<BeautyModel>() {
+        mAdapter.addOnScrollListener(viewBinding.rvBeauty);
+        mAdapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(View itemView, int position, BeautyModel beautyModel) {
+            public void onItemClick(View itemView, int position) {
                 BeautyDetailActivity.showActivity(BeautyActivity.this, beautyList, position);
             }
         });
 
-        mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
-        mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
+        viewBinding.rvBeauty.setLayoutManager(new GridLayoutManager(getActivity(), 3));
+        viewBinding.rvBeauty.setAdapter(mAdapter);
+        viewBinding.rvBeauty.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
                 pageNo = 1;
@@ -76,36 +94,15 @@ public class BeautyActivity extends BaseActivity {
                 loadData();
             }
         });
-        mRecyclerView.setRefreshing(true);
+        viewBinding.rvBeauty.setRefreshing(true);
     }
 
     @Override
     public void loadData() {
-        String url = StringUtils.format(Apis.GANK_BEAUTY, pageSize, pageNo);
-        HttpManager.get(url)
-                .build()
-                .enqueue(new FinalCallback<GankBaseModel<BeautyModel>>() {
-
-                    @Override
-                    public void onSuccess(GankBaseModel<BeautyModel> response, Object... obj) {
-                        refreshList(response.getResults());
-                    }
-
-                    @Override
-                    public void onFailure(ErrorModel errorModel) {
-                        ToastUtil.showToast(errorModel.getMessage());
-                    }
-
-                    @Override
-                    public void onAfter(boolean success) {
-                        mRecyclerView.refreshComplete();
-                        mRecyclerView.loadMoreComplete();
-                        hideLoading(success);
-                    }
-                });
+        beautyViewModel.loadBeauty(pageSize, pageNo);
     }
 
-    public void refreshList(List<BeautyModel> results) {
+    private void refreshList(List<BeautyModel> results) {
         //1、如果是第一页先清空数据 books不用做非空判断，不可能为空
         if (pageNo++ == 1) {
             beautyList.clear();
@@ -118,7 +115,7 @@ public class BeautyActivity extends BaseActivity {
         //3、刷新RecyclerView
         mAdapter.notifyDataSetChanged();
         //5、如果没有数据了，禁用加载更多功能
-        mRecyclerView.setLoadingMoreEnabled(hasData);
+        viewBinding.rvBeauty.setLoadingMoreEnabled(hasData);
 
         if (beautyList.isEmpty()) {
             showEmpty();

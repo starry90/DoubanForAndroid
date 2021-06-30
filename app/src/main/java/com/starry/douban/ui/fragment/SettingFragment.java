@@ -3,45 +3,38 @@ package com.starry.douban.ui.fragment;
 import android.content.Intent;
 import android.os.SystemClock;
 import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.TextView;
 
 import com.starry.douban.BuildConfig;
 import com.starry.douban.R;
 import com.starry.douban.base.BaseFragment;
 import com.starry.douban.constant.Apis;
 import com.starry.douban.constant.PreferencesName;
+import com.starry.douban.databinding.FragmentSettingBinding;
 import com.starry.douban.service.WorkService;
 import com.starry.douban.ui.activity.AboutActivity;
 import com.starry.douban.ui.activity.AppUpdateActivity;
 import com.starry.douban.ui.activity.BeautyActivity;
+import com.starry.douban.ui.activity.PortraitsSettingsActivity;
 import com.starry.douban.ui.activity.WebViewActivity;
 import com.starry.douban.util.ActivityAnimationUtils;
+import com.starry.douban.util.AppOpsManagerUtils;
 import com.starry.douban.util.SPUtil;
 import com.starry.douban.util.ToastUtil;
-
-import butterknife.BindView;
+import com.starry.log.Logger;
 
 /**
  * A simple {@link Fragment} subclass.
  * create an instance of this fragment.
  */
-public class SettingFragment extends BaseFragment implements View.OnClickListener {
-
-    @BindView(R.id.tv_setting_beauty)
-    TextView tvBeauty;
-    @BindView(R.id.tv_setting_version_update)
-    TextView tvVersionUpdate;
-    @BindView(R.id.tv_setting_github)
-    TextView tvGithub;
-    @BindView(R.id.tv_setting_about)
-    TextView tvAbout;
+public class SettingFragment extends BaseFragment<FragmentSettingBinding> implements View.OnClickListener {
 
     private boolean latestVersion;
 
     @Override
-    public int getLayoutResID() {
-        return R.layout.fragment_setting;
+    public FragmentSettingBinding getViewBinding(LayoutInflater layoutInflater) {
+        return FragmentSettingBinding.inflate(layoutInflater);
     }
 
     @Override
@@ -52,10 +45,12 @@ public class SettingFragment extends BaseFragment implements View.OnClickListene
 
     @Override
     public void setListener() {
-        tvBeauty.setOnClickListener(this);
-        tvAbout.setOnClickListener(this);
-        tvVersionUpdate.setOnClickListener(this);
-        tvGithub.setOnClickListener(this);
+        viewBinding.tvSettingPortraits.setOnClickListener(this);
+        viewBinding.tvSettingBeauty.setOnClickListener(this);
+        viewBinding.tvSettingAbout.setOnClickListener(this);
+        viewBinding.tvSettingVersionUpdate.setOnClickListener(this);
+        viewBinding.tvSettingGithub.setOnClickListener(this);
+        viewBinding.tvSettingCheckPermission.setOnClickListener(this);
     }
 
     private long[] mClicks = new long[5];
@@ -68,13 +63,17 @@ public class SettingFragment extends BaseFragment implements View.OnClickListene
         mClicks[mClicks.length - 1] = SystemClock.uptimeMillis();
         if (mClicks[0] >= (SystemClock.uptimeMillis() - 2000)) {
             Intent intent = new Intent(mActivity, AboutActivity.class);
-            ActivityAnimationUtils.transition(mActivity, intent, tvAbout);
+            ActivityAnimationUtils.transition(mActivity, intent, viewBinding.tvSettingAbout);
         }
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.tv_setting_portraits:
+                startActivity(new Intent(mActivity, PortraitsSettingsActivity.class));
+                break;
+
             case R.id.tv_setting_beauty:
                 startActivity(new Intent(mActivity, BeautyActivity.class));
                 break;
@@ -94,6 +93,12 @@ public class SettingFragment extends BaseFragment implements View.OnClickListene
             case R.id.tv_setting_github:
                 WebViewActivity.showActivity(mActivity, Apis.GITHUB_AUTHOR_HOME);
                 break;
+
+            case R.id.tv_setting_check_permission:
+                boolean b = AppOpsManagerUtils.checkCallPhonePermission(getActivity());
+                Logger.e("权限电话检查：" + b);
+                break;
         }
     }
+
 }

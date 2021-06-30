@@ -3,12 +3,10 @@ package com.starry.douban.ui.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
-import android.widget.TextView;
+import android.view.LayoutInflater;
 
-import com.starry.douban.R;
 import com.starry.douban.base.BaseNFCActivity;
-
-import butterknife.BindView;
+import com.starry.douban.databinding.ActivityNfcBinding;
 
 /**
  * NFC识别
@@ -17,16 +15,13 @@ import butterknife.BindView;
  * @since 18-8-26
  */
 
-public class NFCActivity extends BaseNFCActivity {
+public class NFCActivity extends BaseNFCActivity<ActivityNfcBinding> {
 
     private static final String EXTRA_NFC_RESULT = "nfcResult";
 
-    @BindView(R.id.tv_nfc_content)
-    TextView tv_nfc_content;
-
     @Override
-    public int getLayoutResID() {
-        return R.layout.activity_nfc;
+    public ActivityNfcBinding getViewBinding(LayoutInflater layoutInflater) {
+        return ActivityNfcBinding.inflate(layoutInflater);
     }
 
     @Override
@@ -45,7 +40,7 @@ public class NFCActivity extends BaseNFCActivity {
         setTitle("NFC识别");
 
         String nfcResult = getIntent().getStringExtra(EXTRA_NFC_RESULT);
-        tv_nfc_content.setText(nfcResult);
+        viewBinding.tvNfcContent.setText(nfcResult);
     }
 
     @Override
@@ -58,7 +53,7 @@ public class NFCActivity extends BaseNFCActivity {
         if (TextUtils.isEmpty(nfcResult)) {
             return;
         }
-        tv_nfc_content.setText(nfcResult);
+        viewBinding.tvNfcContent.setText(nfcResult);
     }
 
 }

@@ -1,21 +1,29 @@
 package com.starry.douban.image;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.Priority;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.target.Target;
+import com.bumptech.glide.request.transition.DrawableCrossFadeFactory;
+import com.bumptech.glide.request.transition.Transition;
+import com.bumptech.glide.signature.MediaStoreSignature;
 import com.starry.douban.R;
-import com.starry.douban.base.BaseApp;
+import com.starry.douban.env.AppWrapper;
+import com.starry.douban.image.okhttp.GlideApp;
+import com.starry.log.Logger;
 import com.starry.rx.RxManager;
 import com.starry.rx.RxTask;
 
@@ -25,25 +33,48 @@ import io.reactivex.functions.Consumer;
 
 /**
  * 图片管理器
- * <li>Glide默认会缓存转换后的图片到SD卡（即第4种缓存策略），若要缓存原始图片，设置缓存策略为第1种或者第3种</li>
- * <li>Glide默认会开启内存缓存，如果需要关闭,请参考{@link #loadImageAndCache(ImageView, String, int)}  </li>
- * <li></li>Glide缓存策略：<li>
- * <li>1.{@linkplain DiskCacheStrategy#ALL} 既缓存原始图片也缓存转换后的图片</li>
- * <li>2{@linkplain DiskCacheStrategy#NONE} 不缓存图片</li>
- * <li>3.{@linkplain DiskCacheStrategy#SOURCE} 只缓存原始图片</li>
- * <li>4.{@linkplain DiskCacheStrategy#RESULT} 只缓存转换后的图片</li>
+ * <li>Glide默认会缓存转换后的图片到SD卡</li>
  *
  * @author Starry Jerry
  * @since 2016/12/11.
  */
 public class ImageManager {
 
-    //Glide.with(context).resumeRequests()和 Glide.with(context).pauseRequests()
-    // 当列表在滑动的时候，调用pauseRequests()取消请求，滑动停止时，调用resumeRequests()恢复请求。这样是不是会好些呢？
-
     public static Context getContext() {
-        return BaseApp.getContext();
+        return AppWrapper.getContext();
     }
+
+    private static final RequestOptions requestOptions = new RequestOptions()
+            .error(R.drawable.image_bg_default)
+            .placeholder(R.drawable.image_bg_default);
+
+    /**
+     * https://muyangmin.github.io/glide-docs-cn/doc/transitions.html
+     * Glide 的默认交叉淡入(cross fade)效果使用了 TransitionDrawable 。它提供两种动画模式，由 setCrossFadeEnabled() 控制。
+     * <p>
+     * 当交叉淡入被禁用时，正在过渡的图片会在原先显示的图像上面淡入。当交叉淡入被启用时，原先显示的图片会从不透明过渡到透明，而正在过渡的图片则会从透明变为不透明。
+     * <p>
+     * 在 Glide 中，我们默认禁用了交叉淡入，这样通常看起来要好看一些。实际的交叉淡入，如上所述对两个图片同时改变 alpha 值，通常会在过渡的中间造成一个短暂的白色闪屏，这个时候两个图片都是部分不透明的。
+     * 当占位符比实际加载的图片要大，或者图片部分为透明时，禁用交叉淡入会导致动画完成后占位符在图片后面仍然可见。
+     * 如果你在加载透明图片时使用了占位符，你可以启用交叉淡入(setCrossFadeEnabled(true))。
+     */
+    private static final DrawableCrossFadeFactory crossFadeFactory = new DrawableCrossFadeFactory
+            .Builder(300)
+            .setCrossFadeEnabled(true)
+            .build();
+
+    private static final RequestListener requestListener = new RequestListener<Drawable>() {
+        @Override
+        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+            Logger.e("Glide exception:" + e);
+            return false;
+        }
+
+        @Override
+        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+            return false;
+        }
+    };
 
     /**
      * @param imageView
@@ -51,26 +82,28 @@ public class ImageManager {
      * @param bgView
      */
     public static void getBitmap(final ImageView imageView, String url, final ImageView bgView) {
-        Glide.with(getContext()).load(url).asBitmap().into(new SimpleTarget<Bitmap>(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL) {
-            @SuppressLint("CheckResult")
-            @Override
-            public void onResourceReady(final Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                imageView.setImageBitmap(resource);
-                RxManager.createIO(new RxTask<Bitmap>() {
+        GlideApp.with(getContext())
+                .asBitmap()
+                .load(url)
+                .into(new SimpleTarget<Bitmap>() {
                     @Override
-                    public Bitmap run() {
-                        //该方法耗时2秒，放在主线程会卡顿
-                        return FastBlurUtil.doBlur(resource, 20, false);
-                    }
-                }).subscribe(new Consumer<Bitmap>() {
-                    @Override
-                    public void accept(Bitmap blurBitmap) {
-                        bgView.setImageBitmap(blurBitmap);
+                    public void onResourceReady(@NonNull final Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                        imageView.setImageBitmap(resource);
+                        RxManager.createIO(new RxTask<Bitmap>() {
+                            @Override
+                            public Bitmap run() {
+                                //该方法耗时2秒，放在主线程会卡顿
+                                return FastBlurUtil.doBlur(resource, 20, false);
+                            }
+                        }).subscribe(new Consumer<Bitmap>() {
+                            @Override
+                            public void accept(Bitmap blurBitmap) {
+                                bgView.setImageBitmap(blurBitmap);
 
+                            }
+                        });
                     }
                 });
-            }
-        });
     }
 
     /**
@@ -80,11 +113,64 @@ public class ImageManager {
      * @param url       图片URL
      */
     public static void loadImage(ImageView imageView, String url) {
-        Glide.with(getContext())
+        GlideApp.with(getContext())
                 .load(url)
-                .error(R.drawable.image_bg_default)
-                .placeholder(R.drawable.image_bg_default)
-                .crossFade()
+                .apply(requestOptions)
+                .transition(DrawableTransitionOptions.withCrossFade(crossFadeFactory))
+                .listener(requestListener)
+                .into(imageView);
+    }
+
+    /**
+     * 加载图片
+     *
+     * @param imageView 要设置图片的ImageView
+     * @param uri       图片URI
+     */
+    public static void loadImage(ImageView imageView, Uri uri) {
+        GlideApp.with(getContext())
+                .load(uri)
+                .apply(requestOptions)
+                .transition(DrawableTransitionOptions.withCrossFade(crossFadeFactory))
+                .listener(requestListener)
+                .into(imageView);
+    }
+
+    /**
+     * 加载图片,
+     * Glide官方api中没有提供删除图片缓存的函数，
+     * 修复图片被修改后，文件名称未变，加载图片仍显示缓存的问题，使用signature方法
+     *
+     * @param imageView    要设置图片的ImageView
+     * @param uri          图片URI
+     * @param mimeType     文件mime Type
+     * @param dateModified 文件最后修改时间
+     */
+    public static void loadImage(ImageView imageView, Uri uri, String mimeType, long dateModified) {
+        MediaStoreSignature mediaStoreSignature = new MediaStoreSignature(mimeType, dateModified, 0);
+        GlideApp.with(getContext())
+                .load(uri)
+                .signature(mediaStoreSignature)
+                .apply(requestOptions)
+                .transition(DrawableTransitionOptions.withCrossFade(crossFadeFactory))
+                .listener(requestListener)
+                .into(imageView);
+    }
+
+    /**
+     * 加载圆形图片
+     * <p>
+     * 不能用动画效果
+     *
+     * @param imageView 要设置图片的ImageView
+     * @param url       图片Url
+     */
+    public static void loadCircleImage(ImageView imageView, String url) {
+        GlideApp.with(getContext())
+                .load(url)
+                .apply(requestOptions)
+//                .transition(DrawableTransitionOptions.withCrossFade()) //加载圆形图片不能用动画效果
+                .listener(requestListener)
                 .into(imageView);
     }
 
@@ -96,7 +182,7 @@ public class ImageManager {
      */
     public static boolean downloadImage(String url) {
         try {
-            File file = Glide.with(getContext())
+            File file = GlideApp.with(getContext())
                     .load(url)
                     .downloadOnly(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
                     .get();
@@ -111,83 +197,17 @@ public class ImageManager {
     }
 
     /**
-     * 加载图片并缓存图片
-     *
-     * @param imageView 要设置图片的ImageView
-     * @param url       图片URL
-     * @param type      缓存策略请看{@link ImageManager} 说明  1.ALL, 2.NONE, 3.SOURCE,4.RESULT
-     */
-    public static void loadImageAndCache(ImageView imageView, String url, int type) {
-        DiskCacheStrategy strategy = DiskCacheStrategy.RESULT;
-        switch (type) {
-            case 1:
-                strategy = DiskCacheStrategy.ALL;
-                break;
-
-            case 2:
-                strategy = DiskCacheStrategy.NONE;
-                break;
-
-            case 3:
-                strategy = DiskCacheStrategy.SOURCE;
-                break;
-
-            case 4:
-                strategy = DiskCacheStrategy.RESULT;
-                break;
-        }
-        Glide.with(getContext())
-                .load(url)
-                .error(R.drawable.image_bg_default)
-                .placeholder(R.drawable.image_bg_default)
-                .diskCacheStrategy(strategy)
-                .skipMemoryCache(false)//false为开启内存缓存，默认就是开启状态
-                .crossFade()
-                .into(imageView);
-    }
-
-    /**
-     * 优先级加载图片
-     *
-     * @param url
-     * @param imageView
-     * @param type      1.IMMEDIATE, 2.HIGH, 3.NORMAL,4.LOW
-     */
-    public static void loadImageWithPriority(ImageView imageView, String url, int type) {
-        Priority priority = Priority.NORMAL;
-        switch (type) {
-            case 1:
-                priority = Priority.IMMEDIATE;
-                break;
-
-            case 2:
-                priority = Priority.HIGH;
-                break;
-
-            case 3:
-                priority = Priority.NORMAL;
-                break;
-
-            case 4:
-                priority = Priority.LOW;
-                break;
-        }
-        Glide.with(getContext()).load(url).priority(priority).into(imageView);
-    }
-
-
-    /**
      * 清除内存中的缓存 必须在UI线程中调用
      */
     public static void clearMemoryCache() {
-        Glide.get(getContext()).clearMemory();
+        GlideApp.get(getContext()).clearMemory();
     }
 
     /**
      * 清除磁盘中的缓存，必须在子线程中调用，建议同时clearMemory()
      */
     public static void clearDiskCache() {
-        Glide.get(getContext()).clearDiskCache();
+        GlideApp.get(getContext()).clearDiskCache();
     }
 
 }

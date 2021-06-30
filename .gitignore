@@ -4,3 +4,5 @@
 *.iml
 local.properties
 outputs
+
+*.DS_Store

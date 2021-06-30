@@ -1,6 +1,8 @@
 package com.starry.douban.base;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;
 import android.util.SparseBooleanArray;
@@ -24,8 +26,21 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
 
     protected List<T> dataSet;
     protected Context mContext;
-    private OnItemClickListener<T> mOnItemViewClickListener;
-    private OnItemLongClickListener<T> mOnItemLongClickListener;
+
+    /**
+     * The listener that receives notifications when an item is clicked.
+     */
+    private OnItemClickListener mOnItemClickListener;
+
+    /**
+     * The listener that receives notifications when an item is long clicked.
+     */
+    private OnItemLongClickListener mOnItemLongClickListener;
+
+    /**
+     * 子View点击事件集合
+     */
+    private HashMap<Integer, OnItemChildClickListener> childClickListenerMap = new HashMap<>();
 
     /**
      * 为了保证滑动流畅及不浪费流量，此时不加载图片,true表示列表滑动中
@@ -37,45 +52,26 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
      */
     private SparseBooleanArray loadedMap = new SparseBooleanArray();
 
-    /**
-     * 子View点击事件集合
-     */
-    private Map<Integer, OnChildViewClickListener> clickListenerMap;
-
-    /**
-     * 添加子View点击事件
-     *
-     * @param viewId   子View id
-     * @param listener 点击事件监听器
-     */
-    public void addChildViewClickListener(int viewId, OnChildViewClickListener listener) {
-        if (clickListenerMap == null) {
-            clickListenerMap = new HashMap<>();
-        }
-        clickListenerMap.put(viewId, listener);
-    }
-
     public BaseRecyclerAdapter(List<T> dataSet) {
         this.dataSet = dataSet;
     }
 
+    @NonNull
     @Override
-    public BaseRecyclerAdapter.RecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public BaseRecyclerAdapter.RecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         mContext = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(mContext);
         View view = inflater.inflate(getItemLayout(viewType), parent, false);
         final BaseRecyclerAdapter.RecyclerViewHolder holder = new RecyclerViewHolder(view);
+
         // item点击事件
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //position只有在列表展示后才有值
                 int position = holder.getLayoutPosition() - getHeaderLayoutCount();
-                //设置监听器优先级高于实现onItemClick方法
-                if (mOnItemViewClickListener != null) {
-                    mOnItemViewClickListener.onItemClick(holder.itemView, position, dataSet.get(position));
-                } else {
-                    onItemClick(holder.itemView, position);
+                if (mOnItemClickListener != null) {
+                    mOnItemClickListener.onItemClick(holder.itemView, position);
                 }
             }
         });
@@ -86,36 +82,32 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
             public boolean onLongClick(View v) {
                 //position只有在列表展示后才有值
                 int position = holder.getLayoutPosition() - getHeaderLayoutCount();
-                //设置监听器优先级高于实现onLongItemClick方法
                 if (mOnItemLongClickListener != null) {
-                    mOnItemLongClickListener.onItemLongClick(holder.itemView, position, dataSet.get(position));
-                } else {
-                    onItemLongClick(holder.itemView, position);
+                    return mOnItemLongClickListener.onItemLongClick(holder.itemView, position);
                 }
                 return false;
             }
         });
 
-        if (clickListenerMap != null) {
-            for (final Map.Entry<Integer, OnChildViewClickListener> entry : clickListenerMap.entrySet()) {
-                View childView = view.findViewById(entry.getKey());
-                childView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        OnChildViewClickListener value = entry.getValue();
-                        //position只有在列表展示后才有值
-                        int position = holder.getLayoutPosition() - getHeaderLayoutCount();
-                        value.onChildViewClick(holder, position);
-                    }
-                });
-            }
+        //item 子View点击事件
+        for (final Map.Entry<Integer, OnItemChildClickListener> entry : childClickListenerMap.entrySet()) {
+            final View childView = view.findViewById(entry.getKey());
+            childView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    OnItemChildClickListener value = entry.getValue();
+                    //position只有在列表展示后才有值
+                    int position = holder.getLayoutPosition() - getHeaderLayoutCount();
+                    value.onItemChildClick(childView, position);
+                }
+            });
         }
 
         return holder;
     }
 
     @Override
-    public void onBindViewHolder(BaseRecyclerAdapter.RecyclerViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull BaseRecyclerAdapter.RecyclerViewHolder holder, int position) {
         onBindData(holder, dataSet.get(position), position);
 
         if (!isScrolling) {
@@ -163,26 +155,8 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
         return !isScrolling || loadedMap.get(position);
     }
 
-    public void setDataSet(List<T> dataSet) {
-        this.dataSet = dataSet;
-        notifyDataSetChanged();
-    }
-
-    public void clearDataSet() {
-        if (dataSet != null) {
-            dataSet.clear();
-            notifyDataSetChanged();
-        }
-    }
-
-    public void removeItem(int position) {
-        dataSet.remove(position);
-        notifyItemRemoved(position);//第一项是header 需要做下偏移
-        notifyDataSetChanged();
-    }
-
-    public List<T> getDataSet() {
-        return dataSet;
+    public T getItem(int position) {
+        return dataSet.get(position);
     }
 
     /**
@@ -203,47 +177,83 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
     }
 
     /**
-     * ItemView的单击事件(如果需要，重写此方法就行)
+     * Interface definition for a callback to be invoked when an item child view in this
+     * view has been clicked
      */
-    protected void onItemClick(View itemView, int position) {
+    public interface OnItemChildClickListener {
+        /**
+         * callback method to be invoked when an item child view in this view has been
+         * click and held
+         *
+         * @param view     The item child view within the adapter that was clicked
+         * @param position The position of the view in the adapter.
+         */
+        void onItemChildClick(View view, int position);
     }
 
     /**
-     * ItemView的长按事件(如果需要，重写此方法就行)
-     */
-    protected void onItemLongClick(View itemView, int position) {
-    }
-
-    //#####################################################################################
-
-    public interface OnItemClickListener<T> {
-        void onItemClick(View itemView, int position, T t);
-    }
-
-    public void setOnItemClickListener(OnItemClickListener<T> listener) {
-        this.mOnItemViewClickListener = listener;
-    }
-
-    /**
-     * item子View点击事件
+     * 添加item 子View点击事件
      *
-     * @param <T>
+     * @param viewId   子View id
+     * @param listener 点击事件监听器
      */
-    public interface OnChildViewClickListener<T> {
-        void onChildViewClick(RecyclerViewHolder holder, int position);
+    public void addOnItemChildClickListener(int viewId, OnItemChildClickListener listener) {
+        childClickListenerMap.put(viewId, listener);
     }
 
-    //#####################################################################################
+    /**
+     * Interface definition for a callback to be invoked when an item in this
+     * Adapter has been clicked.
+     */
+    public interface OnItemClickListener {
 
-    public interface OnItemLongClickListener<T> {
-        void onItemLongClick(View itemView, int position, T t);
+        /**
+         * Callback method to be invoked when an item in this Adapter has
+         * been clicked.
+         *
+         * @param view     The view within the adapter that was clicked
+         * @param position The position of the view in the adapter.
+         */
+        void onItemClick(View view, int position);
+
     }
 
-    public void setOnItemLongClickListener(OnItemLongClickListener<T> listener) {
-        this.mOnItemLongClickListener = listener;
+    /**
+     * Register a callback to be invoked when an item in this RecyclerView has
+     * been clicked.
+     *
+     * @param listener The callback that will be invoked.
+     */
+    public void setOnItemClickListener(@Nullable OnItemClickListener listener) {
+        mOnItemClickListener = listener;
     }
 
-    //#####################################################################################
+    /**
+     * Interface definition for a callback to be invoked when an item in this
+     * Adapter has been long clicked and held.
+     */
+    public interface OnItemLongClickListener {
+        /**
+         * Callback method to be invoked when an item in this view has been
+         * clicked and held.
+         *
+         * @param view     The view within the adapter that was clicked
+         * @param position The position of the view in the adapter.
+         * @return true if the callback consumed the long click, false otherwise
+         */
+        boolean onItemLongClick(View view, int position);
+
+    }
+
+    /**
+     * Register a callback to be invoked when an item in this RecyclerView has
+     * been long clicked and held
+     *
+     * @param listener The callback that will run
+     */
+    public void setOnItemLongClickListener(OnItemLongClickListener listener) {
+        mOnItemLongClickListener = listener;
+    }
 
     public static class RecyclerViewHolder extends RecyclerView.ViewHolder {
 

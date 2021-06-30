@@ -3,7 +3,7 @@ package com.starry.douban;
 import android.app.Application;
 import android.content.Context;
 
-import com.starry.douban.base.BaseApp;
+import com.starry.douban.env.AppWrapper;
 
 /**
  * @author Starry Jerry
@@ -13,13 +13,13 @@ public class DBApplication extends Application {
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
-        BaseApp.getInstance().attachBaseContext(base);
+        AppWrapper.getInstance().attachBaseContext(base);
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
-        BaseApp.getInstance().onCreate(this);
+        AppWrapper.getInstance().onCreate(this);
     }
 
     /**

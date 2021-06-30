@@ -10,5 +10,6 @@
         https://developer.android.google.cn/reference/android/support/v4/content/FileProvider
     -->
     <external-files-path name="my_download" path="download/" />
+    <external-files-path name="my_picture" path="picture/" />
 
 </paths>

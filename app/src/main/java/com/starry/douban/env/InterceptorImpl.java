@@ -2,17 +2,17 @@ package com.starry.douban.env;
 
 import com.google.gson.JsonParseException;
 import com.starry.http.CommonParams;
+import com.starry.http.HttpResponse;
 import com.starry.http.error.BIZException;
 import com.starry.http.error.ErrorModel;
 import com.starry.http.error.HttpStatusException;
 import com.starry.http.interfaces.HttpInterceptor;
 import com.starry.log.Logger;
 
+import org.json.JSONException;
+
 import java.net.SocketTimeoutException;
 import java.util.Map;
-
-import okhttp3.Response;
-import okhttp3.ResponseBody;
 
 /**
  * 拦截器实现类
@@ -39,7 +39,7 @@ public final class InterceptorImpl implements HttpInterceptor {
     }
 
     @Override
-    public CommonParams logRequest(CommonParams commonParams) {
+    public void logRequest(CommonParams commonParams) {
         Map<String, Object> params = commonParams.params();
         String paramsStr = commonParams.content();
         if (paramsStr == null || paramsStr.length() == 0) {
@@ -59,12 +59,10 @@ public final class InterceptorImpl implements HttpInterceptor {
                 , headersStr
                 , paramsStr);
         Logger.i(TAG, result);
-        return commonParams;
     }
 
     @Override
-    public ErrorModel handleResponse(Exception why, ErrorModel errorModel) {
-        errorModel.setMessage("网络错误");
+    public ErrorModel  handleFailure(Exception why, ErrorModel errorModel) {
         if (why instanceof BIZException) { //业务异常
             BIZException cloneWhy = (BIZException) why;
             errorModel.setCode(cloneWhy.getErrorCode())
@@ -73,14 +71,16 @@ public final class InterceptorImpl implements HttpInterceptor {
             errorModel.setResponse(cloneWhy.getResponse());
             Logger.e(getFormatLog(errorModel.getUrl(), errorModel.getResponse(), errorModel.getMessage()));
             return handleBIZ(errorModel);
-        } else if (why instanceof HttpStatusException) { //http status code不是200的网络异常
-            return errorModel;
-        } else if (why instanceof NullPointerException) {
-            return errorModel;
-        } else if (why instanceof JsonParseException) {
-            return errorModel;
-        } else {
-            return errorModel;
+        } else if (why instanceof HttpStatusException) { //网络状态码错误
+            return errorModel.setCode(10001).setMessage("网络状态码错误");
+        } else if (why instanceof JsonParseException || why instanceof JSONException) { //JSON报文错误
+            return errorModel.setCode(10002).setMessage("JSON报文错误");
+        } else if (why instanceof SocketTimeoutException) { //超时提示
+            return errorModel.setCode(10003).setMessage("超时提示");
+        } else if (!AppWrapper.getInstance().networkAvailable()) { //无网提示
+            return errorModel.setCode(10004).setMessage("无网提示");
+        } else { //其它错误提示
+            return errorModel.setCode(10005).setMessage("未知错误");
         }
     }
 
@@ -95,30 +95,13 @@ public final class InterceptorImpl implements HttpInterceptor {
     }
 
     @Override
-    public ErrorModel handleFailure(Exception why, ErrorModel errorModel) {
-        errorModel.setMessage("网络错误");
-        if (why instanceof SocketTimeoutException) {
-            return errorModel;
-        } else {
-            return errorModel;
-        }
-    }
-
-    @Override
-    public Response logResponse(Response response) throws Exception {
-        Response clone = response.newBuilder().build();
-        ResponseBody responseBody = clone.body();
-        String url = clone.request().url().toString();
-        String body = responseBody.string();
+    public void logResponse(HttpResponse httpResponse) {
         // 日志格式
         // Response
         // >>> https://...
         // >>> {"code":10,...
-        String result = String.format("Response\n >>> %s\n >>> %s", url, body);
+        String result = String.format("Response\n >>> %s\n >>> %s", httpResponse.getUrl(), httpResponse.getBodyString());
         Logger.i(TAG, result);
-
-        responseBody = ResponseBody.create(responseBody.contentType(), body);
-        return response.newBuilder().body(responseBody).build();
     }
 
 }

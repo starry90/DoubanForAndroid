@@ -4,9 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
-import com.starry.douban.base.BaseApp;
+import com.starry.douban.env.AppWrapper;
 
 import java.util.Map;
 
@@ -128,7 +126,7 @@ public class SPUtil {
      * @return SharedPreferences
      */
     private static SharedPreferences getSharedPreferences(String fileName) {
-        return BaseApp.getContext().getSharedPreferences(fileName, Context.MODE_PRIVATE);
+        return AppWrapper.getContext().getSharedPreferences(fileName, Context.MODE_PRIVATE);
     }
 
     /**
@@ -139,7 +137,7 @@ public class SPUtil {
      * @param fileName 保存的文件名称
      */
     public static void putObject(String key, Object obj, String fileName) {
-        putString(key, new Gson().toJson(obj), fileName);
+        putString(key, JsonUtil.toJson(obj), fileName);
     }
 
     /**
@@ -221,12 +219,7 @@ public class SPUtil {
      */
     public static <T> T getObject(String key, String fileName, Class<T> tClass) {
         String string = getString(key, fileName);
-        try {
-            return new Gson().fromJson(string, tClass);
-        } catch (JsonSyntaxException e) {
-            e.printStackTrace();
-            return null;
-        }
+        return JsonUtil.toObject(string, tClass);
     }
 
     /**

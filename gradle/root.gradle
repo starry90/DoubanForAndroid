@@ -14,16 +14,18 @@ ext {
     ]
 
     versions = [
-            "compileSdkVersion": 26,
+            "compileSdkVersion": 29,
             "minSdkVersion"    : 21,
-            "targetSdkVersion" : 26,
+            "targetSdkVersion" : 29,
 
             "versionCode"      : gits.gitCommitCount,
             "versionName"      : "1.2.8",
             "httpVersion"      : 6
     ]
 
-    def supportVersion = "26.0.2"
+    //Cannot find a version of 'com.android.support:support-annotations' that satisfies the version constraints:
+    //Dependency path 'DoubanForAndroid:Cropiwa:unspecified' --> 'com.android.support.test:runner:1.0.2' --> 'com.android.support:support-annotations:27.1.1'
+    def supportVersion = "27.1.1"
 
     deps = [
             "appcompat"          : "com.android.support:appcompat-v7:${supportVersion}",
@@ -36,14 +38,15 @@ ext {
             "runner"             : "com.android.support.test:runner:1.0.2",
             "espresso"           : "com.android.support.test.espresso:espresso-core:3.0.2",
             "androidRunner"      : "android.support.test.runner.AndroidJUnitRunner",
+            "lifecycleExtensions": "android.arch.lifecycle:extensions:1.1.0",
 
-            "glide"              : "com.github.bumptech.glide:glide:3.7.0",
+            "glide"              : "com.github.bumptech.glide:glide:4.9.0",
+            "glideCompiler"      : "com.github.bumptech.glide:compiler:4.9.0",
             "gson"               : "com.google.code.gson:gson:2.8.2",
             "okhttp3"            : "com.squareup.okhttp3:okhttp:3.11.0",
             "agentweb"           : "com.just.agentweb:agentweb:4.0.2",
+            "jsoup"              : "org.jsoup:jsoup:1.13.1",
 
-            "butterknife"        : "com.jakewharton:butterknife:8.8.1",
-            "butterknifeCompiler": "com.jakewharton:butterknife-compiler:8.8.1",
             "leakcanaryDebug"    : "com.squareup.leakcanary:leakcanary-android:1.5.4",
             "leakcanaryRelease"  : "com.squareup.leakcanary:leakcanary-android-no-op:1.5.4",
             "anrDebug"           : "com.github.markzhai:blockcanary-android:1.5.0",

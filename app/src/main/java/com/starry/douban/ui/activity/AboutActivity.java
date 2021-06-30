@@ -1,14 +1,15 @@
 package com.starry.douban.ui.activity;
 
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.transition.Slide;
 import android.view.Gravity;
-import android.widget.TextView;
+import android.view.LayoutInflater;
 
 import com.starry.douban.BuildConfig;
 import com.starry.douban.R;
 import com.starry.douban.base.BaseNFCActivity;
-
-import butterknife.BindView;
+import com.starry.douban.databinding.ActivityAboutBinding;
 
 /**
  * 关于
@@ -17,18 +18,7 @@ import butterknife.BindView;
  * @since 2018/5/25.
  */
 
-public class AboutActivity extends BaseNFCActivity {
-
-    @BindView(R.id.tv_about_app_name)
-    TextView tvAboutAppName;
-    @BindView(R.id.tv_version_name)
-    TextView tvVersionName;
-    @BindView(R.id.tv_about_build_time)
-    TextView tvAboutBuildTime;
-    @BindView(R.id.tv_about_git_branch)
-    TextView tvAboutGitBranch;
-    @BindView(R.id.tv_about_git_commit_time)
-    TextView tvAboutGitCommitTime;
+public class AboutActivity extends BaseNFCActivity<ActivityAboutBinding> {
 
     @Override
     protected Class<?> getNFCClass() {
@@ -41,8 +31,27 @@ public class AboutActivity extends BaseNFCActivity {
     }
 
     @Override
-    public int getLayoutResID() {
-        return R.layout.activity_about;
+    public ActivityAboutBinding getViewBinding(LayoutInflater layoutInflater) {
+        return ActivityAboutBinding.inflate(layoutInflater);
+    }
+
+    @Override
+    protected boolean isDarkTextWhiteBgStatusBar() {
+        if (tvToolbarTitle != null) {
+            //黑色文字
+            tvToolbarTitle.setTextColor(getResources().getColor(R.color.text_color_level_1));
+        }
+        return true;
+    }
+
+    @Override
+    protected int getToolbarNavigationIconRes() {
+        return R.drawable.baseline_arrow_back_black_24; //黑色返回键
+    }
+
+    @Override
+    protected Drawable getToolbarBackground() {
+        return new ColorDrawable(0x0FFFFFFFF); //白色背景
     }
 
     @Override
@@ -50,17 +59,17 @@ public class AboutActivity extends BaseNFCActivity {
         setTitle("关于");
 
         String versionName = String.format("V %s", BuildConfig.VERSION_NAME);
-        tvVersionName.setText(versionName);
+        viewBinding.tvVersionName.setText(versionName);
         String buildTime = String.format("BuildTime %s", BuildConfig.BUILD_TIME);
-        tvAboutBuildTime.setText(buildTime);
+        viewBinding.tvAboutBuildTime.setText(buildTime);
 
         String branch = String.format("GitBranch %s", BuildConfig.GIT_BRANCH);
-        tvAboutGitBranch.setText(branch);
+        viewBinding.tvAboutGitBranch.setText(branch);
         String commitTime = String.format("CommitTime %s", BuildConfig.GIT_COMMIT_TIME);
-        tvAboutGitCommitTime.setText(commitTime);
+        viewBinding.tvAboutGitCommitTime.setText(commitTime);
 
         Slide slide = new Slide(Gravity.TOP);
-        slide.addTarget(tvAboutAppName);
+        slide.addTarget(viewBinding.tvAboutAppName);
         getWindow().setEnterTransition(slide);
     }
 

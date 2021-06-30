@@ -25,6 +25,10 @@ android {
         testInstrumentationRunner deps.androidRunner
     }
 
+    viewBinding {
+        enabled = true
+    }
+
     // keystore文件
     signingConfigs {
         douban {
@@ -54,6 +58,20 @@ android {
     }
 }
 
+//Program type already present: javax.annotation.xxx 依赖冲突解决办法
+//查看依赖关系： ./gradlew app:dependencies
+//以 javax.annotation:javax.annotation-api:1.3.2 冲突为例
+//第一种办法简单粗暴排除所有
+//configurations {
+//    all*.exclude module: 'javax.annotation-api'
+//}
+//第二种办法在引用冲突依赖的时候排除
+//dependencies{
+//    testImplementation('org.robolectric:robolectric:4.4'){
+//        exclude module: 'javax.annotation-api'
+//    }
+//}
+
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     configurations.all {
@@ -67,18 +85,19 @@ dependencies {
     implementation deps.recyclerview
     implementation deps.design
     implementation deps.cardview
+    implementation deps.lifecycleExtensions
     //test
     testImplementation deps.junit
     androidTestImplementation deps.runner
     androidTestImplementation deps.espresso
     //others
     implementation deps.glide
+    annotationProcessor deps.glideCompiler
     implementation deps.gson
     implementation deps.okhttp3
     implementation deps.agentweb
+    implementation deps.jsoup
 
-    annotationProcessor deps.butterknifeCompiler
-    implementation deps.butterknife
     debugImplementation deps.leakcanaryDebug
     releaseImplementation deps.leakcanaryRelease
     debugImplementation deps.anrDebug
@@ -94,6 +113,8 @@ dependencies {
     implementation project(':Overscroll')
     implementation project(':CoolIndicator')
     implementation project(':ParallaxViewPager')
+    implementation project(':Cropiwa')
+    implementation project(':SqliteDao')
 }
 
 //modify apk output  file name, format：db-versionName.versionCode-buildType.apk

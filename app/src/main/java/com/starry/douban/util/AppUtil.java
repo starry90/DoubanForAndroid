@@ -9,37 +9,14 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.drawable.Drawable;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
 
-import com.starry.douban.base.BaseApp;
 import com.starry.log.Logger;
 
 import java.io.File;
 import java.util.List;
 
 public class AppUtil {
-
-    /**
-     * 获取网络是否已连接
-     *
-     * @return {@code true} if the network is available, {@code false} otherwise
-     */
-    public boolean networkAvailable() {
-        ConnectivityManager manager = (ConnectivityManager) BaseApp.getContext().getSystemService(
-                Context.CONNECTIVITY_SERVICE);
-        if (null == manager) {
-            return false;
-        }
-
-        NetworkInfo networkInfo = manager.getActiveNetworkInfo();
-        if (null == networkInfo || !networkInfo.isAvailable() || !networkInfo.isConnected()) {
-            return false;
-        }
-
-        return true;
-    }
 
     // 获取当前应用应用名
     public static String getAppName(Context context) {

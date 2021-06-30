@@ -5,7 +5,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.widget.Toast;
 
-import com.starry.douban.base.BaseApp;
+import com.starry.douban.env.AppWrapper;
 
 
 /**
@@ -15,7 +15,7 @@ import com.starry.douban.base.BaseApp;
 public class ToastUtil {
 
     private static Context getContext() {
-        return BaseApp.getContext();
+        return AppWrapper.getContext();
     }
 
     public static void showToast(String message) {
@@ -23,7 +23,7 @@ public class ToastUtil {
     }
 
     public static void showToast(int resId) {
-        showToast(getContext(), BaseApp.getContext().getString(resId), Toast.LENGTH_SHORT);
+        showToast(getContext(), AppWrapper.getContext().getString(resId), Toast.LENGTH_SHORT);
     }
 
     private static void showToast(final Context context, final String msg, final int duration) {

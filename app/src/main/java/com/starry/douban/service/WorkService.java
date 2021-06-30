@@ -12,9 +12,9 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.starry.douban.BuildConfig;
-import com.starry.douban.base.BaseApp;
 import com.starry.douban.constant.Apis;
 import com.starry.douban.constant.PreferencesName;
+import com.starry.douban.env.AppWrapper;
 import com.starry.douban.event.AppUpdateEvent;
 import com.starry.douban.model.AppUpdate;
 import com.starry.douban.ui.activity.UpdateDialogActivity;
@@ -102,17 +102,17 @@ public class WorkService extends Service {
     }
 
     public static void startCheckAppVersion() {
-        Intent intent = new Intent(BaseApp.getContext(), WorkService.class);
+        Intent intent = new Intent(AppWrapper.getContext(), WorkService.class);
         intent.putExtra(EXTRA_ACTION, ACTION_CHECK_APP_VERSION);
-        BaseApp.getContext().startService(intent);
+        AppWrapper.getContext().startService(intent);
     }
 
     public static void startDownloadApp(String dirPath, String fileName) {
-        Intent intent = new Intent(BaseApp.getContext(), WorkService.class);
+        Intent intent = new Intent(AppWrapper.getContext(), WorkService.class);
         intent.putExtra(EXTRA_ACTION, ACTION_DOWNLOAD_APP);
         intent.putExtra(EXTRA_APP_DOWNLOAD_DIR, dirPath);
         intent.putExtra(EXTRA_APP_DOWNLOAD_NAME, fileName);
-        BaseApp.getContext().startService(intent);
+        AppWrapper.getContext().startService(intent);
     }
 
     private void onHandleIntent(Intent intent) {
@@ -157,7 +157,7 @@ public class WorkService extends Service {
         }
         File file = new File(dirPath, fileName);
         if (file.exists()) { //已下载，直接安装
-            BaseApp.installApp(file);
+            AppWrapper.installApp(file);
             return;
         }
 
@@ -174,7 +174,7 @@ public class WorkService extends Service {
 
                     @Override
                     public void onSuccess(File response, Object... obj) {
-                        BaseApp.installApp(response);
+                        AppWrapper.installApp(response);
                     }
 
                     @Override

@@ -1,14 +1,12 @@
 package com.starry.http.callback;
 
+import com.starry.http.HttpResponse;
 import com.starry.http.utils.MainHandler;
 import com.starry.http.utils.Util;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
-
-import okhttp3.Response;
-import okhttp3.ResponseBody;
 
 /**
  * 文件下载回调
@@ -35,14 +33,7 @@ public abstract class FileCallback extends CommonCallback<File> {
     }
 
     @Override
-    public File parseResponse(Response response) throws Exception {
-        return saveFile(response);
-    }
-
-    /**
-     * save file
-     */
-    private File saveFile(Response response) throws Exception {
+    public File parseResponse(HttpResponse response) throws Exception {
         //获取目录
         File dir = new File(destFileDir);
         if (!dir.exists()) {
@@ -54,17 +45,13 @@ public abstract class FileCallback extends CommonCallback<File> {
             file.delete();
         }
 
+        final long total = response.getBodyContentLength();
         int len;
         long sum = 0;
         byte[] buf = new byte[1024 * 8];
-        InputStream is = null;
+        InputStream is = response.getBodyInputStream();
         FileOutputStream fos = null;
         try {
-            ResponseBody body = response.body();
-            Util.checkNotNull(body);
-            is = body.byteStream();
-            final long total = body.contentLength();
-
             fos = new FileOutputStream(file);
             while ((len = is.read(buf)) != -1) {
                 sum += len;
@@ -87,7 +74,6 @@ public abstract class FileCallback extends CommonCallback<File> {
             throw ex;
         } finally {
             Util.closeQuietly(is);
-            Util.closeQuietly(response);
             Util.closeQuietly(fos);
         }
     }

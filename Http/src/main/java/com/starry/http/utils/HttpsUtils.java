@@ -1,6 +1,8 @@
 package com.starry.http.utils;
 
 
+import android.annotation.SuppressLint;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.KeyStore;
@@ -27,6 +29,9 @@ import javax.net.ssl.X509TrustManager;
  */
 public class HttpsUtils {
 
+    private static X509TrustManager unSafeTrustManager;
+    private static SSLSocketFactory unSafeSocketFactory;
+
     public static class SSLParams {
         public SSLSocketFactory sSLSocketFactory;
         public X509TrustManager trustManager;
@@ -46,7 +51,7 @@ public class HttpsUtils {
                 manager = chooseTrustManager(trustManagers);
             } else {
                 //否则使用不安全的TrustManager
-                manager = UnSafeTrustManager;
+                manager = allowAllTrustManager();
             }
             // 创建TLS类型的SSLContext对象， that uses our TrustManager
             SSLContext sslContext = SSLContext.getInstance("TLS");
@@ -114,34 +119,63 @@ public class HttpsUtils {
         return null;
     }
 
+    public synchronized static SSLSocketFactory allowAllSSLSocketFactory() {
+        // Create a trust manager that does not validate certificate chains
+        if (unSafeSocketFactory == null) {
+            try {
+                TrustManager tm = allowAllTrustManager();
+                // Install the all-trusting trust manager
+                final SSLContext sslContext = SSLContext.getInstance("TLS");
+                sslContext.init(null, new TrustManager[]{tm}, null);
+                unSafeSocketFactory = sslContext.getSocketFactory();
+            } catch (Throwable e) {
+                e.printStackTrace();
+            }
+        }
+        return unSafeSocketFactory;
+    }
+
     /**
      * 为了解决客户端不信任服务器数字证书的问题，网络上大部分的解决方案都是让客户端不对证书做任何检查，
      * 这是一种有很大安全漏洞的办法
      */
-    public static X509TrustManager UnSafeTrustManager = new X509TrustManager() {
-        @Override
-        public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
-        }
+    public static synchronized X509TrustManager allowAllTrustManager() {
+        if (unSafeTrustManager == null) {
+            unSafeTrustManager = new X509TrustManager() {
+                @Override
+                public void checkClientTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {
+                    //do nothing
+                }
 
-        @Override
-        public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
-        }
+                @Override
+                public void checkServerTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {
+                    //do nothing
+                }
 
-        @Override
-        public X509Certificate[] getAcceptedIssuers() {
-            return new X509Certificate[]{};
+                @Override
+                public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                    return new X509Certificate[0];
+                }
+            };
         }
-    };
+        return unSafeTrustManager;
+    }
 
     /**
      * 此类是用于主机名验证的基接口。 在握手期间，如果 URL 的主机名和服务器的标识主机名不匹配，
      * 则验证机制可以回调此接口的实现程序来确定是否应该允许此连接。策略可以是基于证书的或依赖于其他验证方案。
      * 当验证 URL 主机名使用的默认规则失败时使用这些回调。如果主机名是可接受的，则返回 true
      */
-    public static HostnameVerifier UnSafeHostnameVerifier = new HostnameVerifier() {
+    private static final HostnameVerifier allowAllHostnameVerifier = new HostnameVerifier() {
+        @SuppressLint("BadHostnameVerifier")
         @Override
         public boolean verify(String hostname, SSLSession session) {
             return true;
         }
     };
+
+    public static HostnameVerifier allowAllHostnameVerifier() {
+        return allowAllHostnameVerifier;
+    }
+
 }

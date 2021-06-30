@@ -5,7 +5,9 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.starry.douban.constant.Apis;
+import com.starry.douban.env.AppWrapper;
 import com.starry.douban.model.BeautyModel;
+import com.starry.douban.model.BookDetail;
 import com.starry.douban.model.GankBaseModel;
 import com.starry.http.HttpManager;
 import com.starry.http.callback.FileCallback;
@@ -13,8 +15,6 @@ import com.starry.http.callback.FinalCallback;
 import com.starry.http.callback.StringCallback;
 import com.starry.http.error.ErrorModel;
 import com.starry.log.Logger;
-import com.starry.douban.model.BookDetail;
-import com.starry.douban.util.FileUtils;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -90,7 +90,7 @@ public class ApplicationTest {
         String url = "http://img.hb.aicdn.com/1b4494daa59e72ead4d5db77cf8b8216ff6f82951b0ca3-2l1uOm_fw658";
         HttpManager.get(url)
                 .build()
-                .enqueue(new FileCallback(FileUtils.buildPath().getAbsolutePath(), "andy.jpg") {
+                .enqueue(new FileCallback(AppWrapper.getPictureDir().getAbsolutePath(), "andy.jpg") {
                     @Override
                     public void onSuccess(File response, Object... obj) {
                         Logger.i(TAG, response.getAbsolutePath());

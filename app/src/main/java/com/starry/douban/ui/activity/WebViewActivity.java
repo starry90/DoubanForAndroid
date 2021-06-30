@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
@@ -14,6 +15,7 @@ import com.just.agentweb.AgentWeb;
 import com.just.agentweb.DefaultWebClient;
 import com.starry.douban.R;
 import com.starry.douban.base.BaseActivity;
+import com.starry.douban.databinding.ActivityWebViewBinding;
 import com.starry.douban.util.UiUtils;
 import com.starry.douban.widget.CoolIndicatorLayout;
 import com.starry.overscroll.OverScrollWebView;
@@ -27,7 +29,7 @@ import java.net.URL;
  * @author Starry Jerry
  * @since 2018/11/30.
  */
-public class WebViewActivity extends BaseActivity {
+public class WebViewActivity extends BaseActivity<ActivityWebViewBinding> {
 
     private AgentWeb mAgentWeb;
 
@@ -40,8 +42,8 @@ public class WebViewActivity extends BaseActivity {
     }
 
     @Override
-    public int getLayoutResID() {
-        return R.layout.activity_web_view;
+    public ActivityWebViewBinding getViewBinding(LayoutInflater layoutInflater) {
+        return ActivityWebViewBinding.inflate(layoutInflater);
     }
 
     @Override
@@ -59,9 +61,8 @@ public class WebViewActivity extends BaseActivity {
                     }
                 });
 
-        LinearLayout root = findViewById(R.id.ll_web_view);
         mAgentWeb = AgentWeb.with(this)
-                .setAgentWebParent(root, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
+                .setAgentWebParent(viewBinding.llWebView, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
                 .setCustomIndicator(new CoolIndicatorLayout(this)) //自定义进度条
                 .setWebView(webView)
                 .setWebViewClient(mWebViewClient)
