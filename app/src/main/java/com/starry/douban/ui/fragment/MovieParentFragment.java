@@ -21,9 +21,10 @@ import java.util.List;
 public class MovieParentFragment extends BaseFragment<FragmentMovieParentBinding> {
 
     /**
+     * https://movie.douban.com/j/search_tags
      * {"tags":["热门","最新","经典","可播放","豆瓣高分","冷门佳片","华语","欧美","韩国","日本","动作","喜剧","爱情","科幻","悬疑","恐怖","成长"]}
      */
-    private String[] tabTitles = new String[]{"热门", "最新", "经典", "可播放", "豆瓣高分", "冷门佳片", "华语", "欧美", "韩国", "日本", "动作", "喜剧", "爱情", "科幻", "悬疑", "恐怖", "成长"};
+    private final String[] tabTitles = new String[]{"热门", "最新", "经典", "可播放", "豆瓣高分", "冷门佳片", "华语", "欧美", "韩国", "日本", "动作", "喜剧", "爱情", "科幻", "悬疑", "恐怖", "成长"};
 
     @Override
     public FragmentMovieParentBinding getViewBinding(LayoutInflater layoutInflater) {
@@ -36,9 +37,9 @@ public class MovieParentFragment extends BaseFragment<FragmentMovieParentBinding
         SmartTabLayout viewPagerTab = (SmartTabLayout) viewBinding.tab.findViewById(R.id.viewpager_tab);
 
         List<Fragment> pages = new ArrayList<>();
-        for (int i = 0; i < tabTitles.length; i++) {
+        for (String tabTitle : tabTitles) {
             Bundle bundle = new Bundle();
-            bundle.putString("tag", tabTitles[i]);
+            bundle.putString("tag", tabTitle);
             MovieFragment movieFragment = new MovieFragment();
             movieFragment.setArguments(bundle);
             pages.add(movieFragment);
