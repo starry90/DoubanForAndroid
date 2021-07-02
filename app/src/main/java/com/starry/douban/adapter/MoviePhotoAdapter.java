@@ -23,9 +23,10 @@ public class MoviePhotoAdapter extends BaseRecyclerAdapter<MovieItemDetailBean.P
 
     @Override
     public void onBindData(BaseRecyclerAdapter.RecyclerViewHolder holder, MovieItemDetailBean.PersonBean itemData, int position) {
-//        if (itemData.getUrl() != null)
-//            holder.setImageFromInternet(R.id.iv_movie_photo, itemData.getUrl());
+        if (itemData.getUrl() != null)
+            holder.setImageFromInternet(R.id.iv_movie_photo, itemData.getAvatarUrl());
         holder.setText(R.id.tv_movie_photo, itemData.getName());
+        holder.setText(R.id.tv_movie_role, itemData.getRole());
         if (position == 0) {
             holder.setText(R.id.tv_movie_photo_type, "导演");
         } else if (position == 1) {

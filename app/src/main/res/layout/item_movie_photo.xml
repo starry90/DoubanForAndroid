@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="90dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="100dp"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
@@ -9,7 +10,7 @@
         android:id="@+id/tv_movie_photo_type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
+        android:layout_margin="4dp"
         android:singleLine="true"
         android:text="导演"
         android:textAppearance="@style/TextAppearance.AppCompat.Title"
@@ -19,15 +20,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_margin="5dp"
+        android:layout_margin="4dp"
         android:foreground="?android:attr/selectableItemBackground"
         app:cardElevation="5dp">
 
 
         <ImageView
             android:id="@+id/iv_movie_photo"
-            android:layout_width="90dp"
-            android:layout_height="120dp"
+            android:layout_width="100dp"
+            android:layout_height="130dp"
             android:layout_centerVertical="true"
             android:scaleType="centerCrop" />
 
@@ -37,10 +38,28 @@
         android:id="@+id/tv_movie_photo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="4dp"
         android:ellipsize="end"
-        android:lines="2"
-        android:text="刘德华"
-        android:textSize="@dimen/text_size_12" />
+        android:lines="1"
+        android:textColor="@color/text_color_level_1"
+        android:textSize="@dimen/text_size_12"
+        tools:text="刘德华" />
+
+    <TextView
+        android:id="@+id/tv_movie_role"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="8dp"
+        android:ellipsize="end"
+        android:lines="1"
+        android:textColor="@color/text_color_level_2"
+        android:textSize="@dimen/text_size_12"
+        tools:text="饰：杨过" />
 
 </LinearLayout>

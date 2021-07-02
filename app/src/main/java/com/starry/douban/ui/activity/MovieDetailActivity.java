@@ -14,19 +14,28 @@ import com.starry.douban.databinding.ActivityMovieDetailBinding;
 import com.starry.douban.image.ImageManager;
 import com.starry.douban.model.MovieItemDetailBean;
 import com.starry.douban.util.JsonUtil;
+import com.starry.douban.util.RegexHelper;
 import com.starry.douban.util.ToastUtil;
 import com.starry.http.HttpManager;
 import com.starry.http.callback.StringCallback;
 import com.starry.http.error.ErrorModel;
+import com.starry.log.Logger;
+import com.starry.rx.RxManager;
+import com.starry.rx.RxTask;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Matcher;
+
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 
 /**
  * 电影详情页
@@ -59,6 +68,7 @@ public class MovieDetailActivity extends BaseActivity<ActivityMovieDetailBinding
 
     private void initRecyclerView(List<MovieItemDetailBean.PersonBean> performerBeanList) {
         MoviePhotoAdapter mAdapter = new MoviePhotoAdapter(performerBeanList);
+        viewBinding.recyclerView.setVisibility(View.VISIBLE);
         viewBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         viewBinding.recyclerView.setAdapter(mAdapter);
         viewBinding.recyclerView.setOnTouchListener(new View.OnTouchListener() {
@@ -118,7 +128,7 @@ public class MovieDetailActivity extends BaseActivity<ActivityMovieDetailBinding
 
         List<MovieItemDetailBean.PersonBean> directors = response.getDirector();
         directors.addAll(response.getActor());
-        initRecyclerView(directors);
+        getCelebrities(directors);
     }
 
     private void setMovieTitle(String titleName) {
@@ -133,4 +143,91 @@ public class MovieDetailActivity extends BaseActivity<ActivityMovieDetailBinding
         viewBinding.tvMovieDetailOriginalTitle.setText(originalTitle);
     }
 
+    private Disposable disposable;
+
+    /**
+     * 获取导演 演员数据
+     *
+     * @param directors 导演 演员数据
+     */
+    private void getCelebrities(final List<MovieItemDetailBean.PersonBean> directors) {
+        disposable = RxManager.createIO(new RxTask<List<MovieItemDetailBean.PersonBean>>() {
+
+            @Override
+            public List<MovieItemDetailBean.PersonBean> run() {
+                try {
+                    Document parse = Jsoup.connect(url + "/celebrities")
+                            .execute()
+                            .parse();
+                    Elements celebrities = parse.getElementsByClass("celebrity");
+
+                    //<li class="celebrity">
+                    //
+                    //
+                    //  <a href="https://movie.douban.com/celebrity/1047973/" title="弗兰克·德拉邦特 Frank Darabont" class="">
+                    //      <div class="avatar" style="background-image: url(https://img3.doubanio.com/view/celebrity/raw/public/p230.jpg)">
+                    //    </div>
+                    //  </a>
+                    //
+                    //    <div class="info">
+                    //      <span class="name"><a href="https://movie.douban.com/celebrity/1047973/" title="弗兰克·德拉邦特 Frank Darabont" class="name">弗兰克·德拉邦特</a></span>
+                    //
+                    //      <span class="role" title="导演">导演</span>
+                    //
+                    //    </div>
+                    //  </li>
+
+                    //
+                    //<li class="celebrity">
+                    //  <a href="https://movie.douban.com/celebrity/1054521/" title="蒂姆·罗宾斯 Tim Robbins" class="">
+                    //      <div class="avatar" style="background-image: url(https://img9.doubanio.com/view/celebrity/raw/public/p17525.jpg)">
+                    //      </div>
+                    //  </a>
+                    //     <div class="info">
+                    //      <span class="name"><a href="https://movie.douban.com/celebrity/1054521/" title="蒂姆·罗宾斯 Tim Robbins" class="name">蒂姆·罗宾斯 Tim Robbins</a></span>
+                    //
+                    //      <span class="role" title="演员 Actor (饰 安迪·杜佛兰 Andy Dufresne)">演员 Actor (饰 安迪·杜佛兰 Andy Dufresne)</span>
+
+                    //      <span class="works"> 代表作： <a href="https://movie.douban.com/subject/1292052/" target="_blank" title="肖申克的救赎">肖申克的救赎</a> <a href="https://movie.douban.com/subject/6011805/" target="_blank" title="一九四二">一九四二</a> <a href="https://movie.douban.com/subject/30331959/" target="_blank" title="黑水">黑水</a> </span>
+                    //     </div>
+                    //  </li>
+
+
+                    for (MovieItemDetailBean.PersonBean director : directors) {
+                        for (Element element : celebrities) {
+                            if (element.toString().contains(director.getUrl())) {
+                                Logger.e(element.toString());
+                                Elements avatar = element.getElementsByClass("avatar");
+                                Matcher matcher = RegexHelper.matcherBracket(avatar.toString());
+                                if (matcher.find()) {
+                                    director.setAvatarUrl(matcher.group());
+                                }
+
+                                Elements role = element.getElementsByClass("info");
+                                Matcher matcherRole = RegexHelper.matcherBracket(role.toString());
+                                if (matcherRole.find()) {
+                                    director.setRole(matcherRole.group());
+                                }
+                            }
+                        }
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return directors;
+            }
+        }).subscribe(new Consumer<List<MovieItemDetailBean.PersonBean>>() {
+            @Override
+            public void accept(List<MovieItemDetailBean.PersonBean> directors) throws Exception {
+                initRecyclerView(directors);
+            }
+        });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        RxManager.dispose(disposable);
+    }
 }

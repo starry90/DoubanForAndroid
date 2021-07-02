@@ -187,6 +187,15 @@ public class MovieItemDetailBean {
         private String url;
         private String name;
 
+        /**
+         * 头像
+         */
+        private transient String avatarUrl;
+        /**
+         * 饰演 角色
+         */
+        private transient String role = "";
+
         public String get_$Type201() {
             return _$Type201;
         }
@@ -209,6 +218,22 @@ public class MovieItemDetailBean {
 
         public void setName(String name) {
             this.name = name;
+        }
+
+        public String getAvatarUrl() {
+            return avatarUrl;
+        }
+
+        public void setAvatarUrl(String avatarUrl) {
+            this.avatarUrl = avatarUrl;
+        }
+
+        public String getRole() {
+            return role;
+        }
+
+        public void setRole(String role) {
+            this.role = role;
         }
     }
 
