@@ -11,6 +11,7 @@ import android.support.annotation.Nullable;
 import android.widget.ImageView;
 
 import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestListener;
@@ -26,8 +27,6 @@ import com.starry.douban.image.okhttp.GlideApp;
 import com.starry.log.Logger;
 import com.starry.rx.RxManager;
 import com.starry.rx.RxTask;
-
-import java.io.File;
 
 import io.reactivex.functions.Consumer;
 
@@ -182,13 +181,21 @@ public class ImageManager {
      */
     public static boolean downloadImage(String url) {
         try {
-            File file = GlideApp.with(getContext())
+            Bitmap bitmap = GlideApp.with(getContext())
+                    .asBitmap()
                     .load(url)
-                    .downloadOnly(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+                    .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                    .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
                     .get();
             Context context = getContext();
-            MediaStore.Images.Media.insertImage(context.getContentResolver(), file.getAbsolutePath(), file.getName(), "beauty");
-            context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file)));
+            // 保存到相册 使用传图片路径的方法，系统API会直接将图片加载至内存中，大图会产生OOM
+            // MediaStore.Images.Media.insertImage(ContentResolver cr, String imagePath, String title, String description)
+            // 保存到相册 推荐使用传图片Bitmap的方法
+            String imageUriString = MediaStore.Images.Media.insertImage(context.getContentResolver(), bitmap, url, url);
+            if (imageUriString == null) {
+                return false;
+            }
+            context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse(imageUriString)));
             return true;
         } catch (Exception e) {
             e.printStackTrace();
