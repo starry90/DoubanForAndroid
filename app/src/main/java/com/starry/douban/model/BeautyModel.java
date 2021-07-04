@@ -7,7 +7,7 @@ import android.os.Parcelable;
  * @author Starry Jerry
  * @since 18-12-29.
  */
-public class BeautyModel implements Parcelable {
+public class BeautyModel extends PhotoModel implements Parcelable {
 
     /**
      * _id : 5b5e93499d21220fc64181a9
@@ -30,6 +30,16 @@ public class BeautyModel implements Parcelable {
     private String url;
     private boolean used;
     private String who;
+
+    @Override
+    public String getPhotoTitle() {
+        return desc;
+    }
+
+    @Override
+    public String getPhotoUrl() {
+        return url;
+    }
 
     public String get_id() {
         return _id;
@@ -123,9 +133,11 @@ public class BeautyModel implements Parcelable {
     }
 
     public BeautyModel() {
+        super();
     }
 
     protected BeautyModel(Parcel in) {
+        super(in);
         this._id = in.readString();
         this.createdAt = in.readString();
         this.desc = in.readString();

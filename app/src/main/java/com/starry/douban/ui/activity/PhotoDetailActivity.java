@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -15,9 +16,9 @@ import android.widget.ImageView;
 
 import com.starry.douban.R;
 import com.starry.douban.base.BaseActivity;
-import com.starry.douban.databinding.ActivityBeautyDetailBinding;
+import com.starry.douban.databinding.ActivityPhotoDetailBinding;
 import com.starry.douban.image.ImageManager;
-import com.starry.douban.model.BeautyModel;
+import com.starry.douban.model.PhotoModel;
 import com.starry.douban.util.StringUtils;
 import com.starry.douban.util.ToastUtil;
 import com.starry.parallaxviewpager.Mode;
@@ -26,6 +27,7 @@ import com.starry.rx.RxTask;
 
 import java.util.ArrayList;
 
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
 /**
@@ -33,18 +35,18 @@ import io.reactivex.functions.Consumer;
  * @since 2019/1/1.
  */
 
-public class BeautyDetailActivity extends BaseActivity<ActivityBeautyDetailBinding> {
+public class PhotoDetailActivity extends BaseActivity<ActivityPhotoDetailBinding> {
 
-    private static final String EXTRA_BEAUTY_LIST = "extra_beauty_list";
+    private static final String EXTRA_PHOTO_LIST = "extra_photo_list";
     private static final String EXTRA_POSITION = "extra_position";
 
-    private ArrayList<BeautyModel> beautyList;
+    private ArrayList<PhotoModel> photoList;
 
     private int selectPosition;
 
-    public static void showActivity(Context context, ArrayList<BeautyModel> list, int position) {
-        Intent intent = new Intent(context, BeautyDetailActivity.class);
-        intent.putParcelableArrayListExtra(EXTRA_BEAUTY_LIST, list);
+    public static void showActivity(Context context, ArrayList<? extends PhotoModel> list, int position) {
+        Intent intent = new Intent(context, PhotoDetailActivity.class);
+        intent.putParcelableArrayListExtra(EXTRA_PHOTO_LIST, list);
         intent.putExtra(EXTRA_POSITION, position);
         context.startActivity(intent);
     }
@@ -55,31 +57,31 @@ public class BeautyDetailActivity extends BaseActivity<ActivityBeautyDetailBindi
     }
 
     @Override
-    public ActivityBeautyDetailBinding getViewBinding(LayoutInflater layoutInflater) {
-        return ActivityBeautyDetailBinding.inflate(layoutInflater);
+    public ActivityPhotoDetailBinding getViewBinding(LayoutInflater layoutInflater) {
+        return ActivityPhotoDetailBinding.inflate(layoutInflater);
     }
 
     @Override
     public void initData() {
         Intent intent = getIntent();
-        beautyList = intent.getParcelableArrayListExtra(EXTRA_BEAUTY_LIST);
+        photoList = intent.getParcelableArrayListExtra(EXTRA_PHOTO_LIST);
         selectPosition = intent.getIntExtra(EXTRA_POSITION, 0);
 
         setPageAndTitle();
         initViewPager();
-        viewBinding.vpBeautyDetail.setCurrentItem(selectPosition, false);
+        viewBinding.vpPhotoDetail.setCurrentItem(selectPosition, false);
     }
 
     private void initViewPager() {
         PagerAdapter adapter = new PagerAdapter() {
 
             @Override
-            public boolean isViewFromObject(View arg0, Object arg1) {
+            public boolean isViewFromObject(@NonNull View arg0, @NonNull Object arg1) {
                 return arg0 == arg1;
             }
 
             @Override
-            public void destroyItem(ViewGroup container, int position, Object obj) {
+            public void destroyItem(ViewGroup container, int position, @NonNull Object obj) {
                 container.removeView((View) obj);
             }
 
@@ -87,22 +89,22 @@ public class BeautyDetailActivity extends BaseActivity<ActivityBeautyDetailBindi
             public Object instantiateItem(ViewGroup container, int position) {
                 View view = View.inflate(container.getContext(), R.layout.item_beauty_detail, null);
                 ImageView imageView = view.findViewById(R.id.iv_item_beauty_detail);
-                ImageManager.loadImage(imageView, beautyList.get(position).getUrl());
+                ImageManager.loadImage(imageView, photoList.get(position).getPhotoUrl());
                 container.addView(view);
                 return view;
             }
 
             @Override
             public int getCount() {
-                return beautyList.size();
+                return photoList.size();
             }
         };
-        viewBinding.vpBeautyDetail.setAdapter(adapter);
-        viewBinding.vpBeautyDetail.setMode(Mode.LEFT_OVERLAY);
+        viewBinding.vpPhotoDetail.setAdapter(adapter);
+        viewBinding.vpPhotoDetail.setMode(Mode.LEFT_OVERLAY);
 //        viewPager.setMode(Mode.RIGHT_OVERLAY);
 //        viewPager.setMode(Mode.NONE);
 
-        viewBinding.vpBeautyDetail.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        viewBinding.vpPhotoDetail.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -122,8 +124,8 @@ public class BeautyDetailActivity extends BaseActivity<ActivityBeautyDetailBindi
     }
 
     private void setPageAndTitle() {
-        viewBinding.tvBeautyDetailPage.setText(StringUtils.format("%d/%d", selectPosition + 1, beautyList.size()));
-        setTitle(beautyList.get(selectPosition).getDesc());
+        viewBinding.tvPhotoDetailPage.setText(StringUtils.format("%d/%d", selectPosition + 1, photoList.size()));
+        setTitle(photoList.get(selectPosition).getPhotoTitle());
     }
 
     @Override
@@ -132,15 +134,17 @@ public class BeautyDetailActivity extends BaseActivity<ActivityBeautyDetailBindi
         return true;
     }
 
+    private Disposable subscribe;
+
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_file_download:
                 ToastUtil.showToast("图片下载中...");
-                RxManager.createIO(new RxTask<Boolean>() {
+                subscribe = RxManager.createIO(new RxTask<Boolean>() {
                     @Override
                     public Boolean run() {
-                        return ImageManager.downloadImage(beautyList.get(selectPosition).getUrl());
+                        return ImageManager.downloadImage(photoList.get(selectPosition).getPhotoUrl());
                     }
                 }).subscribe(new Consumer<Boolean>() {
                     @Override
@@ -156,4 +160,9 @@ public class BeautyDetailActivity extends BaseActivity<ActivityBeautyDetailBindi
         return true;
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        RxManager.dispose(subscribe);
+    }
 }

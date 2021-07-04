@@ -56,7 +56,7 @@
             android:name="com.starry.douban.ui.activity.BeautyActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.starry.douban.ui.activity.BeautyDetailActivity"
+            android:name="com.starry.douban.ui.activity.PhotoDetailActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.starry.douban.ui.activity.AboutActivity"

@@ -9,10 +9,12 @@ import android.view.View;
 
 import com.starry.douban.adapter.MoviePhotoAdapter;
 import com.starry.douban.base.BaseActivity;
+import com.starry.douban.base.BaseRecyclerAdapter;
 import com.starry.douban.constant.Apis;
 import com.starry.douban.databinding.ActivityMovieDetailBinding;
 import com.starry.douban.image.ImageManager;
 import com.starry.douban.model.MovieItemDetailBean;
+import com.starry.douban.model.PhotoModel;
 import com.starry.douban.util.JsonUtil;
 import com.starry.douban.util.RegexHelper;
 import com.starry.douban.util.ToastUtil;
@@ -66,8 +68,15 @@ public class MovieDetailActivity extends BaseActivity<ActivityMovieDetailBinding
         loadData();
     }
 
-    private void initRecyclerView(List<MovieItemDetailBean.PersonBean> performerBeanList) {
+    private void initRecyclerView(final List<MovieItemDetailBean.PersonBean> performerBeanList) {
         MoviePhotoAdapter mAdapter = new MoviePhotoAdapter(performerBeanList);
+        mAdapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                PhotoDetailActivity.showActivity(MovieDetailActivity.this, new ArrayList<PhotoModel>(performerBeanList), position);
+            }
+        });
+
         viewBinding.recyclerView.setVisibility(View.VISIBLE);
         viewBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         viewBinding.recyclerView.setAdapter(mAdapter);

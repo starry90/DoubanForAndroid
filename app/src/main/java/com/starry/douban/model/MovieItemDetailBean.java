@@ -1,5 +1,8 @@
 package com.starry.douban.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
@@ -181,7 +184,7 @@ public class MovieItemDetailBean {
         }
     }
 
-    public static class PersonBean {
+    public static class PersonBean extends PhotoModel implements Parcelable {
         @SerializedName("@type")
         private String _$Type201; // FIXME check this code
         private String url;
@@ -195,6 +198,16 @@ public class MovieItemDetailBean {
          * 饰演 角色
          */
         private transient String role = "";
+
+        @Override
+        public String getPhotoTitle() {
+            return name;
+        }
+
+        @Override
+        public String getPhotoUrl() {
+            return avatarUrl;
+        }
 
         public String get_$Type201() {
             return _$Type201;
@@ -235,6 +248,39 @@ public class MovieItemDetailBean {
         public void setRole(String role) {
             this.role = role;
         }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(this.name);
+            dest.writeString(this.avatarUrl);
+        }
+
+        public PersonBean() {
+            super();
+        }
+
+        protected PersonBean(Parcel in) {
+            super(in);
+            this.name = in.readString();
+            this.avatarUrl = in.readString();
+        }
+
+        public static final Creator<PersonBean> CREATOR = new Creator<PersonBean>() {
+            @Override
+            public PersonBean createFromParcel(Parcel source) {
+                return new PersonBean(source);
+            }
+
+            @Override
+            public PersonBean[] newArray(int size) {
+                return new PersonBean[size];
+            }
+        };
     }
 
 

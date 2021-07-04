@@ -76,7 +76,7 @@ public class BeautyActivity extends BaseActivity<ActivityBeautyBinding> {
         mAdapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View itemView, int position) {
-                BeautyDetailActivity.showActivity(BeautyActivity.this, beautyList, position);
+                PhotoDetailActivity.showActivity(BeautyActivity.this, beautyList, position);
             }
         });
 
