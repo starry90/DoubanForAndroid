@@ -13,7 +13,7 @@
 
     <style name="RButtonMain">
         <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_height">@dimen/common_height_level_1</item>
         <item name="android:layout_weight">1</item>
         <item name="android:button">@null</item>
         <item name="android:gravity">center</item>
@@ -31,14 +31,14 @@
 
     <!-- 水平线-->
     <style name="HorizontalDivideLine">
-        <item name="android:layout_height">1px</item>
+        <item name="android:layout_height">1dp</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:background">@color/divider_color</item>
     </style>
     <!-- 垂直线-->
     <style name="VerticalDivideLine">
         <item name="android:layout_height">match_parent</item>
-        <item name="android:layout_width">1px</item>
+        <item name="android:layout_width">1dp</item>
         <item name="android:background">@color/divider_color</item>
     </style>
 
@@ -86,7 +86,7 @@
 
     <style name="ItemRippleStyle">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">@dimen/common_height_level_1</item>
+        <item name="android:layout_height">@dimen/common_height_level_2</item>
         <item name="android:background">@drawable/ripple_view_white_bg</item>
         <item name="android:paddingLeft">@dimen/common_margin_level_2</item>
         <item name="android:paddingRight">@dimen/common_margin_level_2</item>

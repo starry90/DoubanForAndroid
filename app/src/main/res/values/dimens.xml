@@ -15,14 +15,22 @@
     <!-- 查源码得知toolbar标题margin为12dp -->
     <dimen name="toolbar_title_margin">12dp</dimen>
 
+    <!-- 所有组件都与间隔为 8dp 的基准网格对齐。 -->
     <dimen name="common_margin_level_1">8dp</dimen>
     <dimen name="common_margin_level_2">16dp</dimen>
     <dimen name="common_margin_level_3">24dp</dimen>
     <dimen name="common_margin_level_4">32dp</dimen>
+    <dimen name="common_margin_level_5">40dp</dimen>
+    <dimen name="common_margin_level_6">48dp</dimen>
+    <dimen name="common_margin_level_7">56dp</dimen>
+    <dimen name="common_margin_level_8">64dp</dimen>
+    <dimen name="common_margin_level_9">72dp</dimen>
 
+    <!-- 所有组件都与间隔为 8dp 的基准网格对齐。 最小的触摸目标尺寸是 48dp  -->
     <dimen name="common_height_level_1">48dp</dimen>
     <dimen name="common_height_level_2">56dp</dimen>
     <dimen name="common_height_level_3">64dp</dimen>
     <dimen name="common_height_level_4">72dp</dimen>
+    <dimen name="common_height_level_5">80dp</dimen>
 
 </resources>
