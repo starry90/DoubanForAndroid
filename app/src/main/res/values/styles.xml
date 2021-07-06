@@ -87,7 +87,7 @@
     <style name="ItemRippleStyle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/common_height_level_2</item>
-        <item name="android:background">@drawable/ripple_view_white_bg</item>
+        <item name="android:background">@drawable/item_view_bg_material</item>
         <item name="android:paddingLeft">@dimen/common_margin_level_2</item>
         <item name="android:paddingRight">@dimen/common_margin_level_2</item>
         <item name="android:gravity">center_vertical</item>
