@@ -24,7 +24,7 @@
         android:format24Hour="MM月dd日 EEEE"
         android:gravity="center"
         android:textColor="@color/colorAccent"
-        android:textSize="20sp" />
+        android:textSize="@dimen/text_size_24" />
 
     <ScrollView
         android:layout_width="match_parent"

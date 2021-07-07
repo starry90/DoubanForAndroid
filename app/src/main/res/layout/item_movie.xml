@@ -61,7 +61,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/common_text_padding_level_1"
             android:singleLine="true"
-            android:text="电影剧情：爱情" />
+            android:text="电影剧情：爱情"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/tv_num_rating"
