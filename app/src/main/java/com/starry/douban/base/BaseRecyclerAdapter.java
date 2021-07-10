@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.SparseArray;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
@@ -280,9 +281,6 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
 
         /**
          * 加载drawable中的图片
-         *
-         * @param viewId
-         * @param resId
          */
         public void setImage(int viewId, int resId) {
             ImageView iv = getView(viewId);
@@ -291,13 +289,24 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
 
         /**
          * 加载网络上的图片
-         *
-         * @param viewId
-         * @param url
          */
         public void setImageFromInternet(int viewId, String url) {
+            if (TextUtils.isEmpty(url)) {
+                return;
+            }
             ImageView iv = getView(viewId);
             ImageManager.loadImage(iv, url);
+        }
+
+        /**
+         * 加载网络上的图片
+         */
+        public void setCircleImageFromInternet(int viewId, String url) {
+            if (TextUtils.isEmpty(url)) {
+                return;
+            }
+            ImageView iv = getView(viewId);
+            ImageManager.loadCircleImage(iv, url);
         }
     }
 

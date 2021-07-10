@@ -160,6 +160,27 @@
                 android:visibility="gone"
                 tools:visibility="visible" />
 
+            <TextView
+                android:id="@+id/tv_movie_detail_comment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/recycler_view"
+                android:layout_marginTop="@dimen/common_margin_level_2"
+                android:background="@color/view_bg"
+                android:paddingLeft="@dimen/common_margin_level_2"
+                android:paddingTop="@dimen/common_margin_level_2"
+                android:paddingRight="@dimen/common_margin_level_2"
+                android:text="影评" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view_comment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_movie_detail_comment"
+                android:background="@color/view_bg"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
 
         </RelativeLayout>
 
