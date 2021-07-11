@@ -10,7 +10,7 @@ import com.starry.douban.adapter.MovieAdapter;
 import com.starry.douban.base.BaseFragment;
 import com.starry.douban.base.BaseRecyclerAdapter;
 import com.starry.douban.constant.Apis;
-import com.starry.douban.databinding.FragmentHomeBinding;
+import com.starry.douban.databinding.FragmentMovieBinding;
 import com.starry.douban.model.MovieItemBean;
 import com.starry.douban.model.Movies;
 import com.starry.douban.ui.activity.MovieDetailActivity;
@@ -27,7 +27,7 @@ import java.util.List;
  * @author Starry Jerry
  * @since 2016/12/4.
  */
-public class MovieFragment extends BaseFragment<FragmentHomeBinding> {
+public class MovieFragment extends BaseFragment<FragmentMovieBinding> {
 
     private int start = 0;
     private final int count = 20;
@@ -39,8 +39,8 @@ public class MovieFragment extends BaseFragment<FragmentHomeBinding> {
     private final LinkedHashMap<String, Object> params = new LinkedHashMap<>();
 
     @Override
-    public FragmentHomeBinding getViewBinding(LayoutInflater layoutInflater) {
-        return FragmentHomeBinding.inflate(layoutInflater);
+    public FragmentMovieBinding getViewBinding(LayoutInflater layoutInflater) {
+        return FragmentMovieBinding.inflate(layoutInflater);
     }
 
     @Override

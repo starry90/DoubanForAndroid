@@ -1,27 +1,29 @@
 package com.starry.douban.ui.fragment;
 
-import android.content.Intent;
 import android.support.v7.widget.GridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 
-import com.jcodecraeer.xrecyclerview.XRecyclerView;
-import com.starry.douban.adapter.BookAdapter;
+import com.starry.douban.adapter.BookTagAdapter;
 import com.starry.douban.base.BaseFragment;
 import com.starry.douban.base.BaseRecyclerAdapter;
 import com.starry.douban.constant.Apis;
 import com.starry.douban.databinding.FragmentHomeBinding;
-import com.starry.douban.model.BookBean;
-import com.starry.douban.model.Books;
-import com.starry.douban.ui.activity.BookDetailActivity;
+import com.starry.douban.model.BookTag;
+import com.starry.douban.util.RegexHelper;
 import com.starry.douban.util.ToastUtil;
 import com.starry.http.HttpManager;
 import com.starry.http.callback.StringCallback;
 import com.starry.http.error.ErrorModel;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.regex.Matcher;
 
 /**
  * @author Starry Jerry
@@ -29,14 +31,9 @@ import java.util.List;
  */
 public class HomeFragment extends BaseFragment<FragmentHomeBinding> {
 
-    private int start = 0;
-    private int count = 20;
+    private BookTagAdapter mAdapter;
 
-    private String tag = "热门";
-
-    private BookAdapter mAdapter;
-
-    private List<BookBean> books = new ArrayList<>();
+    private List<BookTag> books = new ArrayList<>();
 
     @Override
     public FragmentHomeBinding getViewBinding(LayoutInflater layoutInflater) {
@@ -49,50 +46,93 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> {
     }
 
     private void initRecyclerView() {
-        mAdapter = new BookAdapter(books);
+        mAdapter = new BookTagAdapter(books);
         mAdapter.addOnScrollListener(viewBinding.XRecyclerViewHome);
         mAdapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View itemView, int position) {
-                Intent intent = new Intent(mActivity, BookDetailActivity.class);
-                intent.putExtra(BookDetailActivity.EXTRA_BOOK_ID, mAdapter.getItem(position).getId());
-                startActivity(intent);
+
             }
         });
 
-        viewBinding.XRecyclerViewHome.setLayoutManager(new GridLayoutManager(getActivity(), 3));
+        viewBinding.XRecyclerViewHome.setLayoutManager(new GridLayoutManager(getActivity(), 4));
         viewBinding.XRecyclerViewHome.setAdapter(mAdapter);
-        viewBinding.XRecyclerViewHome.setLoadingListener(new XRecyclerView.LoadingListener() {
-            @Override
-            public void onRefresh() {
-                start = 0;
-                loadData();
-            }
-
-            @Override
-            public void onLoadMore() {
-                loadData();
-            }
-        });
-        viewBinding.XRecyclerViewHome.setRefreshing(true);
+        loadData();
     }
 
     @Override
     public void loadData() {
-        LinkedHashMap<String, Object> params = new LinkedHashMap<>();
-        params.put("tag", tag);
-        params.put("start", start);
-        params.put("count", count);
-
-        HttpManager.get(Apis.BookSearch)
+        HttpManager.get(Apis.BOOK_TAG)
                 .tag(this)
-                .params(params)
                 .build()
-                .enqueue(new StringCallback<Books>() {
+                .enqueue(new StringCallback<String>() {
 
                     @Override
-                    public void onSuccess(Books response, Object... obj) {
-                        refreshBookList(response);
+                    public void onSuccess(String response, Object... obj) {
+                        //  <div class="">
+                        //        <div class="">
+                        //          <a name="文学" class="tag-title-wrapper">
+                        //            <h2 style="padding-top:10px">文学 · · · · · · </h2>
+                        //          </a>
+                        //          <table class="tagCol">
+                        //            <tbody>
+                        //                  <tr>
+                        //                <td><a href="/tag/小说">小说</a><b>(7086696)</b></td>
+                        //                <td><a href="/tag/外国文学">外国文学</a><b>(2789064)</b></td>
+                        //                <td><a href="/tag/文学">文学</a><b>(2756274)</b></td>
+                        //                <td><a href="/tag/经典">经典</a><b>(1749171)</b></td>
+                        //                  </tr>
+                        //                  <tr>
+                        //                <td><a href="/tag/中国文学">中国文学</a><b>(1646261)</b></td>
+                        //                <td><a href="/tag/随笔">随笔</a><b>(1509633)</b></td>
+                        //                <td><a href="/tag/日本文学">日本文学</a><b>(1249437)</b></td>
+                        //                <td><a href="/tag/散文">散文</a><b>(902254)</b></td>
+                        //                  </tr>
+                        //                  <tr>
+                        //                <td><a href="/tag/村上春树">村上春树</a><b>(523850)</b></td>
+                        //                <td><a href="/tag/诗歌">诗歌</a><b>(468335)</b></td>
+                        //                <td><a href="/tag/童话">童话</a><b>(402577)</b></td>
+                        //                <td><a href="/tag/名著">名著</a><b>(394865)</b></td>
+                        //                  </tr>
+                        //                  <tr>
+                        //                <td><a href="/tag/儿童文学">儿童文学</a><b>(378564)</b></td>
+                        //                <td><a href="/tag/古典文学">古典文学</a><b>(352081)</b></td>
+                        //                <td><a href="/tag/余华">余华</a><b>(326036)</b></td>
+                        //                <td><a href="/tag/王小波">王小波</a><b>(294140)</b></td>
+                        //                  </tr>
+                        //                  <tr>
+                        //                <td><a href="/tag/当代文学">当代文学</a><b>(268642)</b></td>
+                        //                <td><a href="/tag/杂文">杂文</a><b>(268065)</b></td>
+                        //                <td><a href="/tag/张爱玲">张爱玲</a><b>(230705)</b></td>
+                        //                <td><a href="/tag/外国名著">外国名著</a><b>(167726)</b></td>
+                        //                  </tr>
+                        //                  <tr>
+                        //                <td><a href="/tag/鲁迅">鲁迅</a><b>(150995)</b></td>
+                        //                <td><a href="/tag/钱钟书">钱钟书</a><b>(148386)</b></td>
+                        //                <td><a href="/tag/诗词">诗词</a><b>(112670)</b></td>
+                        //                <td><a href="/tag/茨威格">茨威格</a><b>(84352)</b></td>
+                        //                  </tr>
+                        //                  <tr>
+                        //                <td><a href="/tag/米兰·昆德拉">米兰·昆德拉</a><b>(66088)</b></td>
+                        //                <td><a href="/tag/杜拉斯">杜拉斯</a><b>(48258)</b></td>
+                        //                <td><a href="/tag/港台">港台</a><b>(10153)</b></td>
+                        //            </tbody>
+                        //          </table>
+                        //        </div>
+                        //  </div>
+
+                        Document parse = Jsoup.parse(response);
+                        Elements tagCol = parse.getElementsByClass("tagCol");
+
+                        for (Element tagElement : tagCol) {
+                            Matcher matcher = RegexHelper.matcher(tagElement.toString(), "\"/tag/", "\"");
+                            while (matcher.find()) {
+                                BookTag bookTag = new BookTag();
+                                bookTag.setTag(matcher.group());
+                                books.add(bookTag);
+                            }
+                        }
+                        mAdapter.notifyDataSetChanged();
                     }
 
                     @Override
@@ -102,26 +142,9 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> {
 
                     @Override
                     public void onAfter(boolean success) {
-                        viewBinding.XRecyclerViewHome.refreshComplete();
-                        viewBinding.XRecyclerViewHome.loadMoreComplete();
                         hideLoading(success);
                     }
                 });
-    }
-
-    public void refreshBookList(Books response) {
-        //1、如果是第一页先清空数据 books不用做非空判断，不可能为空
-        if (start == 0) {
-            books.clear();
-        }
-        //2、拿到数据
-        books.addAll(response.getBooks());
-        //3、刷新RecyclerView
-        mAdapter.notifyDataSetChanged();
-        //4、页码自增
-        start += count;
-        //5、如果没有数据了，禁用加载更多功能
-        viewBinding.XRecyclerViewHome.setLoadingMoreEnabled(start < response.getTotal());
     }
 
 }
