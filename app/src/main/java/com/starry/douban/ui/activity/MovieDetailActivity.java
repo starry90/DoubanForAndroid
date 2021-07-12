@@ -80,6 +80,7 @@ public class MovieDetailActivity extends BaseActivity<ActivityMovieDetailBinding
             }
         });
 
+        viewBinding.recyclerView.setNestedScrollingEnabled(false);
         viewBinding.recyclerView.setVisibility(View.VISIBLE);
         viewBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         viewBinding.recyclerView.setAdapter(mAdapter);
@@ -241,6 +242,8 @@ public class MovieDetailActivity extends BaseActivity<ActivityMovieDetailBinding
         viewBinding.recyclerViewComment.setVisibility(View.VISIBLE);
         viewBinding.recyclerViewComment.setLayoutManager(new LinearLayoutManager(getActivity()));
         viewBinding.recyclerViewComment.setAdapter(mAdapter);
+        //解决RecyclerView在ScrollView中滑动卡顿问题
+        viewBinding.recyclerViewComment.setNestedScrollingEnabled(false);
     }
 
     private String format(String str) {
