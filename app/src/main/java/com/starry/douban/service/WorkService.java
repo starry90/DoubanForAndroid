@@ -116,6 +116,8 @@ public class WorkService extends Service {
     }
 
     private void onHandleIntent(Intent intent) {
+        if (intent == null) return;
+
         String action = intent.getStringExtra(EXTRA_ACTION);
         if (TextUtils.isEmpty(action)) {
             return;
