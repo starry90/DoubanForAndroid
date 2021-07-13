@@ -17,6 +17,14 @@ public class MovieComment {
 
     private String commentShortContent;
 
+    private String rid;
+
+    private String actionUp;
+
+    private String actionDown;
+
+    private String reply;
+
     public String getUserImageUrl() {
         return userImageUrl;
     }
@@ -54,7 +62,39 @@ public class MovieComment {
     }
 
     public void setCommentShortContent(String commentShortContent) {
-        this.commentShortContent = commentShortContent;
+        this.commentShortContent = commentShortContent.trim();
+    }
+
+    public String getRid() {
+        return rid;
+    }
+
+    public void setRid(String rid) {
+        this.rid = rid;
+    }
+
+    public String getActionUp() {
+        return actionUp;
+    }
+
+    public void setActionUp(String actionUp) {
+        this.actionUp = actionUp.trim();
+    }
+
+    public String getActionDown() {
+        return actionDown;
+    }
+
+    public void setActionDown(String actionDown) {
+        this.actionDown = actionDown.trim();
+    }
+
+    public String getReply() {
+        return reply;
+    }
+
+    public void setReply(String reply) {
+        this.reply = reply.trim();
     }
 
     @Override
@@ -65,6 +105,10 @@ public class MovieComment {
                 ", commentTitle='" + commentTitle + '\'' +
                 ", commentTime='" + commentTime + '\'' +
                 ", commentShortContent='" + commentShortContent + '\'' +
+                ", rid='" + rid + '\'' +
+                ", actionUp='" + actionUp + '\'' +
+                ", actionDown='" + actionDown + '\'' +
+                ", reply='" + reply + '\'' +
                 '}';
     }
 }

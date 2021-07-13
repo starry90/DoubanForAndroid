@@ -28,5 +28,8 @@ public class MovieCommentAdapter extends BaseRecyclerAdapter<MovieComment> {
         holder.setText(R.id.tv_movie_comment_time, itemData.getCommentTime());
         holder.setText(R.id.tv_movie_comment_title, itemData.getCommentTitle());
         holder.setText(R.id.tv_movie_comment_content, itemData.getCommentShortContent());
+        holder.setText(R.id.tv_movie_comment_up, itemData.getActionUp() + "有用");
+        holder.setText(R.id.tv_movie_comment_down, itemData.getActionDown() + "无用");
+        holder.setText(R.id.tv_movie_comment_reply, itemData.getReply());
     }
 }

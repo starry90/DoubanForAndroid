@@ -18,6 +18,7 @@ import com.starry.douban.model.MovieItemDetailBean;
 import com.starry.douban.model.PhotoModel;
 import com.starry.douban.util.JsonUtil;
 import com.starry.douban.util.RegexHelper;
+import com.starry.douban.util.StringUtils;
 import com.starry.douban.util.ToastUtil;
 import com.starry.http.HttpManager;
 import com.starry.http.callback.StringCallback;
@@ -140,6 +141,7 @@ public class MovieDetailActivity extends BaseActivity<ActivityMovieDetailBinding
                         //
                         //                    <div id="review_1000369_short" class="review-short" data-rid="1000369">
                         //                        <div class="short-content">
+                        //                              <p class="spoiler-tip">这篇影评可能有剧透</p>
                         //
                         //                            距离斯蒂芬·金（Stephen King）和德拉邦特（Frank Darabont）们缔造这部伟大的作品已经有十年了。我知道美好的东西想必大家都能感受，但是很抱歉，我的聒噪仍将一如既往。 在我眼里，肖申克的救赎与信念、自由和友谊有关。 ［1］信 念 瑞德（Red）说，希望是危险的东西，是精...
                         //
@@ -211,6 +213,26 @@ public class MovieDetailActivity extends BaseActivity<ActivityMovieDetailBinding
                                 Matcher title = RegexHelper.matcher(bd, "/\">", "<");
                                 if (title.find()) {
                                     movieComment.setCommentTitle(title.group());
+                                }
+
+                                Matcher rid = RegexHelper.matcher(bd, "data-rid=\"", "\"");
+                                if (rid.find()) {
+                                    movieComment.setRid(rid.group());
+                                }
+
+                                Matcher up = RegexHelper.matcher(bd, StringUtils.format("r-useful_count-%s\">", movieComment.getRid()), "<");
+                                if (up.find()) {
+                                    movieComment.setActionUp(up.group());
+                                }
+
+                                Matcher down = RegexHelper.matcher(bd, StringUtils.format("r-useless_count-%s\">", movieComment.getRid()), "<");
+                                if (down.find()) {
+                                    movieComment.setActionDown(down.group());
+                                }
+
+                                Matcher reply = RegexHelper.matcher(bd, "class=\"reply \">", "<");
+                                if (reply.find()) {
+                                    movieComment.setReply(reply.group());
                                 }
 
                                 Matcher content = RegexHelper.matcher(bd, "class=\"short-content\">", "&");
