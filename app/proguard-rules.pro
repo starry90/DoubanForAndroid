@@ -159,6 +159,8 @@
 -dontwarn okio.**
 -keep class okio.** { *;}
 
+-dontwarn com.tencent.bugly.**
+-keep public class com.tencent.bugly.**{*;}
 
 #=========================== 第三方包 end ===========================
 

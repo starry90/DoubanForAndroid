@@ -14,6 +14,7 @@ import com.starry.douban.constant.Common;
 import com.starry.douban.receiver.CommonReceiver;
 import com.starry.douban.service.WorkService;
 import com.starry.douban.util.AppUtil;
+import com.starry.douban.util.BuglyHelper;
 import com.starry.douban.util.CommonUtils;
 import com.starry.douban.util.FileUtils;
 import com.starry.douban.util.TimeUtils;
@@ -122,6 +123,8 @@ public class AppWrapper {
         LeakCanary.install(application);
         // Normal app init code...
         BlockCanary.install(application, new AppBlockCanaryContext(context)).start();
+        // bugly init code
+        BuglyHelper.install(application);
 
         lifeCallback = new ActivityCallback();
         application.registerActivityLifecycleCallbacks(lifeCallback);
