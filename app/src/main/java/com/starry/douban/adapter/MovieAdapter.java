@@ -1,7 +1,10 @@
 package com.starry.douban.adapter;
 
+import android.widget.ImageView;
+
 import com.starry.douban.R;
 import com.starry.douban.base.BaseRecyclerAdapter;
+import com.starry.douban.image.ImageManager;
 import com.starry.douban.model.MovieItemBean;
 
 import java.util.List;
@@ -35,7 +38,8 @@ public class MovieAdapter extends BaseRecyclerAdapter<MovieItemBean> {
         holder.setText(R.id.tv_num_rating, "观众评分：" + itemData.getRate());
         holder.setImage(R.id.iv_image, R.drawable.image_bg_default);
         if (allowLoadImage(position)) {
-            holder.setImageFromInternet(R.id.iv_image, itemData.getCover());
+            ImageView view = holder.getView(R.id.iv_image);
+            ImageManager.loadImage(view, itemData.getCover(), 16);
         }
     }
 }

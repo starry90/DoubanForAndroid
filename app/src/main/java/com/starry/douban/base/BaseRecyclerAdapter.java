@@ -306,7 +306,7 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
                 return;
             }
             ImageView iv = getView(viewId);
-            ImageManager.loadCircleImage(iv, url);
+            ImageManager.loadImageTransformCircle(iv, url);
         }
     }
 

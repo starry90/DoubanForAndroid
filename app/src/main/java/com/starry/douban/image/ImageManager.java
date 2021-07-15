@@ -13,6 +13,8 @@ import android.widget.ImageView;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
@@ -24,6 +26,7 @@ import com.bumptech.glide.signature.MediaStoreSignature;
 import com.starry.douban.R;
 import com.starry.douban.env.AppWrapper;
 import com.starry.douban.image.okhttp.GlideApp;
+import com.starry.douban.image.okhttp.GlideRequest;
 import com.starry.log.Logger;
 import com.starry.rx.RxManager;
 import com.starry.rx.RxTask;
@@ -62,7 +65,7 @@ public class ImageManager {
             .setCrossFadeEnabled(true)
             .build();
 
-    private static final RequestListener requestListener = new RequestListener<Drawable>() {
+    private static final RequestListener<Drawable> requestListener = new RequestListener<Drawable>() {
         @Override
         public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
             Logger.e("Glide exception:" + e);
@@ -112,12 +115,26 @@ public class ImageManager {
      * @param url       图片URL
      */
     public static void loadImage(ImageView imageView, String url) {
-        GlideApp.with(getContext())
+        loadImage(imageView, url, 0);
+    }
+
+    /**
+     * 加载图片
+     *
+     * @param imageView 要设置图片的ImageView
+     * @param url       图片URL
+     * @param radius    圆角半径
+     */
+    public static void loadImage(ImageView imageView, String url, int radius) {
+        GlideRequest<Drawable> load = GlideApp.with(getContext())
                 .load(url)
                 .apply(requestOptions)
                 .transition(DrawableTransitionOptions.withCrossFade(crossFadeFactory))
-                .listener(requestListener)
-                .into(imageView);
+                .listener(requestListener);
+        if (radius > 0) {
+            load = load.transform(new RoundedCorners(radius));
+        }
+        load.into(imageView);
     }
 
     /**
@@ -159,14 +176,15 @@ public class ImageManager {
     /**
      * 加载圆形图片
      * <p>
-     * 不能用动画效果
+     * 不能用动画效果，否则占位图不消失，真实图片会和占位图叠加在一起
      *
      * @param imageView 要设置图片的ImageView
      * @param url       图片Url
      */
-    public static void loadCircleImage(ImageView imageView, String url) {
+    public static void loadImageTransformCircle(ImageView imageView, String url) {
         GlideApp.with(getContext())
                 .load(url)
+                .transform(new CircleCrop())
                 .apply(requestOptions)
 //                .transition(DrawableTransitionOptions.withCrossFade()) //加载圆形图片不能用动画效果
                 .listener(requestListener)

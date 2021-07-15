@@ -23,7 +23,7 @@ public class MovieCommentAdapter extends BaseRecyclerAdapter<MovieComment> {
 
     @Override
     public void onBindData(RecyclerViewHolder holder, MovieComment itemData, int position) {
-        holder.setImageFromInternet(R.id.iv_movie_comment_user_photo, itemData.getUserImageUrl());
+        holder.setCircleImageFromInternet(R.id.iv_movie_comment_user_photo, itemData.getUserImageUrl());
         holder.setText(R.id.tv_movie_comment_username, itemData.getUserName());
         holder.setText(R.id.tv_movie_comment_time, itemData.getCommentTime());
         holder.setText(R.id.tv_movie_comment_title, itemData.getCommentTitle());
