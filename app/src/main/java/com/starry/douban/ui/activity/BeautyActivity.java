@@ -16,6 +16,7 @@ import com.starry.douban.jetpack.httpstatuslivedata.HttpStatusData;
 import com.starry.douban.jetpack.viewmodel.BeautyViewModel;
 import com.starry.douban.model.BeautyModel;
 import com.starry.douban.model.GankBaseModel;
+import com.starry.douban.model.PhotoModel;
 import com.starry.douban.util.ToastUtil;
 
 import java.util.ArrayList;
@@ -29,8 +30,6 @@ import java.util.List;
 public class BeautyActivity extends BaseActivity<ActivityBeautyBinding> {
 
     private BeautyAdapter mAdapter;
-
-    private final ArrayList<BeautyModel> beautyList = new ArrayList<>();
 
     private int pageNo = 1;
 
@@ -71,12 +70,12 @@ public class BeautyActivity extends BaseActivity<ActivityBeautyBinding> {
     }
 
     private void initRecyclerView() {
-        mAdapter = new BeautyAdapter(beautyList);
+        mAdapter = new BeautyAdapter();
         mAdapter.addOnScrollListener(viewBinding.rvBeauty);
         mAdapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View itemView, int position) {
-                PhotoDetailActivity.showActivity(BeautyActivity.this, beautyList, position);
+                PhotoDetailActivity.showActivity(BeautyActivity.this, (ArrayList<? extends PhotoModel>) mAdapter.getAll(), position);
             }
         });
 
@@ -103,21 +102,18 @@ public class BeautyActivity extends BaseActivity<ActivityBeautyBinding> {
     }
 
     private void refreshList(List<BeautyModel> results) {
-        //1、如果是第一页先清空数据 books不用做非空判断，不可能为空
-        if (pageNo++ == 1) {
-            beautyList.clear();
-        }
-        //2、拿到数据
         boolean hasData = results != null && !results.isEmpty();
-        if (hasData) {
-            beautyList.addAll(results);
-        }
-        //3、刷新RecyclerView
-        mAdapter.notifyDataSetChanged();
-        //5、如果没有数据了，禁用加载更多功能
+        //如果没有数据了，禁用加载更多功能
         viewBinding.rvBeauty.setLoadingMoreEnabled(hasData);
 
-        if (beautyList.isEmpty()) {
+        //如果是第一页先清空数据
+        if (pageNo++ == 1) {
+            mAdapter.setAll(results);
+        } else {
+            mAdapter.addAll(results);
+        }
+
+        if (mAdapter.getItemCount() == 0) {
             showEmpty();
         }
     }

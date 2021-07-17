@@ -20,7 +20,7 @@ public class BaseModel implements Serializable {
      */
     private int count;
     private int start;
-    private int total;
+    private int total = 10000;
 
 
     public static long getSerialversionuid() {

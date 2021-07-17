@@ -50,7 +50,7 @@ public class MovieFragment extends BaseFragment<FragmentMovieBinding> {
     }
 
     private void initRecyclerView() {
-        mAdapter = new MovieAdapter(books);
+        mAdapter = new MovieAdapter();
         mAdapter.addOnScrollListener(viewBinding.XRecyclerViewHome);
         mAdapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener() {
             @Override
@@ -115,17 +115,16 @@ public class MovieFragment extends BaseFragment<FragmentMovieBinding> {
     }
 
     public void refreshMovieList(Movies response) {
-        //1、如果是第一页先清空数据 books不用做非空判断，不可能为空
+        //1、如果是第一页先清空数据
+        List<MovieItemBean> subjects = response.getSubjects();
         if (start == 0) {
-            books.clear();
+            mAdapter.setAll(subjects);
+        } else {
+            mAdapter.addAll(subjects);
         }
-        //2、拿到数据
-        books.addAll(response.getSubjects());
-        //3、刷新RecyclerView
-        mAdapter.notifyDataSetChanged();
-        //4、页码自增
+        //2、页码自增
         start += count;
-        //5、如果没有数据了，禁用加载更多功能
+        //3、如果没有数据了，禁用加载更多功能
         viewBinding.XRecyclerViewHome.setLoadingMoreEnabled(start < response.getTotal());
     }
 

@@ -15,8 +15,11 @@ import java.util.List;
  */
 public class MovieAdapter extends BaseRecyclerAdapter<MovieItemBean> {
 
-    public MovieAdapter(List<MovieItemBean> beans) {
-        super(beans);
+    public MovieAdapter() {
+    }
+
+    public MovieAdapter(List<MovieItemBean> dataSet) {
+        super(dataSet);
     }
 
     @Override

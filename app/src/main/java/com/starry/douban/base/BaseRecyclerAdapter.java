@@ -10,11 +10,16 @@ import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.starry.douban.image.ImageManager;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +30,14 @@ import java.util.Map;
  */
 public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRecyclerAdapter.RecyclerViewHolder> {
 
-    protected List<T> dataSet;
+    /**
+     * 参考{@linkplain ArrayAdapter}
+     * Lock used to modify the content of {@link #dataSet}. Any write operation
+     * performed on the array should be synchronized on this lock.
+     */
+    private final Object mLock = new Object();
+
+    protected List<T> dataSet = new ArrayList<>();
     protected Context mContext;
 
     /**
@@ -41,7 +53,7 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
     /**
      * 子View点击事件集合
      */
-    private HashMap<Integer, OnItemChildClickListener> childClickListenerMap = new HashMap<>();
+    private final HashMap<Integer, OnItemChildClickListener> childClickListenerMap = new HashMap<>();
 
     /**
      * 为了保证滑动流畅及不浪费流量，此时不加载图片,true表示列表滑动中
@@ -51,7 +63,10 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
     /**
      * 已加载过的数据集合
      */
-    private SparseBooleanArray loadedMap = new SparseBooleanArray();
+    private final SparseBooleanArray loadedMap = new SparseBooleanArray();
+
+    public BaseRecyclerAdapter() {
+    }
 
     public BaseRecyclerAdapter(List<T> dataSet) {
         this.dataSet = dataSet;
@@ -175,6 +190,134 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
                 }
             }
         });
+    }
+
+    public List<T> getAll() {
+        return dataSet;
+    }
+
+    /**
+     * 用指定的集合替换列表.
+     * <p>
+     * Replaces the list  with specified Collection.
+     *
+     * @param collection The Collection to add at the end of the array.
+     * @throws UnsupportedOperationException if the <tt>addAll</tt> operation
+     *                                       is not supported by this list
+     * @throws ClassCastException            if the class of an element of the specified
+     *                                       collection prevents it from being added to this list
+     * @throws NullPointerException          if the specified collection contains one
+     *                                       or more null elements and this list does not permit null
+     *                                       elements, or if the specified collection is null
+     * @throws IllegalArgumentException      if some property of an element of the
+     *                                       specified collection prevents it from being added to this list
+     */
+    public void setAll(Collection<? extends T> collection) {
+        synchronized (mLock) {
+            dataSet.clear();
+            dataSet.addAll(collection);
+        }
+        notifyDataSetChanged();
+    }
+
+
+    /**
+     * Adds the specified object at the end of the array.
+     *
+     * @param object The object to add at the end of the array.
+     * @throws UnsupportedOperationException if the underlying data collection is immutable
+     */
+    public void add(T object) {
+        synchronized (mLock) {
+            dataSet.add(object);
+        }
+        notifyDataSetChanged();
+    }
+
+    /**
+     * Adds the specified Collection at the end of the array.
+     *
+     * @param collection The Collection to add at the end of the array.
+     * @throws UnsupportedOperationException if the <tt>addAll</tt> operation
+     *                                       is not supported by this list
+     * @throws ClassCastException            if the class of an element of the specified
+     *                                       collection prevents it from being added to this list
+     * @throws NullPointerException          if the specified collection contains one
+     *                                       or more null elements and this list does not permit null
+     *                                       elements, or if the specified collection is null
+     * @throws IllegalArgumentException      if some property of an element of the
+     *                                       specified collection prevents it from being added to this list
+     */
+    public void addAll(Collection<? extends T> collection) {
+        synchronized (mLock) {
+            dataSet.addAll(collection);
+        }
+        notifyDataSetChanged();
+    }
+
+    /**
+     * Adds the specified items at the end of the array.
+     *
+     * @param items The items to add at the end of the array.
+     * @throws UnsupportedOperationException if the underlying data collection is immutable
+     */
+    public void addAll(T... items) {
+        synchronized (mLock) {
+            Collections.addAll(dataSet, items);
+        }
+        notifyDataSetChanged();
+    }
+
+    /**
+     * Inserts the specified object at the specified index in the array.
+     *
+     * @param object The object to insert into the array.
+     * @param index  The index at which the object must be inserted.
+     * @throws UnsupportedOperationException if the underlying data collection is immutable
+     */
+    public void insert(T object, int index) {
+        synchronized (mLock) {
+            dataSet.add(index, object);
+        }
+        notifyDataSetChanged();
+    }
+
+    /**
+     * Removes the specified object from the array.
+     *
+     * @param object The object to remove.
+     * @throws UnsupportedOperationException if the underlying data collection is immutable
+     */
+    public void remove(T object) {
+        synchronized (mLock) {
+            dataSet.remove(object);
+        }
+        notifyDataSetChanged();
+    }
+
+    /**
+     * Remove all elements from the list.
+     *
+     * @throws UnsupportedOperationException if the underlying data collection is immutable
+     */
+    public void clear() {
+        synchronized (mLock) {
+            dataSet.clear();
+        }
+        notifyDataSetChanged();
+    }
+
+    /**
+     * Sorts the content of this adapter using the specified comparator.
+     *
+     * @param comparator The comparator used to sort the objects contained
+     *                   in this adapter.
+     */
+    public void sort(Comparator<? super T> comparator) {
+        synchronized (mLock) {
+            Collections.sort(dataSet, comparator);
+        }
+        notifyDataSetChanged();
     }
 
     /**

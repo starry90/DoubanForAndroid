@@ -12,8 +12,11 @@ import java.util.List;
  */
 public class BeautyAdapter extends BaseRecyclerAdapter<BeautyModel> {
 
-    public BeautyAdapter(List<BeautyModel> beans) {
-        super(beans);
+    public BeautyAdapter() {
+    }
+
+    public BeautyAdapter(List<BeautyModel> dataSet) {
+        super(dataSet);
     }
 
     @Override
