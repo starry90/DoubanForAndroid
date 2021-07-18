@@ -12,6 +12,9 @@ import java.util.List;
  */
 public class BookTagAdapter extends BaseRecyclerAdapter<BookTag> {
 
+    public BookTagAdapter() {
+    }
+
     public BookTagAdapter(List<BookTag> beans) {
         super(beans);
     }

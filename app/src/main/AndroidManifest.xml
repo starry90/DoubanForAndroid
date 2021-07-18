@@ -52,6 +52,9 @@
             android:name="com.starry.douban.ui.activity.MovieDetailActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name="com.starry.douban.ui.activity.BookListActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name="com.starry.douban.ui.activity.BookDetailActivity"
             android:screenOrientation="portrait" />
         <activity

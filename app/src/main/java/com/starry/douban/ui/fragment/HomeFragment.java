@@ -10,6 +10,7 @@ import com.starry.douban.base.BaseRecyclerAdapter;
 import com.starry.douban.constant.Apis;
 import com.starry.douban.databinding.FragmentHomeBinding;
 import com.starry.douban.model.BookTag;
+import com.starry.douban.ui.activity.BookListActivity;
 import com.starry.douban.util.RegexHelper;
 import com.starry.douban.util.ToastUtil;
 import com.starry.http.HttpManager;
@@ -33,8 +34,6 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> {
 
     private BookTagAdapter mAdapter;
 
-    private List<BookTag> books = new ArrayList<>();
-
     @Override
     public FragmentHomeBinding getViewBinding(LayoutInflater layoutInflater) {
         return FragmentHomeBinding.inflate(layoutInflater);
@@ -46,12 +45,12 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> {
     }
 
     private void initRecyclerView() {
-        mAdapter = new BookTagAdapter(books);
+        mAdapter = new BookTagAdapter();
         mAdapter.addOnScrollListener(viewBinding.XRecyclerViewHome);
         mAdapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View itemView, int position) {
-
+                BookListActivity.showActivity(mActivity, mAdapter.getItem(position).getTag());
             }
         });
 
@@ -124,6 +123,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> {
                         Document parse = Jsoup.parse(response);
                         Elements tagCol = parse.getElementsByClass("tagCol");
 
+                        List<BookTag> books = new ArrayList<>();
                         for (Element tagElement : tagCol) {
                             Matcher matcher = RegexHelper.matcher(tagElement.toString(), "\"/tag/", "\"");
                             while (matcher.find()) {
@@ -132,7 +132,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> {
                                 books.add(bookTag);
                             }
                         }
-                        mAdapter.notifyDataSetChanged();
+                        mAdapter.setAll(books);
                     }
 
                     @Override

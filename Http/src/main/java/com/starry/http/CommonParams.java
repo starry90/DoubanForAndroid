@@ -134,7 +134,7 @@ public class CommonParams {
             return this;
         }
 
-        public Builder params(String key, String val) {
+        public Builder params(String key, Object val) {
             if (this.params == null) {
                 params = new LinkedHashMap<>();
             }
