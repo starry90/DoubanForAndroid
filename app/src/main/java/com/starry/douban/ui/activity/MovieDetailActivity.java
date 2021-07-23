@@ -120,8 +120,7 @@ public class MovieDetailActivity extends BaseActivity<ActivityMovieDetailBinding
                         //
                         //
                         //        <header class="main-hd">
-                        //            <a href="https://www.douban.com/p
-                        //07-10 12:37:09.307 18302-19328/com.starry.douban I/InterceptorImpl: eople/bighead/" class="avator">
+                        //            <a href="https://www.douban.com/people/bighead/" class="avator">
                         //                <img width="24" height="24" src="https://img2.doubanio.com/icon/u1000152-23.jpg">
                         //            </a>
                         //

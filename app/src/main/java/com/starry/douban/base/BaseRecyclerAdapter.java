@@ -4,17 +4,12 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
-import android.util.SparseArray;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.viewbinding.ViewBinding;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-import com.starry.douban.image.ImageManager;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -28,7 +23,7 @@ import java.util.Map;
 /**
  * 通用的RecyclerView的适配器
  */
-public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRecyclerAdapter.RecyclerViewHolder> {
+public abstract class BaseRecyclerAdapter<T, V extends ViewBinding> extends RecyclerView.Adapter<BaseRecyclerAdapter.RecyclerViewHolder<V>> {
 
     /**
      * 参考{@linkplain ArrayAdapter}
@@ -74,12 +69,13 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
 
     @NonNull
     @Override
-    public BaseRecyclerAdapter.RecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public BaseRecyclerAdapter.RecyclerViewHolder<V> onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         mContext = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(mContext);
-        View view = inflater.inflate(getItemLayout(viewType), parent, false);
-        final BaseRecyclerAdapter.RecyclerViewHolder holder = new RecyclerViewHolder(view);
+        V viewBinding = getViewBinding(inflater, parent, false);
+        final BaseRecyclerAdapter.RecyclerViewHolder<V> holder = new RecyclerViewHolder<>(viewBinding);
 
+        View view = viewBinding.getRoot();
         // item点击事件
         view.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,7 +119,7 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
     }
 
     @Override
-    public void onBindViewHolder(@NonNull BaseRecyclerAdapter.RecyclerViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull BaseRecyclerAdapter.RecyclerViewHolder<V> holder, int position) {
         onBindData(holder, dataSet.get(position), position);
 
         if (!isScrolling) {
@@ -132,12 +128,11 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
     }
 
     /**
-     * 获取ItemView的布局文件
+     * 获取ItemView的ViewBinding
      *
-     * @param viewType The view type of the new View
-     * @return 布局id
+     * @return 布局ViewBinding
      */
-    public abstract int getItemLayout(int viewType);
+    public abstract V getViewBinding(LayoutInflater inflater, ViewGroup parent, boolean attachToParent);
 
     /**
      * 绑定数据
@@ -146,7 +141,7 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
      * @param itemData 数据bean
      * @param position 当前位置
      */
-    public abstract void onBindData(BaseRecyclerAdapter.RecyclerViewHolder holder, T itemData, int position);
+    public abstract void onBindData(BaseRecyclerAdapter.RecyclerViewHolder<V> holder, T itemData, int position);
 
 
     @Override
@@ -399,58 +394,15 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
         mOnItemLongClickListener = listener;
     }
 
-    public static class RecyclerViewHolder extends RecyclerView.ViewHolder {
+    public static class RecyclerViewHolder<V extends ViewBinding> extends RecyclerView.ViewHolder {
 
-        private final SparseArray<View> viewHolder;
+        public V viewBinding;
 
-        private RecyclerViewHolder(View itemView) {
-            super(itemView);
-            this.viewHolder = new SparseArray<>();
+        private RecyclerViewHolder(V viewBinding) {
+            super(viewBinding.getRoot());
+            this.viewBinding = viewBinding;
         }
 
-        public <T extends View> T getView(int viewId) {
-            View view = viewHolder.get(viewId);
-            if (view == null) {
-                view = itemView.findViewById(viewId);
-                viewHolder.put(viewId, view);
-            }
-            return (T) view;
-        }
-
-        public void setText(int viewId, String text) {
-            TextView tv = getView(viewId);
-            tv.setText(text);
-        }
-
-        /**
-         * 加载drawable中的图片
-         */
-        public void setImage(int viewId, int resId) {
-            ImageView iv = getView(viewId);
-            iv.setImageResource(resId);
-        }
-
-        /**
-         * 加载网络上的图片
-         */
-        public void setImageFromInternet(int viewId, String url) {
-            if (TextUtils.isEmpty(url)) {
-                return;
-            }
-            ImageView iv = getView(viewId);
-            ImageManager.loadImage(iv, url);
-        }
-
-        /**
-         * 加载网络上的图片
-         */
-        public void setCircleImageFromInternet(int viewId, String url) {
-            if (TextUtils.isEmpty(url)) {
-                return;
-            }
-            ImageView iv = getView(viewId);
-            ImageManager.loadImageTransformCircle(iv, url);
-        }
     }
 
 }

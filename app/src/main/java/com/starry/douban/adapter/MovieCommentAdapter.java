@@ -1,7 +1,11 @@
 package com.starry.douban.adapter;
 
-import com.starry.douban.R;
+import android.view.LayoutInflater;
+import android.view.ViewGroup;
+
 import com.starry.douban.base.BaseRecyclerAdapter;
+import com.starry.douban.databinding.ItemMovieCommentBinding;
+import com.starry.douban.image.ImageManager;
 import com.starry.douban.model.MovieComment;
 
 import java.util.List;
@@ -10,26 +14,27 @@ import java.util.List;
  * @author Starry Jerry
  * @since 21-7-10.
  */
-public class MovieCommentAdapter extends BaseRecyclerAdapter<MovieComment> {
+public class MovieCommentAdapter extends BaseRecyclerAdapter<MovieComment, ItemMovieCommentBinding> {
 
     public MovieCommentAdapter(List<MovieComment> beans) {
         super(beans);
     }
 
     @Override
-    public int getItemLayout(int viewType) {
-        return R.layout.item_movie_comment;
+    public ItemMovieCommentBinding getViewBinding(LayoutInflater inflater, ViewGroup parent, boolean attachToParent) {
+        return ItemMovieCommentBinding.inflate(inflater, parent, attachToParent);
     }
 
     @Override
-    public void onBindData(RecyclerViewHolder holder, MovieComment itemData, int position) {
-        holder.setCircleImageFromInternet(R.id.iv_movie_comment_user_photo, itemData.getUserImageUrl());
-        holder.setText(R.id.tv_movie_comment_username, itemData.getUserName());
-        holder.setText(R.id.tv_movie_comment_time, itemData.getCommentTime());
-        holder.setText(R.id.tv_movie_comment_title, itemData.getCommentTitle());
-        holder.setText(R.id.tv_movie_comment_content, itemData.getCommentShortContent());
-        holder.setText(R.id.tv_movie_comment_up, itemData.getActionUp() + "有用");
-        holder.setText(R.id.tv_movie_comment_down, itemData.getActionDown() + "无用");
-        holder.setText(R.id.tv_movie_comment_reply, itemData.getReply());
+    public void onBindData(BaseRecyclerAdapter.RecyclerViewHolder<ItemMovieCommentBinding> holder, MovieComment itemData, int position) {
+        ItemMovieCommentBinding viewBinding = holder.viewBinding;
+        ImageManager.loadImageTransformCircle(viewBinding.ivMovieCommentUserPhoto, itemData.getUserImageUrl());
+        viewBinding.tvMovieCommentUsername.setText(itemData.getUserName());
+        viewBinding.tvMovieCommentTime.setText(itemData.getCommentTime());
+        viewBinding.tvMovieCommentTitle.setText(itemData.getCommentTitle());
+        viewBinding.tvMovieCommentContent.setText(itemData.getCommentShortContent());
+        viewBinding.tvMovieCommentUp.setText(itemData.getActionUp() + "有用");
+        viewBinding.tvMovieCommentDown.setText(itemData.getActionDown() + "无用");
+        viewBinding.tvMovieCommentReply.setText(itemData.getReply());
     }
 }
