@@ -146,7 +146,7 @@
                 android:layout_below="@id/rl_movie_detail_header"
                 android:background="@color/view_bg"
                 android:padding="@dimen/common_margin_level_2"
-                android:text="@string/moview_summary" />
+                android:text="@string/movie_summary" />
 
 
             <android.support.v7.widget.RecyclerView

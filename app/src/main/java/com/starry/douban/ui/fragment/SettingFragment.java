@@ -3,6 +3,7 @@ package com.starry.douban.ui.fragment;
 import android.content.Intent;
 import android.os.SystemClock;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -17,6 +18,7 @@ import com.starry.douban.ui.activity.AboutActivity;
 import com.starry.douban.ui.activity.AppUpdateActivity;
 import com.starry.douban.ui.activity.BeautyActivity;
 import com.starry.douban.ui.activity.PortraitsSettingsActivity;
+import com.starry.douban.ui.activity.VideoListActivity;
 import com.starry.douban.ui.activity.WebViewActivity;
 import com.starry.douban.util.ActivityAnimationUtils;
 import com.starry.douban.util.AppOpsManagerUtils;
@@ -41,6 +43,9 @@ public class SettingFragment extends BaseFragment<FragmentSettingBinding> implem
     public void initData() {
         latestVersion = SPUtil.getInt(PreferencesName.APP_UPDATE_VERSION_CODE) <= BuildConfig.VERSION_CODE;
         WorkService.startCheckAppVersion();
+        if (TextUtils.isEmpty(Apis.VIDEO_HOST)) {
+            viewBinding.tvSettingVideo.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -49,6 +54,7 @@ public class SettingFragment extends BaseFragment<FragmentSettingBinding> implem
         viewBinding.tvSettingBeauty.setOnClickListener(this);
         viewBinding.tvSettingAbout.setOnClickListener(this);
         viewBinding.tvSettingVersionUpdate.setOnClickListener(this);
+        viewBinding.tvSettingVideo.setOnClickListener(this);
         viewBinding.tvSettingGithub.setOnClickListener(this);
         viewBinding.tvSettingCheckPermission.setOnClickListener(this);
     }
@@ -88,6 +94,10 @@ public class SettingFragment extends BaseFragment<FragmentSettingBinding> implem
                 } else {
                     ToastUtil.showToast("当前已是最新版本！");
                 }
+                break;
+
+            case R.id.tv_setting_video:
+                VideoListActivity.showActivity(mActivity);
                 break;
 
             case R.id.tv_setting_github:

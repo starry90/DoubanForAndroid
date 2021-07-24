@@ -135,6 +135,10 @@ public abstract class BaseFragment<T extends ViewBinding> extends Fragment imple
         }
     }
 
+    public void showEmpty() {
+        showLoadingStatus(LoadingDataLayout.STATUS_EMPTY);
+    }
+
     /**
      * 展示网络请求各种状态
      *

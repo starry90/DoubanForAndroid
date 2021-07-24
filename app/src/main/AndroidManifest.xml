@@ -64,6 +64,13 @@
             android:name="com.starry.douban.ui.activity.BeautyActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name="com.starry.douban.ui.activity.VideoListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.starry.douban.ui.activity.VideoPlayerActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
+            android:screenOrientation="portrait" />
+        <activity
             android:name="com.starry.douban.ui.activity.PhotoDetailActivity"
             android:screenOrientation="portrait" />
         <activity

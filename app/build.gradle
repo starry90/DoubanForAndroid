@@ -26,7 +26,7 @@ android {
 
         ndk {
             // 设置支持的SO库架构
-            abiFilters 'armeabi', 'arm64-v8a'
+            abiFilters 'armeabi'//, 'arm64-v8a'
         }
     }
 
@@ -115,6 +115,13 @@ dependencies {
     releaseImplementation deps.leakcanaryRelease
     debugImplementation deps.anrDebug
     releaseImplementation deps.anrRelease
+
+    implementation 'com.github.CarGuo.GSYVideoPlayer:gsyVideoPlayer-java:v6.0.3'
+    //是否需要ExoPlayer模式
+//    implementation 'com.github.CarGuo.GSYVideoPlayer:gsyVideoPlayer-exo_player2:v6.0.3'
+    //根据你的需求ijk模式的so
+//    implementation 'com.github.CarGuo.GSYVideoPlayer:gsyVideoPlayer-armv64:v6.0.3'
+    implementation 'com.github.CarGuo.GSYVideoPlayer:gsyVideoPlayer-armv5:v6.0.3'
 
     //module
     implementation project(':ProgressIndicator')

@@ -65,6 +65,13 @@
             <View style="@style/GapHorizontalDivideLine" />
 
             <TextView
+                android:id="@+id/tv_setting_video"
+                style="@style/ItemRippleStyle"
+                android:text="视频" />
+
+            <View style="@style/GapHorizontalDivideLine" />
+
+            <TextView
                 android:id="@+id/tv_setting_check_permission"
                 style="@style/ItemRippleStyle"
                 android:text="检查权限" />
