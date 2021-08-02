@@ -3,12 +3,15 @@ package com.starry.douban.ui.fragment;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
 import com.starry.douban.R;
 import com.starry.douban.base.BaseFragment;
 import com.starry.douban.base.BaseFragmentPagerAdapter;
 import com.starry.douban.databinding.FragmentMovieParentBinding;
+import com.starry.douban.util.UiUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,6 +36,12 @@ public class MovieParentFragment extends BaseFragment<FragmentMovieParentBinding
 
     @Override
     public void initData() {
+        setTitle("电影");
+        //Activity加载多Fragment时，toolbar不设置fitsSystemWindows，
+        // 否则会导致自定义标题往距上边距有个状态栏高度，导致标题未垂直居中
+        toolbar.setFitsSystemWindows(false);
+        viewBinding.viewStatusBarFix.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, UiUtils.getStatusBarHeight(mActivity)));
+
         viewBinding.tab.addView(LayoutInflater.from(getActivity()).inflate(R.layout.tab_smart_indicator, viewBinding.tab, false));
         SmartTabLayout viewPagerTab = (SmartTabLayout) viewBinding.tab.findViewById(R.id.viewpager_tab);
 

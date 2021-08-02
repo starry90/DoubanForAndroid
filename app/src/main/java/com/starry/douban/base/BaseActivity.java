@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -33,15 +32,11 @@ public abstract class BaseActivity<T extends ViewBinding> extends AppCompatActiv
 
     /**
      * 网络请求各种状态显示容器
-     * <p>Required view 'view_loading_container' with ID 2131427348 for field 'mLoadingDataLayout' was not found. If this view is optional add '@Nullable' (fields) or '@Optional' (methods) annotation.
      */
-    @Nullable
     protected LoadingDataLayout mLoadingDataLayout;
 
-    @Nullable
     protected TextView tvToolbarTitle;
 
-    @Nullable
     protected Toolbar toolbar;
 
     protected T viewBinding;
@@ -125,13 +120,20 @@ public abstract class BaseActivity<T extends ViewBinding> extends AppCompatActiv
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
 
         //状态栏白底黑字
+        updateStatusBarTextBg(isDarkTextWhiteBgStatusBar());
+    }
+
+    /**
+     * 白底黑字模式
+     *
+     * @param isDarkTextWhiteBg 白底黑字
+     */
+    public void updateStatusBarTextBg(boolean isDarkTextWhiteBg) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             View decorView = getWindow().getDecorView();
             if (decorView != null) {
                 int systemUiVisibility = decorView.getSystemUiVisibility();
-                if (isDarkTextWhiteBgStatusBar()) {
-                    //这里对应的是状态栏的颜色，就是style中colorPrimaryDark的颜色
-                    getWindow().setStatusBarColor(getResources().getColor(android.R.color.white, null));
+                if (isDarkTextWhiteBg) {
                     systemUiVisibility |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
                 } else {
                     systemUiVisibility &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;

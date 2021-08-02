@@ -153,6 +153,21 @@ public class ImageManager {
     }
 
     /**
+     * 加载图片
+     *
+     * @param imageView 要设置图片的ImageView
+     * @param resId     图片资源id
+     */
+    public static void loadImage(ImageView imageView, int resId) {
+        GlideApp.with(getContext())
+                .load(resId)
+                .apply(requestOptions)
+                .transition(DrawableTransitionOptions.withCrossFade(crossFadeFactory))
+                .listener(requestListener)
+                .into(imageView);
+    }
+
+    /**
      * 加载图片,
      * Glide官方api中没有提供删除图片缓存的函数，
      * 修复图片被修改后，文件名称未变，加载图片仍显示缓存的问题，使用signature方法

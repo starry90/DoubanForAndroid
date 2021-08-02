@@ -3,6 +3,8 @@ package com.starry.douban.ui.fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 import com.starry.douban.adapter.BookTagAdapter;
 import com.starry.douban.base.BaseFragment;
@@ -13,6 +15,7 @@ import com.starry.douban.model.BookTag;
 import com.starry.douban.ui.activity.BookListActivity;
 import com.starry.douban.util.RegexHelper;
 import com.starry.douban.util.ToastUtil;
+import com.starry.douban.util.UiUtils;
 import com.starry.http.HttpManager;
 import com.starry.http.callback.StringCallback;
 import com.starry.http.error.ErrorModel;
@@ -41,6 +44,12 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> {
 
     @Override
     public void initData() {
+        setTitle("首页");
+        //Activity加载多Fragment时，toolbar不设置fitsSystemWindows，
+        // 否则会导致自定义标题往距上边距有个状态栏高度，导致标题未垂直居中
+        toolbar.setFitsSystemWindows(false);
+        viewBinding.viewStatusBarFix.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, UiUtils.getStatusBarHeight(mActivity)));
+
         initRecyclerView();
     }
 

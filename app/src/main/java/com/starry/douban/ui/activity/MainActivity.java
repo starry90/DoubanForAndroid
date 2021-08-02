@@ -29,9 +29,9 @@ import java.util.List;
  */
 public class MainActivity extends BaseNFCActivity<ActivityMainBinding> {
 
-    private String[] titles = new String[]{"首页", "电影", "设置"};
+    private final String[] titles = new String[]{"首页", "电影", "设置"};
 
-    private ArgbEvaluatorUtil argbEvaluatorUtil = ArgbEvaluatorUtil.get();
+    private final ArgbEvaluatorUtil argbEvaluatorUtil = ArgbEvaluatorUtil.get();
 
     @Override
     protected Class<?> getNFCClass() {
@@ -49,13 +49,12 @@ public class MainActivity extends BaseNFCActivity<ActivityMainBinding> {
     }
 
     @Override
-    protected boolean displayHomeAsUpEnabled() {
+    protected boolean isDarkTextWhiteBgStatusBar() {
         return false;
     }
 
     @Override
     public void initData() {
-        setTitle(titles[0]);
         PermissionUtils.requestPermission(this);
 
         final List<Fragment> pages = new ArrayList<>();
@@ -76,15 +75,12 @@ public class MainActivity extends BaseNFCActivity<ActivityMainBinding> {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId) {
                     case R.id.rbtn_main_home:
-                        setTitle(titles[0]);
                         viewBinding.viewpagerMain.setCurrentItem(0, false);
                         break;
                     case R.id.rbtn_main_book:
-                        setTitle(titles[1]);
                         viewBinding.viewpagerMain.setCurrentItem(1, false);
                         break;
                     case R.id.rbtn_main_setting:
-                        setTitle(titles[2]);
                         viewBinding.viewpagerMain.setCurrentItem(2, false);
                         break;
 

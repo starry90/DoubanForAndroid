@@ -1,6 +1,7 @@
 package com.starry.douban.util;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v4.content.ContextCompat;
 import android.view.Window;
@@ -55,5 +56,23 @@ public class UiUtils {
 
     public static int getColor(int colorResId) {
         return ContextCompat.getColor(AppWrapper.getContext(), colorResId);
+    }
+
+
+    /**
+     * 获取状态栏高度
+     *
+     * @param context context
+     * @return 状态栏高度
+     */
+    public static int getStatusBarHeight(Context context) {
+        int height = 0;
+        // 获得状态栏高度
+        int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            height = context.getResources().getDimensionPixelSize(resourceId);
+
+        }
+        return height;
     }
 }

@@ -13,6 +13,7 @@ import com.starry.douban.base.BaseFragment;
 import com.starry.douban.constant.Apis;
 import com.starry.douban.constant.PreferencesName;
 import com.starry.douban.databinding.FragmentSettingBinding;
+import com.starry.douban.image.ImageManager;
 import com.starry.douban.service.WorkService;
 import com.starry.douban.ui.activity.AboutActivity;
 import com.starry.douban.ui.activity.AppUpdateActivity;
@@ -41,6 +42,9 @@ public class SettingFragment extends BaseFragment<FragmentSettingBinding> implem
 
     @Override
     public void initData() {
+        setTitle("设置");
+        ImageManager.loadImage(viewBinding.ivSettingTop, R.drawable.ic_wallhaven);
+
         latestVersion = SPUtil.getInt(PreferencesName.APP_UPDATE_VERSION_CODE) <= BuildConfig.VERSION_CODE;
         WorkService.startCheckAppVersion();
         if (TextUtils.isEmpty(Apis.VIDEO_HOST)) {
