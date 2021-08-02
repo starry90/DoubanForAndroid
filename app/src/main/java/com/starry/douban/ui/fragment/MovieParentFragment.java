@@ -1,5 +1,7 @@
 package com.starry.douban.ui.fragment;
 
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -28,6 +30,13 @@ public class MovieParentFragment extends BaseFragment<FragmentMovieParentBinding
      * {"tags":["热门","最新","经典","可播放","豆瓣高分","冷门佳片","华语","欧美","韩国","日本","动作","喜剧","爱情","科幻","悬疑","恐怖","成长"]}
      */
     private final String[] tabTitles = new String[]{"热门", "最新", "经典", "可播放", "豆瓣高分", "冷门佳片", "华语", "欧美", "韩国", "日本", "动作", "喜剧", "爱情", "科幻", "悬疑", "恐怖", "成长"};
+
+    @Override
+    protected Drawable getToolbarBackground() {
+        //黑色文字
+        setTitleColor(R.color.text_color_level_1);
+        return new ColorDrawable(0x0FFFFFFFF); //白色背景
+    }
 
     @Override
     public FragmentMovieParentBinding getViewBinding(LayoutInflater layoutInflater) {

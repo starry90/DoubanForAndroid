@@ -49,11 +49,6 @@ public class MainActivity extends BaseNFCActivity<ActivityMainBinding> {
     }
 
     @Override
-    protected boolean isDarkTextWhiteBgStatusBar() {
-        return false;
-    }
-
-    @Override
     public void initData() {
         PermissionUtils.requestPermission(this);
 
@@ -75,12 +70,15 @@ public class MainActivity extends BaseNFCActivity<ActivityMainBinding> {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId) {
                     case R.id.rbtn_main_home:
+                        updateStatusBarTextBg(false);
                         viewBinding.viewpagerMain.setCurrentItem(0, false);
                         break;
                     case R.id.rbtn_main_book:
+                        updateStatusBarTextBg(true);
                         viewBinding.viewpagerMain.setCurrentItem(1, false);
                         break;
                     case R.id.rbtn_main_setting:
+                        updateStatusBarTextBg(false);
                         viewBinding.viewpagerMain.setCurrentItem(2, false);
                         break;
 
@@ -100,6 +98,12 @@ public class MainActivity extends BaseNFCActivity<ActivityMainBinding> {
 
             @Override
             public void onPageSelected(final int position) {
+                if (position == 1) {
+                    updateStatusBarTextBg(true);
+                } else {
+                    updateStatusBarTextBg(false);
+                }
+
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {

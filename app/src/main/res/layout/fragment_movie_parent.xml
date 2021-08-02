@@ -6,7 +6,7 @@
         android:id="@+id/view_status_bar_fix"
         android:layout_width="match_parent"
         android:layout_height="@dimen/common_status_bar_height"
-        android:background="@color/colorPrimary" />
+        android:background="@color/white" />
 
     <include
         android:id="@id/toolbar"

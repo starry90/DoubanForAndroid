@@ -141,6 +141,12 @@ public abstract class BaseFragment<T extends ViewBinding> extends Fragment imple
         if (tvToolbarTitle != null) tvToolbarTitle.setText(title);
     }
 
+    public void setTitleColor(int textColor) {
+        if (tvToolbarTitle != null) {
+            tvToolbarTitle.setTextColor(getResources().getColor(textColor));
+        }
+    }
+
     /**
      * 显示返回键
      *
