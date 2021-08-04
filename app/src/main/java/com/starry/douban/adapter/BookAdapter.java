@@ -1,8 +1,14 @@
 package com.starry.douban.adapter;
 
+import android.view.LayoutInflater;
+import android.view.ViewGroup;
+
 import com.starry.douban.R;
 import com.starry.douban.base.BaseRecyclerAdapter;
-import com.starry.douban.model.BookBean;
+import com.starry.douban.databinding.ItemBookBinding;
+import com.starry.douban.image.ImageManager;
+import com.starry.douban.model.BookItemBean;
+import com.starry.douban.util.StringUtils;
 
 import java.util.List;
 
@@ -10,15 +16,18 @@ import java.util.List;
  * @author Starry Jerry
  * @since 2016/12/10.
  */
-public class BookAdapter extends BaseRecyclerAdapter<BookBean> {
+public class BookAdapter extends BaseRecyclerAdapter<BookItemBean, ItemBookBinding> {
 
-    public BookAdapter(List<BookBean> beans) {
+    public BookAdapter() {
+    }
+
+    public BookAdapter(List<BookItemBean> beans) {
         super(beans);
     }
 
     @Override
-    public int getItemLayout(int viewType) {
-        return R.layout.item_book;
+    public ItemBookBinding getViewBinding(LayoutInflater inflater, ViewGroup parent, boolean attachToParent) {
+        return ItemBookBinding.inflate(inflater, parent, attachToParent);
     }
 
     @Override
@@ -27,12 +36,15 @@ public class BookAdapter extends BaseRecyclerAdapter<BookBean> {
     }
 
     @Override
-    public void onBindData(BaseRecyclerAdapter.RecyclerViewHolder holder, BookBean itemData, int position) {
-        holder.setText(R.id.tv_title, itemData.getTitle());
-        holder.setText(R.id.tv_num_rating, "豆瓣评分：" + itemData.getRating().getAverage());
-        holder.setImage(R.id.iv_image, R.drawable.image_bg_default);
+    public void onBindData(BaseRecyclerAdapter.RecyclerViewHolder<ItemBookBinding> holder, BookItemBean itemData, int position) {
+        ItemBookBinding viewBinding = holder.viewBinding;
+        viewBinding.tvItemBookTitle.setText(itemData.getTitle());
+        viewBinding.tvItemBookPublish.setText(itemData.getPublish());
+        viewBinding.tvItemBookSummary.setText(itemData.getSummary());
+        viewBinding.tvItemBookRating.setText(StringUtils.format("豆瓣评分：%s %s ", itemData.getRating(), itemData.getRatingNumber()));
+        viewBinding.ivItemBookImage.setImageResource(R.drawable.image_bg_default);
         if (allowLoadImage(position)) {
-            holder.setImageFromInternet(R.id.iv_image, itemData.getImage());
+            ImageManager.loadImage(viewBinding.ivItemBookImage, itemData.getImage());
         }
     }
 }

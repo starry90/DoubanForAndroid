@@ -2,13 +2,16 @@ package com.starry.douban.base;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.viewbinding.ViewBinding;
+import android.widget.TextView;
 
 import com.starry.douban.R;
 import com.starry.douban.widget.LoadingDataLayout;
@@ -30,10 +33,12 @@ public abstract class BaseFragment<T extends ViewBinding> extends Fragment imple
 
     /**
      * 网络请求各种状态显示容器
-     * <p>Required view 'view_loading_container' with ID 2131427348 for field 'mLoadingDataLayout' was not found. If this view is optional add '@Nullable' (fields) or '@Optional' (methods) annotation.
      */
-    @Nullable
     protected LoadingDataLayout mLoadingDataLayout;
+
+    protected TextView tvToolbarTitle;
+
+    protected Toolbar toolbar;
 
     /**
      * 是否允许懒加载
@@ -55,21 +60,28 @@ public abstract class BaseFragment<T extends ViewBinding> extends Fragment imple
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         isViewCreated = true;
         viewBinding = getViewBinding(inflater);
         return viewBinding.getRoot();
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mLoadingDataLayout = view.findViewById(R.id.view_loading_container);
+        initToolBar(view);
         initLoadingDataLayout();
         initData();
         setListener();
         //Fragment初始化时setUserVisibleHint方法会先于onCreateView执行
         prepareLazyLoading(getUserVisibleHint(), isViewCreated);
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        prepareLazyLoading(!hidden, isViewCreated);
     }
 
     @Override
@@ -98,6 +110,82 @@ public abstract class BaseFragment<T extends ViewBinding> extends Fragment imple
      */
     public void onLazyLoadingData() {
 
+    }
+
+    private void initToolBar(View view) {
+        toolbar = view.findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            tvToolbarTitle = view.findViewById(R.id.tv_toolbar_title);
+
+            Drawable drawable = getToolbarBackground();
+            if (drawable != null) {
+                toolbar.setBackground(drawable);
+            }
+
+            if (displayHomeAsUpEnabled()) {
+                int toolbarNavigationIconRes = getToolbarNavigationIconRes();
+                //设置图片时会显示返回键
+                if (toolbarNavigationIconRes != 0) {
+                    toolbar.setNavigationIcon(toolbarNavigationIconRes);
+                }
+            }
+            toolbar.setNavigationOnClickListener(getToolbarNavigationOnClickListener());
+        }
+    }
+
+    public void setTitle(int titleId) {
+        if (tvToolbarTitle != null) tvToolbarTitle.setText(titleId);
+    }
+
+    public void setTitle(CharSequence title) {
+        if (tvToolbarTitle != null) tvToolbarTitle.setText(title);
+    }
+
+    public void setTitleColor(int textColor) {
+        if (tvToolbarTitle != null) {
+            tvToolbarTitle.setTextColor(getResources().getColor(textColor));
+        }
+    }
+
+    /**
+     * 显示返回键
+     *
+     * @return true为显示左上角返回键，反之为false
+     */
+    protected boolean displayHomeAsUpEnabled() {
+        return true;
+    }
+
+    /**
+     * Toolbar背景
+     *
+     * @return 背景
+     */
+    protected Drawable getToolbarBackground() {
+        return null;
+    }
+
+    /**
+     * 返回键图片
+     *
+     * @return 返回键图片资源
+     */
+    protected int getToolbarNavigationIconRes() {
+        return 0;
+    }
+
+    /**
+     * 返回键点击事件监听
+     *
+     * @return 返回键点击事件监听
+     */
+    protected View.OnClickListener getToolbarNavigationOnClickListener() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mActivity.finish();
+            }
+        };
     }
 
     /**
@@ -133,6 +221,10 @@ public abstract class BaseFragment<T extends ViewBinding> extends Fragment imple
         } else {
             showLoadingStatus(LoadingDataLayout.STATUS_ERROR);
         }
+    }
+
+    public void showEmpty() {
+        showLoadingStatus(LoadingDataLayout.STATUS_EMPTY);
     }
 
     /**

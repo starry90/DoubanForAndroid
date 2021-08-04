@@ -11,9 +11,15 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <!-- 使用标准的style，如果使用ThemeOverlay.AppCompat.Dark.ActionBar在白色背景的标题栏下看不到点击水波纹效果-->
+    <style name="Base.ToolbarTheme" parent="ThemeOverlay.AppCompat.ActionBar">
+        <!-- 导航栏默认的图标颜色 如返回键的颜色-->
+        <item name="colorControlNormal">@android:color/white</item>
+    </style>
+
     <style name="RButtonMain">
         <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_height">@dimen/common_height_level_1</item>
         <item name="android:layout_weight">1</item>
         <item name="android:button">@null</item>
         <item name="android:gravity">center</item>
@@ -22,23 +28,23 @@
     </style>
 
     <style name="Widget.CardContent" parent="android:Widget">
-        <item name="android:paddingLeft">16dp</item>
-        <item name="android:paddingRight">16dp</item>
-        <item name="android:paddingTop">24dp</item>
-        <item name="android:paddingBottom">24dp</item>
+        <item name="android:paddingLeft">@dimen/common_margin_level_2</item>
+        <item name="android:paddingRight">@dimen/common_margin_level_2</item>
+        <item name="android:paddingTop">@dimen/common_margin_level_3</item>
+        <item name="android:paddingBottom">@dimen/common_margin_level_3</item>
         <item name="android:orientation">vertical</item>
     </style>
 
     <!-- 水平线-->
     <style name="HorizontalDivideLine">
-        <item name="android:layout_height">1px</item>
+        <item name="android:layout_height">2px</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:background">@color/divider_color</item>
     </style>
     <!-- 垂直线-->
     <style name="VerticalDivideLine">
         <item name="android:layout_height">match_parent</item>
-        <item name="android:layout_width">1px</item>
+        <item name="android:layout_width">2px</item>
         <item name="android:background">@color/divider_color</item>
     </style>
 
@@ -86,19 +92,17 @@
 
     <style name="ItemRippleStyle">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">@dimen/common_height_level_1</item>
-        <item name="android:background">@drawable/ripple_view_white_bg</item>
+        <item name="android:layout_height">@dimen/common_height_level_2</item>
+        <item name="android:background">@drawable/item_view_bg_material</item>
         <item name="android:paddingLeft">@dimen/common_margin_level_2</item>
         <item name="android:paddingRight">@dimen/common_margin_level_2</item>
         <item name="android:gravity">center_vertical</item>
-        <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/text_color_level_1</item>
     </style>
 
     <style name="ItemTextMatchStyle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">14sp</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:textColor">@color/text_color_level_1</item>
         <item name="android:layout_centerVertical">true</item>
@@ -107,7 +111,6 @@
     <style name="ItemTextWrapStyle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">14sp</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:textColor">@color/text_color_level_1</item>
         <item name="android:layout_centerVertical">true</item>

@@ -3,17 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include
-        android:id="@id/toolbar"
-        layout="@layout/toolbar_layout" />
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/viewpager_main"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/radioGroup_main"
-        android:layout_below="@id/toolbar" />
-
     <RadioGroup
         android:id="@+id/radioGroup_main"
         android:layout_width="match_parent"
@@ -44,5 +33,11 @@
             android:text="设置" />
 
     </RadioGroup>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/radioGroup_main" />
 
 </RelativeLayout>

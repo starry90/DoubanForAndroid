@@ -11,7 +11,10 @@ import android.support.annotation.Nullable;
 import android.widget.ImageView;
 
 import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
@@ -23,11 +26,10 @@ import com.bumptech.glide.signature.MediaStoreSignature;
 import com.starry.douban.R;
 import com.starry.douban.env.AppWrapper;
 import com.starry.douban.image.okhttp.GlideApp;
+import com.starry.douban.image.okhttp.GlideRequest;
 import com.starry.log.Logger;
 import com.starry.rx.RxManager;
 import com.starry.rx.RxTask;
-
-import java.io.File;
 
 import io.reactivex.functions.Consumer;
 
@@ -63,7 +65,7 @@ public class ImageManager {
             .setCrossFadeEnabled(true)
             .build();
 
-    private static final RequestListener requestListener = new RequestListener<Drawable>() {
+    private static final RequestListener<Drawable> requestListener = new RequestListener<Drawable>() {
         @Override
         public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
             Logger.e("Glide exception:" + e);
@@ -113,12 +115,26 @@ public class ImageManager {
      * @param url       图片URL
      */
     public static void loadImage(ImageView imageView, String url) {
-        GlideApp.with(getContext())
+        loadImage(imageView, url, 0);
+    }
+
+    /**
+     * 加载图片
+     *
+     * @param imageView 要设置图片的ImageView
+     * @param url       图片URL
+     * @param radius    圆角半径
+     */
+    public static void loadImage(ImageView imageView, String url, int radius) {
+        GlideRequest<Drawable> load = GlideApp.with(getContext())
                 .load(url)
                 .apply(requestOptions)
                 .transition(DrawableTransitionOptions.withCrossFade(crossFadeFactory))
-                .listener(requestListener)
-                .into(imageView);
+                .listener(requestListener);
+        if (radius > 0) {
+            load = load.transform(new RoundedCorners(radius));
+        }
+        load.into(imageView);
     }
 
     /**
@@ -130,6 +146,21 @@ public class ImageManager {
     public static void loadImage(ImageView imageView, Uri uri) {
         GlideApp.with(getContext())
                 .load(uri)
+                .apply(requestOptions)
+                .transition(DrawableTransitionOptions.withCrossFade(crossFadeFactory))
+                .listener(requestListener)
+                .into(imageView);
+    }
+
+    /**
+     * 加载图片
+     *
+     * @param imageView 要设置图片的ImageView
+     * @param resId     图片资源id
+     */
+    public static void loadImage(ImageView imageView, int resId) {
+        GlideApp.with(getContext())
+                .load(resId)
                 .apply(requestOptions)
                 .transition(DrawableTransitionOptions.withCrossFade(crossFadeFactory))
                 .listener(requestListener)
@@ -160,14 +191,15 @@ public class ImageManager {
     /**
      * 加载圆形图片
      * <p>
-     * 不能用动画效果
+     * 不能用动画效果，否则占位图不消失，真实图片会和占位图叠加在一起
      *
      * @param imageView 要设置图片的ImageView
      * @param url       图片Url
      */
-    public static void loadCircleImage(ImageView imageView, String url) {
+    public static void loadImageTransformCircle(ImageView imageView, String url) {
         GlideApp.with(getContext())
                 .load(url)
+                .transform(new CircleCrop())
                 .apply(requestOptions)
 //                .transition(DrawableTransitionOptions.withCrossFade()) //加载圆形图片不能用动画效果
                 .listener(requestListener)
@@ -182,13 +214,21 @@ public class ImageManager {
      */
     public static boolean downloadImage(String url) {
         try {
-            File file = GlideApp.with(getContext())
+            Bitmap bitmap = GlideApp.with(getContext())
+                    .asBitmap()
                     .load(url)
-                    .downloadOnly(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+                    .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                    .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
                     .get();
             Context context = getContext();
-            MediaStore.Images.Media.insertImage(context.getContentResolver(), file.getAbsolutePath(), file.getName(), "beauty");
-            context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file)));
+            // 保存到相册 使用传图片路径的方法，系统API会直接将图片加载至内存中，大图会产生OOM
+            // MediaStore.Images.Media.insertImage(ContentResolver cr, String imagePath, String title, String description)
+            // 保存到相册 推荐使用传图片Bitmap的方法
+            String imageUriString = MediaStore.Images.Media.insertImage(context.getContentResolver(), bitmap, url, url);
+            if (imageUriString == null) {
+                return false;
+            }
+            context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse(imageUriString)));
             return true;
         } catch (Exception e) {
             e.printStackTrace();

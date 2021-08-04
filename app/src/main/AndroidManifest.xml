@@ -4,8 +4,13 @@
     package="com.starry.douban">
 
     <uses-permission android:name="android.permission.INTERNET" />
+
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <!--<uses-permission android:name="android.permission.READ_LOGS" />-->
+    <!-- 访问网络状态 -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <!--读写sd卡-->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <!-- 读取最近通话记录 -->
@@ -47,6 +52,9 @@
             android:name="com.starry.douban.ui.activity.MovieDetailActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name="com.starry.douban.ui.activity.BookListActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name="com.starry.douban.ui.activity.BookDetailActivity"
             android:screenOrientation="portrait" />
         <activity
@@ -56,7 +64,14 @@
             android:name="com.starry.douban.ui.activity.BeautyActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.starry.douban.ui.activity.BeautyDetailActivity"
+            android:name="com.starry.douban.ui.activity.VideoListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.starry.douban.ui.activity.VideoPlayerActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.starry.douban.ui.activity.PhotoDetailActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.starry.douban.ui.activity.AboutActivity"

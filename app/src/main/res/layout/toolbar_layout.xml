@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@id/toolbar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -8,18 +9,19 @@
     android:fitsSystemWindows="true"
     android:minHeight="?attr/actionBarSize"
     app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-    app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+    app:theme="@style/Base.ToolbarTheme">
 
     <TextView
         android:id="@+id/tv_toolbar_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
         android:layout_marginRight="@dimen/toolbar_title_margin"
         android:ellipsize="end"
-        android:gravity="left"
+        android:gravity="left|center_vertical"
         android:singleLine="true"
-        android:text="@string/app_name"
         android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
-        android:textColor="@color/title_text_color" />
+        android:textColor="@color/title_text_color"
+        tools:text="@string/app_name" />
 
 </android.support.v7.widget.Toolbar>

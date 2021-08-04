@@ -1,49 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:layout_margin="5dp"
-    android:foreground="?android:attr/selectableItemBackground"
-    android:transitionName="@string/transition_item_name"
-    app:cardCornerRadius="5dp"
-    app:cardElevation="5dp">
+    android:background="@drawable/item_view_bg_material">
+
+    <ImageView
+        android:id="@+id/iv_item_book_image"
+        android:layout_width="80dp"
+        android:layout_height="100dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/common_margin_level_2"
+        android:layout_marginRight="@dimen/common_margin_level_2"
+        android:background="@drawable/image_bg_default"
+        android:scaleType="fitXY" />
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="@dimen/common_margin_level_2"
+        android:layout_marginBottom="@dimen/common_margin_level_2"
+        android:layout_toRightOf="@+id/iv_item_book_image"
         android:orientation="vertical"
-        android:padding="10dp">
-
-        <ImageView
-            android:id="@+id/iv_image"
-            android:layout_width="80dp"
-            android:layout_height="100dp"
-            android:background="@drawable/image_bg_default"
-            android:scaleType="fitXY" />
-
+        android:paddingRight="@dimen/common_margin_level_2">
 
         <TextView
-            android:id="@+id/tv_title"
+            android:id="@+id/tv_item_book_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
             android:singleLine="true"
-            android:text="小白理财"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
-            android:textSize="@dimen/text_size_14" />
+            android:textSize="@dimen/text_size_18"
+            tools:text="活着" />
 
         <TextView
-            android:id="@+id/tv_num_rating"
+            android:id="@+id/tv_item_book_rating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="@dimen/common_text_padding_level_1"
             android:singleLine="true"
-            android:text="豆瓣评分：8.8"
-            android:textSize="@dimen/text_size_12" />
+            android:textColor="@color/text_color_level_1"
+            android:textSize="@dimen/text_size_12"
+            tools:text="豆瓣评分：9.4分" />
 
+        <TextView
+            android:id="@+id/tv_item_book_publish"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/common_text_padding_level_1"
+            android:singleLine="true"
+            android:textColor="@color/text_color_level_1"
+            android:textSize="@dimen/text_size_12"
+            tools:text="余华 / 作家出版社 / 2012-8-1 / 20.00元" />
+
+        <TextView
+            android:id="@+id/tv_item_book_summary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/common_text_padding_level_1"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:textColor="@color/text_color_level_2"
+            android:textSize="@dimen/text_size_10"
+            tools:text="图书简介：《活着(新版)》讲述了农村人福贵悲惨的人生遭遇。福贵本是个阔少爷，可他嗜赌如命，终于赌光了家业，一贫如洗。他的父亲被他活活气死，母亲则在穷困中患了重病，福贵... " />
 
     </LinearLayout>
-</android.support.v7.widget.CardView>
+
+    <View
+        style="@style/HorizontalDivideLine"
+        android:layout_alignParentBottom="true" />
+</RelativeLayout>

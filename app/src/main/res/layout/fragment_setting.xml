@@ -1,35 +1,30 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextClock
-        android:id="@+id/tv_setting_hour"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:fontFamily="sans-serif-thin"
-        android:format12Hour="H:mm"
-        android:format24Hour="H:mm"
-        android:gravity="center"
-        android:textColor="@color/colorAccent"
-        android:textSize="72sp"
-        android:textStyle="normal" />
+    <ImageView
+        android:id="@+id/iv_setting_top"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:scaleType="centerCrop"
+        tools:src="@drawable/ic_wallhaven" />
 
     <TextClock
         android:id="@+id/tv_setting_date"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tv_setting_hour"
+        android:layout_height="@dimen/common_height_level_2"
+        android:layout_marginTop="@dimen/common_status_bar_height"
         android:format12Hour="MM月dd日 EEEE"
         android:format24Hour="MM月dd日 EEEE"
         android:gravity="center"
         android:textColor="@color/colorAccent"
-        android:textSize="20sp" />
+        android:textSize="@dimen/text_size_18" />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/tv_setting_date">
+        android:layout_below="@id/iv_setting_top">
 
         <LinearLayout
             android:id="@+id/ll_setting01"
@@ -61,6 +56,13 @@
                 android:id="@+id/tv_setting_version_update"
                 style="@style/ItemRippleStyle"
                 android:text="版本更新" />
+
+            <View style="@style/GapHorizontalDivideLine" />
+
+            <TextView
+                android:id="@+id/tv_setting_video"
+                style="@style/ItemRippleStyle"
+                android:text="视频" />
 
             <View style="@style/GapHorizontalDivideLine" />
 

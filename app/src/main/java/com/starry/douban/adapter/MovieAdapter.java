@@ -1,7 +1,12 @@
 package com.starry.douban.adapter;
 
+import android.view.LayoutInflater;
+import android.view.ViewGroup;
+
 import com.starry.douban.R;
 import com.starry.douban.base.BaseRecyclerAdapter;
+import com.starry.douban.databinding.ItemMovieBinding;
+import com.starry.douban.image.ImageManager;
 import com.starry.douban.model.MovieItemBean;
 
 import java.util.List;
@@ -10,15 +15,18 @@ import java.util.List;
  * @author Starry Jerry
  * @since 2016/12/10.
  */
-public class MovieAdapter extends BaseRecyclerAdapter<MovieItemBean> {
+public class MovieAdapter extends BaseRecyclerAdapter<MovieItemBean, ItemMovieBinding> {
 
-    public MovieAdapter(List<MovieItemBean> beans) {
-        super(beans);
+    public MovieAdapter() {
+    }
+
+    public MovieAdapter(List<MovieItemBean> dataSet) {
+        super(dataSet);
     }
 
     @Override
-    public int getItemLayout(int viewType) {
-        return R.layout.item_movie;
+    public ItemMovieBinding getViewBinding(LayoutInflater inflater, ViewGroup parent, boolean attachToParent) {
+        return ItemMovieBinding.inflate(inflater, parent, attachToParent);
     }
 
     @Override
@@ -27,15 +35,17 @@ public class MovieAdapter extends BaseRecyclerAdapter<MovieItemBean> {
     }
 
     @Override
-    public void onBindData(BaseRecyclerAdapter.RecyclerViewHolder holder, MovieItemBean itemData, int position) {
-        holder.setText(R.id.tv_title, itemData.getTitle());
-        holder.setText(R.id.tv_author, "导       演：" + itemData.getTitle());
-        holder.setText(R.id.tv_date, "上映日期：" + itemData.getTitle());
-        holder.setText(R.id.tv_publisher, "电影剧情：" + itemData.getTitle());
-        holder.setText(R.id.tv_num_rating, "观众评分：" + itemData.getRate());
-        holder.setImage(R.id.iv_image, R.drawable.image_bg_default);
+    public void onBindData(BaseRecyclerAdapter.RecyclerViewHolder<ItemMovieBinding> holder, MovieItemBean itemData, int position) {
+        ItemMovieBinding viewBinding = holder.viewBinding;
+        viewBinding.tvTitle.setText(itemData.getTitle());
+        viewBinding.tvAuthor.setText("导       演：" + itemData.getTitle());
+        viewBinding.tvDate.setText("上映日期：" + itemData.getTitle());
+        viewBinding.tvPublisher.setText("电影剧情：" + itemData.getTitle());
+        viewBinding.tvNumRating.setText("观众评分：" + itemData.getRate());
+
+        viewBinding.ivImage.setImageResource(R.drawable.image_bg_default);
         if (allowLoadImage(position)) {
-            holder.setImageFromInternet(R.id.iv_image, itemData.getCover());
+            ImageManager.loadImage(viewBinding.ivImage, itemData.getCover(), 16);
         }
     }
 }

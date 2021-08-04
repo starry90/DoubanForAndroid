@@ -8,6 +8,11 @@ package com.starry.douban.constant;
 public class Common {
 
     /**
+     * 分页大小
+     */
+    public static final int PAGE_SIZE = 20;
+
+    /**
      * 根目录
      */
     public static final String DIR_ROOT = "DouBanForAndroid";
@@ -24,6 +29,6 @@ public class Common {
 
     public static final String FILE_PROVIDER_AUTHORITY = "com.starry.douban.fileprovider";
 
-    public static final String SP_FILE_COOKIE= "sp_cookie";
+    public static final String SP_FILE_COOKIE = "sp_cookie";
 
 }

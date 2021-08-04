@@ -1,7 +1,12 @@
 package com.starry.douban.adapter;
 
+import android.view.LayoutInflater;
+import android.view.ViewGroup;
+
 import com.starry.douban.R;
 import com.starry.douban.base.BaseRecyclerAdapter;
+import com.starry.douban.databinding.ItemBeautyBinding;
+import com.starry.douban.image.ImageManager;
 import com.starry.douban.model.BeautyModel;
 
 import java.util.List;
@@ -10,15 +15,18 @@ import java.util.List;
  * @author Starry Jerry
  * @since 2016/12/10.
  */
-public class BeautyAdapter extends BaseRecyclerAdapter<BeautyModel> {
+public class BeautyAdapter extends BaseRecyclerAdapter<BeautyModel, ItemBeautyBinding> {
 
-    public BeautyAdapter(List<BeautyModel> beans) {
-        super(beans);
+    public BeautyAdapter() {
+    }
+
+    public BeautyAdapter(List<BeautyModel> dataSet) {
+        super(dataSet);
     }
 
     @Override
-    public int getItemLayout(int viewType) {
-        return R.layout.item_beauty;
+    public ItemBeautyBinding getViewBinding(LayoutInflater inflater, ViewGroup parent, boolean attachToParent) {
+        return ItemBeautyBinding.inflate(inflater, parent, attachToParent);
     }
 
     @Override
@@ -27,11 +35,12 @@ public class BeautyAdapter extends BaseRecyclerAdapter<BeautyModel> {
     }
 
     @Override
-    public void onBindData(RecyclerViewHolder holder, BeautyModel itemData, int position) {
-        holder.setText(R.id.tv_title, itemData.getDesc());
-        holder.setImage(R.id.iv_image, R.drawable.image_bg_default);
+    public void onBindData(BaseRecyclerAdapter.RecyclerViewHolder<ItemBeautyBinding> holder, BeautyModel itemData, int position) {
+        ItemBeautyBinding viewBinding = holder.viewBinding;
+        viewBinding.tvTitle.setText(itemData.getDesc());
+        viewBinding.ivImage.setImageResource(R.drawable.image_bg_default);
         if (allowLoadImage(position)) {
-            holder.setImageFromInternet(R.id.iv_image, itemData.getUrl());
+            ImageManager.loadImage(viewBinding.ivImage, itemData.getUrl());
         }
     }
 }

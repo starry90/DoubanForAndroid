@@ -4,16 +4,17 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
-import android.util.SparseArray;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.viewbinding.ViewBinding;
+import android.widget.ArrayAdapter;
 
-import com.starry.douban.image.ImageManager;
-
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,9 +23,16 @@ import java.util.Map;
 /**
  * 通用的RecyclerView的适配器
  */
-public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRecyclerAdapter.RecyclerViewHolder> {
+public abstract class BaseRecyclerAdapter<T, V extends ViewBinding> extends RecyclerView.Adapter<BaseRecyclerAdapter.RecyclerViewHolder<V>> {
 
-    protected List<T> dataSet;
+    /**
+     * 参考{@linkplain ArrayAdapter}
+     * Lock used to modify the content of {@link #dataSet}. Any write operation
+     * performed on the array should be synchronized on this lock.
+     */
+    private final Object mLock = new Object();
+
+    protected List<T> dataSet = new ArrayList<>();
     protected Context mContext;
 
     /**
@@ -40,7 +48,7 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
     /**
      * 子View点击事件集合
      */
-    private HashMap<Integer, OnItemChildClickListener> childClickListenerMap = new HashMap<>();
+    private final HashMap<Integer, OnItemChildClickListener> childClickListenerMap = new HashMap<>();
 
     /**
      * 为了保证滑动流畅及不浪费流量，此时不加载图片,true表示列表滑动中
@@ -50,7 +58,10 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
     /**
      * 已加载过的数据集合
      */
-    private SparseBooleanArray loadedMap = new SparseBooleanArray();
+    private final SparseBooleanArray loadedMap = new SparseBooleanArray();
+
+    public BaseRecyclerAdapter() {
+    }
 
     public BaseRecyclerAdapter(List<T> dataSet) {
         this.dataSet = dataSet;
@@ -58,12 +69,13 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
 
     @NonNull
     @Override
-    public BaseRecyclerAdapter.RecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public BaseRecyclerAdapter.RecyclerViewHolder<V> onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         mContext = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(mContext);
-        View view = inflater.inflate(getItemLayout(viewType), parent, false);
-        final BaseRecyclerAdapter.RecyclerViewHolder holder = new RecyclerViewHolder(view);
+        V viewBinding = getViewBinding(inflater, parent, false);
+        final BaseRecyclerAdapter.RecyclerViewHolder<V> holder = new RecyclerViewHolder<>(viewBinding);
 
+        View view = viewBinding.getRoot();
         // item点击事件
         view.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,7 +119,7 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
     }
 
     @Override
-    public void onBindViewHolder(@NonNull BaseRecyclerAdapter.RecyclerViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull BaseRecyclerAdapter.RecyclerViewHolder<V> holder, int position) {
         onBindData(holder, dataSet.get(position), position);
 
         if (!isScrolling) {
@@ -116,12 +128,11 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
     }
 
     /**
-     * 获取ItemView的布局文件
+     * 获取ItemView的ViewBinding
      *
-     * @param viewType The view type of the new View
-     * @return 布局id
+     * @return 布局ViewBinding
      */
-    public abstract int getItemLayout(int viewType);
+    public abstract V getViewBinding(LayoutInflater inflater, ViewGroup parent, boolean attachToParent);
 
     /**
      * 绑定数据
@@ -130,7 +141,7 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
      * @param itemData 数据bean
      * @param position 当前位置
      */
-    public abstract void onBindData(BaseRecyclerAdapter.RecyclerViewHolder holder, T itemData, int position);
+    public abstract void onBindData(BaseRecyclerAdapter.RecyclerViewHolder<V> holder, T itemData, int position);
 
 
     @Override
@@ -174,6 +185,134 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
                 }
             }
         });
+    }
+
+    public List<T> getAll() {
+        return dataSet;
+    }
+
+    /**
+     * 用指定的集合替换列表.
+     * <p>
+     * Replaces the list  with specified Collection.
+     *
+     * @param collection The Collection to add at the end of the array.
+     * @throws UnsupportedOperationException if the <tt>addAll</tt> operation
+     *                                       is not supported by this list
+     * @throws ClassCastException            if the class of an element of the specified
+     *                                       collection prevents it from being added to this list
+     * @throws NullPointerException          if the specified collection contains one
+     *                                       or more null elements and this list does not permit null
+     *                                       elements, or if the specified collection is null
+     * @throws IllegalArgumentException      if some property of an element of the
+     *                                       specified collection prevents it from being added to this list
+     */
+    public void setAll(Collection<? extends T> collection) {
+        synchronized (mLock) {
+            dataSet.clear();
+            dataSet.addAll(collection);
+        }
+        notifyDataSetChanged();
+    }
+
+
+    /**
+     * Adds the specified object at the end of the array.
+     *
+     * @param object The object to add at the end of the array.
+     * @throws UnsupportedOperationException if the underlying data collection is immutable
+     */
+    public void add(T object) {
+        synchronized (mLock) {
+            dataSet.add(object);
+        }
+        notifyDataSetChanged();
+    }
+
+    /**
+     * Adds the specified Collection at the end of the array.
+     *
+     * @param collection The Collection to add at the end of the array.
+     * @throws UnsupportedOperationException if the <tt>addAll</tt> operation
+     *                                       is not supported by this list
+     * @throws ClassCastException            if the class of an element of the specified
+     *                                       collection prevents it from being added to this list
+     * @throws NullPointerException          if the specified collection contains one
+     *                                       or more null elements and this list does not permit null
+     *                                       elements, or if the specified collection is null
+     * @throws IllegalArgumentException      if some property of an element of the
+     *                                       specified collection prevents it from being added to this list
+     */
+    public void addAll(Collection<? extends T> collection) {
+        synchronized (mLock) {
+            dataSet.addAll(collection);
+        }
+        notifyDataSetChanged();
+    }
+
+    /**
+     * Adds the specified items at the end of the array.
+     *
+     * @param items The items to add at the end of the array.
+     * @throws UnsupportedOperationException if the underlying data collection is immutable
+     */
+    public void addAll(T... items) {
+        synchronized (mLock) {
+            Collections.addAll(dataSet, items);
+        }
+        notifyDataSetChanged();
+    }
+
+    /**
+     * Inserts the specified object at the specified index in the array.
+     *
+     * @param object The object to insert into the array.
+     * @param index  The index at which the object must be inserted.
+     * @throws UnsupportedOperationException if the underlying data collection is immutable
+     */
+    public void insert(T object, int index) {
+        synchronized (mLock) {
+            dataSet.add(index, object);
+        }
+        notifyDataSetChanged();
+    }
+
+    /**
+     * Removes the specified object from the array.
+     *
+     * @param object The object to remove.
+     * @throws UnsupportedOperationException if the underlying data collection is immutable
+     */
+    public void remove(T object) {
+        synchronized (mLock) {
+            dataSet.remove(object);
+        }
+        notifyDataSetChanged();
+    }
+
+    /**
+     * Remove all elements from the list.
+     *
+     * @throws UnsupportedOperationException if the underlying data collection is immutable
+     */
+    public void clear() {
+        synchronized (mLock) {
+            dataSet.clear();
+        }
+        notifyDataSetChanged();
+    }
+
+    /**
+     * Sorts the content of this adapter using the specified comparator.
+     *
+     * @param comparator The comparator used to sort the objects contained
+     *                   in this adapter.
+     */
+    public void sort(Comparator<? super T> comparator) {
+        synchronized (mLock) {
+            Collections.sort(dataSet, comparator);
+        }
+        notifyDataSetChanged();
     }
 
     /**
@@ -255,50 +394,15 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
         mOnItemLongClickListener = listener;
     }
 
-    public static class RecyclerViewHolder extends RecyclerView.ViewHolder {
+    public static class RecyclerViewHolder<V extends ViewBinding> extends RecyclerView.ViewHolder {
 
-        private final SparseArray<View> viewHolder;
+        public V viewBinding;
 
-        private RecyclerViewHolder(View itemView) {
-            super(itemView);
-            this.viewHolder = new SparseArray<>();
+        private RecyclerViewHolder(V viewBinding) {
+            super(viewBinding.getRoot());
+            this.viewBinding = viewBinding;
         }
 
-        public <T extends View> T getView(int viewId) {
-            View view = viewHolder.get(viewId);
-            if (view == null) {
-                view = itemView.findViewById(viewId);
-                viewHolder.put(viewId, view);
-            }
-            return (T) view;
-        }
-
-        public void setText(int viewId, String text) {
-            TextView tv = getView(viewId);
-            tv.setText(text);
-        }
-
-        /**
-         * 加载drawable中的图片
-         *
-         * @param viewId
-         * @param resId
-         */
-        public void setImage(int viewId, int resId) {
-            ImageView iv = getView(viewId);
-            iv.setImageResource(resId);
-        }
-
-        /**
-         * 加载网络上的图片
-         *
-         * @param viewId
-         * @param url
-         */
-        public void setImageFromInternet(int viewId, String url) {
-            ImageView iv = getView(viewId);
-            ImageManager.loadImage(iv, url);
-        }
     }
 
 }

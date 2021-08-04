@@ -5,11 +5,13 @@ import android.graphics.drawable.Drawable;
 import android.transition.Slide;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.View;
 
 import com.starry.douban.BuildConfig;
 import com.starry.douban.R;
 import com.starry.douban.base.BaseNFCActivity;
 import com.starry.douban.databinding.ActivityAboutBinding;
+import com.starry.douban.util.BuglyHelper;
 
 /**
  * 关于
@@ -71,6 +73,14 @@ public class AboutActivity extends BaseNFCActivity<ActivityAboutBinding> {
         Slide slide = new Slide(Gravity.TOP);
         slide.addTarget(viewBinding.tvAboutAppName);
         getWindow().setEnterTransition(slide);
+
+        viewBinding.tvAboutAppName.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                BuglyHelper.testBug();
+                return false;
+            }
+        });
     }
 
 }

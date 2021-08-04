@@ -13,21 +13,25 @@
     <color name="view_bg">#ffffff</color>
     <!-- 分割线颜色 -->
     <color name="divider_color">#dddddd</color>
+
+    <!-- 字体颜色，主色 -->
+    <color name="text_color_level_0">#000000</color>
     <!-- 一级字体颜色，主色 -->
     <color name="text_color_level_1">#333333</color>
     <!-- 二级字体颜色 -->
     <color name="text_color_level_2">#888888</color>
     <!-- 三级字体颜色 -->
     <color name="text_color_level_3">#bbbbbb</color>
+    <!-- 四级字体颜色 -->
+    <color name="text_color_level_4">#EEEEEE</color>
+    <!-- 五级字体颜色 -->
+    <color name="text_color_level_5">#FECA29</color>
+
 
     <color name="white">#FFFFFF</color>
-    <color name="black">#000</color>
+    <color name="black">#000000</color>
     <!-- 透明色 -->
     <color name="transparent">#00000000</color>
-
-    <color name="yellow">#FECA29</color>
-
-    <color name="grey">#EBECE7</color>
 
     <color name="darker_gray">#AAAAAA</color>
 

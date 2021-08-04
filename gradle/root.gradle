@@ -14,9 +14,9 @@ ext {
     ]
 
     versions = [
-            "compileSdkVersion": 29,
+            "compileSdkVersion": 30,
             "minSdkVersion"    : 21,
-            "targetSdkVersion" : 29,
+            "targetSdkVersion" : 30,
 
             "versionCode"      : 20210630,
             "versionName"      : "2.1.0",
@@ -47,6 +47,8 @@ ext {
             "agentweb"           : "com.just.agentweb:agentweb:4.0.2",
             "jsoup"              : "org.jsoup:jsoup:1.13.1",
 
+            "crashreport"        : "com.tencent.bugly:crashreport:3.3.3",
+            "nativecrashreport"  : "com.tencent.bugly:nativecrashreport:3.7.7",
             "leakcanaryDebug"    : "com.squareup.leakcanary:leakcanary-android:1.5.4",
             "leakcanaryRelease"  : "com.squareup.leakcanary:leakcanary-android-no-op:1.5.4",
             "anrDebug"           : "com.github.markzhai:blockcanary-android:1.5.0",
