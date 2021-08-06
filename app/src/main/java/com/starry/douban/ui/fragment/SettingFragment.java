@@ -49,6 +49,7 @@ public class SettingFragment extends BaseFragment<FragmentSettingBinding> implem
         WorkService.startCheckAppVersion();
         if (TextUtils.isEmpty(Apis.VIDEO_HOST)) {
             viewBinding.tvSettingVideo.setVisibility(View.GONE);
+            viewBinding.viewVideoDivider.setVisibility(View.GONE);
         }
     }
 
