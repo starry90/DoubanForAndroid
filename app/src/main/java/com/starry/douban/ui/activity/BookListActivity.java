@@ -71,7 +71,7 @@ public class BookListActivity extends BaseActivity<ActivityBookListBinding> {
         mAdapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View itemView, int position) {
-                ToastUtil.showToast("图书");
+                BookDetailActivity.showActivity(BookListActivity.this, mAdapter.getItem(position).getSubjectUrl());
             }
         });
 

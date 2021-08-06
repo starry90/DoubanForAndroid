@@ -7,7 +7,6 @@ import android.support.test.runner.AndroidJUnit4;
 import com.starry.douban.constant.Apis;
 import com.starry.douban.env.AppWrapper;
 import com.starry.douban.model.BeautyModel;
-import com.starry.douban.model.BookDetail;
 import com.starry.douban.model.GankBaseModel;
 import com.starry.http.HttpManager;
 import com.starry.http.callback.FileCallback;
@@ -45,18 +44,18 @@ public class ApplicationTest {
 
     @Test
     public void httpExecute() throws Exception {
-        final String url = "https://api.douban.com//v2/book/26926209";
+        final String url = "https://book.douban.com/subject/4913064/";
         Executors.newSingleThreadExecutor().execute(new Runnable() {
             @Override
             public void run() {
                 Logger.e(TAG, "http start");
-                BookDetail bookDetail = HttpManager.get(url)
+                String bookDetail = HttpManager.get(url)
                         .tag(this)
                         .build()
-                        .execute(new StringCallback<BookDetail>() {
+                        .execute(new StringCallback<String>() {
 
                             @Override
-                            public void onSuccess(BookDetail response, Object... obj) {
+                            public void onSuccess(String response, Object... obj) {
                                 Logger.e(TAG, "onSuccess");
                             }
 
@@ -65,7 +64,7 @@ public class ApplicationTest {
                                 Logger.e(TAG, "onFailure");
                             }
                         });
-                Logger.e(TAG, bookDetail.getTitle());
+                Logger.e(TAG, bookDetail);
                 Logger.e(TAG, "http end");
             }
         });
