@@ -91,6 +91,7 @@ public class MovieDetailActivity extends BaseActivity<ActivityMovieDetailBinding
     public void loadData() {
         HttpManager.get(url)
                 .tag(this)
+                .headers("referer", Apis.HOST_DOUBAN)
                 .build()
                 .enqueue(new StringCallback<String>() {
 
@@ -312,6 +313,7 @@ public class MovieDetailActivity extends BaseActivity<ActivityMovieDetailBinding
             public List<MovieItemDetailBean.PersonBean> run() {
                 try {
                     Document parse = Jsoup.connect(url + "/celebrities")
+                            .header("referer", Apis.HOST_DOUBAN)
                             .execute()
                             .parse();
                     Elements celebrities = parse.getElementsByClass("celebrity");

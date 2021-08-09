@@ -72,6 +72,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> {
     public void loadData() {
         HttpManager.get(Apis.BOOK_TAG)
                 .tag(this)
+                .headers("referer", Apis.HOST_DOUBAN)
                 .build()
                 .enqueue(new StringCallback<String>() {
 

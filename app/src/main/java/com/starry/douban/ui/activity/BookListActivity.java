@@ -98,6 +98,7 @@ public class BookListActivity extends BaseActivity<ActivityBookListBinding> {
                 .tag(this)
                 .params("start", start)
                 .params("type", "T")
+                .headers("referer", Apis.HOST_DOUBAN)
                 .build()
                 .enqueue(new StringCallback<String>() {
 

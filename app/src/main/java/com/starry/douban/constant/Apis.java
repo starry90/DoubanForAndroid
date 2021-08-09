@@ -15,7 +15,7 @@ public class Apis {
 
     public static final String GANK_BEAUTY = HOST_GANK + "/api/data/福利/%d/%d";
 
-    public static final String HOST_DOUBAN = "https://api.douban.com/";
+    public static final String HOST_DOUBAN = "https://www.douban.com/";
 
     public static final String VIDEO_HOST = "";
 

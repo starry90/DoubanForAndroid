@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 
 import com.starry.douban.R;
 import com.starry.douban.base.BaseActivity;
+import com.starry.douban.constant.Apis;
 import com.starry.douban.databinding.ActivityBookDetailBinding;
 import com.starry.douban.image.ImageManager;
 import com.starry.douban.model.BookDetailBean;
@@ -56,6 +57,7 @@ public class BookDetailActivity extends BaseActivity<ActivityBookDetailBinding> 
     public void loadData() {
         HttpManager.get(url)
                 .tag(this)
+                .headers("referer", Apis.HOST_DOUBAN)
                 .build()
                 .enqueue(new StringCallback<String>() {
 
