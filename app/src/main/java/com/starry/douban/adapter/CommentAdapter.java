@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 import com.starry.douban.base.BaseRecyclerAdapter;
 import com.starry.douban.databinding.ItemMovieCommentBinding;
 import com.starry.douban.image.ImageManager;
-import com.starry.douban.model.MovieComment;
+import com.starry.douban.model.CommentBean;
 
 import java.util.List;
 
@@ -14,9 +14,9 @@ import java.util.List;
  * @author Starry Jerry
  * @since 21-7-10.
  */
-public class MovieCommentAdapter extends BaseRecyclerAdapter<MovieComment, ItemMovieCommentBinding> {
+public class CommentAdapter extends BaseRecyclerAdapter<CommentBean, ItemMovieCommentBinding> {
 
-    public MovieCommentAdapter(List<MovieComment> beans) {
+    public CommentAdapter(List<CommentBean> beans) {
         super(beans);
     }
 
@@ -26,7 +26,7 @@ public class MovieCommentAdapter extends BaseRecyclerAdapter<MovieComment, ItemM
     }
 
     @Override
-    public void onBindData(BaseRecyclerAdapter.RecyclerViewHolder<ItemMovieCommentBinding> holder, MovieComment itemData, int position) {
+    public void onBindData(BaseRecyclerAdapter.RecyclerViewHolder<ItemMovieCommentBinding> holder, CommentBean itemData, int position) {
         ItemMovieCommentBinding viewBinding = holder.viewBinding;
         ImageManager.loadImageTransformCircle(viewBinding.ivMovieCommentUserPhoto, itemData.getUserImageUrl());
         viewBinding.tvMovieCommentUsername.setText(itemData.getUserName());

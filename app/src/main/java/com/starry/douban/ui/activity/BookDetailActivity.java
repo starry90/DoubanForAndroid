@@ -2,26 +2,35 @@ package com.starry.douban.ui.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.support.v7.widget.LinearLayoutManager;
 import android.text.Html;
 import android.view.LayoutInflater;
+import android.view.View;
 
 import com.starry.douban.R;
+import com.starry.douban.adapter.CommentAdapter;
 import com.starry.douban.base.BaseActivity;
 import com.starry.douban.constant.Apis;
 import com.starry.douban.databinding.ActivityBookDetailBinding;
 import com.starry.douban.image.ImageManager;
 import com.starry.douban.model.BookDetailBean;
+import com.starry.douban.model.CommentBean;
+import com.starry.douban.util.JsonUtil;
 import com.starry.douban.util.RegexHelper;
+import com.starry.douban.util.StringUtils;
 import com.starry.douban.util.ToastUtil;
 import com.starry.http.HttpManager;
 import com.starry.http.callback.StringCallback;
 import com.starry.http.error.ErrorModel;
+import com.starry.log.Logger;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 
 /**
@@ -108,11 +117,50 @@ public class BookDetailActivity extends BaseActivity<ActivityBookDetailBinding> 
                         //       <p>余华，1960年出生，1983年开始写作。至今已经出版长篇小说4部，中短篇小说集6部，随笔集4部。主要作品有《兄弟》《活着》《许三观卖血记》《在细雨中呼喊》等。其作品已被翻译成20多种语言在美国、英国、法国、德国、意大利、西班牙、荷兰、瑞典、挪威、希腊、俄罗斯、保加利亚、匈牙利、捷克、塞尔维亚、斯洛伐克、波兰、巴西、以色列、日本、韩国、越南、泰国和印度等国出版。曾获意大利格林扎纳·卡佛文学奖（1998年）、法国文学和艺术骑士勋章（2004年）、中华图书特殊贡献奖（2005年）、法国国际信使外国小说奖（2008年）等。</p>
                         //      </div>
                         // …………
+                        //      <div data-cid="5825853">
+                        //       <div class="main review-item" id="5825853">
+                        //
+                        //        <header class="main-hd">
+                        //          <a href="https://www.douban.com/people/63250571/" class="avator">
+                        //              <img width="24" height="24" src="https://img2.doubanio.com/icon/u63250571-2.jpg">
+                        //          </a>
+                        //          <a href="https://www.douban.com/people/63250571/" class="name">陈莫尼</a>
+                        //
+                        //          <span class="allstar50 main-title-rating" title="力荐"></span>
+                        //
+                        //          <span content="2013-03-29" class="main-meta">2013-03-29 14:10:26</span>
+                        //        </header>
+                        //        <div class="main-bd">
+                        //         <h2><a href="https://book.douban.com/review/5825853/">生命不能承受之轻，能接受之痛</a></h2>
+                        //         <div id="review_5825853_short" class="review-short" data-rid="5825853">
+                        //          <div class="short-content">
+                        //            当我跳进那个世界之前，我依然暗示着自己要怀着理智来阐述自己想说的心情，客观地评价这部作品。直到我翻完最后一页，我在余华沉静的笔墨中渐渐失去了耐心，我甚至迫不及待地想要写点什么，不需要充满张力的语言却也能让别人感受到此时此刻我的满腔热情。 我记得有人说过；当...
+                        //            &nbsp;(<a href="javascript:;" id="toggle-5825853-copy" class="unfold" title="展开">展开</a>)
+                        //          </div>
+                        //         </div>
+                        //         <div id="review_5825853_full" class="hidden">
+                        //          <div id="review_5825853_full_content" class="full-content"></div>
+                        //         </div>
+                        //         <div class="action">
+                        //          <a href="javascript:;" class="action-btn up" data-rid="5825853" title="有用">
+                        //              <img src="https://img3.doubanio.com/f/zerkalo/536fd337139250b5fb3cf9e79cb65c6193f8b20b/pics/up.png">
+                        //              <span id="r-useful_count-5825853"> 5162 </span>
+                        //          </a>
+                        //          <a href="javascript:;" class="action-btn down" data-rid="5825853" title="没用">
+                        //              <img src="https://img3.doubanio.com/f/zerkalo/68849027911140623cf338c9845893c4566db851/pics/down.png">
+                        //              <span id="r-useless_count-5825853"> 230 </span>
+                        //          </a>
+                        //          <a href="https://book.douban.com/review/5825853/#comments" class="reply ">244回应</a>
+                        //          <a href="javascript:;;" class="fold hidden">收起</a>
+                        //         </div>
+                        //        </div>
+                        //       </div>
+                        //      </div>
 
                         Document parse = Jsoup.parse(response);
-                        Elements contentElements = parse.select("div#content");
+                        Element contentElement = parse.select("div#content").first();
 
-                        Element nbgElement = contentElements.select("div#mainpic > a.nbg").first();
+                        Element nbgElement = contentElement.select("div#mainpic > a.nbg").first();
                         String href = nbgElement.attr("href");
                         String title = nbgElement.attr("title");
 
@@ -120,7 +168,7 @@ public class BookDetailActivity extends BaseActivity<ActivityBookDetailBinding> 
                         bookDetailBean.setImageUrl(href);
                         bookDetailBean.setTitle(title);
 
-                        Element infoElement = contentElements.select("div#info").first();
+                        Element infoElement = contentElement.select("div#info").first();
                         String info = infoElement.toString();
 
                         Element a = infoElement.select("a").first();
@@ -136,17 +184,88 @@ public class BookDetailActivity extends BaseActivity<ActivityBookDetailBinding> 
                             bookDetailBean.setPublishDate(publishDate.group().trim());
                         }
 
-                        Element ratingNumber = contentElements.select("strong.rating_num").first();
+                        Element ratingNumber = contentElement.select("strong.rating_num").first();
                         bookDetailBean.setRatingNumber(ratingNumber.text().trim());
 
-                        Element ratingPeople = contentElements.select("a.rating_people > span").first();
+                        Element ratingPeople = contentElement.select("a.rating_people > span").first();
                         bookDetailBean.setRatingPeopleCount(ratingPeople.text().trim());
 
-                        Elements introElements = contentElements.select("div.intro");
+                        Elements introElements = contentElement.select("div.intro");
                         bookDetailBean.setBookSummary(introElements.first().text());
                         bookDetailBean.setAuthorSummary(introElements.get(1).text());
 
                         showBookDetail(bookDetailBean);
+
+
+                        Elements elementsByAttribute = contentElement.getElementsByClass("main review-item");
+
+                        ArrayList<CommentBean> comments = new ArrayList<>(elementsByAttribute.size());
+
+
+                        for (Element element : elementsByAttribute) {
+                            CommentBean comment = new CommentBean();
+
+                            Elements hdElements = element.getElementsByClass("main-hd");
+                            if (hdElements.size() > 0) {
+                                String hd = hdElements.get(0).toString();
+
+                                Matcher image = RegexHelper.matcher(hd, "src=\"", "\"");
+                                if (image.find()) {
+                                    comment.setUserImageUrl(image.group());
+                                }
+
+                                Matcher name = RegexHelper.matcher(hd, "class=\"name\">", "<");
+                                if (name.find()) {
+                                    comment.setUserName(name.group());
+                                }
+
+                                Matcher time = RegexHelper.matcher(hd, "main-meta\">", "<");
+                                if (time.find()) {
+                                    comment.setCommentTime(time.group());
+                                }
+
+                            }
+
+
+                            Elements bdElements = element.getElementsByClass("main-bd");
+                            if (bdElements.size() > 0) {
+                                Element bdElement = bdElements.get(0);
+                                String bd = bdElement.toString();
+
+                                Matcher commentTitle = RegexHelper.matcher(bd, "/\">", "<");
+                                if (commentTitle.find()) {
+                                    comment.setCommentTitle(commentTitle.group());
+                                }
+
+                                Matcher rid = RegexHelper.matcher(bd, "data-rid=\"", "\"");
+                                if (rid.find()) {
+                                    comment.setRid(rid.group());
+                                }
+
+                                Matcher up = RegexHelper.matcher(bd, StringUtils.format("r-useful_count-%s\">", comment.getRid()), "<");
+                                if (up.find()) {
+                                    comment.setActionUp(up.group());
+                                }
+
+                                Matcher down = RegexHelper.matcher(bd, StringUtils.format("r-useless_count-%s\">", comment.getRid()), "<");
+                                if (down.find()) {
+                                    comment.setActionDown(down.group());
+                                }
+
+                                Matcher reply = RegexHelper.matcher(bd, "class=\"reply \">", "<");
+                                if (reply.find()) {
+                                    comment.setReply(reply.group());
+                                }
+
+                                Matcher content = RegexHelper.matcher(bd, "class=\"short-content\">", "&");
+                                if (content.find()) {
+                                    comment.setCommentShortContent(content.group());
+                                }
+                            }
+                            comments.add(comment);
+                        }
+                        Logger.json(JsonUtil.toJson(comments));
+                        initComment(comments);
                     }
 
                     @Override
@@ -171,6 +290,15 @@ public class BookDetailActivity extends BaseActivity<ActivityBookDetailBinding> 
         viewBinding.tvBookDetailOtherInfo.setText(getString(R.string.book_author_info, response.getAuthor(), response.getPublisher(), response.getPublishDate()));
         viewBinding.tvBookDetailSummary.setText(Html.fromHtml(response.getBookSummary()));
         viewBinding.tvBookDetailAuthorSummary.setText(Html.fromHtml(response.getAuthorSummary()));
+    }
+
+    private void initComment(final List<CommentBean> commentList) {
+        CommentAdapter mAdapter = new CommentAdapter(commentList);
+        viewBinding.recyclerViewComment.setVisibility(View.VISIBLE);
+        viewBinding.recyclerViewComment.setLayoutManager(new LinearLayoutManager(getActivity()));
+        viewBinding.recyclerViewComment.setAdapter(mAdapter);
+        //解决RecyclerView在ScrollView中滑动卡顿问题
+        viewBinding.recyclerViewComment.setNestedScrollingEnabled(false);
     }
 
 }

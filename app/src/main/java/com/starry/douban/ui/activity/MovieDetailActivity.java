@@ -6,14 +6,14 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 
-import com.starry.douban.adapter.MovieCommentAdapter;
+import com.starry.douban.adapter.CommentAdapter;
 import com.starry.douban.adapter.MoviePhotoAdapter;
 import com.starry.douban.base.BaseActivity;
 import com.starry.douban.base.BaseRecyclerAdapter;
 import com.starry.douban.constant.Apis;
 import com.starry.douban.databinding.ActivityMovieDetailBinding;
 import com.starry.douban.image.ImageManager;
-import com.starry.douban.model.MovieComment;
+import com.starry.douban.model.CommentBean;
 import com.starry.douban.model.MovieItemDetailBean;
 import com.starry.douban.model.PhotoModel;
 import com.starry.douban.util.JsonUtil;
@@ -177,11 +177,11 @@ public class MovieDetailActivity extends BaseActivity<ActivityMovieDetailBinding
 
                         Elements elementsByAttribute = parse.getElementsByClass("main review-item");
 
-                        ArrayList<MovieComment> movieComments = new ArrayList<>(elementsByAttribute.size());
+                        ArrayList<CommentBean> movieComments = new ArrayList<>(elementsByAttribute.size());
 
 
                         for (Element element : elementsByAttribute) {
-                            MovieComment movieComment = new MovieComment();
+                            CommentBean movieComment = new CommentBean();
 
                             Elements hdElements = element.getElementsByClass("main-hd");
                             if (hdElements.size() > 0) {
@@ -259,8 +259,8 @@ public class MovieDetailActivity extends BaseActivity<ActivityMovieDetailBinding
                 });
     }
 
-    private void initComment(final List<MovieComment> performerBeanList) {
-        MovieCommentAdapter mAdapter = new MovieCommentAdapter(performerBeanList);
+    private void initComment(final List<CommentBean> performerBeanList) {
+        CommentAdapter mAdapter = new CommentAdapter(performerBeanList);
         viewBinding.recyclerViewComment.setVisibility(View.VISIBLE);
         viewBinding.recyclerViewComment.setLayoutManager(new LinearLayoutManager(getActivity()));
         viewBinding.recyclerViewComment.setAdapter(mAdapter);
