@@ -17,7 +17,9 @@ import com.starry.douban.jetpack.viewmodel.BeautyViewModel;
 import com.starry.douban.model.BeautyModel;
 import com.starry.douban.model.GankBaseModel;
 import com.starry.douban.model.PhotoModel;
+import com.starry.douban.util.DensityUtil;
 import com.starry.douban.util.ToastUtil;
+import com.starry.douban.widget.recyclerview.GridItemDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,6 +82,7 @@ public class BeautyActivity extends BaseActivity<ActivityBeautyBinding> {
         });
 
         viewBinding.rvBeauty.setLayoutManager(new GridLayoutManager(getActivity(), 3));
+        viewBinding.rvBeauty.addItemDecoration(new GridItemDecoration(DensityUtil.dip2px(this, 8)));
         viewBinding.rvBeauty.setAdapter(mAdapter);
         viewBinding.rvBeauty.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
