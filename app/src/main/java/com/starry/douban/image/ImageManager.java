@@ -143,6 +143,36 @@ public class ImageManager {
     }
 
     /**
+     * 加载自定圆角View 图片
+     * 不能用动画效果，否则占位图不消失，真实图片会和占位图叠加在一起
+     *
+     * @param imageView 要设置图片的ImageView
+     * @param url       图片URL
+     */
+    public static void loadImageNoAnimate(ImageView imageView, String url) {
+        loadImageNoAnimate(imageView, url, 0);
+    }
+
+    /**
+     * 加载自定圆角View 图片
+     * 不能用动画效果，否则占位图不消失，真实图片会和占位图叠加在一起
+     *
+     * @param imageView 要设置图片的ImageView
+     * @param url       图片URL
+     * @param radius    圆角半径
+     */
+    public static void loadImageNoAnimate(ImageView imageView, String url, int radius) {
+        GlideRequest<Drawable> load = GlideApp.with(getContext())
+                .load(url)
+                .apply(requestOptions)
+                .listener(requestListener);
+        if (radius > 0) {
+            load = load.transform(new RoundedCorners(radius));
+        }
+        load.into(imageView);
+    }
+
+    /**
      * 加载图片
      *
      * @param imageView 要设置图片的ImageView
