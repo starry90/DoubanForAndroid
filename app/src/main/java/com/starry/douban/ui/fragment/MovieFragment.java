@@ -51,7 +51,6 @@ public class MovieFragment extends BaseFragment<FragmentMovieBinding> {
 
     private void initRecyclerView() {
         mAdapter = new MovieAdapter();
-        mAdapter.addOnScrollListener(viewBinding.XRecyclerViewHome);
         mAdapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {

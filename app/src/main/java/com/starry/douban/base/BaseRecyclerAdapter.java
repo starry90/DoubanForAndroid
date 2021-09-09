@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
-import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,16 +48,6 @@ public abstract class BaseRecyclerAdapter<T, V extends ViewBinding> extends Recy
      * 子View点击事件集合
      */
     private final HashMap<Integer, OnItemChildClickListener> childClickListenerMap = new HashMap<>();
-
-    /**
-     * 为了保证滑动流畅及不浪费流量，此时不加载图片,true表示列表滑动中
-     */
-    private boolean isScrolling;
-
-    /**
-     * 已加载过的数据集合
-     */
-    private final SparseBooleanArray loadedMap = new SparseBooleanArray();
 
     public BaseRecyclerAdapter() {
     }
@@ -121,10 +110,6 @@ public abstract class BaseRecyclerAdapter<T, V extends ViewBinding> extends Recy
     @Override
     public void onBindViewHolder(@NonNull BaseRecyclerAdapter.RecyclerViewHolder<V> holder, int position) {
         onBindData(holder, dataSet.get(position), position);
-
-        if (!isScrolling) {
-            loadedMap.put(position, true);
-        }
     }
 
     /**
@@ -156,35 +141,8 @@ public abstract class BaseRecyclerAdapter<T, V extends ViewBinding> extends Recy
         return 0;
     }
 
-    /**
-     * 是否允许加载图片，两种情况允许：1 滑动已停止，2 已经加载过图片
-     *
-     * @param position item位置
-     * @return true表示允许
-     */
-    protected boolean allowLoadImage(int position) {
-        return !isScrolling || loadedMap.get(position);
-    }
-
     public T getItem(int position) {
         return dataSet.get(position);
-    }
-
-    /**
-     * 设置RecyclerView滑动监听器
-     *
-     * @param recyclerView RecyclerView
-     */
-    public void addOnScrollListener(RecyclerView recyclerView) {
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                isScrolling = newState != RecyclerView.SCROLL_STATE_IDLE;
-                if (!isScrolling) {
-                    notifyDataSetChanged();
-                }
-            }
-        });
     }
 
     public List<T> getAll() {

@@ -3,7 +3,6 @@ package com.starry.douban.adapter;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-import com.starry.douban.R;
 import com.starry.douban.base.BaseRecyclerAdapter;
 import com.starry.douban.databinding.ItemBookBinding;
 import com.starry.douban.image.ImageManager;
@@ -42,9 +41,6 @@ public class BookAdapter extends BaseRecyclerAdapter<BookItemBean, ItemBookBindi
         viewBinding.tvItemBookPublish.setText(itemData.getPublish());
         viewBinding.tvItemBookSummary.setText(itemData.getSummary());
         viewBinding.tvItemBookRating.setText(StringUtils.format("豆瓣评分：%s %s ", itemData.getRating(), itemData.getRatingNumber()));
-        viewBinding.ivItemBookImage.setImageResource(R.drawable.image_bg_default);
-        if (allowLoadImage(position)) {
-            ImageManager.loadImage(viewBinding.ivItemBookImage, itemData.getImage());
-        }
+        ImageManager.loadImage(viewBinding.ivItemBookImage, itemData.getImage());
     }
 }

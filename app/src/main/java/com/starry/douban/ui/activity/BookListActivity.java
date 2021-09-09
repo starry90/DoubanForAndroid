@@ -67,7 +67,6 @@ public class BookListActivity extends BaseActivity<ActivityBookListBinding> {
 
     private void initRecyclerView() {
         mAdapter = new BookAdapter();
-        mAdapter.addOnScrollListener(viewBinding.rvBookList);
         mAdapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View itemView, int position) {

@@ -55,7 +55,6 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> {
 
     private void initRecyclerView() {
         mAdapter = new BookTagAdapter();
-        mAdapter.addOnScrollListener(viewBinding.XRecyclerViewHome);
         mAdapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View itemView, int position) {

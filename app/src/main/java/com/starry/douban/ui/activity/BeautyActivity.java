@@ -73,7 +73,6 @@ public class BeautyActivity extends BaseActivity<ActivityBeautyBinding> {
 
     private void initRecyclerView() {
         mAdapter = new BeautyAdapter();
-        mAdapter.addOnScrollListener(viewBinding.rvBeauty);
         mAdapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View itemView, int position) {

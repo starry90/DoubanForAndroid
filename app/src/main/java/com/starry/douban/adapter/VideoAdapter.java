@@ -3,7 +3,6 @@ package com.starry.douban.adapter;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-import com.starry.douban.R;
 import com.starry.douban.base.BaseRecyclerAdapter;
 import com.starry.douban.databinding.ItemVideoBinding;
 import com.starry.douban.image.ImageManager;
@@ -38,9 +37,6 @@ public class VideoAdapter extends BaseRecyclerAdapter<VideoItemBean, ItemVideoBi
     public void onBindData(RecyclerViewHolder<ItemVideoBinding> holder, VideoItemBean itemData, int position) {
         ItemVideoBinding viewBinding = holder.viewBinding;
         viewBinding.tvItemVideoTitle.setText(itemData.getVideoTitle());
-        viewBinding.ivItemVideoImage.setImageResource(R.drawable.image_bg_default);
-        if (allowLoadImage(position)) {
-            ImageManager.loadImage(viewBinding.ivItemVideoImage, itemData.getVideoImage());
-        }
+        ImageManager.loadImage(viewBinding.ivItemVideoImage, itemData.getVideoImage());
     }
 }

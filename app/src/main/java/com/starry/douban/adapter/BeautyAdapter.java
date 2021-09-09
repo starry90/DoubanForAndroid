@@ -4,7 +4,6 @@ import android.support.constraint.ConstraintLayout;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-import com.starry.douban.R;
 import com.starry.douban.base.BaseRecyclerAdapter;
 import com.starry.douban.databinding.ItemBeautyBinding;
 import com.starry.douban.image.ImageManager;
@@ -42,9 +41,6 @@ public class BeautyAdapter extends BaseRecyclerAdapter<BeautyModel, ItemBeautyBi
         //比例本地随机生成或服务器下发，避免瀑布流item高度变化闪动
         layoutParams.dimensionRatio = String.valueOf(itemData.getDimensionRatio());
         viewBinding.tvTitle.setText(itemData.getDesc());
-        viewBinding.ivImage.setImageResource(R.drawable.image_bg_default);
-        if (allowLoadImage(position)) {
-            ImageManager.loadImage(viewBinding.ivImage, itemData.getUrl());
-        }
+        ImageManager.loadImage(viewBinding.ivImage, itemData.getUrl());
     }
 }

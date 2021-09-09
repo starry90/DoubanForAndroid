@@ -44,8 +44,6 @@ public class MovieAdapter extends BaseRecyclerAdapter<MovieItemBean, ItemMovieBi
         viewBinding.tvNumRating.setText("观众评分：" + itemData.getRate());
 
         viewBinding.ivImage.setImageResource(R.drawable.image_bg_default);
-        if (allowLoadImage(position)) {
-            ImageManager.loadImage(viewBinding.ivImage, itemData.getCover(), 16);
-        }
+        ImageManager.loadImage(viewBinding.ivImage, itemData.getCover(), 16);
     }
 }
