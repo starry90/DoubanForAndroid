@@ -3,7 +3,7 @@ package com.starry.douban.ui.activity;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -81,7 +81,7 @@ public class BeautyActivity extends BaseActivity<ActivityBeautyBinding> {
             }
         });
 
-        viewBinding.rvBeauty.setLayoutManager(new GridLayoutManager(getActivity(), 3));
+        viewBinding.rvBeauty.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         viewBinding.rvBeauty.addItemDecoration(new GridItemDecoration(DensityUtil.dip2px(this, 8)));
         viewBinding.rvBeauty.setAdapter(mAdapter);
         viewBinding.rvBeauty.setLoadingListener(new XRecyclerView.LoadingListener() {

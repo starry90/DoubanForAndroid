@@ -1,5 +1,6 @@
 package com.starry.douban.adapter;
 
+import android.support.constraint.ConstraintLayout;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -37,6 +38,9 @@ public class BeautyAdapter extends BaseRecyclerAdapter<BeautyModel, ItemBeautyBi
     @Override
     public void onBindData(BaseRecyclerAdapter.RecyclerViewHolder<ItemBeautyBinding> holder, BeautyModel itemData, int position) {
         ItemBeautyBinding viewBinding = holder.viewBinding;
+        ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) viewBinding.ivImage.getLayoutParams();
+        //比例本地随机生成或服务器下发，避免瀑布流item高度变化闪动
+        layoutParams.dimensionRatio = String.valueOf(itemData.getDimensionRatio());
         viewBinding.tvTitle.setText(itemData.getDesc());
         viewBinding.ivImage.setImageResource(R.drawable.image_bg_default);
         if (allowLoadImage(position)) {

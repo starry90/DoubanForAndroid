@@ -95,6 +95,7 @@ dependencies {
     implementation deps.design
     implementation deps.cardview
     implementation deps.lifecycleExtensions
+    implementation deps.constraintLayout
     //test
     testImplementation deps.junit
     androidTestImplementation deps.runner

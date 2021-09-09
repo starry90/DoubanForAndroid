@@ -1,38 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:foreground="?android:attr/selectableItemBackground"
-    android:transitionName="@string/transition_item_name"
-    app:cardCornerRadius="0dp"
-    app:cardElevation="0dp">
+    android:background="@drawable/item_view_bg_material"
+    android:orientation="vertical"
+    android:transitionName="@string/transition_item_name">
 
-    <RelativeLayout
+    <ImageView
+        android:id="@+id/iv_image"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/image_bg_default"
+        app:layout_constraintDimensionRatio="1"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center">
+        android:layout_alignParentBottom="true"
+        android:background="#5F000000"
+        android:padding="@dimen/common_margin_level_1"
+        android:singleLine="true"
+        android:textColor="@color/text_color_level_4"
+        app:layout_constraintBottom_toBottomOf="@id/iv_image"
+        tools:text="Beauty" />
 
-        <ImageView
-            android:id="@+id/iv_image"
-            android:layout_width="match_parent"
-            android:layout_height="160dp"
-            android:background="@drawable/image_bg_default"
-            android:scaleType="centerCrop" />
 
-        <TextView
-            android:id="@+id/tv_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:background="#5F000000"
-            android:padding="@dimen/common_margin_level_1"
-            android:singleLine="true"
-            android:textColor="@color/text_color_level_4"
-            tools:text="Beauty" />
-
-    </RelativeLayout>
-
-</android.support.v7.widget.CardView>
+</android.support.constraint.ConstraintLayout>
