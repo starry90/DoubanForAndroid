@@ -173,6 +173,32 @@ public abstract class BaseRecyclerAdapter<T, V extends ViewBinding> extends Recy
         notifyDataSetChanged();
     }
 
+    /**
+     * 用指定的集合替换列表.
+     * <p>
+     * Replaces the list  with specified Collection.
+     *
+     * @param collection The Collection to add at the end of the array.
+     * @throws UnsupportedOperationException if the <tt>addAll</tt> operation
+     *                                       is not supported by this list
+     * @throws ClassCastException            if the class of an element of the specified
+     *                                       collection prevents it from being added to this list
+     * @throws NullPointerException          if the specified collection contains one
+     *                                       or more null elements and this list does not permit null
+     *                                       elements, or if the specified collection is null
+     * @throws IllegalArgumentException      if some property of an element of the
+     *                                       specified collection prevents it from being added to this list
+     */
+    public void setAllNotifyItemInserted(Collection<? extends T> collection) {
+        synchronized (mLock) {
+            dataSet.clear();
+            dataSet.addAll(collection);
+        }
+        //1、解决瀑布流下拉刷新和加载更多图片闪烁问题
+        //2、解决瀑布流加载更多后再滑动到顶部item左右跳动问题
+        notifyItemInserted(dataSet.size());
+    }
+
 
     /**
      * Adds the specified object at the end of the array.
@@ -206,6 +232,29 @@ public abstract class BaseRecyclerAdapter<T, V extends ViewBinding> extends Recy
             dataSet.addAll(collection);
         }
         notifyDataSetChanged();
+    }
+
+    /**
+     * Adds the specified Collection at the end of the array.
+     *
+     * @param collection The Collection to add at the end of the array.
+     * @throws UnsupportedOperationException if the <tt>addAll</tt> operation
+     *                                       is not supported by this list
+     * @throws ClassCastException            if the class of an element of the specified
+     *                                       collection prevents it from being added to this list
+     * @throws NullPointerException          if the specified collection contains one
+     *                                       or more null elements and this list does not permit null
+     *                                       elements, or if the specified collection is null
+     * @throws IllegalArgumentException      if some property of an element of the
+     *                                       specified collection prevents it from being added to this list
+     */
+    public void addAllNotifyItemInserted(Collection<? extends T> collection) {
+        synchronized (mLock) {
+            dataSet.addAll(collection);
+        }
+        //1、解决瀑布流下拉刷新和加载更多图片闪烁问题
+        //2、解决瀑布流加载更多后再滑动到顶部item左右跳动问题
+        notifyItemInserted(dataSet.size());
     }
 
     /**

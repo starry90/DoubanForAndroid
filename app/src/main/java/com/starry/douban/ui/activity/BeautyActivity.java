@@ -110,9 +110,9 @@ public class BeautyActivity extends BaseActivity<ActivityBeautyBinding> {
 
         //如果是第一页先清空数据
         if (pageNo++ == 1) {
-            mAdapter.setAll(results);
+            mAdapter.setAllNotifyItemInserted(results);
         } else {
-            mAdapter.addAll(results);
+            mAdapter.addAllNotifyItemInserted(results);
         }
 
         if (mAdapter.getItemCount() == 0) {
