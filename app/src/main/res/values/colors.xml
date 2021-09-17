@@ -28,6 +28,8 @@
     <color name="text_color_level_5">#FECA29</color>
 
 
+    <color name="mask_bg_level_1">#5F000000</color>
+    
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
     <!-- 透明色 -->

@@ -31,6 +31,8 @@ public class MovieItemBean {
     private Integer cover_y;
     private Boolean is_new;
 
+    private float dimensionRatio = (float) (Math.random() / 3.0f + 0.8f);
+
     public String getEpisodes_info() {
         return episodes_info;
     }
@@ -109,5 +111,13 @@ public class MovieItemBean {
 
     public void setIs_new(Boolean is_new) {
         this.is_new = is_new;
+    }
+
+    public float getDimensionRatio() {
+        return dimensionRatio;
+    }
+
+    public void setDimensionRatio(float dimensionRatio) {
+        this.dimensionRatio = dimensionRatio;
     }
 }

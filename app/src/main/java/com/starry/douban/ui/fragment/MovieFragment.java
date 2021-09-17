@@ -1,7 +1,7 @@
 package com.starry.douban.ui.fragment;
 
 import android.content.Intent;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -14,7 +14,9 @@ import com.starry.douban.databinding.FragmentMovieBinding;
 import com.starry.douban.model.MovieItemBean;
 import com.starry.douban.model.Movies;
 import com.starry.douban.ui.activity.MovieDetailActivity;
+import com.starry.douban.util.DensityUtil;
 import com.starry.douban.util.ToastUtil;
+import com.starry.douban.widget.recyclerview.GridItemDecoration;
 import com.starry.http.HttpManager;
 import com.starry.http.callback.StringCallback;
 import com.starry.http.error.ErrorModel;
@@ -60,7 +62,8 @@ public class MovieFragment extends BaseFragment<FragmentMovieBinding> {
             }
         });
 
-        viewBinding.XRecyclerViewHome.setLayoutManager(new LinearLayoutManager(getActivity()));
+        viewBinding.XRecyclerViewHome.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        viewBinding.XRecyclerViewHome.addItemDecoration(new GridItemDecoration(DensityUtil.dip2px(getActivity(), 8)));
         viewBinding.XRecyclerViewHome.setAdapter(mAdapter);
         viewBinding.XRecyclerViewHome.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
@@ -117,9 +120,9 @@ public class MovieFragment extends BaseFragment<FragmentMovieBinding> {
         //1、如果是第一页先清空数据
         List<MovieItemBean> subjects = response.getSubjects();
         if (start == 0) {
-            mAdapter.setAll(subjects);
+            mAdapter.setAllNotifyItemInserted(subjects);
         } else {
-            mAdapter.addAll(subjects);
+            mAdapter.addAllNotifyItemInserted(subjects);
         }
         //2、页码自增
         start += count;

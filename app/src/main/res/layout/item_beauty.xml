@@ -23,7 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="#5F000000"
+        android:background="@color/mask_bg_level_1"
         android:padding="@dimen/common_margin_level_1"
         android:singleLine="true"
         android:textColor="@color/text_color_level_4"

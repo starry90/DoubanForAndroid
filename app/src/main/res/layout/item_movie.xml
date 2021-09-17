@@ -1,81 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/item_view_bg_material"
-    android:orientation="vertical">
+    android:foreground="?android:attr/selectableItemBackground"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="0dp">
 
-    <!-- 瓷砖 可快速扫描的列表，用来代替卡片，是表现没有许多操作的同类内容的合适方法。  -->
-
-    <!-- 这里卡片的使用分散了用户注意力，不能快速扫描。这些列表项也不能忽略，所以把它们放在不同的卡片上是难以理解的。 -->
-
-
-    <ImageView
-        android:id="@+id/iv_image"
-        android:layout_width="80dp"
-        android:layout_height="100dp"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/common_margin_level_2"
-        android:layout_marginRight="@dimen/common_margin_level_2"
-        android:background="@drawable/image_bg_default"
-        android:scaleType="fitXY" />
-
-    <LinearLayout
-        android:layout_width="wrap_content"
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginTop="@dimen/common_margin_level_2"
-        android:layout_marginBottom="@dimen/common_margin_level_2"
-        android:layout_toRightOf="@+id/iv_image"
+        android:layout_gravity="center"
         android:orientation="vertical"
-        android:paddingRight="@dimen/common_margin_level_2">
+        android:transitionName="@string/transition_item_name"
+        app:layout_constraintCircleRadius="@dimen/common_margin_level_1">
 
-        <TextView
-            android:id="@+id/tv_title"
-            android:layout_width="wrap_content"
+        <!-- 瓷砖 可快速扫描的列表，用来代替卡片，是表现没有许多操作的同类内容的合适方法。  -->
+
+        <!-- 这里卡片的使用分散了用户注意力，不能快速扫描。这些列表项也不能忽略，所以把它们放在不同的卡片上是难以理解的。 -->
+
+
+        <ImageView
+            android:id="@+id/iv_image"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/image_bg_default" />
+
+        <LinearLayout
+            android:id="@+id/ll_item_movie"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:text="盗梦空间"
-            android:textAppearance="@style/TextAppearance.AppCompat.Title"
-            android:textSize="@dimen/text_size_20" />
+            android:layout_centerVertical="true"
+            android:background="@color/mask_bg_level_1"
+            android:orientation="vertical"
+            android:padding="@dimen/common_margin_level_1"
+            app:layout_constraintBottom_toBottomOf="@id/iv_image">
 
-        <TextView
-            android:id="@+id/tv_author"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/common_text_padding_level_1"
-            android:singleLine="true"
-            android:text="导        演：诺兰" />
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                tools:text="盗梦空间"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:textColor="@color/text_color_level_4"
+                android:textSize="@dimen/text_size_20" />
 
-        <TextView
-            android:id="@+id/tv_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/common_text_padding_level_1"
-            android:singleLine="true"
-            android:text="上映日期：2015-11" />
+            <TextView
+                android:id="@+id/tv_author"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/common_text_padding_level_1"
+                android:singleLine="true"
+                tools:text="导        演：诺兰"
+                android:textColor="@color/text_color_level_4"
+                android:visibility="gone" />
 
-        <TextView
-            android:id="@+id/tv_publisher"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/common_text_padding_level_1"
-            android:singleLine="true"
-            android:text="电影剧情：爱情"
-            android:visibility="gone" />
+            <TextView
+                android:id="@+id/tv_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/common_text_padding_level_1"
+                android:singleLine="true"
+                tools:text="上映日期：2015-11"
+                android:textColor="@color/text_color_level_4"
+                android:visibility="gone" />
 
-        <TextView
-            android:id="@+id/tv_num_rating"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/common_text_padding_level_1"
-            android:singleLine="true"
-            android:text="观众评分：8.5分" />
+            <TextView
+                android:id="@+id/tv_publisher"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/common_text_padding_level_1"
+                android:singleLine="true"
+                tools:text="电影剧情：爱情"
+                android:textColor="@color/text_color_level_4"
+                android:visibility="gone" />
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/tv_num_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/common_text_padding_level_1"
+                android:singleLine="true"
+                tools:text="观众评分：8.5分"
+                android:textColor="@color/text_color_level_4" />
 
-    <View
-        style="@style/HorizontalDivideLine"
-        android:layout_alignParentBottom="true" />
+        </LinearLayout>
 
-</RelativeLayout>
+    </android.support.constraint.ConstraintLayout>
+
+</android.support.v7.widget.CardView>
