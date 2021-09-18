@@ -1,10 +1,17 @@
 package com.starry.douban.model;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
+
+import com.starry.douban.db.RoomDBTable;
+
 /**
  * @author Starry Jerry
  * @since 2021/6/29.
  */
-
+@Entity(tableName = RoomDBTable.Movie.ITEM)
 public class MovieItemBean {
 
     /**
@@ -22,12 +29,16 @@ public class MovieItemBean {
 
     private String episodes_info;
     private String rate;
+    @Ignore
     private Integer cover_x;
     private String title;
     private String url;
     private Boolean playable;
     private String cover;
+    @PrimaryKey
+    @NonNull
     private String id;
+    @Ignore
     private Integer cover_y;
     private Boolean is_new;
 
