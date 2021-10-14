@@ -70,7 +70,6 @@ public class VideoFragment extends BaseFragment<FragmentVideoBinding> {
 
     private void initRecyclerView() {
         mAdapter = new VideoAdapter();
-        mAdapter.addOnScrollListener(viewBinding.rvVideoList);
         mAdapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View itemView, int position) {

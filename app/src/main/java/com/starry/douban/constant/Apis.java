@@ -15,7 +15,7 @@ public class Apis {
 
     public static final String GANK_BEAUTY = HOST_GANK + "/api/data/福利/%d/%d";
 
-    public static final String HOST_DOUBAN = "https://api.douban.com/";
+    public static final String HOST_DOUBAN = "https://www.douban.com/";
 
     public static final String VIDEO_HOST = "";
 
@@ -35,15 +35,5 @@ public class Apis {
      * 图书标签
      */
     public static final String BOOK_TAG = "https://book.douban.com/tag/";
-
-    /**
-     * 图书搜索
-     */
-    public static String BookSearch = HOST_DOUBAN + "/v2/book/search";
-
-    /**
-     * 图书详情
-     */
-    public static String BookDetail = HOST_DOUBAN + "/v2/book/";
 
 }

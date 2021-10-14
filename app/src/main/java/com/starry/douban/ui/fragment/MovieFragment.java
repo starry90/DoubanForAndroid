@@ -1,7 +1,7 @@
 package com.starry.douban.ui.fragment;
 
 import android.content.Intent;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -11,10 +11,14 @@ import com.starry.douban.base.BaseFragment;
 import com.starry.douban.base.BaseRecyclerAdapter;
 import com.starry.douban.constant.Apis;
 import com.starry.douban.databinding.FragmentMovieBinding;
+import com.starry.douban.db.RoomManager;
+import com.starry.douban.db.dao.MovieItemDao;
 import com.starry.douban.model.MovieItemBean;
 import com.starry.douban.model.Movies;
 import com.starry.douban.ui.activity.MovieDetailActivity;
+import com.starry.douban.util.DensityUtil;
 import com.starry.douban.util.ToastUtil;
+import com.starry.douban.widget.recyclerview.GridItemDecoration;
 import com.starry.http.HttpManager;
 import com.starry.http.callback.StringCallback;
 import com.starry.http.error.ErrorModel;
@@ -51,7 +55,6 @@ public class MovieFragment extends BaseFragment<FragmentMovieBinding> {
 
     private void initRecyclerView() {
         mAdapter = new MovieAdapter();
-        mAdapter.addOnScrollListener(viewBinding.XRecyclerViewHome);
         mAdapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
@@ -61,7 +64,8 @@ public class MovieFragment extends BaseFragment<FragmentMovieBinding> {
             }
         });
 
-        viewBinding.XRecyclerViewHome.setLayoutManager(new LinearLayoutManager(getActivity()));
+        viewBinding.XRecyclerViewHome.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        viewBinding.XRecyclerViewHome.addItemDecoration(new GridItemDecoration(DensityUtil.dip2px(getActivity(), 8)));
         viewBinding.XRecyclerViewHome.setAdapter(mAdapter);
         viewBinding.XRecyclerViewHome.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
@@ -97,12 +101,25 @@ public class MovieFragment extends BaseFragment<FragmentMovieBinding> {
 
                     @Override
                     public void onSuccess(Movies response, Object... obj) {
-                        refreshMovieList(response);
+                        List<MovieItemBean> subjects = response.getSubjects();
+                        MovieItemDao movieItemDao = RoomManager.getDatabase()
+                                .getMovieItemDao();
+                        movieItemDao.insert(subjects);
+                        refreshMovieList(subjects, response.getTotal());
                     }
 
                     @Override
                     public void onFailure(ErrorModel errorModel) {
                         ToastUtil.showToast(errorModel.getMessage());
+                        if (mAdapter.getItemCount() == 0) {
+                            MovieItemDao movieItemDao = RoomManager.getDatabase()
+                                    .getMovieItemDao();
+                            List<MovieItemBean> all = movieItemDao.getAll();
+                            if (all != null && all.size() > 0) {
+                                hideLoading(true);
+                                refreshMovieList(all, all.size());
+                            }
+                        }
                     }
 
                     @Override
@@ -114,18 +131,17 @@ public class MovieFragment extends BaseFragment<FragmentMovieBinding> {
                 });
     }
 
-    public void refreshMovieList(Movies response) {
+    public void refreshMovieList(List<MovieItemBean> subjects, int total) {
         //1、如果是第一页先清空数据
-        List<MovieItemBean> subjects = response.getSubjects();
         if (start == 0) {
-            mAdapter.setAll(subjects);
+            mAdapter.setAllNotifyItemInserted(subjects);
         } else {
-            mAdapter.addAll(subjects);
+            mAdapter.addAllNotifyItemInserted(subjects);
         }
         //2、页码自增
         start += count;
         //3、如果没有数据了，禁用加载更多功能
-        viewBinding.XRecyclerViewHome.setLoadingMoreEnabled(start < response.getTotal());
+        viewBinding.XRecyclerViewHome.setLoadingMoreEnabled(start < total);
     }
 
 }

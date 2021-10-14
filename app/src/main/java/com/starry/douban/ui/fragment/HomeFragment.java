@@ -55,7 +55,6 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> {
 
     private void initRecyclerView() {
         mAdapter = new BookTagAdapter();
-        mAdapter.addOnScrollListener(viewBinding.XRecyclerViewHome);
         mAdapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View itemView, int position) {
@@ -72,6 +71,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> {
     public void loadData() {
         HttpManager.get(Apis.BOOK_TAG)
                 .tag(this)
+                .headers("referer", Apis.HOST_DOUBAN)
                 .build()
                 .enqueue(new StringCallback<String>() {
 

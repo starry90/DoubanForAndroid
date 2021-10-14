@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
-import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,16 +48,6 @@ public abstract class BaseRecyclerAdapter<T, V extends ViewBinding> extends Recy
      * 子View点击事件集合
      */
     private final HashMap<Integer, OnItemChildClickListener> childClickListenerMap = new HashMap<>();
-
-    /**
-     * 为了保证滑动流畅及不浪费流量，此时不加载图片,true表示列表滑动中
-     */
-    private boolean isScrolling;
-
-    /**
-     * 已加载过的数据集合
-     */
-    private final SparseBooleanArray loadedMap = new SparseBooleanArray();
 
     public BaseRecyclerAdapter() {
     }
@@ -121,10 +110,6 @@ public abstract class BaseRecyclerAdapter<T, V extends ViewBinding> extends Recy
     @Override
     public void onBindViewHolder(@NonNull BaseRecyclerAdapter.RecyclerViewHolder<V> holder, int position) {
         onBindData(holder, dataSet.get(position), position);
-
-        if (!isScrolling) {
-            loadedMap.put(position, true);
-        }
     }
 
     /**
@@ -156,35 +141,8 @@ public abstract class BaseRecyclerAdapter<T, V extends ViewBinding> extends Recy
         return 0;
     }
 
-    /**
-     * 是否允许加载图片，两种情况允许：1 滑动已停止，2 已经加载过图片
-     *
-     * @param position item位置
-     * @return true表示允许
-     */
-    protected boolean allowLoadImage(int position) {
-        return !isScrolling || loadedMap.get(position);
-    }
-
     public T getItem(int position) {
         return dataSet.get(position);
-    }
-
-    /**
-     * 设置RecyclerView滑动监听器
-     *
-     * @param recyclerView RecyclerView
-     */
-    public void addOnScrollListener(RecyclerView recyclerView) {
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                isScrolling = newState != RecyclerView.SCROLL_STATE_IDLE;
-                if (!isScrolling) {
-                    notifyDataSetChanged();
-                }
-            }
-        });
     }
 
     public List<T> getAll() {
@@ -213,6 +171,32 @@ public abstract class BaseRecyclerAdapter<T, V extends ViewBinding> extends Recy
             dataSet.addAll(collection);
         }
         notifyDataSetChanged();
+    }
+
+    /**
+     * 用指定的集合替换列表.
+     * <p>
+     * Replaces the list  with specified Collection.
+     *
+     * @param collection The Collection to add at the end of the array.
+     * @throws UnsupportedOperationException if the <tt>addAll</tt> operation
+     *                                       is not supported by this list
+     * @throws ClassCastException            if the class of an element of the specified
+     *                                       collection prevents it from being added to this list
+     * @throws NullPointerException          if the specified collection contains one
+     *                                       or more null elements and this list does not permit null
+     *                                       elements, or if the specified collection is null
+     * @throws IllegalArgumentException      if some property of an element of the
+     *                                       specified collection prevents it from being added to this list
+     */
+    public void setAllNotifyItemInserted(Collection<? extends T> collection) {
+        synchronized (mLock) {
+            dataSet.clear();
+            dataSet.addAll(collection);
+        }
+        //1、解决瀑布流下拉刷新和加载更多图片闪烁问题
+        //2、解决瀑布流加载更多后再滑动到顶部item左右跳动问题
+        notifyItemInserted(dataSet.size());
     }
 
 
@@ -248,6 +232,29 @@ public abstract class BaseRecyclerAdapter<T, V extends ViewBinding> extends Recy
             dataSet.addAll(collection);
         }
         notifyDataSetChanged();
+    }
+
+    /**
+     * Adds the specified Collection at the end of the array.
+     *
+     * @param collection The Collection to add at the end of the array.
+     * @throws UnsupportedOperationException if the <tt>addAll</tt> operation
+     *                                       is not supported by this list
+     * @throws ClassCastException            if the class of an element of the specified
+     *                                       collection prevents it from being added to this list
+     * @throws NullPointerException          if the specified collection contains one
+     *                                       or more null elements and this list does not permit null
+     *                                       elements, or if the specified collection is null
+     * @throws IllegalArgumentException      if some property of an element of the
+     *                                       specified collection prevents it from being added to this list
+     */
+    public void addAllNotifyItemInserted(Collection<? extends T> collection) {
+        synchronized (mLock) {
+            dataSet.addAll(collection);
+        }
+        //1、解决瀑布流下拉刷新和加载更多图片闪烁问题
+        //2、解决瀑布流加载更多后再滑动到顶部item左右跳动问题
+        notifyItemInserted(dataSet.size());
     }
 
     /**

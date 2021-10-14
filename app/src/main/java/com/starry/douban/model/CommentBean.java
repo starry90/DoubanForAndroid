@@ -5,7 +5,7 @@ package com.starry.douban.model;
  * @since 21-7-10.
  */
 
-public class MovieComment {
+public class CommentBean {
 
     private String userImageUrl;
 

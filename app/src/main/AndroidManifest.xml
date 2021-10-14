@@ -37,6 +37,7 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
             android:name="com.starry.douban.ui.activity.MainActivity"
@@ -65,6 +66,9 @@
             android:screenOrientation="portrait" />
         <activity
             android:name="com.starry.douban.ui.activity.VideoListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.starry.douban.ui.activity.CityActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.starry.douban.ui.activity.VideoPlayerActivity"

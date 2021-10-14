@@ -31,6 +31,8 @@ public class BeautyModel extends PhotoModel implements Parcelable {
     private boolean used;
     private String who;
 
+    private float dimensionRatio = (float) (Math.random() / 3.0f + 0.8f);
+
     @Override
     public String getPhotoTitle() {
         return desc;
@@ -113,6 +115,13 @@ public class BeautyModel extends PhotoModel implements Parcelable {
         this.who = who;
     }
 
+    public float getDimensionRatio() {
+        return dimensionRatio;
+    }
+
+    public void setDimensionRatio(float dimensionRatio) {
+        this.dimensionRatio = dimensionRatio;
+    }
 
     @Override
     public int describeContents() {

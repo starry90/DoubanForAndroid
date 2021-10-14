@@ -1,5 +1,6 @@
 package com.starry.douban.adapter;
 
+import android.support.constraint.ConstraintLayout;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -37,6 +38,10 @@ public class MovieAdapter extends BaseRecyclerAdapter<MovieItemBean, ItemMovieBi
     @Override
     public void onBindData(BaseRecyclerAdapter.RecyclerViewHolder<ItemMovieBinding> holder, MovieItemBean itemData, int position) {
         ItemMovieBinding viewBinding = holder.viewBinding;
+        ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) viewBinding.ivImage.getLayoutParams();
+        //比例本地随机生成或服务器下发，避免瀑布流item高度变化闪动
+        layoutParams.dimensionRatio = String.valueOf(itemData.getDimensionRatio());
+
         viewBinding.tvTitle.setText(itemData.getTitle());
         viewBinding.tvAuthor.setText("导       演：" + itemData.getTitle());
         viewBinding.tvDate.setText("上映日期：" + itemData.getTitle());
@@ -44,8 +49,6 @@ public class MovieAdapter extends BaseRecyclerAdapter<MovieItemBean, ItemMovieBi
         viewBinding.tvNumRating.setText("观众评分：" + itemData.getRate());
 
         viewBinding.ivImage.setImageResource(R.drawable.image_bg_default);
-        if (allowLoadImage(position)) {
-            ImageManager.loadImage(viewBinding.ivImage, itemData.getCover(), 16);
-        }
+        ImageManager.loadImage(viewBinding.ivImage, itemData.getCover(), 16);
     }
 }

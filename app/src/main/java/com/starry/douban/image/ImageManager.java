@@ -18,7 +18,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.transition.DrawableCrossFadeFactory;
 import com.bumptech.glide.request.transition.Transition;
@@ -79,15 +79,15 @@ public class ImageManager {
     };
 
     /**
-     * @param imageView
-     * @param url
-     * @param bgView
+     * @param imageView 要设置图片的ImageView
+     * @param url       图片URL
+     * @param bgView    背景图片的ImageView
      */
     public static void getBitmap(final ImageView imageView, String url, final ImageView bgView) {
         GlideApp.with(getContext())
                 .asBitmap()
                 .load(url)
-                .into(new SimpleTarget<Bitmap>() {
+                .into(new CustomTarget<Bitmap>() {
                     @Override
                     public void onResourceReady(@NonNull final Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
                         imageView.setImageBitmap(resource);
@@ -104,6 +104,11 @@ public class ImageManager {
 
                             }
                         });
+                    }
+
+                    @Override
+                    public void onLoadCleared(@Nullable Drawable placeholder) {
+
                     }
                 });
     }
@@ -130,6 +135,36 @@ public class ImageManager {
                 .load(url)
                 .apply(requestOptions)
                 .transition(DrawableTransitionOptions.withCrossFade(crossFadeFactory))
+                .listener(requestListener);
+        if (radius > 0) {
+            load = load.transform(new RoundedCorners(radius));
+        }
+        load.into(imageView);
+    }
+
+    /**
+     * 加载自定圆角View 图片
+     * 不能用动画效果，否则占位图不消失，真实图片会和占位图叠加在一起
+     *
+     * @param imageView 要设置图片的ImageView
+     * @param url       图片URL
+     */
+    public static void loadImageNoAnimate(ImageView imageView, String url) {
+        loadImageNoAnimate(imageView, url, 0);
+    }
+
+    /**
+     * 加载自定圆角View 图片
+     * 不能用动画效果，否则占位图不消失，真实图片会和占位图叠加在一起
+     *
+     * @param imageView 要设置图片的ImageView
+     * @param url       图片URL
+     * @param radius    圆角半径
+     */
+    public static void loadImageNoAnimate(ImageView imageView, String url, int radius) {
+        GlideRequest<Drawable> load = GlideApp.with(getContext())
+                .load(url)
+                .apply(requestOptions)
                 .listener(requestListener);
         if (radius > 0) {
             load = load.transform(new RoundedCorners(radius));
@@ -218,7 +253,7 @@ public class ImageManager {
                     .asBitmap()
                     .load(url)
                     .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-                    .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+                    .submit(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
                     .get();
             Context context = getContext();
             // 保存到相册 使用传图片路径的方法，系统API会直接将图片加载至内存中，大图会产生OOM

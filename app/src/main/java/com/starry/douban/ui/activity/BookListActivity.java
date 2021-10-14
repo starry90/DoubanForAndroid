@@ -67,11 +67,10 @@ public class BookListActivity extends BaseActivity<ActivityBookListBinding> {
 
     private void initRecyclerView() {
         mAdapter = new BookAdapter();
-        mAdapter.addOnScrollListener(viewBinding.rvBookList);
         mAdapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View itemView, int position) {
-                ToastUtil.showToast("图书");
+                BookDetailActivity.showActivity(BookListActivity.this, mAdapter.getItem(position).getSubjectUrl());
             }
         });
 
@@ -98,6 +97,7 @@ public class BookListActivity extends BaseActivity<ActivityBookListBinding> {
                 .tag(this)
                 .params("start", start)
                 .params("type", "T")
+                .headers("referer", Apis.HOST_DOUBAN)
                 .build()
                 .enqueue(new StringCallback<String>() {
 

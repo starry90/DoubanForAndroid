@@ -15,14 +15,11 @@ import com.starry.douban.receiver.CommonReceiver;
 import com.starry.douban.service.WorkService;
 import com.starry.douban.util.AppUtil;
 import com.starry.douban.util.BuglyHelper;
-import com.starry.douban.util.CommonUtils;
 import com.starry.douban.util.FileUtils;
-import com.starry.douban.util.TimeUtils;
 import com.starry.http.HttpManager;
 
 import java.io.File;
 import java.lang.reflect.Method;
-import java.util.Date;
 
 /**
  * @author Starry Jerry
@@ -57,7 +54,7 @@ public class AppWrapper {
 
     /**
      * 参考 https://blog.csdn.net/qq_27512671/article/details/105580036
-     *
+     * <p>
      * 设置豁免所有hide api
      * http://androidxref.com/9.0.0_r3/xref/art/test/674-hiddenapi/src-art/Main.java#100
      * VMRuntime.getRuntime().setHiddenApiExemptions(new String[]{"L"});
@@ -103,7 +100,7 @@ public class AppWrapper {
     }
 
     public static File getCrashDir() {
-        return FileUtils.buildPath(getContext().getExternalFilesDir(""),  Common.DIR_CRASH);
+        return FileUtils.buildPath(getContext().getExternalFilesDir(""), Common.DIR_CRASH);
     }
 
     public static File getDownloadDir() {
@@ -131,15 +128,7 @@ public class AppWrapper {
         initOkHttp();
         registerCommonReceiver(application);
 
-        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
-            @Override
-            public void uncaughtException(Thread thread, Throwable ex) {
-                ex.printStackTrace();
-                String crashFile = String.format("%s.txt", TimeUtils.date2String(new Date()));
-                CommonUtils.saveCrashInfo(ex, getCrashDir(), crashFile);
-                android.os.Process.killProcess(android.os.Process.myPid());
-            }
-        });
+        Thread.setDefaultUncaughtExceptionHandler(new CrashHandler());
     }
 
     private void initOkHttp() {

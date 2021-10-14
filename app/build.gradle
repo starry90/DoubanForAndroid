@@ -95,6 +95,10 @@ dependencies {
     implementation deps.design
     implementation deps.cardview
     implementation deps.lifecycleExtensions
+    implementation deps.constraintLayout
+    implementation deps.roomRuntime
+    annotationProcessor deps.roomCompiler
+
     //test
     testImplementation deps.junit
     androidTestImplementation deps.runner
@@ -115,6 +119,8 @@ dependencies {
     releaseImplementation deps.leakcanaryRelease
     debugImplementation deps.anrDebug
     releaseImplementation deps.anrRelease
+
+    implementation 'com.makeramen:roundedimageview:2.3.0'
 
     implementation 'com.github.CarGuo.GSYVideoPlayer:gsyVideoPlayer-java:v6.0.3'
     //是否需要ExoPlayer模式
