@@ -17,16 +17,6 @@
         <item name="colorControlNormal">@android:color/white</item>
     </style>
 
-    <style name="RButtonMain">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">@dimen/common_height_level_1</item>
-        <item name="android:layout_weight">1</item>
-        <item name="android:button">@null</item>
-        <item name="android:gravity">center</item>
-        <item name="android:padding">3dp</item>
-        <item name="android:textColor">@color/selector_main_tab_color</item>
-    </style>
-
     <style name="Widget.CardContent" parent="android:Widget">
         <item name="android:paddingLeft">@dimen/common_margin_level_2</item>
         <item name="android:paddingRight">@dimen/common_margin_level_2</item>

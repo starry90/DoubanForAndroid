@@ -1,11 +1,12 @@
 package com.starry.douban.ui.activity;
 
-import android.os.Handler;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.widget.RadioGroup;
+import android.view.MenuItem;
 
 import com.starry.douban.R;
 import com.starry.douban.base.BaseFragmentPagerAdapter;
@@ -15,7 +16,6 @@ import com.starry.douban.env.AppWrapper;
 import com.starry.douban.ui.fragment.HomeFragment;
 import com.starry.douban.ui.fragment.MovieParentFragment;
 import com.starry.douban.ui.fragment.SettingFragment;
-import com.starry.douban.util.ArgbEvaluatorUtil;
 import com.starry.douban.util.PermissionUtils;
 import com.starry.douban.util.ToastUtil;
 
@@ -28,10 +28,6 @@ import java.util.List;
  * Created by Starry Jerry on 2016/12/1.
  */
 public class MainActivity extends BaseNFCActivity<ActivityMainBinding> {
-
-    private final String[] titles = new String[]{"首页", "电影", "设置"};
-
-    private final ArgbEvaluatorUtil argbEvaluatorUtil = ArgbEvaluatorUtil.get();
 
     @Override
     protected Class<?> getNFCClass() {
@@ -58,42 +54,39 @@ public class MainActivity extends BaseNFCActivity<ActivityMainBinding> {
         pages.add(new SettingFragment());
         viewBinding.viewpagerMain.setAdapter(new BaseFragmentPagerAdapter(getSupportFragmentManager(), pages));
         viewBinding.viewpagerMain.setOffscreenPageLimit(3);
-
-        argbEvaluatorUtil.addTab(viewBinding.rbtnMainHome, viewBinding.rbtnMainBook, viewBinding.rbtnMainSetting);
-        argbEvaluatorUtil.addTabDrawable(R.drawable.selector_main_home, R.drawable.selector_main_movie, R.drawable.selector_main_setting);
     }
 
     @Override
     public void setListener() {
-        viewBinding.radioGroupMain.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        final BottomNavigationView bnv = viewBinding.mainBnv;
+        bnv.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch (checkedId) {
-                    case R.id.rbtn_main_home:
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.tab_home:
                         updateStatusBarTextBg(false);
                         viewBinding.viewpagerMain.setCurrentItem(0, false);
-                        break;
-                    case R.id.rbtn_main_book:
+                        return true;
+                    case R.id.tab_movie:
                         updateStatusBarTextBg(true);
                         viewBinding.viewpagerMain.setCurrentItem(1, false);
-                        break;
-                    case R.id.rbtn_main_setting:
+                        return true;
+                    case R.id.tab_setting:
                         updateStatusBarTextBg(false);
                         viewBinding.viewpagerMain.setCurrentItem(2, false);
-                        break;
-
+                        return true;
+                    default:
+                        return false;
                 }
             }
         });
 
         viewBinding.viewpagerMain.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
-            private final int DELAY_TIME = 100;
-            private Handler handler = new Handler();
-
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                argbEvaluatorUtil.changeTabDrawable(position, positionOffset);
+            public void onPageScrolled(int position, float positionOffset,
+                                       int positionOffsetPixels) {
+
             }
 
             @Override
@@ -103,15 +96,7 @@ public class MainActivity extends BaseNFCActivity<ActivityMainBinding> {
                 } else {
                     updateStatusBarTextBg(false);
                 }
-
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        setTitle(titles[position]);
-                        argbEvaluatorUtil.setTabSelect(position);
-                    }
-                }, DELAY_TIME);
-                argbEvaluatorUtil.setChecked(position);
+                updateSelectedItem(position);
             }
 
             @Override
@@ -119,6 +104,11 @@ public class MainActivity extends BaseNFCActivity<ActivityMainBinding> {
 
             }
         });
+    }
+
+    private void updateSelectedItem(int position) {
+        MenuItem defaultMenuItem = viewBinding.mainBnv.getMenu().getItem(position);
+        viewBinding.mainBnv.setSelectedItemId(defaultMenuItem.getItemId());
     }
 
     /**
