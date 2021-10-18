@@ -17,6 +17,16 @@
         <item name="colorControlNormal">@android:color/white</item>
     </style>
 
+    <!--没有选中的样式-->
+    <style name="MainTabNormalText">
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <!--选中的样式-->
+    <style name="MainTabSelectedText">
+        <item name="android:textSize">14sp</item>
+    </style>
+
     <style name="Widget.CardContent" parent="android:Widget">
         <item name="android:paddingLeft">@dimen/common_margin_level_2</item>
         <item name="android:paddingRight">@dimen/common_margin_level_2</item>
