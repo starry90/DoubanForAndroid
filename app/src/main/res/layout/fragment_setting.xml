@@ -75,6 +75,14 @@
 
             <View style="@style/GapHorizontalDivideLine" />
 
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/common_height_level_2"
+                android:hint="@string/app_name"
+                android:textColor="@color/text_color_level_1" />
+
+            <View style="@style/GapHorizontalDivideLine" />
+
             <TextView
                 android:id="@+id/tv_setting_about"
                 style="@style/ItemRippleStyle"
