@@ -12,6 +12,8 @@ import android.widget.FrameLayout;
 /**
  * 解决键盘档住输入框工具类
  * <p>
+ * fitsSystemWindows=true的布局不可使用该类解决，可选择最外层包裹一个ScrollView的方式解决
+ * <p>
  * 来源可能：https://blog.csdn.net/smileiam/article/details/69055963
  *
  * @author Starry Jerry
