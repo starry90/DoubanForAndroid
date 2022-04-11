@@ -123,6 +123,7 @@ public class HttpManager {
 
     /**
      * 设置Cookie，用于维持登录状态
+     *
      * @param okHttpCookie OkHttpCookie
      * @return HttpManager
      */
@@ -163,10 +164,17 @@ public class HttpManager {
     }
 
     /**
-     * Post 请求
+     * Post 表单请求，上传文件请使用上传文件方法
      */
     public static CommonParams.Builder post(String url) {
         return newBuilder(CommonParams.POST_FORM, url);
+    }
+
+    /**
+     * Post 上传文件请求
+     */
+    public static CommonParams.Builder postUpload(String url) {
+        return newBuilder(CommonParams.POST_FORM_UPLOAD, url);
     }
 
     /**

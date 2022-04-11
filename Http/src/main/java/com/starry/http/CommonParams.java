@@ -4,6 +4,7 @@ package com.starry.http;
 import com.starry.http.request.GetRequest;
 import com.starry.http.request.OKHttpRequest;
 import com.starry.http.request.PostFormRequest;
+import com.starry.http.request.PostFormUploadRequest;
 import com.starry.http.request.PostStringRequest;
 
 import java.io.File;
@@ -21,8 +22,9 @@ import java.util.Map;
 public class CommonParams {
 
     public static final String GET = "GET";
-    public static final String POST_FORM = "POST_FORM";
     public static final String POST_STRING = "POST_STRING";
+    public static final String POST_FORM = "POST_FORM";
+    public static final String POST_FORM_UPLOAD = "POST_FORM_UPLOAD";
 
     private String url;
     private Object tag;
@@ -98,10 +100,14 @@ public class CommonParams {
 
         public Builder(String method) {
             this.method = method;
-            if (POST_FORM.equals(method)) {
-                this.okHttpRequest = new PostFormRequest();
+            if (GET.equals(method)) {
+                this.okHttpRequest = new GetRequest();
             } else if (POST_STRING.equals(method)) {
                 this.okHttpRequest = new PostStringRequest();
+            } else if (POST_FORM.equals(method)) {
+                this.okHttpRequest = new PostFormRequest();
+            } else if (POST_FORM_UPLOAD.equals(method)) {
+                this.okHttpRequest = new PostFormUploadRequest();
             } else {
                 this.okHttpRequest = new GetRequest();
             }
