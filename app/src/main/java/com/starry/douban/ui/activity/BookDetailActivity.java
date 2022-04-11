@@ -192,7 +192,9 @@ public class BookDetailActivity extends BaseActivity<ActivityBookDetailBinding> 
 
                         Elements introElements = contentElement.select("div.intro");
                         bookDetailBean.setBookSummary(introElements.first().text());
-                        bookDetailBean.setAuthorSummary(introElements.get(1).text());
+                        if (introElements.size() >= 2) {
+                            bookDetailBean.setAuthorSummary(introElements.get(1).text());
+                        }
 
                         showBookDetail(bookDetailBean);
 
@@ -289,7 +291,9 @@ public class BookDetailActivity extends BaseActivity<ActivityBookDetailBinding> 
         viewBinding.tvBookDetailRatingCount.setText(getString(R.string.book_number_raters, response.getRatingPeopleCount()));
         viewBinding.tvBookDetailOtherInfo.setText(getString(R.string.book_author_info, response.getAuthor(), response.getPublisher(), response.getPublishDate()));
         viewBinding.tvBookDetailSummary.setText(Html.fromHtml(response.getBookSummary()));
-        viewBinding.tvBookDetailAuthorSummary.setText(Html.fromHtml(response.getAuthorSummary()));
+        if (response.getAuthorSummary() != null) {
+            viewBinding.tvBookDetailAuthorSummary.setText(Html.fromHtml(response.getAuthorSummary()));
+        }
     }
 
     private void initComment(final List<CommentBean> commentList) {
