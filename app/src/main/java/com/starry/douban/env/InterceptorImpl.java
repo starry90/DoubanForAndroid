@@ -1,8 +1,6 @@
 package com.starry.douban.env;
 
 import com.google.gson.JsonParseException;
-import com.starry.http.CommonParams;
-import com.starry.http.HttpResponse;
 import com.starry.http.error.BIZException;
 import com.starry.http.error.ErrorModel;
 import com.starry.http.error.HttpStatusException;
@@ -12,7 +10,6 @@ import com.starry.log.Logger;
 import org.json.JSONException;
 
 import java.net.SocketTimeoutException;
-import java.util.Map;
 
 /**
  * 拦截器实现类
@@ -24,7 +21,7 @@ public final class InterceptorImpl implements HttpInterceptor {
 
     private String logFormat = "%s %s %s";
 
-    private String TAG = "InterceptorImpl";
+    private static final String TAG = "InterceptorImpl";
 
     /**
      * 获取固定格式的log
@@ -39,37 +36,14 @@ public final class InterceptorImpl implements HttpInterceptor {
     }
 
     @Override
-    public void logRequest(CommonParams commonParams) {
-        Map<String, Object> params = commonParams.params();
-        String paramsStr = commonParams.content();
-        if (paramsStr == null || paramsStr.length() == 0) {
-            paramsStr = params == null ? "" : params.toString();
-        }
-        Map<String, String> headers = commonParams.headers();
-        String headersStr = headers == null ? "" : headers.toString();
-        // 日志格式
-        // Request
-        // --> https://...
-        // --> GET
-        // --> {...}
-        // --> {...}
-        String result = String.format("Request\n >>> %s\n >>> %s\n >>> %s\n >>> %s"
-                , commonParams.url()
-                , commonParams.method()
-                , headersStr
-                , paramsStr);
-        Logger.i(TAG, result);
-    }
-
-    @Override
-    public ErrorModel  handleFailure(Exception why, ErrorModel errorModel) {
+    public ErrorModel handleFailure(Exception why, ErrorModel errorModel) {
         if (why instanceof BIZException) { //业务异常
             BIZException cloneWhy = (BIZException) why;
             errorModel.setCode(cloneWhy.getErrorCode())
                     .setMessage(cloneWhy.getErrorMessage())
                     .setResponse(cloneWhy.getResponse());
             errorModel.setResponse(cloneWhy.getResponse());
-            Logger.e(getFormatLog(errorModel.getUrl(), errorModel.getResponse(), errorModel.getMessage()));
+            Logger.e(TAG, getFormatLog(errorModel.getUrl(), errorModel.getResponse(), errorModel.getMessage()));
             return handleBIZ(errorModel);
         } else if (why instanceof HttpStatusException) { //网络状态码错误
             return errorModel.setCode(10001).setMessage("网络状态码错误");
@@ -94,14 +68,5 @@ public final class InterceptorImpl implements HttpInterceptor {
         return errorModel;
     }
 
-    @Override
-    public void logResponse(HttpResponse httpResponse) {
-        // 日志格式
-        // Response
-        // >>> https://...
-        // >>> {"code":10,...
-        String result = String.format("Response\n >>> %s\n >>> %s", httpResponse.getUrl(), httpResponse.getBodyString());
-        Logger.i(TAG, result);
-    }
 
 }

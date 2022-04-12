@@ -136,6 +136,7 @@ public class AppWrapper {
                 .setTimeOut(30)
                 .setCookie(new CookieImpl())
                 .setHttpConverter(GsonConverter.create())
+                .addInterceptor(new HttpLogInterceptor())
                 .setInterceptor(new InterceptorImpl())
                 .setCertificates()
                 .build();

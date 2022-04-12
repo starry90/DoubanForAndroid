@@ -54,7 +54,6 @@ public class RealRequest {
     }
 
     private <T> Request getRequest(CommonCallback<T> callback) {
-        HttpManager.getInstance().getInterceptor().logRequest(commonParams);
         return okHttpRequest.build(commonParams, callback);
     }
 
@@ -138,7 +137,6 @@ public class RealRequest {
             } else {
                 httpResponse = new HttpResponse(url, responseBody.byteStream(), responseBody.contentLength());
             }
-            httpInterceptor.logResponse(httpResponse);
 
             // 3. parse response
             T result = callback.parseResponse(httpResponse);
