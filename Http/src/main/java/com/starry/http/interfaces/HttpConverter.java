@@ -1,20 +1,10 @@
 package com.starry.http.interfaces;
 
-import okhttp3.RequestBody;
-
 /**
  * @author Starry Jerry
  * @since 18-8-7.
  */
 public interface HttpConverter {
-
-    /**
-     * convert {@code value} to RequestBody
-     *
-     * @param value Object
-     * @return RequestBody
-     */
-    RequestBody convert(Object value);
 
     /**
      * convert {@code responseBody} to T

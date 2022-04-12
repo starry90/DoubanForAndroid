@@ -10,16 +10,11 @@ import com.starry.http.interfaces.HttpConverter;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
-
 /**
  * @author Starry Jerry
  * @since 18-8-7.
  */
 public class GsonConverter implements HttpConverter {
-
-    private static final MediaType MEDIA_TYPE = MediaType.parse("application/json; charset=UTF-8");
 
     /**
      * Create an instance using a default {@link Gson} instance for conversion. Encoding to JSON and
@@ -43,22 +38,6 @@ public class GsonConverter implements HttpConverter {
 
     private GsonConverter(Gson gson) {
         this.gson = gson;
-    }
-
-
-    @Override
-    public RequestBody convert(Object value) {
-        String content = "";
-        try {
-            if (value instanceof String) {
-                content = (String) value;
-            } else {
-                content = gson.toJson(value);
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return RequestBody.create(MEDIA_TYPE, content);
     }
 
     @Override
