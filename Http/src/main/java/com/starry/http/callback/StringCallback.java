@@ -15,7 +15,7 @@ public abstract class StringCallback<T> extends CommonCallback<T> {
     @Override
     public T parseResponse(HttpResponse response) throws Exception {
         HttpConverter httpConverter = HttpManager.getInstance().getHttpConverter();
-        T result = httpConverter.convert(getClass(), response.getBodyString());
+        T result = httpConverter.responseBodyConverter(getClass(), response.getBodyString());
         Util.checkNotNull(result);
         return result;
     }

@@ -135,9 +135,8 @@ public class AppWrapper {
         HttpManager.getInstance()
                 .setTimeOut(30)
                 .setCookie(new CookieImpl())
-                .setHttpConverter(GsonConverter.create())
+                .setHttpConverter(HttpConverterImpl.create())
                 .addInterceptor(new HttpLogInterceptor())
-                .setInterceptor(new InterceptorImpl())
                 .setCertificates()
                 .build();
     }

@@ -4,7 +4,6 @@ package com.starry.http;
 import com.starry.http.callback.CommonCallback;
 import com.starry.http.callback.StringCallback;
 import com.starry.http.error.ErrorModel;
-import com.starry.http.interfaces.HttpInterceptor;
 import com.starry.http.request.OKHttpRequest;
 import com.starry.http.utils.Util;
 
@@ -113,16 +112,15 @@ public class RealRequest {
             Util.sendCanceledCallback(callback);
         } else {
             // handle failure exception
-            ErrorModel errorModel = new ErrorModel(0, "");
-            errorModel.setUrl(call.request().url().toString());
-            HttpManager.getInstance().getInterceptor().handleFailure(ex, errorModel);
+            ErrorModel errorModel = HttpManager.getInstance()
+                    .getHttpConverter()
+                    .responseErrorConverter(ex, call.request().url().toString());
             Util.sendFailureCallback(errorModel, callback);
         }
     }
 
     private static <T> T onResponseResult(Call call, Response response, CommonCallback<T> callback) {
         String url = call.request().url().toString();
-        HttpInterceptor httpInterceptor = HttpManager.getInstance().getInterceptor();
         try {
             // 1. check http code
             Util.checkHttpCode(response.code());
@@ -149,9 +147,9 @@ public class RealRequest {
             ex.printStackTrace();
 
             // 2. handle response exception
-            ErrorModel errorModel = new ErrorModel(0, "");
-            errorModel.setUrl(url);
-            httpInterceptor.handleFailure(ex, errorModel);
+            ErrorModel errorModel = HttpManager.getInstance()
+                    .getHttpConverter()
+                    .responseErrorConverter(ex, url);
 
             // 3. call fail method
             Util.sendFailureCallback(errorModel, callback);

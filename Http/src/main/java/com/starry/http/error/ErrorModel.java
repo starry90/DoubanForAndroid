@@ -13,8 +13,6 @@ public class ErrorModel {
 
     private String message;
 
-    private String url;
-
     /**
      * 返回的错误的报文
      */
@@ -24,6 +22,9 @@ public class ErrorModel {
      * 错误已处理
      */
     private boolean processed;
+
+    public ErrorModel() {
+    }
 
     public ErrorModel(int code, String message) {
         this.code = code;
@@ -45,15 +46,6 @@ public class ErrorModel {
 
     public ErrorModel setMessage(String message) {
         this.message = message;
-        return this;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public ErrorModel setUrl(String url) {
-        this.url = url;
         return this;
     }
 
@@ -80,7 +72,6 @@ public class ErrorModel {
         return "ErrorModel{" +
                 "code=" + code +
                 ", message='" + message + '\'' +
-                ", url='" + url + '\'' +
                 ", response='" + response + '\'' +
                 ", processed=" + processed +
                 '}';

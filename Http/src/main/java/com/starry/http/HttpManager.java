@@ -3,7 +3,6 @@ package com.starry.http;
 import com.starry.http.callback.CommonCallback;
 import com.starry.http.cookie.OkHttpCookie;
 import com.starry.http.interfaces.HttpConverter;
-import com.starry.http.interfaces.HttpInterceptor;
 import com.starry.http.utils.HttpsUtils;
 
 import java.io.InputStream;
@@ -49,10 +48,6 @@ public class HttpManager {
      * http converter
      */
     private HttpConverter httpConverter;
-    /**
-     * http interceptor
-     */
-    private HttpInterceptor interceptor;
 
     /**
      * @return HttpManager
@@ -91,15 +86,6 @@ public class HttpManager {
     public void setOkHttpClient(OkHttpClient okHttpClient) {
         this.okHttpClient = okHttpClient;
         this.okHttpClientBuilder = okHttpClient.newBuilder();
-    }
-
-    public HttpInterceptor getInterceptor() {
-        return interceptor;
-    }
-
-    public HttpManager setInterceptor(HttpInterceptor interceptor) {
-        this.interceptor = interceptor;
-        return this;
     }
 
     public HttpConverter getHttpConverter() {
