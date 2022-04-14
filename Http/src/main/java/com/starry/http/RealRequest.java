@@ -2,7 +2,6 @@ package com.starry.http;
 
 
 import com.starry.http.callback.CommonCallback;
-import com.starry.http.callback.StringCallback;
 import com.starry.http.error.ErrorModel;
 import com.starry.http.request.OKHttpRequest;
 import com.starry.http.utils.Util;
@@ -74,7 +73,6 @@ public class RealRequest {
      * @param <T>      对象的泛型
      */
     private static <T> T execute(Call call, final CommonCallback<T> callback) {
-        callback.onBefore();
         try {
             Response response = call.execute();
             return onResponseResult(call, response, callback);
@@ -91,7 +89,6 @@ public class RealRequest {
      * @param <T>      对象的泛型
      */
     private static <T> void enqueue(Call call, final CommonCallback<T> callback) {
-        callback.onBefore();
         call.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException ex) {
@@ -125,19 +122,12 @@ public class RealRequest {
             // 1. check http code
             Util.checkHttpCode(response.code());
 
-            // 2. log response
-            HttpResponse httpResponse;
+            // 2. check responseBody
             ResponseBody responseBody = response.body();
             Util.checkNotNull(responseBody);
-            if (callback instanceof StringCallback) {
-                String bodyString = responseBody.string();
-                httpResponse = new HttpResponse(url, bodyString);
-            } else {
-                httpResponse = new HttpResponse(url, responseBody.byteStream(), responseBody.contentLength());
-            }
 
-            // 3. parse response
-            T result = callback.parseResponse(httpResponse);
+            // 3. parse responseBody
+            T result = callback.parseResponse(responseBody);
 
             // 4. call success method
             Util.sendSuccessCallback(result, callback);
