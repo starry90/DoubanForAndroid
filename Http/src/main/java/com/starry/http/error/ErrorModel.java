@@ -18,11 +18,6 @@ public class ErrorModel {
      */
     private String response;
 
-    /**
-     * 错误已处理
-     */
-    private boolean processed;
-
     public ErrorModel() {
     }
 
@@ -58,22 +53,12 @@ public class ErrorModel {
         return this;
     }
 
-    public boolean isProcessed() {
-        return processed;
-    }
-
-    public ErrorModel setProcessed(boolean processed) {
-        this.processed = processed;
-        return this;
-    }
-
     @Override
     public String toString() {
         return "ErrorModel{" +
                 "code=" + code +
                 ", message='" + message + '\'' +
                 ", response='" + response + '\'' +
-                ", processed=" + processed +
                 '}';
     }
 }
