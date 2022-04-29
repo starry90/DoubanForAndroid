@@ -13,6 +13,7 @@ import android.view.View;
 import android.viewbinding.ViewBinding;
 import android.widget.TextView;
 
+import com.r0adkll.slidr.Slidr;
 import com.starry.douban.R;
 import com.starry.douban.widget.LoadingDataLayout;
 import com.starry.http.HttpManager;
@@ -57,6 +58,10 @@ public abstract class BaseActivity<T extends ViewBinding> extends AppCompatActiv
 
         initData();
         setListener();
+
+        if (supportSlide()) {
+            Slidr.attach(this);
+        }
     }
 
     private void initLoadingDataLayout() {
@@ -201,6 +206,15 @@ public abstract class BaseActivity<T extends ViewBinding> extends AppCompatActiv
      */
     protected boolean isDarkTextWhiteBgStatusBar() {
         return false;
+    }
+
+    /**
+     * 支持左滑退出当前页面
+     *
+     * @return true表示支持
+     */
+    protected boolean supportSlide() {
+        return true;
     }
 
     @Override

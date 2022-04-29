@@ -30,8 +30,8 @@ ext {
     def room_version = "1.1.1"
 
     deps = [
-            "roomRuntime"       : "android.arch.persistence.room:runtime:$room_version",
-            "roomCompiler"      : "android.arch.persistence.room:compiler:$room_version",
+            "roomRuntime"        : "android.arch.persistence.room:runtime:$room_version",
+            "roomCompiler"       : "android.arch.persistence.room:compiler:$room_version",
 
             "appcompat"          : "com.android.support:appcompat-v7:${supportVersion}",
             "support"            : "com.android.support:support-v4:${supportVersion}",
@@ -52,6 +52,7 @@ ext {
             "okhttp3"            : "com.squareup.okhttp3:okhttp:3.11.0",
             "agentweb"           : "com.just.agentweb:agentweb:4.0.2",
             "jsoup"              : "org.jsoup:jsoup:1.13.1",
+            "slidableactivity"   : "com.r0adkll:slidableactivity:2.0.6",
 
             "crashreport"        : "com.tencent.bugly:crashreport:3.3.9",
             "nativecrashreport"  : "com.tencent.bugly:nativecrashreport:3.9.0",
