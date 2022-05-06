@@ -138,6 +138,7 @@ public class RealRequest {
 
             // 3. parse responseBody
             final T result = callback.parseResponse(responseBody);
+            Util.checkNotNull(responseBody, "result == null");
 
             // 4. call success method
             MainHandler.post(new Runnable() {
