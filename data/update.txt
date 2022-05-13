@@ -1,8 +1,8 @@
 {
   "force": 0,
-  "versionCode": 20211014,
-  "versionName": "2.1.2",
-  "contentLength": 5580431,
+  "versionCode": 20220513,
+  "versionName": "2.1.3",
+  "contentLength": 5722595,
   "code": 0,
   "apkUrl": "https://github.com/starry90/DoubanForAndroid/raw/master/data/db-release.apk",
   "msg": "有新版本了，快更新吧",
