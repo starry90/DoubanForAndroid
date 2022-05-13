@@ -60,7 +60,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name="com.starry.douban.ui.activity.PortraitsSettingsActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Slidr.Slidable" />
         <activity
             android:name="com.starry.douban.ui.activity.BeautyActivity"
             android:screenOrientation="portrait" />
@@ -80,7 +81,8 @@
         <activity
             android:name="com.starry.douban.ui.activity.AboutActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Slidr.Slidable" />
         <activity
             android:name="com.starry.douban.ui.activity.CropActivity"
             android:screenOrientation="portrait" />

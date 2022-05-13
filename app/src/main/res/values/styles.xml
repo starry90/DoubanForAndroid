@@ -11,6 +11,19 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <!-- 可滑动页面主题 -->
+    <style name="Theme.Slidr.Slidable" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <!-- These values must be set for this mechanism to work -->
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+
     <!-- 使用标准的style，如果使用ThemeOverlay.AppCompat.Dark.ActionBar在白色背景的标题栏下看不到点击水波纹效果-->
     <style name="Base.ToolbarTheme" parent="ThemeOverlay.AppCompat.ActionBar">
         <!-- 导航栏默认的图标颜色 如返回键的颜色-->

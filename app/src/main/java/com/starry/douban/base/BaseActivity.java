@@ -14,6 +14,8 @@ import android.viewbinding.ViewBinding;
 import android.widget.TextView;
 
 import com.r0adkll.slidr.Slidr;
+import com.r0adkll.slidr.model.SlidrConfig;
+import com.r0adkll.slidr.model.SlidrPosition;
 import com.starry.douban.R;
 import com.starry.douban.widget.LoadingDataLayout;
 import com.starry.http.HttpManager;
@@ -60,7 +62,15 @@ public abstract class BaseActivity<T extends ViewBinding> extends AppCompatActiv
         setListener();
 
         if (supportSlide()) {
-            Slidr.attach(this);
+            SlidrConfig mConfig = new SlidrConfig.Builder()
+//                .primaryColor(primary)
+//                .secondaryColor(secondary)
+                    .position(SlidrPosition.LEFT)
+//                .velocityThreshold(2400)
+//                .distanceThreshold(.25f)
+//                .edge(true)
+                    .build();
+            Slidr.attach(this, mConfig);
         }
     }
 
@@ -214,7 +224,7 @@ public abstract class BaseActivity<T extends ViewBinding> extends AppCompatActiv
      * @return true表示支持
      */
     protected boolean supportSlide() {
-        return true;
+        return false;
     }
 
     @Override

@@ -42,6 +42,11 @@ public class PortraitsSettingsActivity extends BaseActivity<ActivityPortraitsSet
     private CropIwaResultReceiver cropResultReceiver;
 
     @Override
+    protected boolean supportSlide() {
+        return true;
+    }
+
+    @Override
     public ActivityPortraitsSettingsBinding getViewBinding(LayoutInflater layoutInflater) {
         return ActivityPortraitsSettingsBinding.inflate(layoutInflater);
     }

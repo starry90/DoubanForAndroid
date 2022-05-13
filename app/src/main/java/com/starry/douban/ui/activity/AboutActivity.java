@@ -52,6 +52,11 @@ public class AboutActivity extends BaseNFCActivity<ActivityAboutBinding> {
     }
 
     @Override
+    protected boolean supportSlide() {
+        return true;
+    }
+
+    @Override
     protected Drawable getToolbarBackground() {
         return new ColorDrawable(0x0FFFFFFFF); //白色背景
     }
