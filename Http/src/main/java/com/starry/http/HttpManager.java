@@ -3,13 +3,13 @@ package com.starry.http;
 import com.starry.http.callback.CommonCallback;
 import com.starry.http.cookie.OkHttpCookie;
 import com.starry.http.interfaces.HttpConverter;
-import com.starry.http.interfaces.HttpInterceptor;
 import com.starry.http.utils.HttpsUtils;
 
 import java.io.InputStream;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 
@@ -48,10 +48,6 @@ public class HttpManager {
      * http converter
      */
     private HttpConverter httpConverter;
-    /**
-     * http interceptor
-     */
-    private HttpInterceptor interceptor;
 
     /**
      * @return HttpManager
@@ -92,15 +88,6 @@ public class HttpManager {
         this.okHttpClientBuilder = okHttpClient.newBuilder();
     }
 
-    public HttpInterceptor getInterceptor() {
-        return interceptor;
-    }
-
-    public HttpManager setInterceptor(HttpInterceptor interceptor) {
-        this.interceptor = interceptor;
-        return this;
-    }
-
     public HttpConverter getHttpConverter() {
         return httpConverter;
     }
@@ -123,11 +110,23 @@ public class HttpManager {
 
     /**
      * 设置Cookie，用于维持登录状态
+     *
      * @param okHttpCookie OkHttpCookie
      * @return HttpManager
      */
     public HttpManager setCookie(OkHttpCookie okHttpCookie) {
         okHttpClientBuilder.cookieJar(okHttpCookie);
+        return this;
+    }
+
+    /**
+     * 设置拦截器，用于打印日志等功能
+     *
+     * @param interceptor 拦截器
+     * @return HttpManager
+     */
+    public HttpManager addInterceptor(Interceptor interceptor) {
+        okHttpClientBuilder.addInterceptor(interceptor);
         return this;
     }
 
@@ -163,10 +162,17 @@ public class HttpManager {
     }
 
     /**
-     * Post 请求
+     * Post 表单请求，上传文件请使用上传文件方法
      */
     public static CommonParams.Builder post(String url) {
         return newBuilder(CommonParams.POST_FORM, url);
+    }
+
+    /**
+     * Post 上传文件请求
+     */
+    public static CommonParams.Builder postUpload(String url) {
+        return newBuilder(CommonParams.POST_FORM_UPLOAD, url);
     }
 
     /**

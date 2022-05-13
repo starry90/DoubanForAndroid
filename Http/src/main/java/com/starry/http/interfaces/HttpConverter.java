@@ -1,20 +1,12 @@
 package com.starry.http.interfaces;
 
-import okhttp3.RequestBody;
+import com.starry.http.error.ErrorModel;
 
 /**
  * @author Starry Jerry
  * @since 18-8-7.
  */
 public interface HttpConverter {
-
-    /**
-     * convert {@code value} to RequestBody
-     *
-     * @param value Object
-     * @return RequestBody
-     */
-    RequestBody convert(Object value);
 
     /**
      * convert {@code responseBody} to T
@@ -27,6 +19,16 @@ public interface HttpConverter {
      * @return T
      * @throws Exception Exception
      */
-    <T> T convert(Class<?> cbClass, String bodyString) throws Exception;
+    <T> T responseBodyConverter(Class<?> cbClass, String bodyString) throws Exception;
+
+    /**
+     * 转换失败的返回信息为ErrorModel
+     * 该方法运行在子线程
+     *
+     * @param ex  Exception
+     * @param url url
+     * @return ErrorModel
+     */
+    ErrorModel responseErrorConverter(Exception ex, String url);
 
 }

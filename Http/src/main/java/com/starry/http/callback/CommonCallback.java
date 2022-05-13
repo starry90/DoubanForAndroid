@@ -1,19 +1,19 @@
 package com.starry.http.callback;
 
 
-import com.starry.http.HttpResponse;
 import com.starry.http.error.ErrorModel;
 
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 /**
  * 网络请求回调类
  * <p>
  * 调用顺序如下：
- * <li>成功：{@link #onBefore} -> {@link #parseResponse} -> {@link #onAfter} -> {@link #onSuccess}</li>
- * <li>上传：{@link #onBefore} -> {@link #inProgress} -> {@link #parseResponse} -> {@link #onAfter} -> {@link #onSuccess}</li>
- * <li>失败：{@link #onBefore} -> {@link #onAfter} -> {@link #onFailure}</li>
- * <li>取消：{@link #onBefore} -> {@link #onAfter}</li>
+ * <li>成功： {@link #parseResponse} -> {@link #onAfter} -> {@link #onSuccess}</li>
+ * <li>上传： {@link #inProgress} -> {@link #parseResponse} -> {@link #onAfter} -> {@link #onSuccess}</li>
+ * <li>失败： {@link #onAfter} -> {@link #onFailure}</li>
+ * <li>取消： {@link #onAfter}</li>
  *
  * @param <T> 解析的对象
  * @author Starry Jerry
@@ -34,18 +34,12 @@ public abstract class CommonCallback<T> {
     };
 
     /**
-     * 开始执行网络请求
-     */
-    public void onBefore() {
-    }
-
-    /**
      * parse {@link Response}
      *
-     * @param response {@link HttpResponse}
-     * @throws Exception
+     * @param responseBody {@link ResponseBody}
+     * @throws Exception 解析异常信息
      */
-    public abstract T parseResponse(HttpResponse response ) throws Exception;
+    public abstract T parseResponse(ResponseBody responseBody) throws Exception;
 
     /**
      * @param response 返回的对象

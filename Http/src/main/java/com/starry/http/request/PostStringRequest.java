@@ -1,9 +1,12 @@
 package com.starry.http.request;
 
 import com.starry.http.CommonParams;
-import com.starry.http.HttpManager;
-import com.starry.http.interfaces.HttpConverter;
 
+import org.json.JSONObject;
+
+import java.util.Map;
+
+import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 
@@ -13,16 +16,21 @@ import okhttp3.RequestBody;
  */
 public class PostStringRequest extends OKHttpRequest {
 
+    private static final MediaType MEDIA_TYPE = MediaType.parse("application/json; charset=UTF-8");
+
     @Override
     protected RequestBody buildRequestBody(CommonParams commonParams) {
         //优先使用content字段，content为空则使用params字段
         String content = commonParams.content();
-        Object temp = content;
         if (content == null) {
-            temp = commonParams.params();
+            Map<String, Object> map = commonParams.params();
+            if (map != null) {
+                content = new JSONObject(map).toString();
+            } else {
+                content = "{}";
+            }
         }
-        HttpConverter httpConverter = HttpManager.getInstance().getHttpConverter();
-        return httpConverter.convert(temp);
+        return RequestBody.create(MEDIA_TYPE, content);
     }
 
     @Override

@@ -3,58 +3,99 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/activity_bg"
-    android:gravity="center_horizontal"
+    android:background="@color/view_bg"
+    android:fitsSystemWindows="true"
     android:orientation="vertical">
 
     <include layout="@layout/toolbar_layout" />
 
-    <TextView
-        android:id="@+id/tv_about_app_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:drawableTop="@drawable/ic_launcher"
-        android:padding="5dp"
-        android:text="@string/app_name"
-        android:textColor="@color/text_color_level_1"
-        android:textSize="18sp"
-        android:transitionName="@string/transition_item_name" />
+    <!--
+        解决输入法遮挡输入框：
+        透明状态栏 + 根布局fitsSystemWindows + ScrollView
+        优点：使用简单，只需在Activity的最外层布局包裹一个ScrollView即可。
+        注意点：不可使用adjustPan属性，否则ScrollView失效；
+        缺点：对于全屏时，在键盘显示时，无法上下滑动界面达到输入的目的；
+         -->
 
-    <TextView
-        android:id="@+id/tv_version_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="3dp"
-        android:padding="5dp"
-        android:textColor="@color/text_color_level_2"
-        tools:text="V 1.1.2.33" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/activity_bg">
 
-    <TextView
-        android:id="@+id/tv_about_build_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="3dp"
-        android:padding="5dp"
-        android:textColor="@color/text_color_level_2"
-        tools:text="BuildTime 20181229225626" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tv_about_git_branch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="3dp"
-        android:padding="5dp"
-        android:textColor="@color/text_color_level_2"
-        tools:text="GitBranch [origin/develop]" />
+            <TextView
+                android:id="@+id/tv_about_app_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:drawableTop="@drawable/ic_launcher"
+                android:padding="5dp"
+                android:text="@string/app_name"
+                android:textColor="@color/text_color_level_1"
+                android:textSize="18sp"
+                android:transitionName="@string/transition_item_name" />
 
-    <TextView
-        android:id="@+id/tv_about_git_commit_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="3dp"
-        android:padding="5dp"
-        android:textColor="@color/text_color_level_2"
-        tools:text="CommitTime 2018-12-29 20:21:59 +0800" />
+            <TextView
+                android:id="@+id/tv_version_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:padding="5dp"
+                android:textColor="@color/text_color_level_2"
+                tools:text="V 1.1.2.33" />
+
+            <TextView
+                android:id="@+id/tv_about_build_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:padding="5dp"
+                android:textColor="@color/text_color_level_2"
+                tools:text="BuildTime 20181229225626" />
+
+            <TextView
+                android:id="@+id/tv_about_git_branch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:padding="5dp"
+                android:textColor="@color/text_color_level_2"
+                tools:text="GitBranch [origin/develop]" />
+
+            <TextView
+                android:id="@+id/tv_about_git_commit_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:padding="5dp"
+                android:textColor="@color/text_color_level_2"
+                tools:text="CommitTime 2018-12-29 20:21:59 +0800" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/common_height_level_2"
+                android:hint="@string/app_name"
+                android:textColor="@color/text_color_level_1" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/common_height_level_2"
+                android:hint="@string/app_name"
+                android:textColor="@color/text_color_level_1" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/common_height_level_2"
+                android:hint="@string/app_name"
+                android:textColor="@color/text_color_level_1" />
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </LinearLayout>

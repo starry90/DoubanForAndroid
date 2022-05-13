@@ -13,17 +13,13 @@ public class ErrorModel {
 
     private String message;
 
-    private String url;
-
     /**
      * 返回的错误的报文
      */
     private String response;
 
-    /**
-     * 错误已处理
-     */
-    private boolean processed;
+    public ErrorModel() {
+    }
 
     public ErrorModel(int code, String message) {
         this.code = code;
@@ -48,15 +44,6 @@ public class ErrorModel {
         return this;
     }
 
-    public String getUrl() {
-        return url;
-    }
-
-    public ErrorModel setUrl(String url) {
-        this.url = url;
-        return this;
-    }
-
     public String getResponse() {
         return response;
     }
@@ -66,23 +53,12 @@ public class ErrorModel {
         return this;
     }
 
-    public boolean isProcessed() {
-        return processed;
-    }
-
-    public ErrorModel setProcessed(boolean processed) {
-        this.processed = processed;
-        return this;
-    }
-
     @Override
     public String toString() {
         return "ErrorModel{" +
                 "code=" + code +
                 ", message='" + message + '\'' +
-                ", url='" + url + '\'' +
                 ", response='" + response + '\'' +
-                ", processed=" + processed +
                 '}';
     }
 }

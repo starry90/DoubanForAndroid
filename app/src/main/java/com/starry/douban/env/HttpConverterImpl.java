@@ -1,31 +1,35 @@
 package com.starry.douban.env;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
 import com.starry.douban.model.BaseModel;
 import com.starry.douban.model.GankBaseModel;
 import com.starry.http.error.BIZException;
+import com.starry.http.error.ErrorModel;
+import com.starry.http.error.HttpStatusException;
 import com.starry.http.interfaces.HttpConverter;
+import com.starry.log.Logger;
+
+import org.json.JSONException;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
+import java.net.SocketTimeoutException;
 
 /**
  * @author Starry Jerry
  * @since 18-8-7.
  */
-public class GsonConverter implements HttpConverter {
+public class HttpConverterImpl implements HttpConverter {
 
-    private static final MediaType MEDIA_TYPE = MediaType.parse("application/json; charset=UTF-8");
+    private static final String TAG = "HttpConverterImpl";
 
     /**
      * Create an instance using a default {@link Gson} instance for conversion. Encoding to JSON and
      * decoding from JSON (when no charset is specified by a header) will use UTF-8.
      */
-    public static GsonConverter create() {
+    public static HttpConverterImpl create() {
         return create(new Gson());
     }
 
@@ -34,35 +38,19 @@ public class GsonConverter implements HttpConverter {
      * decoding from JSON (when no charset is specified by a header) will use UTF-8.
      */
     @SuppressWarnings("ConstantConditions") // Guarding public API nullability.
-    public static GsonConverter create(Gson gson) {
+    public static HttpConverterImpl create(Gson gson) {
         if (gson == null) throw new NullPointerException("gson == null");
-        return new GsonConverter(gson);
+        return new HttpConverterImpl(gson);
     }
 
     private final Gson gson;
 
-    private GsonConverter(Gson gson) {
+    private HttpConverterImpl(Gson gson) {
         this.gson = gson;
     }
 
-
     @Override
-    public RequestBody convert(Object value) {
-        String content = "";
-        try {
-            if (value instanceof String) {
-                content = (String) value;
-            } else {
-                content = gson.toJson(value);
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return RequestBody.create(MEDIA_TYPE, content);
-    }
-
-    @Override
-    public <T> T convert(Class<?> cbClass, String bodyString) throws Exception {
+    public <T> T responseBodyConverter(Class<?> cbClass, String bodyString) throws Exception {
         T result;
         // string to T
         Type tType = getType(cbClass);
@@ -110,6 +98,40 @@ public class GsonConverter implements HttpConverter {
         //如果是集合，获取集合的类型map或list
         return new TypeToken<T>() {
         }.getType();
+    }
+
+    @Override
+    public ErrorModel responseErrorConverter(Exception why, String url) {
+        ErrorModel errorModel = new ErrorModel();
+        if (why instanceof BIZException) { //业务异常
+            BIZException cloneWhy = (BIZException) why;
+            errorModel.setCode(cloneWhy.getErrorCode())
+                    .setMessage(cloneWhy.getErrorMessage())
+                    .setResponse(cloneWhy.getResponse());
+            errorModel.setResponse(cloneWhy.getResponse());
+            Logger.e(TAG, String.format("%s %s %s", url, errorModel.getResponse(), errorModel.getMessage()));
+            return handleBIZ(errorModel);
+        } else if (why instanceof HttpStatusException) { //网络状态码错误
+            return errorModel.setCode(10001).setMessage("网络状态码错误");
+        } else if (why instanceof JsonParseException || why instanceof JSONException) { //JSON报文错误
+            return errorModel.setCode(10002).setMessage("JSON报文错误");
+        } else if (why instanceof SocketTimeoutException) { //超时提示
+            return errorModel.setCode(10003).setMessage("超时提示");
+        } else if (!AppWrapper.getInstance().networkAvailable()) { //无网提示
+            return errorModel.setCode(10004).setMessage("无网提示");
+        } else { //其它错误提示
+            return errorModel.setCode(10005).setMessage("未知错误");
+        }
+    }
+
+    /**
+     * 处理错误的业务
+     *
+     * @param errorModel ErrorModel
+     * @return ErrorModel
+     */
+    private ErrorModel handleBIZ(ErrorModel errorModel) {
+        return errorModel;
     }
 
 }

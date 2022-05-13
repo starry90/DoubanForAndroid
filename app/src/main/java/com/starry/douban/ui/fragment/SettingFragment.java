@@ -24,6 +24,7 @@ import com.starry.douban.ui.activity.WebViewActivity;
 import com.starry.douban.util.ActivityAnimationUtils;
 import com.starry.douban.util.AppOpsManagerUtils;
 import com.starry.douban.util.SPUtil;
+import com.starry.douban.util.SoftKeyBoardHelper;
 import com.starry.douban.util.ToastUtil;
 import com.starry.log.Logger;
 
@@ -42,6 +43,7 @@ public class SettingFragment extends BaseFragment<FragmentSettingBinding> implem
 
     @Override
     public void initData() {
+        SoftKeyBoardHelper.assistActivity(getActivity());
         setTitle("设置");
         ImageManager.loadImage(viewBinding.ivSettingTop, R.drawable.ic_wallhaven);
 

@@ -1,9 +1,9 @@
 package com.starry.http.callback;
 
 import com.starry.http.HttpManager;
-import com.starry.http.HttpResponse;
 import com.starry.http.interfaces.HttpConverter;
-import com.starry.http.utils.Util;
+
+import okhttp3.ResponseBody;
 
 /**
  * @author Starry Jerry
@@ -13,11 +13,9 @@ import com.starry.http.utils.Util;
 public abstract class StringCallback<T> extends CommonCallback<T> {
 
     @Override
-    public T parseResponse(HttpResponse response) throws Exception {
+    public T parseResponse(ResponseBody responseBody) throws Exception {
         HttpConverter httpConverter = HttpManager.getInstance().getHttpConverter();
-        T result = httpConverter.convert(getClass(), response.getBodyString());
-        Util.checkNotNull(result);
-        return result;
+        return httpConverter.responseBodyConverter(getClass(), responseBody.string());
     }
 
 }

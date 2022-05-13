@@ -110,6 +110,7 @@ dependencies {
     implementation deps.okhttp3
     implementation deps.agentweb
     implementation deps.jsoup
+    implementation deps.slidableactivity
 
     // (注：从2.1.5开始要分开Bugly SDK和NDK的配置）
     implementation deps.crashreport

@@ -2,10 +2,10 @@ package com.starry.http;
 
 
 import com.starry.http.callback.CommonCallback;
-import com.starry.http.callback.StringCallback;
 import com.starry.http.error.ErrorModel;
-import com.starry.http.interfaces.HttpInterceptor;
+import com.starry.http.error.HttpStatusException;
 import com.starry.http.request.OKHttpRequest;
+import com.starry.http.utils.MainHandler;
 import com.starry.http.utils.Util;
 
 import java.io.IOException;
@@ -22,9 +22,9 @@ import okhttp3.ResponseBody;
  */
 public class RealRequest {
 
-    private OKHttpRequest okHttpRequest;
+    private final OKHttpRequest okHttpRequest;
 
-    private CommonParams commonParams;
+    private final CommonParams commonParams;
 
 
     public RealRequest(OKHttpRequest okHttpRequest, CommonParams commonParams) {
@@ -54,7 +54,6 @@ public class RealRequest {
     }
 
     private <T> Request getRequest(CommonCallback<T> callback) {
-        HttpManager.getInstance().getInterceptor().logRequest(commonParams);
         return okHttpRequest.build(commonParams, callback);
     }
 
@@ -76,7 +75,6 @@ public class RealRequest {
      * @param <T>      对象的泛型
      */
     private static <T> T execute(Call call, final CommonCallback<T> callback) {
-        callback.onBefore();
         try {
             Response response = call.execute();
             return onResponseResult(call, response, callback);
@@ -93,7 +91,6 @@ public class RealRequest {
      * @param <T>      对象的泛型
      */
     private static <T> void enqueue(Call call, final CommonCallback<T> callback) {
-        callback.onBefore();
         call.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException ex) {
@@ -108,61 +105,77 @@ public class RealRequest {
         });
     }
 
-    private static <T> void onFailureResult(Call call, IOException ex, CommonCallback<T> callback) {
+    private static <T> void onFailureResult(Call call, IOException ex, final CommonCallback<T> callback) {
         //{@linkplain okhttp3.RealCall#isCanceled()}
         if (call.isCanceled()) {
-            Util.sendCanceledCallback(callback);
+            MainHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    callback.onAfter(false);
+                }
+            });
         } else {
             // handle failure exception
-            ErrorModel errorModel = new ErrorModel(0, "");
-            errorModel.setUrl(call.request().url().toString());
-            HttpManager.getInstance().getInterceptor().handleFailure(ex, errorModel);
-            Util.sendFailureCallback(errorModel, callback);
+            ErrorModel errorModel = HttpManager.getInstance()
+                    .getHttpConverter()
+                    .responseErrorConverter(ex, call.request().url().toString());
+            sendFailureCallback(errorModel, callback);
         }
     }
 
-    private static <T> T onResponseResult(Call call, Response response, CommonCallback<T> callback) {
+    private static <T> T onResponseResult(Call call, Response response, final CommonCallback<T> callback) {
         String url = call.request().url().toString();
-        HttpInterceptor httpInterceptor = HttpManager.getInstance().getInterceptor();
         try {
             // 1. check http code
-            Util.checkHttpCode(response.code());
-
-            // 2. log response
-            HttpResponse httpResponse;
-            ResponseBody responseBody = response.body();
-            Util.checkNotNull(responseBody);
-            if (callback instanceof StringCallback) {
-                String bodyString = responseBody.string();
-                httpResponse = new HttpResponse(url, bodyString);
-            } else {
-                httpResponse = new HttpResponse(url, responseBody.byteStream(), responseBody.contentLength());
+            int code = response.code();
+            if (code < 200 || code >= 300) {// 不是2开头code统一以服务器错误处理
+                throw new HttpStatusException(code);
             }
-            httpInterceptor.logResponse(httpResponse);
 
-            // 3. parse response
-            T result = callback.parseResponse(httpResponse);
+            // 2. check responseBody
+            ResponseBody responseBody = response.body();
+            Util.checkNotNull(responseBody, "responseBody == null");
+
+            // 3. parse responseBody
+            final T result = callback.parseResponse(responseBody);
+            Util.checkNotNull(responseBody, "result == null");
 
             // 4. call success method
-            Util.sendSuccessCallback(result, callback);
+            MainHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    callback.onSuccess(result);
+                    callback.onAfter(true);
+                }
+            });
             return result;
         } catch (Exception ex) {
             // 1. print stack trace
             ex.printStackTrace();
 
             // 2. handle response exception
-            ErrorModel errorModel = new ErrorModel(0, "");
-            errorModel.setUrl(url);
-            httpInterceptor.handleFailure(ex, errorModel);
+            ErrorModel errorModel = HttpManager.getInstance()
+                    .getHttpConverter()
+                    .responseErrorConverter(ex, url);
 
             // 3. call fail method
-            Util.sendFailureCallback(errorModel, callback);
+            sendFailureCallback(errorModel, callback);
         } finally {
             // A connection to https://xxxxx was leaked. Did you forget to close a response body?
             // To avoid leaking resources
             Util.closeQuietly(response);
         }
         return null;
+    }
+
+    static <T> void sendFailureCallback(final ErrorModel errorModel, final CommonCallback<T> callback) {
+        MainHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                callback.onFailure(errorModel);
+                callback.onAfter(false);
+            }
+        });
     }
 
 }

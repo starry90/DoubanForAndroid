@@ -163,16 +163,11 @@ public class WorkService extends Service {
             return;
         }
 
+        RxBus.getDefault().post(new AppUpdateEvent(1));
         HttpManager.get(url)
                 .tag(this)
                 .build()
                 .enqueue(new FileCallback(dirPath, fileName) {
-
-                    @Override
-                    public void onBefore() {
-                        super.onBefore();
-                        RxBus.getDefault().post(new AppUpdateEvent(1));
-                    }
 
                     @Override
                     public void onSuccess(File response, Object... obj) {

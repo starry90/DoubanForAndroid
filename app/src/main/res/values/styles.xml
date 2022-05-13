@@ -11,20 +11,33 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <!-- 可滑动页面主题 -->
+    <style name="Theme.Slidr.Slidable" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <!-- These values must be set for this mechanism to work -->
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+
     <!-- 使用标准的style，如果使用ThemeOverlay.AppCompat.Dark.ActionBar在白色背景的标题栏下看不到点击水波纹效果-->
     <style name="Base.ToolbarTheme" parent="ThemeOverlay.AppCompat.ActionBar">
         <!-- 导航栏默认的图标颜色 如返回键的颜色-->
         <item name="colorControlNormal">@android:color/white</item>
     </style>
 
-    <style name="RButtonMain">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">@dimen/common_height_level_1</item>
-        <item name="android:layout_weight">1</item>
-        <item name="android:button">@null</item>
-        <item name="android:gravity">center</item>
-        <item name="android:padding">3dp</item>
-        <item name="android:textColor">@color/selector_main_tab_color</item>
+    <!--没有选中的样式-->
+    <style name="MainTabNormalText">
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <!--选中的样式-->
+    <style name="MainTabSelectedText">
+        <item name="android:textSize">14sp</item>
     </style>
 
     <style name="Widget.CardContent" parent="android:Widget">
