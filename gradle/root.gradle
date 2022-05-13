@@ -18,8 +18,8 @@ ext {
             "minSdkVersion"    : 21,
             "targetSdkVersion" : 30,
 
-            "versionCode"      : 20211014,
-            "versionName"      : "2.1.2",
+            "versionCode"      : 20220513,
+            "versionName"      : "2.1.3",
             "httpVersion"      : 6
     ]
 
