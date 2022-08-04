@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.CompoundButton;
 
 import com.starry.douban.BuildConfig;
 import com.starry.douban.R;
@@ -26,6 +27,7 @@ import com.starry.douban.util.AppOpsManagerUtils;
 import com.starry.douban.util.SPUtil;
 import com.starry.douban.util.SoftKeyBoardHelper;
 import com.starry.douban.util.ToastUtil;
+import com.starry.douban.util.UiUtils;
 import com.starry.log.Logger;
 
 /**
@@ -64,6 +66,12 @@ public class SettingFragment extends BaseFragment<FragmentSettingBinding> implem
         viewBinding.tvSettingVideo.setOnClickListener(this);
         viewBinding.tvSettingGithub.setOnClickListener(this);
         viewBinding.tvSettingCheckPermission.setOnClickListener(this);
+        viewBinding.switchSettingBlackWhite.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                UiUtils.switchBlackWhiteStyle(mActivity, isChecked);
+            }
+        });
     }
 
     private long[] mClicks = new long[5];

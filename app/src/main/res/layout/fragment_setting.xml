@@ -75,6 +75,13 @@
 
             <View style="@style/GapHorizontalDivideLine" />
 
+            <Switch
+                android:id="@+id/switch_setting_black_white"
+                style="@style/ItemRippleStyle"
+                android:text="黑白模式" />
+
+            <View style="@style/GapHorizontalDivideLine" />
+
             <TextView
                 android:id="@+id/tv_setting_about"
                 style="@style/ItemRippleStyle"

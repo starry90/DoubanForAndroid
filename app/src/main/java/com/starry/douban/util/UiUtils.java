@@ -1,9 +1,14 @@
 package com.starry.douban.util;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
+import android.graphics.Paint;
 import android.support.v4.content.ContextCompat;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -74,5 +79,23 @@ public class UiUtils {
 
         }
         return height;
+    }
+
+    /**
+     * 黑白模式
+     *
+     * @param activity        activity
+     * @param isBlackWhite true为黑白屏
+     */
+    public static void switchBlackWhiteStyle(Activity activity, boolean isBlackWhite) {
+        Paint paint = new Paint();
+        ColorMatrix colorMatrix = new ColorMatrix();
+        if (isBlackWhite) {
+            colorMatrix.setSaturation(0);
+        } else {
+            colorMatrix.setSaturation(1);
+        }
+        paint.setColorFilter(new ColorMatrixColorFilter(colorMatrix));
+        activity.getWindow().getDecorView().setLayerType(View.LAYER_TYPE_HARDWARE, paint);
     }
 }
