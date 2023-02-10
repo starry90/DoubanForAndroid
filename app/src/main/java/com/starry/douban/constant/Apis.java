@@ -9,6 +9,8 @@ public class Apis {
 
     public static final String GITHUB_AUTHOR_HOME = "https://starry90.github.io/Blog/";
 
+    public static final String SOGOU_HOME = "https://www.sogou.com/";
+
     public static final String APP_UPDATE = "https://github.com/starry90/DoubanForAndroid/raw/master/data/update.txt";
 
     public static final String HOST_GANK = "https://gank.io";

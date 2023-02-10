@@ -46,6 +46,13 @@
             <View style="@style/GapHorizontalDivideLine" />
 
             <TextView
+                android:id="@+id/tv_setting_webview"
+                style="@style/ItemRippleStyle"
+                android:text="WebView" />
+
+            <View style="@style/GapHorizontalDivideLine" />
+
+            <TextView
                 android:id="@+id/tv_setting_beauty"
                 style="@style/ItemRippleStyle"
                 android:text="Beauty" />

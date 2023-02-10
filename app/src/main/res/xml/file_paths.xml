@@ -11,5 +11,6 @@
     -->
     <external-files-path name="my_download" path="download/" />
     <external-files-path name="my_picture" path="picture/" />
+    <external-cache-path  name="file_camera_cache" path="webViewCache/" />
 
 </paths>

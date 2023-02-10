@@ -65,6 +65,7 @@ public class SettingFragment extends BaseFragment<FragmentSettingBinding> implem
         viewBinding.tvSettingVersionUpdate.setOnClickListener(this);
         viewBinding.tvSettingVideo.setOnClickListener(this);
         viewBinding.tvSettingGithub.setOnClickListener(this);
+        viewBinding.tvSettingWebview.setOnClickListener(this);
         viewBinding.tvSettingCheckPermission.setOnClickListener(this);
         viewBinding.switchSettingBlackWhite.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -117,6 +118,10 @@ public class SettingFragment extends BaseFragment<FragmentSettingBinding> implem
 
             case R.id.tv_setting_github:
                 WebViewActivity.showActivity(mActivity, Apis.GITHUB_AUTHOR_HOME);
+                break;
+
+            case R.id.tv_setting_webview:
+                WebViewActivity.showActivity(mActivity, Apis.SOGOU_HOME);
                 break;
 
             case R.id.tv_setting_check_permission:
