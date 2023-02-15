@@ -27,6 +27,8 @@ import com.starry.douban.R;
 import com.starry.douban.base.BaseActivity;
 import com.starry.douban.databinding.ActivityWebViewBinding;
 import com.starry.douban.util.AppUtil;
+import com.starry.douban.util.PermissionUtils;
+import com.starry.douban.util.ToastUtil;
 import com.starry.douban.util.UiUtils;
 import com.starry.douban.widget.CoolIndicatorLayout;
 import com.starry.log.Logger;
@@ -233,14 +235,36 @@ public class WebViewActivity extends BaseActivity<ActivityWebViewBinding> {
         galleryView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AppUtil.openSystemGallery(WebViewActivity.this, FILE_CHOOSER_OPEN_COMMON_TYPE);
+                PermissionUtils.requestStorage(WebViewActivity.this, new PermissionUtils.PermissionCallback() {
+                    @Override
+                    public void success() {
+                        AppUtil.openSystemGallery(WebViewActivity.this, FILE_CHOOSER_OPEN_COMMON_TYPE);
+                    }
+
+                    @Override
+                    public void failure() {
+                        ToastUtil.showToast("为保证您能正常使用该功能，需要前往设置授予设备权限。");
+                        cancelUpload();
+                    }
+                });
                 dialog.dismiss();
             }
         });
         cameraView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tempUri = AppUtil.openSystemCamera(WebViewActivity.this, FILE_CHOOSER_OPEN_CAMERA, tmpFile);
+                PermissionUtils.requestCamera(WebViewActivity.this, new PermissionUtils.PermissionCallback() {
+                    @Override
+                    public void success() {
+                        tempUri = AppUtil.openSystemCamera(WebViewActivity.this, FILE_CHOOSER_OPEN_CAMERA, tmpFile);
+                    }
+
+                    @Override
+                    public void failure() {
+                        ToastUtil.showToast("为保证您能正常使用该功能，需要前往设置授予设备权限。");
+                        cancelUpload();
+                    }
+                });
                 dialog.dismiss();
             }
         });

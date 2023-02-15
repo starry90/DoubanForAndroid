@@ -76,7 +76,7 @@ public class AppUtil {
     }
 
     static Uri getUriFromFileForN(Context context, File file) {
-        return FileProvider.getUriForFile(context, context.getPackageName() + ".provider", file);
+        return FileProvider.getUriForFile(context, context.getPackageName() + ".fileprovider", file);
     }
 
     private static void startActivityForResult(Fragment fragment, Activity activity, Intent intent, int requestCode) {

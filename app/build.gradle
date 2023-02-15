@@ -111,6 +111,7 @@ dependencies {
     implementation deps.agentweb
     implementation deps.jsoup
     implementation deps.slidableactivity
+    implementation 'com.github.tbruyelle:rxpermissions:0.10.2'
 
     // (注：从2.1.5开始要分开Bugly SDK和NDK的配置）
     implementation deps.crashreport

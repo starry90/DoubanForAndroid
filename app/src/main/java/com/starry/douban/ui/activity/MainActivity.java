@@ -16,7 +16,6 @@ import com.starry.douban.env.AppWrapper;
 import com.starry.douban.ui.fragment.HomeFragment;
 import com.starry.douban.ui.fragment.MovieParentFragment;
 import com.starry.douban.ui.fragment.SettingFragment;
-import com.starry.douban.util.PermissionUtils;
 import com.starry.douban.util.ToastUtil;
 
 import java.util.ArrayList;
@@ -46,8 +45,6 @@ public class MainActivity extends BaseNFCActivity<ActivityMainBinding> {
 
     @Override
     public void initData() {
-        PermissionUtils.requestPermission(this);
-
         final List<Fragment> pages = new ArrayList<>();
         pages.add(new HomeFragment());
         pages.add(new MovieParentFragment());
