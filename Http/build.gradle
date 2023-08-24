@@ -14,9 +14,9 @@ dependencies {
 }
 
 task makeJar(type: Copy) {
-    delete "../outputs/http.jar"
-    from('build/intermediates/bundles/debug/')
+    delete "../outputs/http.aar"
+    from('build/outputs/aar/')
     into('../outputs/')
-    include('classes.jar')
-    rename('classes.jar', "http.jar")
+    include('Http-debug.aar')
+    rename('Http-debug.aar', "http.aar")
 }
